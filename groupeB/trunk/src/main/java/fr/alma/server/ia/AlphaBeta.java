@@ -35,10 +35,13 @@ public class AlphaBeta implements IStrategy {
 		evaluation = new Evaluation();
 	}
 	
+	short cptCol = 0;
+	short cptRow = 0;
 	
 	public IEmplacement getEmplacementMax() {
 		int max = getValue(2, stateGame);
-		return new Emplacement(colMax, rowMax);
+		//return new Emplacement(colMax, rowMax);
+		return new Emplacement(cptCol++, cptRow++);
 	}
 	
 	/*

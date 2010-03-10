@@ -3,8 +3,6 @@ package fr.alma.server.core;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.List;
-import java.util.Vector;
 
 import fr.alma.client.ihm.Goban;
 
@@ -13,8 +11,8 @@ public class Player extends AbstractPlayer {
 	Goban goban = null;
 	IStateGame stateGame; 
 	MouseListener listener = null;
-	List<PlayListener> listPlayerActionListener = null;
 	boolean enable = false;
+	IPlayer player = this; 
 	
 	
 	public Player(String name, boolean color, Goban goban, IStateGame stateGame) {
@@ -37,9 +35,12 @@ public class Player extends AbstractPlayer {
 					short x = (short)Math.round((e.getX()-25.0)/30.0);
 					short y = (short)Math.round((e.getY()-25.0)/30.0);
 
-					if (stateGame.play(x, y, getColor())) {
-						goban.repaint();
-						raiseEvent(new PlayEvent());
+					if (raiseEvent(new PlayEvent(player, PlayEvent.AVANT))) {
+					
+						if (stateGame.play(x, y, getColor())) {
+							//goban.repaint();
+							raiseEvent(new PlayEvent(player, PlayEvent.APRES));
+						}
 					}
 				}
 			};
@@ -48,37 +49,14 @@ public class Player extends AbstractPlayer {
 	}
 	
 	
-	public boolean addPlayListener(PlayListener playListener) {
-		return getPlayerListeners().add(playListener);
-	}
-	
-	
-	public boolean removePlayListener(PlayListener playListener) {
-		return getPlayerListeners().remove(playListener);
-	}
-
-	
-	public List<PlayListener> getPlayerListeners() {
-		if (listPlayerActionListener == null) {
-			listPlayerActionListener = new Vector<PlayListener>();
-		}
-		return listPlayerActionListener;
-	}
-	
-	
-	private boolean raiseEvent(PlayEvent event) {
-		boolean retour = true;
-		for (PlayListener listener : getPlayerListeners()) {
-			if (!listener.actionPerformed(event)) {
-				retour = false;
-			}
-		}
-		return retour;
-	}
-	
 	@Override
 	public void setEnabled(boolean enable) {
 		this.enable = enable;
+	}
+	
+	
+	public String toString() {
+		return getName();
 	}
 	
 }

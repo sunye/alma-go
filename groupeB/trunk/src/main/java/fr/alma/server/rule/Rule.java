@@ -1,4 +1,6 @@
-package fr.alma.server.core;
+package fr.alma.server.rule;
+
+import fr.alma.server.core.IPlayer;
 
 public class Rule {
 
