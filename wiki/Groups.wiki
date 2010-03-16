@@ -2,35 +2,44 @@
 
 Groupe A
     - D. Chaillou
+
     - A. Schiaucu
 
 Groupe B
     - R. Gournay
+
     - B. Belin
 
 Groupe C
     - F. Dumonceaux
+
     - F. Dumont
 
 Groupe D
     - V. Ferreira
+
     - A. Guille
 
 Groupe E
     - J. Durillon
+
     - C. Massot
 
 Groupe F
     - M. Elhadi
+
     - G. Chimen
+
     - H. Ngassa
 
 Groupe G
     - H. Esteguet
+
     - O. Huyghe
 
 Groupe H
     - P. Mueza
+
     - T. Fnoun
 
 Groupe I
@@ -41,4 +50,5 @@ Groupe J
 
 Groupe K
     - M. Fortun
+
     - A. Caillaud
