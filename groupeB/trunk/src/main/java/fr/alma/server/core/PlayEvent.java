@@ -7,12 +7,14 @@ public class PlayEvent {
 	
 	private IPlayer player = null;
 	private int when;
+	private IEmplacement emplacement;
 	
 	
-	public PlayEvent(IPlayer player, int when) {
+	public PlayEvent(IPlayer player, int when, IEmplacement emplacement) {
 		super();
 		setPlayer(player);
 		setWhen(when);
+		setEmplacement(emplacement);
 	}
 	
 
@@ -37,6 +39,16 @@ public class PlayEvent {
 	
 	public String toString() {
 		return "Player : " + player.toString() + " When : " + ((when == AVANT) ? "AVANT" : "APRES");
+	}
+
+
+	public IEmplacement getEmplacement() {
+		return emplacement;
+	}
+
+
+	public void setEmplacement(IEmplacement emplacement) {
+		this.emplacement = emplacement;
 	}
 	
 }

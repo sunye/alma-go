@@ -35,11 +35,11 @@ public class Player extends AbstractPlayer {
 					short x = (short)Math.round((e.getX()-25.0)/30.0);
 					short y = (short)Math.round((e.getY()-25.0)/30.0);
 
-					if (raiseEvent(new PlayEvent(player, PlayEvent.AVANT))) {
+					if (raiseEvent(new PlayEvent(player, PlayEvent.AVANT, new Emplacement(x, y)))) {
 					
 						if (stateGame.play(x, y, getColor())) {
 							//goban.repaint();
-							raiseEvent(new PlayEvent(player, PlayEvent.APRES));
+							raiseEvent(new PlayEvent(player, PlayEvent.APRES, new Emplacement(x, y)));
 						}
 					}
 				}

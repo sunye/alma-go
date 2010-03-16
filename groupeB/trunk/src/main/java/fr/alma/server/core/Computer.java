@@ -18,7 +18,7 @@ public class Computer extends AbstractPlayer {
 		IEmplacement emplacement = strategieGame.getEmplacementMax();
 		strategieGame.getStateGame().play(emplacement.getCol(), emplacement.getRow(), getColor());
 		System.out.println("Computer stop play ...");
-		raiseEvent(new PlayEvent(player, PlayEvent.APRES));
+		raiseEvent(new PlayEvent(player, PlayEvent.APRES, emplacement));
 	}
 	
 	

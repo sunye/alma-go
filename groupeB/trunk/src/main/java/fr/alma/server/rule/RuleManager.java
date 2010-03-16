@@ -3,6 +3,8 @@ package fr.alma.server.rule;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.alma.server.core.IEmplacement;
+
 public class RuleManager {
 	List<IRule> listRules;
 	
@@ -30,9 +32,9 @@ public class RuleManager {
 	}
 
 	
-	public boolean check(short col, short row) {
+	public boolean check(IEmplacement emplacement) {
 		for (IRule rule : getRules()) {
-			if (! rule.accept(col, row)) {
+			if (! rule.accept(emplacement.getCol(), emplacement.getRow())) {
 				return false;
 			}
 		}

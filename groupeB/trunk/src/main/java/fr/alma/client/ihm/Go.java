@@ -4,15 +4,12 @@ import javax.swing.JFrame;
 
 import fr.alma.server.core.Computer;
 import fr.alma.server.core.Coordinator;
+import fr.alma.server.core.Factory;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 import fr.alma.server.core.IStrategy;
 import fr.alma.server.core.Player;
-import fr.alma.server.core.StateGame;
-import fr.alma.server.ia.AlphaBeta;
-import fr.alma.server.rule.Rule;
-import fr.alma.server.rule.RuleAlreadyBusy;
-import fr.alma.server.rule.RuleManager;
+import fr.alma.server.rule.Configuration;
 
 public class Go extends JFrame {
 
@@ -21,16 +18,18 @@ public class Go extends JFrame {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 300, 320);
 		
+		
 		/*
 		 * Demander qui commence
 		 * Celui qui commence dispose des pierres blanches.
 		 */
-		IStateGame stateGame = new StateGame();
-		Goban goban = new Goban(stateGame);
-		IStrategy strategy = new AlphaBeta(stateGame);
-		Rule rule = new Rule();
+		IStateGame stateGame = Factory.getStateGame();
+		Goban goban = Factory.getGoban(stateGame);
+		IStrategy strategy = Factory.getStrategy(stateGame);
 		
-		Coordinator coordinator = new Coordinator(rule, goban);
+		Configuration rule = new Configuration();
+		
+		Coordinator coordinator = new Coordinator(rule, goban, stateGame);
 		
 		IPlayer computer = new Computer("ordinateur", IPlayer.BLACK, strategy);
 		strategy.setPlayer(computer);
@@ -40,7 +39,6 @@ public class Go extends JFrame {
 		
 		coordinator.setPlayers(player, computer);
 		coordinator.startGame();
-		
 		
 		setContentPane(goban);
 		setVisible(true);

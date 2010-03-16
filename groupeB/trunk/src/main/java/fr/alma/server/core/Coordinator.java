@@ -1,8 +1,7 @@
 package fr.alma.server.core;
 
 import fr.alma.client.ihm.Goban;
-import fr.alma.server.rule.Rule;
-import fr.alma.server.rule.RuleAlreadyBusy;
+import fr.alma.server.rule.Configuration;
 import fr.alma.server.rule.RuleManager;
 
 public class Coordinator {
@@ -11,27 +10,24 @@ public class Coordinator {
 	private IPlayer player1;
 	private IPlayer player2;
 	private IPlayer currentPlayer = null;
-	private Rule rule = null;
+	private Configuration config = null;
 	private Thread thread;
 	private Runnable runnable;
 	private Goban goban = null;
-	
+	private IStateGame stateGame;
 	private RuleManager ruleManager = null;
 	
 	
-	public Coordinator(Rule rule, Goban goban) {
-		this.rule = rule;
+	public Coordinator(Configuration config, Goban goban, IStateGame stateGame ) {
+		this.config = config;
 		this.goban = goban;
-		
-		// A mettre dans un factory
-		//ruleManager = new RuleManager();
-		//ruleManager.addRule(new RuleAlreadyBusy(game))
-		
+		this.stateGame = stateGame;
+		ruleManager = Factory.getRuleManager(stateGame);
 	}
 
 	
 	public void startGame() {
-		setCurrentPlayer(getPlayer(rule.getColorFirstPlayer()));
+		setCurrentPlayer(getPlayer(config.getColorFirstPlayer()));
 		playInThread();
 	}
 	
@@ -56,10 +52,12 @@ public class Coordinator {
 				@Override
 				public boolean actionPerformed(PlayEvent e) {
 					if (e.getWhen() == PlayEvent.AVANT) {
-						System.out.println("Le playeur veut jouer ..." + e.getPlayer());
+						//System.out.println("Le playeur veut jouer ..." + e.getPlayer());
+						/* Must Verify the rules */
+						return getRuleManager().check(e.getEmplacement());
 					}
 					
-					System.out.println("Le playeur vient de jouer ..." + e.getPlayer());
+					//System.out.println("Le playeur vient de jouer ..." + e.getPlayer());
 					if (getCurrentPlayer() == player1) {
 						setCurrentPlayer(player2);
 					} else {
@@ -105,5 +103,10 @@ public class Coordinator {
 			}
 		};
 		return runnable;
+	}
+
+
+	public RuleManager getRuleManager() {
+		return ruleManager;
 	}
 }
