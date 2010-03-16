@@ -48,3 +48,4 @@ public class Goban {
 		return null;
 	}
 }
+//test
