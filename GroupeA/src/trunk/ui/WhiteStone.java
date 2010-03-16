@@ -1,0 +1,28 @@
+package trunk.ui;
+
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.Toolkit;
+
+public class WhiteStone extends Canvas{
+	private static final long serialVersionUID = 1L;
+	Image image;
+	String img = "white.gif";
+	
+	public WhiteStone() {
+		
+		MediaTracker media = new MediaTracker(this);
+		image = Toolkit.getDefaultToolkit().getImage(img);
+		media.addImage(image, 0);
+		try {
+			media.waitForID(0); 
+		}
+		catch (Exception e) {}
+	}
+
+	public void paint(Graphics g) {
+		g.drawImage(image, 0,0, this);
+	}
+}
