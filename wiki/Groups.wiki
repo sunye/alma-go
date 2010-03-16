@@ -6,49 +6,49 @@
     * A. Schiaucu
 
 ===Groupe B===
-    - R. Gournay
+    * R. Gournay
 
-    - B. Belin
+    * B. Belin
 
 ===Groupe C===
-    - F. Dumonceaux
+    * F. Dumonceaux
 
-    - F. Dumont
+    * F. Dumont
 
 ===Groupe D===
-    - V. Ferreira
+    * V. Ferreira
 
-    - A. Guille
+    * A. Guille
 
 ===Groupe E===
-    - J. Durillon
+    * J. Durillon
 
-    - C. Massot
+    * C. Massot
 
 ===Groupe F===
-    - M. Elhadi
+    * M. Elhadi
 
-    - G. Chimen
+    * G. Chimen
 
-    - H. Ngassa
+    * H. Ngassa
 
 ===Groupe G===
-    - H. Esteguet
+    * H. Esteguet
 
-    - O. Huyghe
+    * O. Huyghe
 
 ===Groupe H===
-    - P. Mueza
+    * P. Mueza
 
-    - T. Fnoun
+    * T. Fnoun
 
 ===Groupe I===
-    - M. Altuntas
+    * M. Altuntas
 
 ===Groupe J===
-    - C. Poisson
+    * C. Poisson
 
 ===Groupe K===
-    - M. Fortun
+    * M. Fortun
 
-    - A. Caillaud
+    * A. Caillaud
