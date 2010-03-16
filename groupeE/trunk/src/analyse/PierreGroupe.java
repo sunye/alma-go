@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import plateau.Goban;
-import plateau.Goban.PionVal;
+import utils.Goban;
+import utils.Goban.PionVal;
 
 public class PierreGroupe {
 	protected class Coords {
@@ -69,7 +69,7 @@ public class PierreGroupe {
 			}
 		}
 		if(!place){
-			throw new NoCohesionException("La pierre ne peut être ajoutée de façon cohérente.");
+			throw new NoCohesionException("La pierre ne peut ï¿½tre ajoutï¿½e de faï¿½on cohï¿½rente.");
 		}
 	}
 	
@@ -80,7 +80,7 @@ public class PierreGroupe {
 		if(this.checkCohesion(groupe)){
 			this.groupe = groupe;
 		} else {
-			throw new NoCohesionException("Le groupe n'est pas cohérent.");
+			throw new NoCohesionException("Le groupe n'est pas cohï¿½rent.");
 		}
 		
 	}
@@ -94,7 +94,7 @@ public class PierreGroupe {
 	
 	
 	/**
-	 * Compte les libertés du groupe sur le goban donné.
+	 * Compte les libertï¿½s du groupe sur le goban donnï¿½.
 	 * @param goban
 	 * @return
 	 * @throws Exception 

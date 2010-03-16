@@ -2,7 +2,7 @@ package analyse;
 
 import java.util.ArrayList;
 
-import plateau.Goban;
+import utils.Goban;
 
 public class EvalFunc {
 	
