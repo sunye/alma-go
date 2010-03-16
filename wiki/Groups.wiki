@@ -1,0 +1,22 @@
+#summary Liste des groupes.
+
+Groupe A
+    - D. Chaillou
+    - A. Schiaucu
+
+Groupe B
+    - R. Gournay
+    - B. Belin
+
+Groupe C
+    - F. Dumonceaux
+    - F. Dumont
+
+Groupe D
+    - V. Ferreira
+    - A. Guille
+
+Groupe E
+    - J. Durillon
+    - C. Massot
+
