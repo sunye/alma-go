@@ -1,13 +1,13 @@
 package fr.alma.server.rule;
 
-import fr.alma.server.core.StateGame;
+import fr.alma.server.core.IStateGame;
 
 public class RuleAlreadyBusy implements IRule {
 
-	private StateGame stateGame = null;
+	private IStateGame stateGame = null;
 	
 	
-	public RuleAlreadyBusy(StateGame game) {
+	public RuleAlreadyBusy(IStateGame stateGame) {
 		this.stateGame = stateGame;
 	}
 	

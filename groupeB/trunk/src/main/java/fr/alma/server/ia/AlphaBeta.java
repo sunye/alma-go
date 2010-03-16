@@ -5,6 +5,7 @@ import fr.alma.server.core.IEmplacement;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 import fr.alma.server.core.IStrategy;
+import fr.alma.server.rule.Configuration;
 
 /**
  * @author Romain & bruno
@@ -21,13 +22,11 @@ public class AlphaBeta implements IStrategy {
 	private IEvaluation evaluation;
 	private IStateGame stateGame;
 
-
-	private int levelMax;
 	private IPlayer computer;
 	
 	/* Interet de les avoir en global : toujours disponibes ! */
 	private short rowMax = -1, colMax = -1;
-	
+	int cpt = 0;
 	
 	public AlphaBeta(IStateGame stateGame) {
 		this.stateGame = stateGame;
@@ -39,9 +38,10 @@ public class AlphaBeta implements IStrategy {
 	short cptRow = 0;
 	
 	public IEmplacement getEmplacementMax() {
+		cpt = 0;
 		int max = getValue(2, stateGame);
-		//return new Emplacement(colMax, rowMax);
-		return new Emplacement(cptCol++, cptRow++);
+		System.out.println("nb appels a gatValue() : " + cpt);
+		return new Emplacement(colMax, rowMax);
 	}
 	
 	/*
@@ -55,8 +55,9 @@ public class AlphaBeta implements IStrategy {
 	 */
 	public int getValue(int level, IStateGame stateGame) {
 		int value;
+		cpt++;
 		
-		if ((level < levelMax) && ! stateGame.isOver()) {
+		if ((level < Configuration.getMaxDeepLevel()) && ! stateGame.isOver()) {
 			/* Test nombre pair */
 			if (level%2 == 0) {
 				/* Recherche du Max */
