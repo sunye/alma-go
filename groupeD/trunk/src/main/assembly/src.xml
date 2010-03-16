@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+    <fileSets>
+        <fileSet>
+            <directory>/src/main/java/fr/alma/resources</directory>
+            <outputDirectory>target</outputDirectory>
+            <includes>
+                <include>*.*</include>
+                <include>*.gif</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+
+</assembly>
+
