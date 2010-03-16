@@ -1,9 +1,9 @@
 #summary Liste des groupes.
 
-Groupe A
-    - D. Chaillou
+===Groupe A===
+    * D. Chaillou
 
-    - A. Schiaucu
+    * A. Schiaucu
 
 Groupe B
     - R. Gournay
