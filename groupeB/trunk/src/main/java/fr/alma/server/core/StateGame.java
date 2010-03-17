@@ -1,5 +1,6 @@
 package fr.alma.server.core;
 
+
 import fr.alma.client.ihm.Goban;
 
 public class StateGame implements IStateGame {
@@ -32,7 +33,7 @@ public class StateGame implements IStateGame {
 	}
 
 	/**
-	 * Vérifier les règles du jeu !
+	 * Vï¿½rifier les rï¿½gles du jeu !
 	 */
 	@Override
 	public boolean play(short col, short row, boolean computer) {
@@ -58,12 +59,32 @@ public class StateGame implements IStateGame {
 
 	@Override
 	public boolean isFree(short col, short row) {
-		return (intersection[col][row] == null);
+		if(onGoban(col, row)){
+			return (intersection[col][row] == null);
+		}
+		return false;
 	}
+
+	@Override
+	public boolean onGoban(short col, short row) {
+		return (col >= 0 && col < getMaxCol() && row >= 0 &&  row < getMaxRow());
+	}
+
 
 	@Override
 	public boolean isPlayer(short col, short row) {
 		return (intersection[col][row] == PLAYER);
 	}
+	
+	public Boolean[][] getGoban(){
+		return intersection;
+	}
+
+	@Override
+	public Object getIntersection(short col, short row) {
+		return intersection[col][row];
+	}
+	
+	
 
 }

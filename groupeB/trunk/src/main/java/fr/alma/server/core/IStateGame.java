@@ -1,5 +1,6 @@
 package fr.alma.server.core;
 
+
 public interface IStateGame {
 	public static final Boolean PLAYER = false;
 	public static final Boolean COMPUTER = true;
@@ -15,4 +16,8 @@ public interface IStateGame {
 	boolean isFree(short col, short row);
 	boolean isComputer(short col, short row);
 	boolean isPlayer(short col, short row);
+
+	boolean onGoban(short col, short row);
+
+	Object getIntersection(short col, short row);
 }
