@@ -39,7 +39,7 @@ public class AlphaBeta implements IStrategy {
 	
 	public IEmplacement getEmplacementMax() {
 		cpt = 0;
-		int max = getValue(2, stateGame);
+		int max = getValue(2, stateGame, 0);
 		System.out.println("nb appels a gatValue() : " + cpt);
 		return new Emplacement(colMax, rowMax);
 	}
@@ -53,7 +53,7 @@ public class AlphaBeta implements IStrategy {
 	 * 
 	 * => On commence avec un level a  2
 	 */
-	public int getValue(int level, IStateGame stateGame) {
+	public int getValue(int level, IStateGame stateGame, int extremum) {
 		int value;
 		cpt++;
 		
@@ -61,10 +61,10 @@ public class AlphaBeta implements IStrategy {
 			/* Test nombre pair */
 			if (level%2 == 0) {
 				/* Recherche du Max */
-				value = max(level, stateGame);
+				value = max(level, stateGame, extremum);
 			} else { /* Niveau impaire, c'est Ã  l'adversaire de jouer */
 				/* Recherche du Min */
-				value = min(level, stateGame);
+				value = min(level, stateGame, extremum);
 			}
 		} else { /* On se trouve sur une feuille */
 			value = evaluation.evaluate(stateGame);
@@ -72,18 +72,18 @@ public class AlphaBeta implements IStrategy {
 		return value;
 	}
 	
-		
+	
 	/*
 	 * Recherche du Max
 	 */
-	private int max(int level, IStateGame stateGame) {
+	private int max(int level, IStateGame stateGame, int extremum) {
 		int max = Integer.MIN_VALUE;
 		
 		for (short col = 0; col < stateGame.getMaxCol(); col++) {
 			for (short row = 0; row < stateGame.getMaxCol(); row++) {
-				if (stateGame.isPlayable(col, row)) {
+				if ((max < extremum) && (stateGame.isPlayable(col, row))) {
 					stateGame.play(col, row, computer.getColor());
-					int value = getValue(level+1, stateGame);
+					int value = getValue(level+1, stateGame, max);
 					if (value > max) { 
 						max = value;
 						colMax = col;
@@ -97,14 +97,14 @@ public class AlphaBeta implements IStrategy {
 	}
 	
 	
-	private int min(int level, IStateGame stateGame) {
+	private int min(int level, IStateGame stateGame, int extremum) {
 		int min = Integer.MAX_VALUE;
 		
 		for (short col = 0; col < stateGame.getMaxCol(); col++) {
 			for (short row = 0; row < stateGame.getMaxCol(); row++) {
-				if (stateGame.isPlayable(col, row)) {
+				if ((min > extremum) && (stateGame.isPlayable(col, row))) {
 					stateGame.play(col, row, ! computer.getColor());
-					int value = getValue(level+1, stateGame);
+					int value = getValue(level+1, stateGame, min);
 					if (value < min) { 
 						min = value;
 					}
