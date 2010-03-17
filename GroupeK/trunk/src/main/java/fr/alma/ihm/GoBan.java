@@ -339,13 +339,8 @@ public class GoBan {
 				listOfNeighborFriends,
 				listOfNeighborEnemies);
 
-		// update the situation of the friend groups (listOfNeighborFriends) after the last move (stone)
 		majListeAmis(position, positiony, coul, listOfNeighborFriends);
 
-		// take care of captured stones
-		/*updateStonesEnemyGroups(position, positiony, coul,
-				listOfNeighborEnemies,
-				changedLocations);*/
 	}
 
 	public void enleveLibertesVoisins(int position, int positiony, CouleurPion coul,
@@ -373,59 +368,6 @@ public class GoBan {
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-	// update the situation of the enemy groups (listOfNeighborEnemies) after the last move (stone)
-	/*  private void updateStonesEnemyGroups(int position, int positiony, CouleurPion coul,
-			  Vector<Groupe> listOfNeighborEnemies,
-			  Vector<Groupe> changedLocations) {
-
-	   Enumeration<Groupe> e = listOfNeighborEnemies.elements());
-	   for(;e.hasMoreElements();) {
-	     Groupe currentGroup = (Groupe)e.nextElement();
-	     if (currentGroup.hasNoLiberty()) {
-	       // update the captured stones info
-	       if (currentGroup.getCoul() == CouleurPion.NOIR){
-	    	   nrBlackPrisoners += currentGroup.nrStones(); }
-	       else { nrWhitePrisoners += currentGroup.nrStones(); }
-
-	       // add the stones of this group to the list of changed locations
-	       changedLocations.appendList(currentGroup.stones);
-
-	       // iterate for all the stones in the "to be captured" enemy group
-	       Enumeration stonesList = currentGroup.stones.getElements();
-	       for(;stonesList.hasMoreElements();) {
-	         GobanLocation currentStone = (GobanLocation)stonesList.nextElement();
-
-	         // update the liberties after removing currentStone
-	         Enumeration enemyList = (currentStone.getNeighborEnemies()).getElements();
-	         for (;enemyList.hasMoreElements();) {
-	           Group currentEnemy = (Group)enemyList.nextElement();
-	           currentEnemy.liberties.add(currentStone);
-	         }
-
-	         // we actually remove the currentStone here
-	         currentStone.state = EMPTY;
-
-	         if (currentGroup.color == BLACK)
-	           blackGroups.deleteElement(currentGroup);
-	         else
-	         if (currentGroup.color == WHITE)
-	           whiteGroups.deleteElement(currentGroup);
-	       } // for
-	     } // if
-	   } // for
-	  }*/
 
 	public Pion[][] getGoban() {
 		return goban;
