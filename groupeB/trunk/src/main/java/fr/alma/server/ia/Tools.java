@@ -37,7 +37,7 @@ public class Tools {
 			IEmplacement nouveauEmplacement = new Emplacement(col, row);
 			if(!((IEmplacement)nouveauEmplacement).isIn(emplacements)){
 				if(coordinator.getStateGame().isFree(col, row)){
-					System.out.println("isFree ["+col+"] ["+row+"]");
+					//System.out.println("isFree ["+col+"] ["+row+"]");
 					nbFreeDegrees++;
 					emplacements.add(nouveauEmplacement);
 

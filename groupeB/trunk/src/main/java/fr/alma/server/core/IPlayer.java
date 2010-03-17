@@ -12,4 +12,5 @@ public interface IPlayer {
 	boolean removePlayListener(PlayListener playListener);
 	List<PlayListener> getPlayerListeners();
 	void setEnabled(boolean enable);
+	public void setStrategieGame(IStrategy strategieGame);
 }

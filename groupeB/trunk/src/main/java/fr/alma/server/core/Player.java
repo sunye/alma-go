@@ -59,5 +59,9 @@ public class Player extends AbstractPlayer {
 		return getName();
 	}
 	
+	
+	public void setStrategieGame(IStrategy strategieGame) {
+	}
+	
 }
 

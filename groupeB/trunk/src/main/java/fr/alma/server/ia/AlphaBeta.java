@@ -1,5 +1,6 @@
 package fr.alma.server.ia;
 
+import fr.alma.server.core.Coordinator;
 import fr.alma.server.core.Emplacement;
 import fr.alma.server.core.IEmplacement;
 import fr.alma.server.core.IPlayer;
@@ -28,10 +29,11 @@ public class AlphaBeta implements IStrategy {
 	private short rowMax = -1, colMax = -1;
 	int cpt = 0;
 	
-	public AlphaBeta(IStateGame stateGame) {
-		this.stateGame = stateGame;
+	public AlphaBeta(Coordinator coordinator, IPlayer computer) {
+		this.stateGame = coordinator.getStateGame();
 		this.computer = computer;
-		evaluation = new Evaluation();
+		
+		evaluation = new Evaluation(coordinator, computer);
 	}
 	
 	short cptCol = 0;
@@ -80,7 +82,7 @@ public class AlphaBeta implements IStrategy {
 		int max = Integer.MIN_VALUE;
 		
 		for (short col = 0; col < stateGame.getMaxCol(); col++) {
-			for (short row = 0; row < stateGame.getMaxCol(); row++) {
+			for (short row = 0; row < stateGame.getMaxRow(); row++) {
 				if ((max < extremum) && (stateGame.isPlayable(col, row))) {
 					stateGame.play(col, row, computer.getColor());
 					int value = getValue(level+1, stateGame, max);
@@ -101,7 +103,7 @@ public class AlphaBeta implements IStrategy {
 		int min = Integer.MAX_VALUE;
 		
 		for (short col = 0; col < stateGame.getMaxCol(); col++) {
-			for (short row = 0; row < stateGame.getMaxCol(); row++) {
+			for (short row = 0; row < stateGame.getMaxRow(); row++) {
 				if ((min > extremum) && (stateGame.isPlayable(col, row))) {
 					stateGame.play(col, row, ! computer.getColor());
 					int value = getValue(level+1, stateGame, min);

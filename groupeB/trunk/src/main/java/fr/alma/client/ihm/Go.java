@@ -25,13 +25,12 @@ public class Go extends JFrame {
 		 */
 		IStateGame stateGame = Factory.getStateGame();
 		Goban goban = Factory.getGoban(stateGame);
-		IStrategy strategy = Factory.getStrategy(stateGame);
-		
 		Configuration rule = new Configuration();
-		
 		Coordinator coordinator = new Coordinator(rule, goban, stateGame);
 		
-		IPlayer computer = new Computer("ordinateur", IPlayer.BLACK, strategy);
+		IPlayer computer = new Computer("ordinateur", IPlayer.BLACK);
+		IStrategy strategy = Factory.getStrategy(coordinator, computer);
+		computer.setStrategieGame(strategy);
 		strategy.setPlayer(computer);
 		
 		IPlayer player = new Player("vous", IPlayer.WHITE, goban, stateGame);
