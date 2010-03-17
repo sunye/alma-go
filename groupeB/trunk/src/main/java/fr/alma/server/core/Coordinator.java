@@ -16,13 +16,13 @@ public class Coordinator {
 	private Goban goban = null;
 	private IStateGame stateGame;
 	private RuleManager ruleManager = null;
-	
+	private Coordinator coordinator = this;
 	
 	public Coordinator(Configuration config, Goban goban, IStateGame stateGame ) {
 		this.config = config;
 		this.goban = goban;
 		this.stateGame = stateGame;
-		ruleManager = Factory.getRuleManager(stateGame);
+		ruleManager = Factory.getRuleManager(coordinator);
 	}
 
 	
@@ -108,5 +108,10 @@ public class Coordinator {
 
 	public RuleManager getRuleManager() {
 		return ruleManager;
+	}
+
+
+	public IStateGame getStateGame() {
+		return stateGame;
 	}
 }
