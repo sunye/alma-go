@@ -7,9 +7,8 @@ public class Computer extends AbstractPlayer {
 	IPlayer player = this;
 	
 	
-	public Computer(String name, boolean color, IStrategy strategy) {
+	public Computer(String name, boolean color) {
 		super(name, color);
-		strategieGame = strategy;
 	}
 	
 	@Override
@@ -25,6 +24,11 @@ public class Computer extends AbstractPlayer {
 	@Override
 	public void setEnabled(boolean enable) {
 		this.enable = enable;
+	}
+
+	
+	public void setStrategieGame(IStrategy strategieGame) {
+		this.strategieGame = strategieGame;
 	}
 
 }

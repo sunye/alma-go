@@ -26,7 +26,7 @@ public class Factory {
 	}
 	
 	
-	public static IStrategy getStrategy(IStateGame stateGame) {
-		return new AlphaBeta(stateGame);
+	public static IStrategy getStrategy(Coordinator coordinator, IPlayer computer) {
+		return new AlphaBeta(coordinator, computer);
 	}
 }
