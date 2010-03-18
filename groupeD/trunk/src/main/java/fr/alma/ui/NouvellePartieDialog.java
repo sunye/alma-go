@@ -14,6 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 
 import fr.alma.atarigo.Joueur;
 import fr.alma.atarigo.JoueurHumain;
@@ -34,20 +37,23 @@ public class NouvellePartieDialog extends JDialog {
 	public NouvellePartieDialog(JFrame parent, String title, boolean modal,MonApplication monApp){
 		super(parent, title, modal);
 		this.monApp = monApp;
-		this.setSize(250, 220);
+		this.setSize(250, 280);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.initComponent();
 	}
-	
+	JPanel jpan0 = new JPanel();
 	JPanel jpan1 = new JPanel();
-	GridLayout gridLayout1 = new GridLayout(3, 2, 5, 5);;
+	GridLayout gridLayout1 = new GridLayout(4, 2);
+	JLabel label_prise = new JLabel("Prises min");
 	JLabel label_noir = new JLabel("NOIR",JLabel.CENTER);
 	JLabel label_blanc = new JLabel("BLANC",JLabel.CENTER);
 	JComboBox combo1 = new JComboBox();
 	JComboBox combo2 = new JComboBox();
 	JButton bouton = new JButton("Go !");
     JButton bouton2 = new JButton("Quitter");
+    SpinnerNumberModel model1 = new SpinnerNumberModel(1,1,10,1);
+    JSpinner spinner1 = new JSpinner(model1);
 
 	/**
 	 * initialise les différents composants de la boite de dialogue
@@ -65,6 +71,8 @@ public class NouvellePartieDialog extends JDialog {
 		combo1.addItem("Ordinateur");
         combo2.addItem("Humain");
         combo2.addItem("Ordinateur");
+        jpan1.add(label_prise);
+        jpan1.add(spinner1);
 		jpan1.add(label_noir);
 		jpan1.add(label_blanc);
 		jpan1.add(combo1);
@@ -141,7 +149,7 @@ public class NouvellePartieDialog extends JDialog {
     	else{
     		joueur2 = new JoueurIA(Pion.BLANC,"obi");
     	}
-    	monApp.demarrer(joueur1,joueur2);
+    	monApp.demarrer(joueur1,joueur2,model1.getNumber().intValue());
     	setVisible(false);
     	
     }

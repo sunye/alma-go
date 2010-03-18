@@ -118,5 +118,17 @@ public class ListeGroupes implements Cloneable{
  		groupe1.linkedPions.addAll(groupe2.linkedPions);
  		return groupe1;
  	}
+ 	
+ 	public boolean estVide(){
+ 		return listeG.size()==0;
+ 	}
+ 	
+ 	public int nb_pions(){
+ 		int nb = 0;
+ 		for(Groupe current : listeG){
+ 			nb += current.linkedPions.size();
+ 		}
+ 		return nb;
+ 	}
 	
 }

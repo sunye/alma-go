@@ -28,7 +28,10 @@ public class AtariGo {
  /**
   * Liste des groupes de pierres de go
   */
- private ListeGroupes listeG; 
+ private ListeGroupes listeG;
+ public int listeNoirsPris;
+ public int listeBlancsPris;
+ public int nb_challenge;
  
  public Joueur joueurEnCours;
  
@@ -52,11 +55,23 @@ public class AtariGo {
 	//formation d'une nouvelle liste comprenant un nouveau groupe formé
 	ListeGroupes nouvelleLG = listeG.calculerGroupes(plateau,position,joueur);
 	//test de la prise sur le nouveau groupe
+	ListeGroupes listepris = plateau.estGagnant(position,nouvelleLG);
 	if(plateau.estPris(nouvelleLG.getGroupe(position))){
-		if (plateau.estGagnant(position,nouvelleLG)) {
+		if (!listepris.estVide()) {
 			nbCoups++;
+			if(joueur==Pion.BLANC){
+				listeNoirsPris += listepris.nb_pions();
+				if(listeNoirsPris>=nb_challenge){
+					return Coup.GAGNANT;
+				}
+			}
+			else{
+				listeBlancsPris += listepris.nb_pions();
+				if(listeBlancsPris>=nb_challenge){
+					return Coup.GAGNANT;
+				}
+			}
 			System.out.println(joueur.toString()+"a gagné");
-			return Coup.GAGNANT;
 		}
 		System.out.println("est pris !!");
 		System.out.println("affichage de listeG");
@@ -67,9 +82,22 @@ public class AtariGo {
 	//coup valide, on garde le plateau et on recopie la nouvelle liste de groupes sur l'ancienne
 	nbCoups++;
 	listeG = nouvelleLG;
-	if (plateau.estGagnant(position,listeG)) {
+	listepris = plateau.estGagnant(position,listeG);
+	if (!listepris.estVide()) {
+		if(joueur==Pion.BLANC){
+			listeNoirsPris += listepris.nb_pions();
+			if(listeNoirsPris>=nb_challenge){
+				return Coup.GAGNANT;
+			}
+		}
+		else{
+			listeBlancsPris += listepris.nb_pions();
+			if(listeBlancsPris>=nb_challenge){
+				return Coup.GAGNANT;
+			}
+		}
 		System.out.println(joueur.toString()+"a gagné");
-		return Coup.GAGNANT;
+		//return Coup.GAGNANT;
 	}
 	return Coup.NEUTRE;
  }
@@ -86,6 +114,9 @@ public class AtariGo {
 	listeG = new ListeGroupes();
 	fini = false;
 	joueurEnCours=joueur1;
+	listeNoirsPris=0;
+	listeBlancsPris=0;
+	nb_challenge = 1;
  }
  /**
   * Constructeur logique
@@ -104,6 +135,9 @@ public class AtariGo {
 		joueur1.couleur=Pion.NOIR;
 		this.joueur2=joueur2;
 		joueur2.couleur=Pion.BLANC;
+		listeNoirsPris=0;
+		listeBlancsPris=0;
+		nb_challenge = 1;
 	 }
 
  /**
@@ -142,6 +176,8 @@ public class AtariGo {
  public void nouvellePartie() {
 	plateau.nouvellePartie();
 	fini = false;
+	listeNoirsPris=0;
+	listeBlancsPris=0;
  }
 
 /**
