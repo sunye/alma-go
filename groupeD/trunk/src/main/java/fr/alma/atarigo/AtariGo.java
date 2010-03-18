@@ -43,7 +43,7 @@ public class AtariGo {
   */
  public Coup jouerCoup(Pion joueur, Position position) {
 	// ces conditions n'ont pas besoin de changer l'état du plateau pour savoir si le placement est possible
-	if (! plateau.estValide(position) || plateau.lireCase(position) != Pion.VIDE || ! plateau.estSuicide(position,joueur)) {
+	if (! plateau.estValide(position) || plateau.lireCase(position) != Pion.VIDE ) {
 		System.out.println("coup invalide");
 	    return Coup.INVALIDE;
 	}
