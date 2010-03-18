@@ -122,9 +122,10 @@ class MonApplication extends JFrame {
   * @param joueur2 le type de joueur humain ou IA
   * @throws InterruptedException
   */
- public void demarrer(Joueur joueur1, Joueur joueur2) throws InterruptedException{
+ public void demarrer(Joueur joueur1, Joueur joueur2,int nb_challenge) throws InterruptedException{
 	 atarigo.fini=true;
 	 atarigo = new AtariGo(9,9,joueur1,joueur2);
+	 atarigo.nb_challenge=nb_challenge;
 	 uiplateau.nouvellePartie();
 	 System.out.println("nouvelle partie");
  }

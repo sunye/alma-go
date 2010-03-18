@@ -171,19 +171,20 @@ public class Plateau {
   * @param lg liste de groupes testée
   * @return si le coup est gagnant ou non
   */
- public boolean estGagnant(Position position,ListeGroupes lg){
-	 boolean estGagnant = false;
+ public ListeGroupes estGagnant(Position position,ListeGroupes lg){
+	 ListeGroupes listeres= new ListeGroupes();
 	 for (Direction maDirection : Direction.values()) {
 		 if(estValide(position.voisine(maDirection))){
 			 if (lireCase(position.voisine(maDirection)) == lireCase(position).oppose()){
 				 if(estPris(lg.getGroupe(position.voisine(maDirection)))){
-					 estGagnant = true;
+					 //estGagnant = true;
+					 listeres.listeG.add(lg.getGroupe(position.voisine(maDirection)));
 				 }
 			 }
 		 }
 	 }
 	 
-	 return estGagnant;
+	 return listeres;
  }
  
  /**
