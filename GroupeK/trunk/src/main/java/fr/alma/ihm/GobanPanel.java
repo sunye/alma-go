@@ -1,4 +1,4 @@
-package fr.alma.ihm;
+package ihm;
 
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -8,9 +8,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class GobanPanel extends JPanel{
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private ImageIcon goban;
@@ -24,62 +24,62 @@ public class GobanPanel extends JPanel{
 	//coordonnées propres au Goban
 	private int gobanX;
 	private int gobanY;
-
+	
 	public GobanPanel() {
 		super();
-
+		
 		/**
          * Creation de l'image du goban grâce à l'URL donné
          */
-
+		
 		java.net.URL gobanURL = Fenetre.class.getResource("images/Goban.png");
 		//vérification de l'existence de l'image
 		if (gobanURL != null) {
 		    goban = new ImageIcon(gobanURL);
 		}
-
+		
 		colSize=goban.getIconWidth()/9;
 		rowSize=goban.getIconHeight()/9;
-
+		
 		/**
          * Creation de l'image du pion blanc
          */
-
+		
 		java.net.URL pionB_URL = Fenetre.class.getResource("images/Pion_blanc.png");
 		//vérification de l'existence de l'image
 		if (pionB_URL != null) {
 		    pionB = new ImageIcon(pionB_URL);
 		}
-
+		
 		/**
          * Creation de l'image du pion noir
          */
-
+		
 		java.net.URL pionN_URL = Fenetre.class.getResource("images/Pion_noir.png");
 		//vérification de l'existence de l'image
 		if (pionN_URL != null) {
 		    pionN = new ImageIcon(pionN_URL);
 		}
-
-
+		
+		
 		/**
          * Creation de la matrice de pions
          */
-
+		
 		goban_tab = new GoBan();
 		goban_tab.init();
-
-
+		
+		
 		addMouseListener(new MouseAdapter() {
 	        public void mouseClicked(MouseEvent e) {
 		          processMouseClicked(e);
 		        }
 		      });
 		repaint();
-
-
+		
+		
 	}
-
+	
 	private void processMouseClicked(MouseEvent e) {
 	    int x, y;
 
@@ -93,7 +93,7 @@ public class GobanPanel extends JPanel{
 	    goban_tab.ajouterPion(gobanX, gobanY);
 	    repaint();
 	}
-
+	
 	public void paintComponent(Graphics g){
         super.paintComponent(g);
         //Affichage du goban
@@ -116,12 +116,12 @@ public class GobanPanel extends JPanel{
         }
         //System.out.println("");
 	}
-
+	
 	public void update(Graphics g) {
 	     paintComponent(g);
 	}
 }
-
-
-
+	
+	
+	
 

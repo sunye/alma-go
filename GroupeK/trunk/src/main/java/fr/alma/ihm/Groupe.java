@@ -1,4 +1,4 @@
-package fr.alma.ihm;
+package ihm;
 
 import java.util.Vector;
 

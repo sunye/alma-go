@@ -1,9 +1,9 @@
-package fr.alma.ihm;
+package ihm;
 
 public enum CouleurPion {
 
 	NOIR,
 	BLANC,
 	EMPTY
-
+	
 }
