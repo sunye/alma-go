@@ -2,9 +2,22 @@ package fr.alma.atarigo.utils.exceptions;
 
 public class BadPlaceException extends Exception {
 
-	public BadPlaceException(String string) {
-		// TODO Auto-generated constructor stub
-	}
+    public BadPlaceException(Throwable cause) {
+        super(cause);
+    }
+
+    public BadPlaceException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public BadPlaceException(String message) {
+        super(message);
+    }
+
+    public BadPlaceException() {
+    }
+
+	
 
 	/**
 	 * 

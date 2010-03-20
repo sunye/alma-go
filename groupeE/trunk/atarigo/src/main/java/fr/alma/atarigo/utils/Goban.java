@@ -7,22 +7,29 @@ import fr.alma.atarigo.utils.exceptions.BadPlaceException;
 import fr.alma.atarigo.utils.tree.Node;
 import fr.alma.atarigo.utils.tree.Tree;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.List;
 
+/**
+ * Describes the Goban, and more than that, the whole game.
+ * We probably should split it in a "low-level" Goban class and a Game one.
+ *
+ * @author judu
+ */
 public class Goban {
 
+    //* Size of the goban. For now, it's static.
     private final static int taille = 9;
-    //public static enum  PionVal{rien, noir, blanc};
-    private static ArrayList<Groupe> groupes;
     // 0 = rien, noir = 1, blanc = 2
     PionVal goban[][];
-
+    // History of the game : contains all the moves since the beginning.
     private Tree<PlayMove> history;
+    // Last move played (faster backtracking).
     private Node<PlayMove> lastMove;
 
     public static int getTaille() {
         return taille;
     }
-
 
     /**
      * The constructor basically initialize the game.
@@ -41,11 +48,7 @@ public class Goban {
                 goban[i][j] = PionVal.RIEN;
             }
         }
-
-        groupes = new ArrayList<Groupe>();
     }
-
-
 
     /*
      * Checks if the coordinates fit in the game board.
@@ -68,25 +71,40 @@ public class Goban {
         int realCol = column;
         if (bonneCoords(realLigne, realCol)) {
             if (goban[realLigne][realCol] == PionVal.RIEN) {
-                if(!isSuicide(line,column,color)){
+                if (!isSuicide(line, column, color)) {
                     /*TODO: check stones taken + add PlayMove Node;
                      * + Find how to manage group history (Maybe in PlayMove) spacy, but faster.
                      */
 
-                    setCase(realLigne, realCol, color);
-
                     Pion current = new Pion(color, realLigne, realCol);
 
+                    Modif modif = new Modif(realLigne, realCol, goban[realLigne][realCol], color);
+                    PlayMove currentMove = new PlayMove();
+                    currentMove.addModif(modif);
+
+                    //prepare the group modifications
+                    currentMove.setGroupes((ArrayList<Groupe>) lastMove.getData().getGroupes().clone());
+
+                    startMove(currentMove);
+
+                    //Let's modify the goban !
+                    setCase(realLigne, realCol, color);
+
+                    //Calculates the new groups
                     calculateGroups(current);
+
+                    //Removes taken stones, and update the currentMove with the Modifs.
+                    calculateTaken(current);
+
+                } else {
+                    throw new BadPlaceException("This move is a suicide, I cannot let you do that !");
                 }
-                
-                
 
             } else {
-                throw new BadPlaceException("Il y a déjà une pierre ici");
+                throw new BadPlaceException("Already a stone here");
             }
         } else {
-            throw new BadPlaceException("Il est préférable de jouer sur le plateau");
+            throw new BadPlaceException("It's actually better to play ON the board…");
         }
     }
 
@@ -94,36 +112,23 @@ public class Goban {
      * Calculates the new groups, after putting the last stone
      * @param last The last stone played
      */
-    private void calculateGroups(Pion last){
+    private void calculateGroups(Pion last) {
         Groupe lastAdded = new Groupe(last.getCouleur());
-                try {
-                    lastAdded.addPion(last);
-                } catch (BadCouleurException e) {
-                }
+        try {
+            lastAdded.addPion(last);
+        } catch (BadCouleurException e) {
+        }
 
-                HashSet<Groupe> groups = getVoisins(last);
+        HashSet<Groupe> groups = getVoisins(last);
+        List<Groupe> groupes = lastMove.getData().getGroupes();
 
-                for (Groupe groupe : groups) {
-                    if (groupe.getCouleur() == last.getCouleur()) {
-                        lastAdded.addAll(groupe);
-                        groupes.remove(groupe);
-                    }
-                }
-                groupes.add(lastAdded);
-    }
-
-    /**
-     * Retourne le premier (normalement le seul) groupe de pierres contenant la pierre passée en paramètre.
-     * @param pion
-     * @return
-     */
-    public Groupe getGroupeContenant(Pion pion) {
-        for (Groupe groupe : groupes) {
-            if (groupe.contains(pion)) {
-                return groupe;
+        for (Groupe groupe : groups) {
+            if (groupe.getCouleur() == last.getCouleur()) {
+                lastAdded.addAll(groupe);
+                groupes.remove(groupe);
             }
         }
-        return null;
+        groupes.add(lastAdded);
     }
 
     /**
@@ -143,7 +148,7 @@ public class Goban {
         if (bonneCoords(ligne, colonne)) {
             return goban[ligne][colonne];
         } else {
-            throw new Exception("Case en dehors du goban");
+            throw new Exception("This spot is not on the board");
         }
     }
 
@@ -152,52 +157,47 @@ public class Goban {
         HashSet<Groupe> groups = new HashSet<Groupe>();
 
         if (bonneCoords(pion.getLigne() + 1, pion.getColonne()) && (goban[pion.getLigne() + 1][pion.getColonne()] != PionVal.RIEN)) {
-            groups.add(getGroupeContenant(new Pion(goban[pion.getLigne() + 1][pion.getColonne()], pion.getLigne() + 1, pion.getColonne())));
+            groups.add(lastMove.getData().getGroupeContaining(new Pion(goban[pion.getLigne() + 1][pion.getColonne()], pion.getLigne() + 1, pion.getColonne())));
         }
 
         if (bonneCoords(pion.getLigne() - 1, pion.getColonne()) && (goban[pion.getLigne() - 1][pion.getColonne()] != PionVal.RIEN)) {
-            groups.add(getGroupeContenant(new Pion(goban[pion.getLigne() - 1][pion.getColonne()], pion.getLigne() - 1, pion.getColonne())));
+            groups.add(lastMove.getData().getGroupeContaining(new Pion(goban[pion.getLigne() - 1][pion.getColonne()], pion.getLigne() - 1, pion.getColonne())));
         }
 
         if (bonneCoords(pion.getLigne(), pion.getColonne() + 1) && (goban[pion.getLigne()][pion.getColonne() + 1] != PionVal.RIEN)) {
-            groups.add(getGroupeContenant(new Pion(goban[pion.getLigne()][pion.getColonne() + 1], pion.getLigne(), pion.getColonne() + 1)));
+            groups.add(lastMove.getData().getGroupeContaining(new Pion(goban[pion.getLigne()][pion.getColonne() + 1], pion.getLigne(), pion.getColonne() + 1)));
         }
 
         if (bonneCoords(pion.getLigne(), pion.getColonne() - 1) && (goban[pion.getLigne()][pion.getColonne() - 1] != PionVal.RIEN)) {
-            groups.add(getGroupeContenant(new Pion(goban[pion.getLigne()][pion.getColonne() - 1], pion.getLigne(), pion.getColonne() - 1)));
+            groups.add(lastMove.getData().getGroupeContaining(new Pion(goban[pion.getLigne()][pion.getColonne() - 1], pion.getLigne(), pion.getColonne() - 1)));
         }
 
         return groups;
-    }
-
-    public ArrayList<Groupe> getGroupes() {
-        return groupes;
     }
 
     public int libertesPion(int ligne, int col) {
         int libertes = 4;
         if (bonneCoords(ligne + 1, col) && (goban[ligne + 1][col] != PionVal.RIEN)) {
             --libertes;
-        } else if(!bonneCoords(ligne + 1, col)){
+        } else if (!bonneCoords(ligne + 1, col)) {
             --libertes;
         }
-
 
         if (bonneCoords(ligne - 1, col) && (goban[ligne - 1][col] != PionVal.RIEN)) {
             --libertes;
-        } else if(!bonneCoords(ligne - 1, col)){
+        } else if (!bonneCoords(ligne - 1, col)) {
             --libertes;
         }
 
-        if (bonneCoords(ligne, col+1) && (goban[ligne][col+1] != PionVal.RIEN)) {
+        if (bonneCoords(ligne, col + 1) && (goban[ligne][col + 1] != PionVal.RIEN)) {
             --libertes;
-        } else if(!bonneCoords(ligne, col+1)){
+        } else if (!bonneCoords(ligne, col + 1)) {
             --libertes;
         }
 
-        if (bonneCoords(ligne, col-1) && (goban[ligne][col-1] != PionVal.RIEN)) {
+        if (bonneCoords(ligne, col - 1) && (goban[ligne][col - 1] != PionVal.RIEN)) {
             --libertes;
-        } else if(!bonneCoords(ligne, col-1)){
+        } else if (!bonneCoords(ligne, col - 1)) {
             --libertes;
         }
 
@@ -208,5 +208,35 @@ public class Goban {
     private boolean isSuicide(int line, int column, PionVal pionVal) {
         //TODO: Check if the stone fills the last liberty of its group (=> suicide), except if it also fills the last liberty of a ennemy group.
         return true;
+    }
+
+    private void calculateTaken(Pion current) {
+        Set<Groupe> voisins = getVoisins(current);
+        for (Groupe groupe : voisins) {
+            if (!groupe.getCouleur().equals(current.getCouleur())) {
+                if (groupe.getLibertes() == 1) {
+                    // Dans ce cas là, on a bouché la dernière libertée,
+                    //il faut donc supprimer les pierres du goban, et le groupe du pm.
+                    removeGroupe(groupe);
+                }
+            }
+        }
+    }
+
+    private void removeGroupe(Groupe groupe) {
+        
+        for (Pion pion : groupe.getPions()) {
+            // Don't forget to register the modification.
+            lastMove.getData().addModif(new Modif(pion.getLigne(), pion.getColonne(), pion.getCouleur(), PionVal.RIEN));
+            setCase(pion.getLigne(), pion.getColonne(), PionVal.RIEN);
+        }
+
+        lastMove.getData().getGroupes().remove(groupe);
+    }
+
+    private void startMove(PlayMove currentMove) {
+        Node<PlayMove> newMove = new Node<PlayMove>(currentMove);
+        lastMove.addChild(newMove);
+        lastMove = newMove;
     }
 }
