@@ -95,6 +95,14 @@ public class Groupe {
     public void addOeil(Pion oeil) {
         yeux.add(oeil);
     }
+
+    public int getLibertes() {
+        return libertes;
+    }
+
+    Iterable<Pion> getPions() {
+        return pions;
+    }
 	
 	
 	

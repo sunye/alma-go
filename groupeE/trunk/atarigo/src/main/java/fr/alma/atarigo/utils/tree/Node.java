@@ -44,8 +44,6 @@ public class Node<T> {
     }
 
 
-    
-
     /**
      * Return the children of Node<T>. The Tree<T> is represented by a single
      * root Node<T> whose children are represented by a List<Node<T>>. Each of
@@ -91,23 +89,6 @@ public class Node<T> {
         }
         children.add(child);
         child.setFather(this);
-    }
-
-    /**
-     * Inserts a Node<T> at the specified position in the child list. Will     * throw an ArrayIndexOutOfBoundsException if the index does not exist.
-     * @param index the position to insert at.
-     * @param child the Node<T> object to insert.
-     * @throws IndexOutOfBoundsException if thrown.
-     */
-    public void insertChildAt(int index, Node<T> child) throws IndexOutOfBoundsException {
-        if (index == getNumberOfChildren()) {
-            // this is really an append
-            addChild(child);
-            return;
-        } else {
-            children.get(index); //just to throw the exception, and stop here
-            children.add(index, child);
-        }
     }
 
     /**

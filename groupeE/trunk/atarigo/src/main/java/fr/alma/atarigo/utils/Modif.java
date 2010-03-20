@@ -6,7 +6,7 @@ import fr.alma.atarigo.utils.exceptions.BadGobanStateException;
  * This Class defines a modification on the Goban. A modification is a 4-uplet, defining coordinates (line and column), and the before and after values
  * @author judu
  */
-class Modif {
+public class Modif {
 
     private int line;
     private int column;
@@ -41,7 +41,11 @@ class Modif {
     }
 
     public void revert(PionVal[][] goban) throws BadGobanStateException{
-        
+        if(goban[line][column] != this.after){
+            throw new BadGobanStateException("Cannot apply this modification to the goban, since the after state is not right.");
+        } else {
+            goban[line][column] = this.before;
+        }
     }
     
     void apply(PionVal[][] goban) throws BadGobanStateException{

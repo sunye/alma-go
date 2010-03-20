@@ -63,14 +63,12 @@ public class Pion {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return "Pion(x:"+colonne+",y:"+ligne+",c:"+couleur+")";
+            return "Pion(x:"+colonne+",y:"+ligne+",c:"+couleur+")";
 	}
 
 
 	public PionVal getCouleur() {
-		// TODO Auto-generated method stub
-		return couleur;
+            return couleur;
 	}
 	
 	
