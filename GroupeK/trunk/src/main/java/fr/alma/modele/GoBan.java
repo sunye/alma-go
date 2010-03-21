@@ -448,5 +448,18 @@ public class GoBan {
 				goban[i][k] = new Pion(CouleurPion.EMPTY, 0);
 			}
 	}
+	
+	//TODO: extraire méthode qui sont liées au groupe histoire que la classe ici ne représente finalement
+	// que le go ban et pas plus.
+	
+	/*TODO
+	 * 
+	 * Methode pour détecter les yeux
+	 * Calcul du nombre d'oeil d'un groupe.
+	 * 
+	 * 
+	 */
+	 
+	
 
 }
