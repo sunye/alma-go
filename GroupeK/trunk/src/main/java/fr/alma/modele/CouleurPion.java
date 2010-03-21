@@ -1,4 +1,4 @@
-package ihm;
+package fr.alma.modele;
 
 public enum CouleurPion {
 

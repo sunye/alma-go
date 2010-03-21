@@ -1,7 +1,8 @@
-package ihm;
+package fr.alma.modele;
 
 import java.util.ArrayList;
 import java.util.Vector;
+
 
 public class Pion {
 

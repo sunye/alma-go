@@ -1,4 +1,4 @@
-package ihm;
+package fr.alma.ihm;
 
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -6,6 +6,8 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
+import fr.alma.modele.GoBan;
 
 public class GobanPanel extends JPanel{
 	

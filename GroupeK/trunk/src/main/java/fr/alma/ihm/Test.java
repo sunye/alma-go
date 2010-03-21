@@ -1,4 +1,4 @@
-package ihm;
+package fr.alma.ihm;
 
 import java.awt.Graphics;
 
