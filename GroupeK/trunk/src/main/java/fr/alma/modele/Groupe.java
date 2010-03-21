@@ -1,6 +1,7 @@
-package ihm;
+package fr.alma.modele;
 
 import java.util.Vector;
+
 
 public class Groupe {
 
