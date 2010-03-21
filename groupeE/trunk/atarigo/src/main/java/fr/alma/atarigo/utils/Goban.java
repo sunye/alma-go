@@ -57,7 +57,7 @@ public class Goban {
             goban[ligne][colonne] = pion;
     }
 
-    public PionVal getCase(int ligne, int colonne) throws BadPlaceException {
+    public PionVal getCase(int ligne, int colonne) {
             return goban[ligne][colonne];
     }
 
@@ -88,19 +88,19 @@ public class Goban {
         ArrayList<Pion> pions = new ArrayList<Pion>(4);
 
         if (bonneCoords(pion.getLigne() + 1, pion.getColonne()) && (goban[pion.getLigne() + 1][pion.getColonne()] == PionVal.RIEN)) {
-            pions.add(new Pion(goban[pion.getLigne() + 1][pion.getColonne()], pion.getLigne() + 1, pion.getColonne()));
+            pions.add(new Pion(PionVal.RIEN, pion.getLigne() + 1, pion.getColonne()));
         }
 
         if (bonneCoords(pion.getLigne() - 1, pion.getColonne()) && (goban[pion.getLigne() - 1][pion.getColonne()] == PionVal.RIEN)) {
-            pions.add(new Pion(goban[pion.getLigne() - 1][pion.getColonne()], pion.getLigne() - 1, pion.getColonne()));
+            pions.add(new Pion(PionVal.RIEN, pion.getLigne() - 1, pion.getColonne()));
         }
 
         if (bonneCoords(pion.getLigne(), pion.getColonne() + 1) && (goban[pion.getLigne()][pion.getColonne() + 1] == PionVal.RIEN)) {
-            pions.add(new Pion(goban[pion.getLigne()][pion.getColonne() + 1], pion.getLigne(), pion.getColonne() + 1));
+            pions.add(new Pion(PionVal.RIEN, pion.getLigne(), pion.getColonne() + 1));
         }
 
         if (bonneCoords(pion.getLigne(), pion.getColonne() - 1) && (goban[pion.getLigne()][pion.getColonne() - 1] == PionVal.RIEN)) {
-            pions.add(new Pion(goban[pion.getLigne()][pion.getColonne() - 1], pion.getLigne(), pion.getColonne() - 1));
+            pions.add(new Pion(PionVal.RIEN, pion.getLigne(), pion.getColonne() - 1));
         }
 
         return pions;
@@ -108,27 +108,27 @@ public class Goban {
 
     public int libertesPion(int ligne, int col) {
         int libertes = 4;
-        if (bonneCoords(ligne + 1, col) && (goban[ligne + 1][col] != PionVal.RIEN)) {
+        if (!bonneCoords(ligne + 1, col)){
             --libertes;
-        } else if (!bonneCoords(ligne + 1, col)) {
-            --libertes;
-        }
-
-        if (bonneCoords(ligne - 1, col) && (goban[ligne - 1][col] != PionVal.RIEN)) {
-            --libertes;
-        } else if (!bonneCoords(ligne - 1, col)) {
+        } else if(goban[ligne + 1][col] != PionVal.RIEN) {
             --libertes;
         }
 
-        if (bonneCoords(ligne, col + 1) && (goban[ligne][col + 1] != PionVal.RIEN)) {
+        if (!bonneCoords(ligne - 1, col))  {
             --libertes;
-        } else if (!bonneCoords(ligne, col + 1)) {
+        } else if ((goban[ligne - 1][col] != PionVal.RIEN)) {
             --libertes;
         }
 
-        if (bonneCoords(ligne, col - 1) && (goban[ligne][col - 1] != PionVal.RIEN)) {
+        if (!bonneCoords(ligne, col + 1))  {
             --libertes;
-        } else if (!bonneCoords(ligne, col - 1)) {
+        } else if (goban[ligne][col + 1] != PionVal.RIEN) {
+            --libertes;
+        }
+
+        if (!bonneCoords(ligne, col - 1)) {
+            --libertes;
+        } else if (goban[ligne][col - 1] != PionVal.RIEN) {
             --libertes;
         }
         return libertes;

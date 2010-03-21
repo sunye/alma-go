@@ -19,14 +19,14 @@ public class EvalFunc {
                     if (goban.getCase(ligne, col) == PionVal.RIEN) {
                         if (goban.libertesPion(ligne, col) == 0) {
                             Pion oeil = new Pion(PionVal.RIEN,ligne,col);
-                            HashSet<Groupe> groupes = goban.getVoisins(oeil);
+                            /*HashSet<Groupe> groupes = goban.getVoisins(oeil);
                             if(groupes.size() == 1){
                                 Iterator<Groupe> groupeIt = groupes.iterator();
                                 while(groupeIt.hasNext()){
                                     Groupe gr = groupeIt.next();
                                     gr.addOeil(oeil);
                                 }
-                            }
+                            }*/
                         }
                     }
                 } catch (Exception ex) {
