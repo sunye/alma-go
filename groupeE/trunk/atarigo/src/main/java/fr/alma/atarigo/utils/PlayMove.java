@@ -44,11 +44,19 @@ public class PlayMove {
         diff.add(modif);
     }
 
-    public void Apply(PionVal[][] goban) throws BadGobanStateException {
+    public void apply(PionVal[][] goban) throws BadGobanStateException {
         Iterator<Modif> iterator = diff.iterator();
         while(iterator.hasNext()){
             Modif curM = iterator.next();
             curM.apply(goban);
+        }
+    }
+
+    public void revert(PionVal[][] goban) throws BadGobanStateException{
+        Iterator<Modif> iterator = diff.iterator();
+        while(iterator.hasNext()){
+            Modif curM = iterator.next();
+            curM.revert(goban);
         }
     }
 
