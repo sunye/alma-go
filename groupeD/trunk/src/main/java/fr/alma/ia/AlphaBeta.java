@@ -19,7 +19,9 @@ public class AlphaBeta {
 
 
 	public static PlateauValue Valeur(int niveau, Arbre edj, int ExtremumCourant, Pion pion){
-	
+		if(niveau<niveau_max)
+			edj.genererFils(pion);
+		
 		if(niveau<niveau_max && !edj.estFeuille()){
 		//appel récursif
 			if(niveau%2==0 || niveau==0){
@@ -39,6 +41,7 @@ public class AlphaBeta {
 		PlateauValue max = new PlateauValue(-100000);
 		int i = 0;
 		while(max.evaluation_<ExtremumCourant && edj.getFils().size()>i){
+			nb_noeuds++;
 			PlateauValue V = Valeur(niveau+1,edj.getFils().get(i),max.evaluation_,pion.oppose());
 			if(V.evaluation_>max.evaluation_){
 				max.clone(V);
@@ -53,6 +56,7 @@ public class AlphaBeta {
 		PlateauValue min = new PlateauValue(100000);
 		int i = 0;
 		while(min.evaluation_>ExtremumCourant && edj.getFils().size()>i){
+			nb_noeuds++;
 			PlateauValue V = Valeur(niveau+1,edj.getFils().get(i),min.evaluation_,pion.oppose());
 			if(V.evaluation_<min.evaluation_){
 				min.clone(V);
