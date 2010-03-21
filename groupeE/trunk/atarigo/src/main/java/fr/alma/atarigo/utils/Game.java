@@ -85,13 +85,30 @@ public class Game {
 
     private boolean isSuicide(int line, int column, PionVal pionVal) {
         //TODO: Check if the stone fills the last liberty of its group (=> suicide), except if it also fills the last liberty of a ennemy group.
-        return true;
+        if(goban.libertesPion(line, column) == 0){
+            // No liberty ? Let's check if we are killing a ennemy group.
+            Set<Groupe> groupes = getSurroundingGroups(new Pion(pionVal, line, column));
+            for(Groupe gr:groupes){
+                if(gr.getCouleur() != pionVal){
+                    // If ennemy, check if it has one liberty left
+                    if (gr.getLibertes() == 1){
+                        return false;
+                    }
+                } else if (gr.getLibertes() > 1) {
+                    // If one of the surrounding groups has more than 1 liberty left, it is no suicide.
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void startMove(PlayMove currentMove) {
 
         //prepare the group modifications
-        currentMove.setGroupes((ArrayList<Groupe>) lastMove.getData().getGroupes().clone());
+        currentMove.setGroupes((ArrayList<Groupe>) getCurrentMove().getGroupes().clone());
 
         Node<PlayMove> newMove = new Node<PlayMove>(currentMove);
         lastMove.addChild(newMove);
@@ -101,7 +118,7 @@ public class Game {
     private HashSet<Groupe> getGroupsFromPions(List<Pion> pions) {
         HashSet<Groupe> groups = new HashSet<Groupe>(4);
         for (Pion pi : pions) {
-            groups.add(lastMove.getData().getGroupeContaining(pi));
+            groups.add(getCurrentMove().getGroupeContaining(pi));
         }
         return groups;
     }
@@ -126,7 +143,7 @@ public class Game {
         } catch (BadCouleurException e) {
         }
 
-        List<Groupe> groupes = lastMove.getData().getGroupes();
+        List<Groupe> groupes = getCurrentMove().getGroupes();
 
         Set<Groupe> groups = getSurroundingGroups(last);
         Set<Groupe> others = new HashSet<Groupe>(4);
@@ -174,7 +191,7 @@ public class Game {
 
         for (Pion pion : groupe.getPions()) {
             // Don't forget to register the modification.
-            lastMove.getData().addModif(new Modif(pion.getLigne(), pion.getColonne(), pion.getCouleur(), PionVal.RIEN));
+            getCurrentMove().addModif(new Modif(pion.getLigne(), pion.getColonne(), pion.getCouleur(), PionVal.RIEN));
             goban.setCase(pion.getLigne(), pion.getColonne(), PionVal.RIEN);
         }
 
@@ -193,6 +210,18 @@ public class Game {
     private void updateLiberties(Set<Groupe> ennemies) {
         for (Groupe groupe : ennemies) {
             groupe.setLibertes(getGroupLiberties(groupe).size());
+        }
+    }
+
+    private PlayMove getCurrentMove(){
+        return lastMove.getData();
+    }
+
+    public Pion getPion(int line, int column) throws BadPlaceException {
+        if(goban.bonneCoords(line, column)){
+            return new Pion(goban.getCase(line, column),line,column);
+        } else {
+            throw new BadPlaceException("Coordinates out of the board");
         }
     }
 }
