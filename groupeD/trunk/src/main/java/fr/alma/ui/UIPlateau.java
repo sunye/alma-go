@@ -1,7 +1,9 @@
 package fr.alma.ui;
 
 import fr.alma.atarigo.AtariGo;
+import fr.alma.atarigo.Pion;
 import fr.alma.atarigo.Position;
+import fr.alma.ia.AlphaBeta;
 import fr.alma.ia.Arbre;
 import fr.alma.ia.MinMax;
 import fr.alma.ia.PlateauValue;
@@ -210,11 +212,11 @@ public class UIPlateau extends JPanel implements MouseListener,MouseMotionListen
 						stopper=true;
 							Arbre jeu = new Arbre(atariGo.plateau);
 							PlateauValue plv = new PlateauValue(0);
-							MinMax.init();
+							AlphaBeta.init(2);
 							
-							jeu.genererArbre(jeu, atariGo.joueurEnCours.couleur, 1);								
-							plv = MinMax.calculer(jeu,atariGo.joueurEnCours.couleur,0);	
+							plv = AlphaBeta.Valeur(0, jeu, 0,atariGo.joueurEnCours.couleur);	
 							atariGo.plateau=plv.plateau_;
+							System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.nb_noeuds);
 						//on sort de la boucle on joue le coup
 						/*switch (atariGo.jouerCoup(atariGo.joueurEnCours.couleur, meilleurCoup)) {
 					    case GAGNANT:
