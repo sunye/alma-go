@@ -2,7 +2,6 @@ package fr.alma.modele;
 
 import java.util.Vector;
 
-
 public class Groupe {
 
 	// couleur du groupe
@@ -25,18 +24,16 @@ public class Groupe {
 		libertes = new Vector<Pion>(pion.getListeLibertes());
 	}
 
-	/*Groupe(CouleurPion color, Vector<Pion> pions, Vector<Pion> libertes) {
-		     this.coul = color;
-		     this.pions = pions;
-		     this.libertes = libertes;
-		   }*/
-
-	public boolean hasNoLiberty() {
+	public boolean aucuneLibertes() {
 		return (libertes.isEmpty());
 	}
 
-	public int nbLiberties() {
+	public int nbLibertes() {
 		return libertes.size();
+	}
+
+	public int nbPions() {
+		return pions.size();
 	}
 
 	public CouleurPion getCoul() {
