@@ -91,6 +91,16 @@ public class Node<T> {
         child.setFather(this);
     }
 
+
+
+    public Node<T> getChildAt(int index){
+        if(index < children.size()){
+            return children.get(index);
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Remove the Node<T> element at index index of the List<Node<T>>.
      * @param index the index of the element to delete.

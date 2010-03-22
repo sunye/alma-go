@@ -83,7 +83,7 @@ public class Game {
 
     }
 
-    private boolean isSuicide(int line, int column, PionVal pionVal) {
+    public boolean isSuicide(int line, int column, PionVal pionVal) {
         //TODO: Check if the stone fills the last liberty of its group (=> suicide), except if it also fills the last liberty of a ennemy group.
         if(goban.libertesPion(line, column) == 0){
             // No liberty ? Let's check if we are killing a ennemy group.
@@ -195,7 +195,7 @@ public class Game {
             goban.setCase(pion.getLigne(), pion.getColonne(), PionVal.RIEN);
         }
 
-        lastMove.getData().getGroupes().remove(groupe);
+        getCurrentMove().getGroupes().remove(groupe);
     }
 
     private void calculateLiberties(Pion current) {
