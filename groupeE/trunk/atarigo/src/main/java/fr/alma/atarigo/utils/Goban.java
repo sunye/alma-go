@@ -2,7 +2,6 @@ package fr.alma.atarigo.utils;
 
 import java.util.ArrayList;
 
-import fr.alma.atarigo.utils.exceptions.BadPlaceException;
 import java.util.List;
 
 /**
