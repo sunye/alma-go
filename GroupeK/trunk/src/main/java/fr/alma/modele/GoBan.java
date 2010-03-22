@@ -4,7 +4,6 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 
-
 public class GoBan {
 
 	private Pion[][] goban;
@@ -23,45 +22,29 @@ public class GoBan {
 
 
 	public boolean ajouterPion(int position, int positiony){
-		//int nbLib;
-		//int prise;
-		//if (goban[position][positiony].getCouleur()==CouleurPion.EMPTY){
 		//Si le nombre est pair alors c'est au blanc de jouer
 		if (num%2==0){
-			//Vérification que le pion joué n'est pas en suicide
-			//nbLib=liberte(position,positiony,CouleurPion.NOIR);
-			//System.out.println(nbLib);
-			//if (nbLib!=0){
+			//On vérifie si le coup joué est légal avant de placer le pion sur le goban
 			if (estLegal(position, positiony, CouleurPion.BLANC)){
-				goban[position][positiony]= new Pion(CouleurPion.BLANC,num);
+				goban[position][positiony].setCouleur(CouleurPion.BLANC);
+				goban[position][positiony].setNumero(num);
+				goban[position][positiony].setListeLibertes();
 				apresJoue(position, positiony, CouleurPion.BLANC);
-				//Vérification si ce pion réalise une prise d'un pion noir
-				//prise(position,positiony,CouleurPion.NOIR);
 				nbBlanc++;
-				num++;}/*
-				}else{
-					System.out.println("Suicidaire!");
-				}*/
+				num++;
+			}
 
 		}else{
-			//Vérification que le pion joué n'est pas en suicide
-			//nbLib=liberte(position,positiony,CouleurPion.BLANC);
-			//System.out.println(nbLib);
-			//if (nbLib!=0){
+			//On vérifie si le coup joué est légal avant de placer le pion sur le goban
 			if (estLegal(position, positiony, CouleurPion.NOIR)){
-				goban[position][positiony]= new Pion(CouleurPion.NOIR,num);
+				goban[position][positiony].setCouleur(CouleurPion.NOIR);
+				goban[position][positiony].setNumero(num);
+				goban[position][positiony].setListeLibertes();
 				apresJoue(position, positiony, CouleurPion.NOIR);
-				//Vérification si ce pion réalise une prise d'un pion blanc
-				//prise(position,positiony,CouleurPion.BLANC);
 				nbNoir++;
-				num++;}/*
-				}else{
-					System.out.println("Suicidaire!");
-				}*/
-		}/*
-		}else{
-			System.out.println("T'as pas vu qu'il y avait déjà un pion connard!");
-		}*/
+				num++;
+			}
+		}
 		return true;
 	}
 
@@ -119,7 +102,7 @@ public class GoBan {
 
 	public boolean estLegal(int position, int positiony, CouleurPion coul) {
 
-
+		//Vérifie si un pion n'est pas déjà présent à cet endroit
 		if (goban[position][positiony].getCouleur() != CouleurPion.EMPTY){
 			System.out.println("T'as pas vu qu'il y avait déjà un pion connard!");
 			return false;
@@ -138,19 +121,24 @@ public class GoBan {
 		System.out.println("Remplissage des listes...");
 		visitVoisinsPion(position, positiony, coul, listVoisinsAmis, listVoisinsEnnemis);
 
-		// maj du groupe des amis
-		//System.out.println("maj du groupe...");
-		//majListeAmis(position, positiony, coul, listVoisinsAmis);
+
+		// vérification de capture
+		System.out.println("Vérif capture");
+		Enumeration<Groupe> ennemis = listVoisinsEnnemis.elements();
+		for (;ennemis.hasMoreElements();) {
+			if (ennemis.nextElement().getLibertes().size() <= 1)
+				System.out.println("Capture!");
+				return true;
+		}
+
 
 		// vérification du suicide
 		System.out.println("Vérif suicide");
 		int libertesGroupe = 0;
-		System.out.println(listVoisinsAmis.size());
 		Enumeration<Groupe> amis = listVoisinsAmis.elements();
 		for (;amis.hasMoreElements();) {
 				libertesGroupe += amis.nextElement().getLibertes().size();
 				libertesGroupe -= 1;
-				System.out.println(libertesGroupe);
 		}
 
 		if (libertesGroupe > 0){
@@ -189,7 +177,7 @@ public class GoBan {
 			}
 		}
 
-		return count;  
+		return count;
 	}
 
 	public void visitVoisinsPion(int position, int positiony, CouleurPion coul, Vector<Groupe> listVoisinsAmis, Vector<Groupe> listVoisinsEnnemis){
@@ -239,74 +227,22 @@ public class GoBan {
 		else if (goban[currentX][currentY].getCouleur() == coul){
 			System.out.println("Ajout liste d'amis");
 			listVoisinsAmis.addElement(goban[currentX][currentY].getGroupe());
-			System.out.println("Libertés du groupe ami:"+goban[currentX][currentY].getGroupe().getLibertes().size());
 		}
 		// si le voisin est un ennemi, on l'ajoute à la liste d'ennemis
 		else{
 			System.out.println("Ajout liste d'ennemis");
 			listVoisinsEnnemis.addElement(goban[currentX][currentY].getGroupe());
-			System.out.println("Libertés du groupe ennemi:"+goban[currentX][currentY].getGroupe().getLibertes().size());
-			//regarde quelles sont les libertés du voisin ennemi
-			System.out.println("pion :");
-			Enumeration<Pion> lib_pion = goban[currentX][currentY].getListeLibertes().elements();
-			for (;lib_pion.hasMoreElements();) {
-					Pion next=lib_pion.nextElement();
-					if(next.equals(goban[currentX-1][currentY])){
-						System.out.println("gauche");
-					}else if(next.equals(goban[currentX][currentY+1])){
-						System.out.println("haut");
-					}else if(next.equals(goban[currentX+1][currentY])){
-						System.out.println("droite");
-					}else if(next.equals(goban[currentX][currentY-1])){
-						System.out.println("bas");
-					}else{
-						System.out.println("autre");
-					}
-			}
-			System.out.println("grpe :");
-			Enumeration<Pion> lib_ennemi = goban[currentX][currentY].getGroupe().getLibertes().elements();
-			for (;lib_ennemi.hasMoreElements();) {
-					Pion next=lib_ennemi.nextElement();
-					if(next.equals(goban[currentX-1][currentY])){
-						System.out.println("gauche");
-					}else if(next.equals(goban[currentX][currentY+1])){
-						System.out.println("haut");
-					}else if(next.equals(goban[currentX+1][currentY])){
-						System.out.println("droite");
-					}else if(next.equals(goban[currentX][currentY-1])){
-						System.out.println("bas");
-					}else{
-						System.out.println("autre");
-					}
-			}
 		}
 	}
 
-	// mise à jour du groupe des amis
+	// mise à jour des groupes d'amis
 	public void majListeAmis(int position, int positiony, CouleurPion coul, Vector<Groupe> listVoisinsAmis){
 
 		// si aucun ami autour -> création d'un nouveau groupe
 		if (listVoisinsAmis.size() == 0){
 			System.out.println("Création d'un nouveau groupe");
-			Groupe newGroupe = new Groupe(goban[position][positiony]);
-			goban[position][positiony].setGroupe(newGroupe);
-			System.out.println("lib pion :"+goban[position][positiony].getListeLibertes().size());
-			System.out.println("lib grpe :"+newGroupe.getLibertes().size());
-			Enumeration<Pion> lib_ennemi = newGroupe.getLibertes().elements();
-			for (;lib_ennemi.hasMoreElements();) {
-					Pion next=lib_ennemi.nextElement();
-					if(next.equals(goban[position-1][positiony])){
-						System.out.println("gauche");
-					}else if(next.equals(goban[position][positiony+1])){
-						System.out.println("haut");
-					}else if(next.equals(goban[position+1][positiony])){
-						System.out.println("droite");
-					}else if(next.equals(goban[position][positiony-1])){
-						System.out.println("bas");
-					}else{
-						System.out.println("autre");
-					}
-			}
+			Groupe nouveauGroupe = new Groupe(goban[position][positiony]);
+			goban[position][positiony].setGroupe(nouveauGroupe);
 		}
 
 		//ajout du pion joué à un groupe
@@ -360,57 +296,68 @@ public class GoBan {
 		premierGroupe.getLibertes().addAll(goban[position][positiony].getListeLibertes());
 	}
 
-	// actions une fois le pion joué
+	// actions une fois le pion joué sur le goban
 	public void apresJoue(int position, int positiony, CouleurPion coul) {
 		System.out.println("Apres joué");
 		// on fait les listes d'amis et d'ennemis
-		Vector<Groupe> listOfNeighborFriends = new Vector<Groupe>();
-		Vector<Groupe> listOfNeighborEnemies = new Vector<Groupe>();
-		
-		
-		visitVoisinsPion(position, positiony, coul,
-				listOfNeighborFriends,
-				listOfNeighborEnemies);
-		
-		// une fois le pion joué, on supprime l'endroit des libertés des groupes voisins
-		enleveLibertesVoisins(position, positiony, coul,
-				listOfNeighborFriends,
-				listOfNeighborEnemies);
+		Vector<Groupe> listVoisinsAmis = new Vector<Groupe>();
+		Vector<Groupe> listVoisinsEnnemis = new Vector<Groupe>();
+
+
+		visitVoisinsPion(position, positiony, coul, listVoisinsAmis, listVoisinsEnnemis);
+
+		// une fois le pion joué, on le supprime des libertés des groupes voisins
+		enleveLibertesVoisins(position, positiony, coul, listVoisinsAmis, listVoisinsEnnemis);
 
 		// maj des groupes amis
-		majListeAmis(position, positiony, coul, listOfNeighborFriends);
-		
+		majListeAmis(position, positiony, coul, listVoisinsAmis);
+
+		// maj des groupes ennemis (Prises)
+		majListeEnnemis(position, positiony, coul, listVoisinsEnnemis);
+
 	}
 
-	public void enleveLibertesVoisins(int position, int positiony, CouleurPion coul,
-			Vector<Groupe> listOfNeighborFriends,
-			Vector<Groupe> listOfNeighborEnemies) {
+	public void enleveLibertesVoisins(int position, int positiony, CouleurPion coul, Vector<Groupe> listVoisinsAmis, Vector<Groupe> listVoisinsEnnemis) {
 
 		// Pour les amis
-		Enumeration<Groupe> e = listOfNeighborFriends.elements();
+		Enumeration<Groupe> e = listVoisinsAmis.elements();
 		for (;e.hasMoreElements();) {
-			Groupe currentGroup = (Groupe)e.nextElement();
+			Groupe groupeCourant = e.nextElement();
 			System.out.println("enleve liberte d'un groupe ami");
-			currentGroup.getLibertes().removeElement(goban[position][positiony]);
+			groupeCourant.getLibertes().removeElement(goban[position][positiony]);
 		}
 
 		// Pour les ennemis
-		e = listOfNeighborEnemies.elements();
-		System.out.println("nbre d'ennemis:"+listOfNeighborEnemies.size());
+		e = listVoisinsEnnemis.elements();
+		System.out.println("nbre d'ennemis:"+listVoisinsEnnemis.size());
 		for (;e.hasMoreElements();) {
-			Groupe currentGroup = (Groupe)e.nextElement();
+			Groupe groupeCourant = e.nextElement();
 			System.out.println("enleve liberte d'un groupe ennemi");
-			System.out.println("avt suppr ennemi :"+currentGroup.getLibertes().size());
-/*			if(currentGroup.getLibertes().contains(goban[position][positiony])){
-				System.out.println("il contient la position a suppr!");
-			}else{
-				System.out.println("il contient pas la position a suppr!");
-			}*/
-			currentGroup.getLibertes().removeElement(goban[position][positiony]);
-			System.out.println("avpr suppr ennemi :"+currentGroup.getLibertes().size());
+			groupeCourant.getLibertes().removeElement(goban[position][positiony]);
 		}
 	}
-	
+
+	// mise à jour des groupes d'ennemis
+	public void majListeEnnemis(int position, int positiony, CouleurPion coul, Vector<Groupe> listVoisinsEnnemis/*, Vector<Pion> modifications*/) {
+
+	   Enumeration<Groupe> e = listVoisinsEnnemis.elements();
+	   for(;e.hasMoreElements();) {
+	     Groupe groupeCourant = e.nextElement();
+	     // si un groupe n'a plus de libertés alors il est pris
+	     if (groupeCourant.aucuneLibertes()) {
+
+	       // tous les pions du groupe pris passe donc dans la couleur EMPTY
+	       Enumeration<Pion> listePions = groupeCourant.getPions().elements();
+	       for(;listePions.hasMoreElements();) {
+	         Pion pionCourant = listePions.nextElement();
+
+	         pionCourant.setCouleur(CouleurPion.EMPTY);
+
+	       }
+	     }
+	   }
+	}
+
 	public Pion[][] getGoban() {
 		return goban;
 	}
@@ -448,18 +395,5 @@ public class GoBan {
 				goban[i][k] = new Pion(CouleurPion.EMPTY, 0);
 			}
 	}
-	
-	//TODO: extraire méthode qui sont liées au groupe histoire que la classe ici ne représente finalement
-	// que le go ban et pas plus.
-	
-	/*TODO
-	 * 
-	 * Methode pour détecter les yeux
-	 * Calcul du nombre d'oeil d'un groupe.
-	 * 
-	 * 
-	 */
-	 
-	
 
 }
