@@ -9,7 +9,7 @@ public class GoBan {
 	private Pion[][] goban;
 	private int nbBlanc;
 	private int nbNoir;
-	private Integer num=0;
+	private int num=0;
 
 	//private int[] modifier={1,-1};
 	public static int TAILLE_GO_BAN=9;
