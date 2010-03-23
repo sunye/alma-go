@@ -19,7 +19,15 @@ public class GoBan {
 		this.nbBlanc =0;
 		this.nbNoir = 0;
 	}
-
+	public Pion[][] getGoban() {
+		return goban;
+	}
+	public int getNbBlanc() {
+		return nbBlanc;
+	}
+	public int getNbNoir() {
+		return nbNoir;
+	}
 
 	public boolean ajouterPion(int position, int positiony){
 		//Si le nombre est pair alors c'est au blanc de jouer
@@ -48,6 +56,28 @@ public class GoBan {
 		return true;
 	}
 
+	
+	public boolean ajouterPion(int position, int positiony, CouleurPion coul){
+		boolean result;
+		if(result=estLegal(position, positiony, coul)){
+			goban[position][positiony].setCouleur(coul);
+			goban[position][positiony].setNumero(num);
+			goban[position][positiony].setListeLibertes();
+			apresJoue(position, positiony, coul);
+			num++;
+			if( coul.equals(CouleurPion.NOIR)){
+			nbNoir++;
+			}else{
+			nbBlanc++;
+			}
+		}
+		return result;
+	}
+	
+	public boolean retirerPion(int position, int positiony, CouleurPion coul){
+		//TODO a implémenter.
+		return true;
+	}
 
 	/*public int liberte(int positionx, int positiony, CouleurPion cool){
 		int result=0;
@@ -358,34 +388,6 @@ public class GoBan {
 	   }
 	}
 
-	public Pion[][] getGoban() {
-		return goban;
-	}
-
-
-	public void setGoban(Pion[][] goban) {
-		this.goban = goban;
-	}
-
-
-	public int getNbBlanc() {
-		return nbBlanc;
-	}
-
-
-	public void setNbBlanc(int nbBlanc) {
-		this.nbBlanc = nbBlanc;
-	}
-
-
-	public int getNbNoir() {
-		return nbNoir;
-	}
-
-
-	public void setNbNoir(int nbNoir) {
-		this.nbNoir = nbNoir;
-	}
 
 
 	public void init(){

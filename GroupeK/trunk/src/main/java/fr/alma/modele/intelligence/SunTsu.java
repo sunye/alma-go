@@ -23,6 +23,7 @@ public class SunTsu {
 	//FIXME discuter avec Bambinome pour savoir si on représente des matrice de pion 
 	//ou des go ban, voir eventuellement une troisième classe plus complete (pour gestion des groupes etc).
 	private Arbre<Coup> bibliotheque;
+	private GoBan situation;
 	
 	public SunTsu(){
 		
@@ -31,9 +32,9 @@ public class SunTsu {
 	
 
 	
-	private Coordonnee coupJouer(Pion[][] situationIniale){
-		bibliotheque= new ArbreAdj<Coup>(81, "Itinial", new Coup(null, null, CouleurPion.EMPTY, situationIniale));
-		
+	private Coordonnee coupJouer(GoBan situation){
+		bibliotheque= new ArbreAdj<Coup>(81, "Itinial", new Coup(null, null, CouleurPion.EMPTY));
+		this.situation=situation;
 		//XXX voir peut être à conserver une partie de l'arbre après chaque coup
 		//Mais ça c'est de l'optimisation.
 		//diff.ordinal()*5;
@@ -64,19 +65,22 @@ public class SunTsu {
 	private void constructionArbre(int profondeur, Node<Coup> noeud){
 		try{
 			int compteurFils=1;
-			Pion[][] matrice= noeud.getValeur().getGoban();
+			Pion[][] matrice=situation.getGoban();
 			for(int i=0; i<9;i++){
 				for(int j=0; j<9;j++){
-					if(matrice[i][j]==null){
-						//FIXME voir ici si besoin d'implémenter
-						// la méthode clone de pion
-						//voir pour le fonctionnement de groupe etc.
-						Pion[][] clone=matrice.clone();
-						//le modulo 2 indique si on est en impair ou pair, donc la couleur du joueur
-						//so impair c'est le joueur pair l'autre.
-						CouleurPion couleurPion=profondeur%2==1?CouleurPion.BLANC:CouleurPion.NOIR;
-						clone[i][j]=new Pion(couleurPion, 0);
-						Coup coup= new Coup(i, j, couleurPion, clone);
+					//le modulo 2 indique si on est en impair ou pair, donc la couleur du joueur
+					//so impair c'est le joueur pair l'autre.
+					CouleurPion couleurPion=profondeur%2==1?CouleurPion.BLANC:CouleurPion.NOIR;
+					if(matrice[i][j]==null&& situation.estLegal(i, j, couleurPion)){
+						/*
+						 * On ajoute le pion si la case est vide et que le coup est légal
+						 * on ajoute le pion et on enregistre le coup dans l'arbre
+						 * si on arrive à la dernière profondeur on s'arrête et en remontant on supprime le coup 
+						 * de l'arbre
+						 * sinon on descend dans l'arbre.
+						 */
+						situation.ajouterPion(i, j,coul);						
+						Coup coup= new Coup(i, j, couleurPion);
 						Node<Coup> node=bibliotheque.getNewNode();
 						node.setValeur(coup);
 						node.setEtiquette("feuille");
@@ -85,6 +89,7 @@ public class SunTsu {
 						if(profondeur>1){
 							constructionArbre(profondeur-1, node);
 						}
+						situation.retirerPion(i, j, coul);
 					}
 				}
 			}
