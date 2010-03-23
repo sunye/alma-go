@@ -43,7 +43,7 @@ public class Evaluation implements IEvaluation {
 		
 		int degreeFree = 0;
 		boolean isComputer = (player == computer);
-		
+
 		for (short col = 0; col < stateGame.getMaxCol(); col++) {
 			for (short row = 0; row < stateGame.getMaxRow(); row++) {
 				if ((isComputer && stateGame.isComputer(col, row)) || ((! isComputer) && stateGame.isPlayer(col, row))) {
@@ -55,9 +55,9 @@ public class Evaluation implements IEvaluation {
 						}
 					}
 					if (! find) {					
-						degreeFree = Tools.countFreeDegrees(getCoordinator(), emplacement, emplacements);
+						degreeFree = Tools.countFreeDegrees(getCoordinator(), player.getColor(), emplacement, emplacements);
 						if (degreeFree > 10)
-							System.out.println("dregree free : " + degreeFree);
+							//System.out.println("dregree free : " + degreeFree);
 						aDegreeFree[degreeFree]++;
 					}
 					
@@ -65,6 +65,7 @@ public class Evaluation implements IEvaluation {
 			}
 		}
 		return aDegreeFree;
+
 	}
 
 
