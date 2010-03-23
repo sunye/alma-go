@@ -11,6 +11,7 @@ import fr.alma.server.core.IStrategy;
 import fr.alma.server.core.Player;
 import fr.alma.server.rule.Configuration;
 
+@SuppressWarnings("serial")
 public class Go extends JFrame {
 
 	public Go() {
@@ -24,6 +25,7 @@ public class Go extends JFrame {
 		 * Celui qui commence dispose des pierres blanches.
 		 */
 		IStateGame stateGame = Factory.getStateGame();
+		//stateGame.loaded(new GameLoaded());
 		Goban goban = Factory.getGoban(stateGame);
 		Configuration rule = new Configuration();
 		Coordinator coordinator = new Coordinator(rule, goban, stateGame);
