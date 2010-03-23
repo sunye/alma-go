@@ -53,7 +53,7 @@ public class AlphaBeta implements IStrategy {
 	 * level = 3 : prochain coups possibles pour le joueur
 	 * level = 4 : coups suivants pour l'ordinateur ...etc.
 	 * 
-	 * => On commence avec un level a  2
+	 * => On commence avec un level aï¿½ 2
 	 */
 	public int getValue(int level, IStateGame stateGame, int extremum) {
 		int value;
