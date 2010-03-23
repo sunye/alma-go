@@ -24,6 +24,7 @@ public class Emplacement implements IEmplacement {
 	
 	@Override
 	public boolean equals(IEmplacement e1){
+		//System.out.println("Emplacement.equals()["+e1.getCol()+"]["+e1.getRow()+"]");
 		return (this.col == e1.getCol() && this.row == e1.getRow());
 	}
 	

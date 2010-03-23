@@ -1,5 +1,7 @@
 package fr.alma.server.core;
 
+import fr.alma.client.ihm.GameLoaded;
+
 
 public interface IStateGame {
 	public static final Boolean PLAYER = false;
@@ -20,4 +22,6 @@ public interface IStateGame {
 	boolean onGoban(short col, short row);
 
 	Object getIntersection(short col, short row);
+
+	void loaded(GameLoaded gameLoaded);
 }

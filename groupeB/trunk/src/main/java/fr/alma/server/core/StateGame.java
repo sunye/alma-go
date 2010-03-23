@@ -1,6 +1,7 @@
 package fr.alma.server.core;
 
 
+import fr.alma.client.ihm.GameLoaded;
 import fr.alma.client.ihm.Goban;
 
 public class StateGame implements IStateGame {
@@ -38,8 +39,8 @@ public class StateGame implements IStateGame {
 	@Override
 	public boolean play(short col, short row, boolean computer) {
 		/*
-		 *  Vérifier les règles du jeu
-		 *  - Pièce déjà présente à l'emplacement
+		 *  Vï¿½rifier les rï¿½gles du jeu
+		 *  - Piï¿½ce dï¿½jï¿½ prï¿½sente ï¿½ l'emplacement
 		 *  - ...
 		 */
 		
@@ -83,6 +84,13 @@ public class StateGame implements IStateGame {
 	@Override
 	public Object getIntersection(short col, short row) {
 		return intersection[col][row];
+	}
+
+	@Override
+	public void loaded(GameLoaded gameLoaded) {
+	
+		this.intersection = gameLoaded.getIntersection();
+		
 	}
 	
 	
