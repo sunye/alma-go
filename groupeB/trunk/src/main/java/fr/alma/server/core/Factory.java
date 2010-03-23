@@ -3,6 +3,7 @@ package fr.alma.server.core;
 import fr.alma.client.ihm.Goban;
 import fr.alma.server.ia.AlphaBeta;
 import fr.alma.server.rule.RuleAlreadyBusy;
+import fr.alma.server.rule.RuleCapture;
 import fr.alma.server.rule.RuleManager;
 import fr.alma.server.rule.RuleSuicide;
 
@@ -12,6 +13,7 @@ public class Factory {
 		RuleManager ruleManager = new RuleManager();	
 		ruleManager.addRule(new RuleAlreadyBusy(coordinator.getStateGame()));
 		ruleManager.addRule(new RuleSuicide(coordinator));
+		ruleManager.addRule(new RuleCapture(coordinator));
 		return ruleManager;
 	}
 	
