@@ -56,7 +56,7 @@ public class GoBan {
 		return true;
 	}
 
-	
+
 	public boolean ajouterPion(int position, int positiony, CouleurPion coul){
 		boolean result;
 		if(result=estLegal(position, positiony, coul)){
@@ -73,7 +73,7 @@ public class GoBan {
 		}
 		return result;
 	}
-	
+
 	public boolean retirerPion(int position, int positiony, CouleurPion coul){
 		//TODO a implémenter.
 		return true;
@@ -103,14 +103,14 @@ public class GoBan {
 		visitVoisinsPion(position, positiony, coul, listVoisinsAmis, listVoisinsEnnemis);
 
 
-		// vérification de capture
+		/*// vérification de capture
 		System.out.println("Vérif capture");
 		Enumeration<Groupe> ennemis = listVoisinsEnnemis.elements();
 		for (;ennemis.hasMoreElements();) {
 			if (ennemis.nextElement().getLibertes().size() <= 1)
 				System.out.println("Capture!");
 				return true;
-		}
+		}*/
 
 
 		// vérification du suicide
