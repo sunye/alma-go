@@ -13,11 +13,17 @@ public class Computer extends AbstractPlayer {
 	
 	@Override
 	public void play() {
-		System.out.println("Computer start play ...");
-		IEmplacement emplacement = strategieGame.getEmplacementMax();
-		strategieGame.getStateGame().play(emplacement.getCol(), emplacement.getRow(), getColor());
-		System.out.println("Computer stop play ...");
-		raiseEvent(new PlayEvent(player, PlayEvent.APRES, emplacement));
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				System.out.println("Computer start play ...");
+				IEmplacement emplacement = strategieGame.getEmplacementMax();
+				strategieGame.getStateGame().play(emplacement.getCol(), emplacement.getRow(), getColor());
+				System.out.println("Computer stop play ...");
+				raiseEvent(new PlayEvent(player, PlayEvent.APRES, emplacement));
+			}
+		};
+		new Thread(runnable).start();
 	}
 	
 	

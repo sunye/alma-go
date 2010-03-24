@@ -3,7 +3,7 @@ package fr.alma.server.core;
 import fr.alma.client.ihm.GameLoaded;
 
 
-public interface IStateGame {
+public interface IStateGame extends Cloneable {
 	public static final Boolean PLAYER = false;
 	public static final Boolean COMPUTER = true;
 	
@@ -23,5 +23,8 @@ public interface IStateGame {
 
 	Object getIntersection(short col, short row);
 
+	public int countLocationOccupied();
 	void loaded(GameLoaded gameLoaded);
+	public Object clone();
+
 }

@@ -1,5 +1,9 @@
 package fr.alma.server.core;
 
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.SwingUtilities;
+
 import fr.alma.client.ihm.Goban;
 import fr.alma.server.rule.Configuration;
 import fr.alma.server.rule.RuleManager;
@@ -54,7 +58,7 @@ public class Coordinator {
 					if (e.getWhen() == PlayEvent.AVANT) {
 						//System.out.println("Le playeur veut jouer ..." + e.getPlayer());
 						/* Must Verify the rules */
-						return getRuleManager().check(e.getEmplacement());
+						return getRuleManager().check(e.getEmplacement()).isCanPlay();
 					}
 					
 					//System.out.println("Le playeur vient de jouer ..." + e.getPlayer());
@@ -63,8 +67,10 @@ public class Coordinator {
 					} else {
 						setCurrentPlayer(player1);
 					}
+					
 					getCurrentPlayer().play();
 					goban.repaint();
+					
 					return true;
 				}
 			};
