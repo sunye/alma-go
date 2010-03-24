@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 
-
+@SuppressWarnings("unchecked")
 public class TestArbre {
 
 	
