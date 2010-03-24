@@ -79,56 +79,7 @@ public class GoBan {
 		return true;
 	}
 
-	/*public int liberte(int positionx, int positiony, CouleurPion cool){
-		int result=0;
-		int modifierTemp=0;
 
-		for (int i=0; i<this.modifier.length;i++){
-			modifierTemp=this.modifier[i];
-			result+=calculLiberte(positionx+modifierTemp, positiony, modifierTemp*-1, 0, cool);
-
-		}
-		for (int i=0; i<this.modifier.length;i++){
-			modifierTemp=this.modifier[i];
-			result+=calculLiberte(positionx, positiony+modifierTemp, 0, modifierTemp*-1, cool);
-
-		}
-		return result;
-
-
-	}
-
-	private int calculLiberte(int positionx, int positiony, int xinterdit, int yinterdit,CouleurPion cool){
-		if (positionx<TAILLE_GO_BAN&&positionx>=0&& positiony>=0&&positiony<TAILLE_GO_BAN){
-			Pion actuel=goban[positionx][positiony];
-			if(actuel==null){
-				return 1;
-			}else if (actuel.getCouleur()!=cool){
-				return 0;
-			} else {
-				int result=0;
-				int modifierTemp=0;
-				//on fait deux boucle sur le modifier
-				//on fait attention a ne pas retourner sur nos pas
-				for (int i=0; i<this.modifier.length;i++){
-					modifierTemp=+this.modifier[i];
-					if (modifierTemp!=xinterdit){
-						result+=calculLiberte(positionx+modifierTemp, positiony, modifierTemp*-1, 0, cool);
-					}
-				}
-				for (int i=0; i<this.modifier.length;i++){
-					modifierTemp=+this.modifier[i];
-					if (modifierTemp!=yinterdit){
-						result+=calculLiberte(positionx, positiony+modifierTemp, 0, modifierTemp*-1, cool);
-					}
-				}
-				System.out.println("result :"+result);
-				return result;
-			}
-		}
-		return 0;
-	}
-	 */
 
 	public boolean estLegal(int position, int positiony, CouleurPion coul) {
 

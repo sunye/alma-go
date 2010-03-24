@@ -100,7 +100,8 @@ public class ArbreMod<E> extends ArbreAbstract<E>{
 		{
 		this.tabMod.set(posfils, filsMod);
 		filsMod.setPere(pereMod);
-		//FIXME REVOIR AGRANDISSEMENT DU TABLEAU
+		pere.countFilsPlus();
+		
 		
 		}
 	}
@@ -130,7 +131,7 @@ public class ArbreMod<E> extends ArbreAbstract<E>{
 				
 				
 			this.tabMod.set(pospourfils, filsMod);
-					
+			pere.countFilsPlus();	
 			filsMod.setPere(filsMod);
 			
 			
@@ -230,6 +231,7 @@ public class ArbreMod<E> extends ArbreAbstract<E>{
 			}
 			int pospourfils= (temp.getPosition()*this.getArrite())+ieme;
 			this.tabMod.set(pospourfils, null);	
+			pere.countFilsMoins();
 	}
 		
 	}

@@ -8,10 +8,10 @@ public class NodeMod<E> implements Node<E>{
 	private String etiquette;
 	private E valeur;
 	private NodeMod<E> pere;
-	
+	private int nbFils;
 	
 	public NodeMod() {
-		
+		nbFils=0;
 	}
 
 	public int getPosition() {
@@ -58,7 +58,17 @@ public class NodeMod<E> implements Node<E>{
 		this.pere = pere;
 	}
 	
+	public int nbFils() {
+		return nbFils;
+	}
 	
+	public void countFilsPlus(){
+		nbFils++;
+	}
+	
+	public void countFilsMoins(){
+		nbFils++;
+	}
 	
 
 }
