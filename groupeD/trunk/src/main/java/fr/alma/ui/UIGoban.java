@@ -167,7 +167,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 				//sortie.println("=> Erreur : position invalide");
 				break;
 			    }
-				myApplication.labelMoves.setText(Integer.toString(atariGo.totalMoves));
+				//TODO ajouter une actualisation du panneau info...
 				repaint();
 			}
 		}
@@ -205,7 +205,6 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 					//boucles des joueurs...
 					//test
 					time++;
-					myApplication.labelT.setText(String.valueOf(time));
 					//System.out.println("ok");
 					if(!atariGo.currentPlayer.isHuman()){
 						System.out.println("dns la bcle");
@@ -214,8 +213,10 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 							ValuedGoban plv = new ValuedGoban(0);
 							AlphaBeta.init(3);
 							
-							plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color);	
-							atariGo.goban=plv.goban_;
+							plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color);
+							
+							atariGo.playMove(atariGo.currentPlayer.color, atariGo.goban.getDifference(plv.goban_));
+							
 							System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes);
 						//on sort de la boucle on joue le coup
 						/*switch (atariGo.jouerCoup(atariGo.joueurEnCours.couleur, meilleurCoup)) {
@@ -234,7 +235,6 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 						//sortie.println("=> Erreur : position invalide");
 						break;
 					    }*/
-						myApplication.labelMoves.setText(Integer.toString(atariGo.totalMoves));
 						repaint();
 						
 						try{

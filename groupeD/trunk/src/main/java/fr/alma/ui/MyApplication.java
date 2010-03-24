@@ -29,12 +29,16 @@ class MyApplication extends JFrame {
  * plateau de l'atarigo
  */
  protected UIGoban uiGoban;
- //TODO décrire les autres attributs
+ //TODO decrire les autres attributs
  protected AtariGo atarigo;
- protected JPanel panInfos;
- protected JLabel labelT;
- protected JLabel labelMoves;
+ protected InfoPanel panInfos;
  protected JOptionPane message;
+ protected JMenuBar menBar;
+ protected JToolBar toolBar;
+ protected JMenu menu;
+ protected NewGameAction newGameAction;
+ protected AboutAction aboutAction;
+ 
  
 /**
  * action consistant à quitter l'application. 
@@ -45,13 +49,13 @@ class MyApplication extends JFrame {
  *  construit les barres de menus et d'outils.  
  */
  protected void buildAll() {
-	JMenuBar menBar = new JMenuBar();
-	JToolBar toolBar = new JToolBar();
-	JMenu menu = new JMenu("Commandes");
+	menBar = new JMenuBar();
+	toolBar = new JToolBar();
+	menu = new JMenu("Commandes");
 	menu.setMnemonic('C');
-	NewGameAction newGameAction = new NewGameAction(this);
+	newGameAction = new NewGameAction(this);
 	menu.add(newGameAction);
-	AboutAction aboutAction = new AboutAction(this);
+	aboutAction = new AboutAction(this);
 	menu.add(aboutAction);
 	menu.addSeparator();
 	quitAction = new QuitAction(this);
@@ -91,12 +95,8 @@ class MyApplication extends JFrame {
 	
 	// Positionnement du plateau au milieu de la fenêtre.
 	getContentPane().add(uiGoban, BorderLayout.CENTER);
-	panInfos = new JPanel();
-	panInfos.add(new JLabel("Infos"));
-	labelT = new JLabel();
-	labelMoves = new JLabel();
-	panInfos.add(labelT);
-	panInfos.add(labelMoves);
+	panInfos = new InfoPanel();
+	panInfos.buildAll();
 	panInfos.setPreferredSize(new Dimension(270,450));
 	getContentPane().add(panInfos,BorderLayout.EAST);
 	//uiplateau.tempo.start();
