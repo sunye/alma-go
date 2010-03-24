@@ -52,7 +52,6 @@ public class AlphaBeta {
 				return min(level, stateOfGame, currentExtremum, stone);
 			}
 		}else{
-			System.out.println("profondeur des feuilles = "+stateOfGame.getDepht());
 			return Evaluation.evaluate(stateOfGame.getGoban(),stone);
 		}
 	}
@@ -65,7 +64,7 @@ public class AlphaBeta {
 			totalNodes++;
 			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),max.evaluation_,pion.opponent());
 			if(V.evaluation_>max.evaluation_){
-				max.clone(V);
+				max.clone(new ValuedGoban(V.evaluation_,edj.getChildren().get(i).getMove()));
 			}
 			i++;
 		}
@@ -80,7 +79,7 @@ public class AlphaBeta {
 			totalNodes++;
 			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),min.evaluation_,pion.opponent());
 			if(V.evaluation_<min.evaluation_){
-				min.clone(V);
+				min.clone(new ValuedGoban(V.evaluation_,edj.getChildren().get(i).getMove()));
 			}
 			i++;
 		}

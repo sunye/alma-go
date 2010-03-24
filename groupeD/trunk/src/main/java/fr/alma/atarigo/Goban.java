@@ -268,7 +268,17 @@ public int liberty(Position pos){
 		 if(readCell(pos.neighbor(Direction.WEST)).equals(Stone.EMPTY))
 			 cmpt++;
 			 
-	 return cmpt;
+	 return cmpt;	 
+}
+
+public Position getDifference(Goban goban){
+	 for(int i=0;i<getLines();i++){
+		 for(int j=0;j<getColumns();j++){
+			 if(matrice[i][j]!=goban.matrice[i][j])
+				 return new Position(i,j);
+		 }
+	 }
+	 return new Position(-1,-1);
 }
 
 }

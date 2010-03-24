@@ -36,7 +36,7 @@ public class Tree {
 	 * @param child the node to add as a child
 	 */
 	public void addChild(Tree child){
-		parent_=this;
+		child.parent_=this;
 		children_.add(child);
 	}
 	
@@ -87,11 +87,19 @@ public class Tree {
 	 * @return an integer>=0
 	 */
 	public int getDepht(){
-		Tree tree = new Tree(null, this.getParent());
+		Tree tree = this;
 		int depth=0;
 		while(tree.getParent()!=null){
 			depth++;
+			tree=tree.getParent();
 		}
 		return depth;
+	}
+	
+	public Goban getMove(){
+		Tree tree = this;
+		while(tree.getDepht()>1)
+			tree=tree.getParent();
+		return tree.getGoban();	
 	}
 }
