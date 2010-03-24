@@ -3,6 +3,18 @@ package fr.alma.ia;
 import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Goban;
 
+/**
+ * MinMax.java is a static class which implement the MinMax algorithm.
+ * It's a recursive algorithm for choosing the next move in an n-player game, 
+ * usually a two-player game. A value is associated with each position or state of the game. 
+ * This value is computed by means of a position evaluation function and it indicates how good 
+ * it would be for a player to reach that position. The player then makes the move that maximizes 
+ * the minimum value of the position resulting from the opponent's possible following moves. 
+ *
+ * @author      Adrien GUILLE
+ * @author      Vincent FERREIRA
+ */
+
 public class MinMax {
 		
 		static public ValuedGoban bestMove;
@@ -10,6 +22,11 @@ public class MinMax {
 		static public int totalNodes;
 		static public int maxLevel;
 		
+	
+	/**
+	 * Static method that initialize static properties
+	 * @param nvmax the maximum depth of the search
+	 */	
 		public static void init(int nvmax){
 			bestMove=new ValuedGoban(0);
 			extremum=0;
@@ -18,6 +35,13 @@ public class MinMax {
 		}
 
 
+	/**
+	 * Static method which returns the best move to make
+	 * @param level the current depth of the search
+	 * @param edj the current state of game
+	 * @param pion the current color to play
+	 * @return a ValuedGoban which indicates the best move
+	 */	
 	public static ValuedGoban value(int level, Tree stateOfGame, Stone stone){
 		if(level<maxLevel)
 			stateOfGame.generateChildren(stone);

@@ -3,6 +3,15 @@ package fr.alma.ia;
 import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Goban;
 
+/**
+ * AlphaBeta.java is a static class which implement the AlphaBeta algorithm.
+ * Alpha-beta pruning is a search algorithm which seeks to reduce the number 
+ * of nodes that are evaluated in the search tree by the minimax algorithm.
+ *
+ * @author      Adrien GUILLE
+ * @author      Vincent FERREIRA
+ */
+
 public class AlphaBeta {
 		
 		static public ValuedGoban bestMove;
