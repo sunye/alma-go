@@ -8,6 +8,7 @@ public class StateGame implements IStateGame {
 
 	private Boolean[][] intersection = new Boolean[Goban.LINE_V][Goban.LINE_H];
 	
+	
 	@Override
 	public boolean existChild() {
 		return false;
@@ -25,6 +26,8 @@ public class StateGame implements IStateGame {
 
 	@Override
 	public boolean isOver() {
+		// catch stone
+		// Impossibility to play => the other player win
 		return false;
 	}
 
@@ -34,13 +37,19 @@ public class StateGame implements IStateGame {
 	}
 
 	/**
-	 * V�rifier les r�gles du jeu !
+	 * Verifier les regles du jeu !
 	 */
 	@Override
 	public boolean play(short col, short row, boolean computer) {
 		/*
+<<<<<<< .mine
+
+		 *  Verifier les regles du jeu
+		 *  - Piece deja presente a l'emplacement
+=======
 		 *  V�rifier les r�gles du jeu
 		 *  - Pi�ce d�j� pr�sente � l'emplacement
+>>>>>>> .r81
 		 *  - ...
 		 */
 		
@@ -86,13 +95,38 @@ public class StateGame implements IStateGame {
 		return intersection[col][row];
 	}
 
+
 	@Override
 	public void loaded(GameLoaded gameLoaded) {
-	
 		this.intersection = gameLoaded.getIntersection();
+	}	
+	
+	
+	@Override
+	public int countLocationOccupied() {
+		int cptOccupied = 0;
+		for (short cptCol = 0; cptCol < getMaxRow(); cptCol++) {
+			for (short cptRow = 0; cptRow < getMaxCol(); cptRow++) {
+				if (! isFree(cptCol, cptRow)) {
+					cptOccupied++;
+				}
+			}
+		}
+		return cptOccupied;
+	}
+
+	
+	@Override
+	public Object clone() {
+		StateGame clone = new StateGame();
 		
+		for (short cptCol = 0; cptCol < getMaxRow(); cptCol++) {
+			for (short cptRow = 0; cptRow < getMaxCol(); cptRow++) {
+				if (! isFree(cptCol, cptRow))
+					clone.play(cptCol, cptRow, (Boolean)getIntersection(cptCol, cptRow));
+			}
+		}
+		return clone;
 	}
 	
-	
-
 }

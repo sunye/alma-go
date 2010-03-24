@@ -36,5 +36,10 @@ public class Emplacement implements IEmplacement {
 		}
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return "col : " + col + " - row : " + row;
+	}
 
 }

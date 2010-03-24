@@ -1,5 +1,7 @@
 package fr.alma.server.ia;
 
+import java.awt.event.ActionEvent;
+
 import fr.alma.server.core.Coordinator;
 import fr.alma.server.core.Emplacement;
 import fr.alma.server.core.IEmplacement;
@@ -7,6 +9,9 @@ import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 import fr.alma.server.core.IStrategy;
 import fr.alma.server.rule.Configuration;
+import fr.alma.server.rule.GameListener;
+import fr.alma.server.rule.RuleManager;
+import fr.alma.server.rule.StatusCheck;
 
 /**
  * @author Romain & bruno
@@ -21,19 +26,32 @@ import fr.alma.server.rule.Configuration;
 public class AlphaBeta implements IStrategy {
 
 	private IEvaluation evaluation;
+	private IStateGame stateGameRef;
 	private IStateGame stateGame;
+	private RuleManager ruleManager;
+	private GameListener gameListener;
+	private StatusCheck status = new StatusCheck();
 
 	private IPlayer computer;
 	
 	/* Interet de les avoir en global : toujours disponibes ! */
 	private short rowMax = -1, colMax = -1;
 	int cpt = 0;
+	boolean gameOver = false;
 	
 	public AlphaBeta(Coordinator coordinator, IPlayer computer) {
-		this.stateGame = coordinator.getStateGame();
+		this.stateGameRef = coordinator.getStateGame();
 		this.computer = computer;
+		this.ruleManager = coordinator.getRuleManager();
 		
 		evaluation = new Evaluation(coordinator, computer);
+		
+		gameListener = new GameListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gameOver = true;
+			}
+		};
 	}
 	
 	short cptCol = 0;
@@ -41,6 +59,7 @@ public class AlphaBeta implements IStrategy {
 	
 	public IEmplacement getEmplacementMax() {
 		cpt = 0;
+		stateGame = (IStateGame)stateGameRef.clone();
 		int max = getValue(2, stateGame, 0);
 		System.out.println("nb appels a gatValue() : " + cpt);
 		return new Emplacement(colMax, rowMax);
@@ -53,13 +72,14 @@ public class AlphaBeta implements IStrategy {
 	 * level = 3 : prochain coups possibles pour le joueur
 	 * level = 4 : coups suivants pour l'ordinateur ...etc.
 	 * 
-	 * => On commence avec un level a� 2
+	 * => On commence avec un level a 2
 	 */
 	public int getValue(int level, IStateGame stateGame, int extremum) {
 		int value;
 		cpt++;
 		
-		if ((level < Configuration.getMaxDeepLevel()) && ! stateGame.isOver()) {
+		//System.out.println("Nombre de place prises : " + stateGame.countLocationOccupied());
+		if ((level < Configuration.getMaxDeepLevel()) && ! status.isGameOver()) {
 			/* Test nombre pair */
 			if (level%2 == 0) {
 				/* Recherche du Max */
@@ -69,7 +89,7 @@ public class AlphaBeta implements IStrategy {
 				value = min(level, stateGame, extremum);
 			}
 		} else { /* On se trouve sur une feuille */
-			value = evaluation.evaluate(stateGame);
+			value = evaluation.evaluate(stateGame, status);
 		}
 		return value;
 	}
@@ -83,7 +103,8 @@ public class AlphaBeta implements IStrategy {
 		
 		for (short col = 0; col < stateGame.getMaxCol(); col++) {
 			for (short row = 0; row < stateGame.getMaxRow(); row++) {
-				if ((max < extremum) && (stateGame.isPlayable(col, row))) {
+				status = ruleManager.check(new Emplacement(col, row));
+				if ((max < extremum) && status.isCanPlay()) {
 					stateGame.play(col, row, computer.getColor());
 					int value = getValue(level+1, stateGame, max);
 					if (value > max) { 
@@ -95,7 +116,7 @@ public class AlphaBeta implements IStrategy {
 				}
 			}
 		}
-		return max;	
+		return max;
 	}
 	
 	
@@ -104,7 +125,8 @@ public class AlphaBeta implements IStrategy {
 		
 		for (short col = 0; col < stateGame.getMaxCol(); col++) {
 			for (short row = 0; row < stateGame.getMaxRow(); row++) {
-				if ((min > extremum) && (stateGame.isPlayable(col, row))) {
+				status = ruleManager.check(new Emplacement(col, row));
+				if ((min > extremum) && status.isCanPlay()) {
 					stateGame.play(col, row, ! computer.getColor());
 					int value = getValue(level+1, stateGame, min);
 					if (value < min) { 
@@ -119,7 +141,7 @@ public class AlphaBeta implements IStrategy {
 
 	
 	public IStateGame getStateGame() {
-		return stateGame;
+		return stateGameRef;
 	}
 
 	public void setPlayer(IPlayer player) {

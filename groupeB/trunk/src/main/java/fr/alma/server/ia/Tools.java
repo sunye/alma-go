@@ -6,6 +6,7 @@ import java.util.List;
 import fr.alma.server.core.Coordinator;
 import fr.alma.server.core.Emplacement;
 import fr.alma.server.core.IEmplacement;
+import fr.alma.server.core.IStateGame;
 
 public class Tools {
 
@@ -50,6 +51,29 @@ public class Tools {
 			}
 		}
 		return nbFreeDegrees;
+	}
+	
+	public static void showGobanOnConsole(IStateGame stateGame) {
+		StringBuffer chaine = new StringBuffer();
+		for (short col = 0; col < stateGame.getMaxCol(); col++) {
+			chaine.append(" " + col);
+		}
+		System.out.println("\n " + chaine.toString());
+		
+		for (short row = 0; row < stateGame.getMaxRow(); row++) {
+			System.out.print(row);
+			for (short col = 0; col < stateGame.getMaxCol(); col++) {
+				if (stateGame.isPlayer(col, row)) {
+					System.out.print("|-");
+				} else if (stateGame.isComputer(col, row)) {
+					System.out.print("|o");
+				} else {
+					System.out.print("| ");
+				}
+			}
+			System.out.println("|" + row);
+		}
+		System.out.println(" " + chaine.toString() + "\n");
 	}
 
 	/**
@@ -148,12 +172,12 @@ public class Tools {
 			Coordinator coordinator, Boolean otherIPlayer,
 			IEmplacement e, List<IEmplacement> emplacements) {
 		
-		//TODO
 		// e est un current user
 		// pour tous voisin TOP, BOTTOM,...DOWN
 
 
 		return 1;
 	}
+
 
 }
