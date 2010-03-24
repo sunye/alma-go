@@ -68,7 +68,7 @@ public class MinMax {
 			totalNodes++;
 			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),pion.opponent());
 			if(V.evaluation_>max.evaluation_){
-				max.clone(V);
+				max.clone(new ValuedGoban(V.evaluation_,edj.getChildren().get(i).getMove()));
 			}
 			i++;
 		}
@@ -83,7 +83,7 @@ public class MinMax {
 			totalNodes++;
 			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),pion.opponent());
 			if(V.evaluation_<min.evaluation_){
-				min.clone(V);
+				min.clone(new ValuedGoban(V.evaluation_,edj.getChildren().get(i).getMove()));
 			}
 			i++;
 		}
