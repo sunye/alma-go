@@ -1,7 +1,7 @@
 package fr.alma.server.core;
 
 
-import fr.alma.client.ihm.GameLoaded;
+import fr.alma.client.ihm.GameLoader;
 import fr.alma.client.ihm.Goban;
 
 public class StateGame implements IStateGame {
@@ -42,14 +42,8 @@ public class StateGame implements IStateGame {
 	@Override
 	public boolean play(short col, short row, boolean computer) {
 		/*
-<<<<<<< .mine
-
 		 *  Verifier les regles du jeu
 		 *  - Piece deja presente a l'emplacement
-=======
-		 *  V�rifier les r�gles du jeu
-		 *  - Pi�ce d�j� pr�sente � l'emplacement
->>>>>>> .r81
 		 *  - ...
 		 */
 		
@@ -97,9 +91,10 @@ public class StateGame implements IStateGame {
 
 
 	@Override
-	public void loaded(GameLoaded gameLoaded) {
-		this.intersection = gameLoaded.getIntersection();
-	}	
+	public void load(GameLoader partyLoaded, String fileName) {
+		this.intersection = partyLoaded.loadGame(fileName);
+	}
+
 	
 	
 	@Override

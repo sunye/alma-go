@@ -1,6 +1,6 @@
 package fr.alma.server.core;
 
-import fr.alma.client.ihm.GameLoaded;
+import fr.alma.client.ihm.GameLoader;
 
 
 public interface IStateGame extends Cloneable {
@@ -23,8 +23,8 @@ public interface IStateGame extends Cloneable {
 
 	Object getIntersection(short col, short row);
 
+	void load(GameLoader gameLoaded, String fileName);
 	public int countLocationOccupied();
-	void loaded(GameLoaded gameLoaded);
 	public Object clone();
 
 }

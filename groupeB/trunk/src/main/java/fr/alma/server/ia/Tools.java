@@ -156,9 +156,6 @@ public class Tools {
 
 					hasFreedom = countFreeDegrees(coordinator, otherIPlayer, neighbourEmplacement, emplacements); 
 
-				}else{ 
-					// if neighbourEmplacement is the current player
-					hasFreedom = checkPlayerGroupControlOpponentFreedom(coordinator, otherIPlayer, neighbourEmplacement, emplacements); // WARNING pas assez complet
 				}
 			}else hasFreedom = 1;
 		}
@@ -167,17 +164,5 @@ public class Tools {
 
 		return hasFreedom;
 	}
-
-	private static int checkPlayerGroupControlOpponentFreedom(	
-			Coordinator coordinator, Boolean otherIPlayer,
-			IEmplacement e, List<IEmplacement> emplacements) {
-		
-		// e est un current user
-		// pour tous voisin TOP, BOTTOM,...DOWN
-
-
-		return 1;
-	}
-
 
 }
