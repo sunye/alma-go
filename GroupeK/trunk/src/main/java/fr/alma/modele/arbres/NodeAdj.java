@@ -13,12 +13,14 @@ public class NodeAdj<E> implements Node<E> {
 	private NodeAdj<E> pere;
 	private E valeur;
 	private LinkedList<NodeAdj<E>> fils;
+	private int nbFils;
 	
 	public NodeAdj(int arrite) {
 		this.fils=new LinkedList<NodeAdj<E>>();
 		for (int i=0; i<arrite;i++){
 			fils.add(null);
 		}
+		nbFils=0;
 		
 	}
 	
@@ -103,7 +105,20 @@ public class NodeAdj<E> implements Node<E> {
 
 		return result;
 	}
+
+
+
 	
+	public int nbFils() {
+		return nbFils;
+	}
 	
+	public void countFilsPlus(){
+		nbFils++;
+	}
+	
+	public void countFilsMoins(){
+		nbFils++;
+	}
 	
 }

@@ -7,14 +7,14 @@ package fr.alma.modele;
  */
 public class Coup {
 
-//XXX ne pas stocker de matrice mais stocker seulement le coup^et la couleur
-	// so voir pour comment on fait l'algo d'évaluation en question
 private CouleurPion coulp;
 private Coordonnee position;
+private Integer note;
 
 public Coup(Integer x, Integer y, CouleurPion coulp) {
 	this.position=new Coordonnee(x, y);
 	this.coulp = coulp;
+	this.note=0;
 }
 
 public CouleurPion getCoulp() {
@@ -32,6 +32,14 @@ public Coordonnee getPosition() {
 
 public void setPosition(Coordonnee position) {
 	this.position = position;
+}
+
+public Integer getNote() {
+	return note;
+}
+
+public void setNote(Integer note) {
+	this.note = note;
 }
 
 

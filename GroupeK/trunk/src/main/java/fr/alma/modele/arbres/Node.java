@@ -9,8 +9,8 @@ public interface Node<E> {
 		public E getValeur();
 		public void setValeur(E val);
 		public Node<E> getPere();
-		
-		
-		
+		public int nbFils();
+		public void countFilsPlus();
+		public void countFilsMoins();
 		
 }

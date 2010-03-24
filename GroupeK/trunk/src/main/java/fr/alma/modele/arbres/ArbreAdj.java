@@ -72,6 +72,7 @@ public class ArbreAdj<E> extends ArbreAbstract<E> {
 		}else{
 			perenod.getFils().set(0, filnod);
 			filnod.setPere(perenod);
+			pere.countFilsPlus();
 		}
 		
 		
@@ -93,6 +94,7 @@ public class ArbreAdj<E> extends ArbreAbstract<E> {
 			if (filnod!=null){
 			filnod.setPere(perenod);
 			}
+			pere.countFilsPlus();
 			perenod.getFils().set(ieme-1, filnod);
 		}
 				
@@ -178,6 +180,7 @@ public class ArbreAdj<E> extends ArbreAbstract<E> {
 				supprimerIeme( this.iemeFils(nod, ieme),  i);
 			}}
 			nod.getFils().set(ieme-1, null);
+			pere.countFilsMoins();
 		}
 		
 	}
