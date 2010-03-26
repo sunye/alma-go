@@ -2,8 +2,8 @@ package fr.alma.server.core;
 
 public class PlayEvent {
 
-	public static final int AVANT = 0;
-	public static final int APRES = 1;
+	public static final int BEFORE = 0;
+	public static final int AFTER = 1;
 	
 	private IPlayer player = null;
 	private int when;
@@ -38,7 +38,7 @@ public class PlayEvent {
 	}
 	
 	public String toString() {
-		return "Player : " + player.toString() + " When : " + ((when == AVANT) ? "AVANT" : "APRES");
+		return "Player : " + player.toString() + " When : " + ((when == BEFORE) ? "BEFORE" : "AFTER");
 	}
 
 

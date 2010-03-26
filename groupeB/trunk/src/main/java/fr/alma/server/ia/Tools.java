@@ -3,50 +3,54 @@ package fr.alma.server.ia;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.alma.server.core.Coordinator;
 import fr.alma.server.core.Emplacement;
 import fr.alma.server.core.IEmplacement;
+import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
+import fr.alma.server.rule.Configuration;
 
 public class Tools {
 
-	public static int countFreeDegrees(Coordinator coordinator,boolean player, IEmplacement e, List<IEmplacement> emplacements){
+	public static short getMaxDegreeFree() {
+		return ((Configuration.LINE_H * Configuration.LINE_V) / 2) + 2;
+	}
+	
+	
+	public static int countFreeDegrees(IStateGame stateGame, boolean player, IEmplacement e, List<IEmplacement> emplacements) {
 		int nbFreeDegrees = 0;	
 		emplacements.add(e);
 
 		//case Top
 		short rowTop = (short) (e.getRow() - 1);
-		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(e.getCol(), rowTop), coordinator,player, emplacements);
+		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(e.getCol(), rowTop), stateGame, player, emplacements);
 
 		//case Bottom
 		short rowBottom = (short) (e.getRow() + 1);
-		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(e.getCol(), rowBottom), coordinator,player, emplacements);
+		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(e.getCol(), rowBottom), stateGame, player, emplacements);
 
 		//case Left
 		short colLeft =(short) (e.getCol() -1);
-		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(colLeft, e.getRow()), coordinator,player, emplacements);
+		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(colLeft, e.getRow()), stateGame, player, emplacements);
 
 		//case Right
 		short colRight =(short) (e.getCol() +1);
-		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(colRight, e.getRow()), coordinator, player, emplacements);
+		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(colRight, e.getRow()), stateGame, player, emplacements);
 
 		return nbFreeDegrees;
 	}
 
-	private static int countCaseFreeDegrees(IEmplacement e, Coordinator coordinator, boolean player, List<IEmplacement> emplacements){
+	private static int countCaseFreeDegrees(IEmplacement e, IStateGame stateGame, boolean player, List<IEmplacement> emplacements){
 		int nbFreeDegrees = 0;
 
-		if(coordinator.getStateGame().onGoban(e.getCol(), e.getRow())) {
+		if (stateGame.onGoban(e.getCol(), e.getRow())) {
 
-			if(!((IEmplacement)e).isIn(emplacements)){
-				if(coordinator.getStateGame().isFree(e.getCol(), e.getRow())){
+			if (!((IEmplacement)e).isIn(emplacements)) {
+				if (stateGame.isFree(e.getCol(), e.getRow())) {
 					//System.out.println("isFree ["+col+"] ["+row+"]");
-
 					nbFreeDegrees++;
 					emplacements.add(e);
-
-				}else if(coordinator.getStateGame().getIntersection(e.getCol(), e.getRow()).equals(player)){
-					nbFreeDegrees += countFreeDegrees(coordinator, player, e, emplacements);
+				} else if (stateGame.getIntersection(e.getCol(), e.getRow()).equals(player)) {
+					nbFreeDegrees += countFreeDegrees(stateGame, player, e, emplacements);
 				}
 			}
 		}
@@ -64,9 +68,9 @@ public class Tools {
 			System.out.print(row);
 			for (short col = 0; col < stateGame.getMaxCol(); col++) {
 				if (stateGame.isPlayer(col, row)) {
-					System.out.print("|-");
+					System.out.print("|P");
 				} else if (stateGame.isComputer(col, row)) {
-					System.out.print("|o");
+					System.out.print("|C");
 				} else {
 					System.out.print("| ");
 				}
@@ -76,53 +80,54 @@ public class Tools {
 		System.out.println(" " + chaine.toString() + "\n");
 	}
 
+	
 	/**
 	 * 
 	 * @param coordinator
 	 * @param e is the emplacement choosen by the current player
 	 * @return
 	 */
-	public static int hasCapturedWithThisEmplacement(Coordinator coordinator, IEmplacement e){
+	public static int hasCapturedWithThisEmplacement(IStateGame stateGame, IEmplacement e, IPlayer currentPlayer) {
 		//System.out.println("Tools.hasCapturedWithThisEmplacement() Pierre placée en ["+e.getCol()+"]["+e.getRow()+"]");
 
-		int hasFreedom=999;
-		Boolean otherIPlayer = !coordinator.getCurrentPlayer().getColor();
+		int hasFreedom = 999;
+		Boolean otherIPlayer = ! currentPlayer.getColor();
 		List<IEmplacement> emplacements = new ArrayList<IEmplacement>();
 		emplacements.add(e);
 		//case Top
 		short rowTop = (short) (e.getRow() - 1);
 		//System.out.println("Voisin TOP ["+e.getCol()+"]["+rowTop+"]");
 		
-		if(coordinator.getStateGame().onGoban(e.getCol(), rowTop)){
-			hasFreedom = checkOpponentHasFreedom(coordinator, otherIPlayer, new Emplacement(e.getCol(), rowTop), emplacements) ;
+		if (stateGame.onGoban(e.getCol(), rowTop)) {
+			hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Emplacement(e.getCol(), rowTop), emplacements);
 		}
 
-		if(hasFreedom!=0){
+		if (hasFreedom != 0) {
 			//case Bottom
 			short rowBottom = (short) (e.getRow() + 1);
 			//System.out.println("Voisin BOTTOM ["+e.getCol()+"]["+rowBottom+"]");
 
-			if(coordinator.getStateGame().onGoban(e.getCol(), rowBottom)){
-				hasFreedom = checkOpponentHasFreedom(coordinator, otherIPlayer, new Emplacement(e.getCol(), rowBottom), emplacements) ;
+			if (stateGame.onGoban(e.getCol(), rowBottom)) {
+				hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Emplacement(e.getCol(), rowBottom), emplacements);
 			}
 			
 
-			if(hasFreedom!=0){
+			if (hasFreedom != 0) {
 				//case Left
 				short colLeft =(short) (e.getCol() -1);
 				//System.out.println("Voisin LEFT ["+colLeft+"]["+e.getRow()+"]");
 
-				if(coordinator.getStateGame().onGoban(colLeft, e.getRow())){
-					hasFreedom = checkOpponentHasFreedom(coordinator, otherIPlayer, new Emplacement(colLeft, e.getRow()), emplacements) ;
+				if(stateGame.onGoban(colLeft, e.getRow())) {
+					hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Emplacement(colLeft, e.getRow()), emplacements);
 				}
 
-				if(hasFreedom!=0){
+				if (hasFreedom != 0) {
 					//case Right
 					short colRight =(short) (e.getCol() +1);
 					//System.out.println("Voisin RIGHT ["+colRight+"]["+e.getRow()+"]");
 					
-					if(coordinator.getStateGame().onGoban(colRight, e.getRow())){
-						hasFreedom = checkOpponentHasFreedom(coordinator, otherIPlayer, new Emplacement(colRight, e.getRow()), emplacements) ;
+					if(stateGame.onGoban(colRight, e.getRow())) {
+						hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Emplacement(colRight, e.getRow()), emplacements);
 					}
 				}
 			}
@@ -139,25 +144,22 @@ public class Tools {
 	 * @param emplacements
 	 * @return
 	 */
-	public static int checkOpponentHasFreedom(Coordinator coordinator, Boolean otherIPlayer, IEmplacement neighbourEmplacement, List<IEmplacement> emplacements){
+	public static int checkOpponentHasFreedom(IStateGame stateGame, Boolean otherIPlayer, IEmplacement neighbourEmplacement, List<IEmplacement> emplacements){
 		//System.out.println("Tools.checkOpponentHasFreedom() du voisin : ["+neighbourEmplacement.getCol()+"]["+neighbourEmplacement.getRow()+"]");
-
 
 		int hasFreedom = 999;
 
 		// if the neighbourEmplacement have been already tested
-		if(!((IEmplacement)neighbourEmplacement).isIn(emplacements)){
+		if (!((IEmplacement)neighbourEmplacement).isIn(emplacements)) {
 
 			emplacements.add(neighbourEmplacement);
 			//if neighbourEmplacement is a free Emplacement
-			if(coordinator.getStateGame().getIntersection(neighbourEmplacement.getCol(), neighbourEmplacement.getRow()) != null){
+			if (stateGame.getIntersection(neighbourEmplacement.getCol(), neighbourEmplacement.getRow()) != null) {
 				// if neighbourEmplacement is the opponent player
-				if(coordinator.getStateGame().getIntersection(neighbourEmplacement.getCol(), neighbourEmplacement.getRow()).equals(otherIPlayer)){
-
-					hasFreedom = countFreeDegrees(coordinator, otherIPlayer, neighbourEmplacement, emplacements); 
-
+				if (stateGame.getIntersection(neighbourEmplacement.getCol(), neighbourEmplacement.getRow()).equals(otherIPlayer)) {
+					hasFreedom = countFreeDegrees(stateGame, otherIPlayer, neighbourEmplacement, emplacements); 
 				}
-			}else hasFreedom = 1;
+			} else hasFreedom = 1;
 		}
 
 		//System.out.println("Tools.checkOpponentHasFreedom() retour hasfreedom = "+hasFreedom);

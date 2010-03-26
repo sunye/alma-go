@@ -1,8 +1,5 @@
 package fr.alma.server.core;
 
-import java.lang.reflect.InvocationTargetException;
-
-import javax.swing.SwingUtilities;
 
 import fr.alma.client.ihm.Goban;
 import fr.alma.server.rule.Configuration;
@@ -11,42 +8,39 @@ import fr.alma.server.rule.RuleManager;
 public class Coordinator {
 	
 	private PlayListener playListener;
-	private IPlayer player1;
-	private IPlayer player2;
+	private IPlayer player;
+	private IPlayer computer;
 	private IPlayer currentPlayer = null;
-	private Configuration config = null;
-	private Thread thread;
 	private Runnable runnable;
 	private Goban goban = null;
 	private IStateGame stateGame;
 	private RuleManager ruleManager = null;
-	private Coordinator coordinator = this;
+
 	
-	public Coordinator(Configuration config, Goban goban, IStateGame stateGame ) {
-		this.config = config;
+	public Coordinator(Goban goban, IStateGame stateGame, RuleManager ruleManager) {
 		this.goban = goban;
 		this.stateGame = stateGame;
-		ruleManager = Factory.getRuleManager(coordinator);
+		this.ruleManager = ruleManager;
 	}
 
 	
 	public void startGame() {
-		setCurrentPlayer(getPlayer(config.getColorFirstPlayer()));
+		setCurrentPlayer(getPlayer(Configuration.getColorFirstPlayer()));
 		playInThread();
 	}
 	
 
-	public void setPlayers(IPlayer player1, IPlayer player2) {
-		this.player1 = player1;
-		this.player2 = player2;
+	public void setPlayers(IPlayer player, IPlayer computer) {
+		this.player = player;
+		this.computer = computer;
 		
-		player1.addPlayListener(getPlayListener());
-		player2.addPlayListener(getPlayListener());
+		player.addPlayListener(getPlayListener());
+		computer.addPlayListener(getPlayListener());
 	}
 
 	
 	public IPlayer getPlayer(boolean color) {
-		return player1.getColor() == color ? player1 : player2;		
+		return player.getColor() == color ? player : computer;
 	}
 	
 	
@@ -55,22 +49,39 @@ public class Coordinator {
 			playListener = new PlayListener() {
 				@Override
 				public boolean actionPerformed(PlayEvent e) {
-					if (e.getWhen() == PlayEvent.AVANT) {
+					if (e.getWhen() == PlayEvent.BEFORE) {
 						//System.out.println("Le playeur veut jouer ..." + e.getPlayer());
 						/* Must Verify the rules */
-						return getRuleManager().check(e.getEmplacement()).isCanPlay();
+						if (getCurrentPlayer() != e.getPlayer())
+							return false;
+						
+						return getRuleManager().checkBefore(stateGame, e.getEmplacement(), e.getPlayer()).isCanPlay();
 					}
 					
-					//System.out.println("Le playeur vient de jouer ..." + e.getPlayer());
-					if (getCurrentPlayer() == player1) {
-						setCurrentPlayer(player2);
-					} else {
-						setCurrentPlayer(player1);
-					}
-					
-					getCurrentPlayer().play();
+					/* AFTER */
 					goban.repaint();
 					
+					/* Control if the game is over */
+					if (getRuleManager().checkAfter(stateGame, e.getEmplacement(), getCurrentPlayer()).isGameOver()) {
+						System.out.println("Game over - winner is : " + getCurrentPlayer().getName());
+						getPlayer().setEnabled(false);
+						getComputer().setEnabled(false);
+						return false;
+					}
+					
+					/* Change the current player and play again */
+					if (getCurrentPlayer() == player) {
+						setCurrentPlayer(computer);
+					} else {
+						setCurrentPlayer(player);
+					}
+					
+					/*
+					 * when the current player is the computer, the treatments
+					 * are realize with a thread -> be carrefull !
+					 */
+					getCurrentPlayer().play();
+
 					return true;
 				}
 			};
@@ -83,6 +94,16 @@ public class Coordinator {
 		return currentPlayer;
 	}
 
+	
+	public IPlayer getComputer() {
+		return computer;
+	}
+	
+	
+	public IPlayer getPlayer() {
+		return player;
+	}
+	
 	
 	public void setCurrentPlayer(IPlayer playerCurrent) {
 		this.currentPlayer = playerCurrent;

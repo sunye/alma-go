@@ -10,6 +10,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 import fr.alma.server.core.IStateGame;
+import fr.alma.server.rule.Configuration;
 
 public class Pierre {
 
@@ -21,8 +22,8 @@ public class Pierre {
 	private static BufferedImage[] arrayImage = null;
 	
 	public static void paintPierre(Graphics g, IStateGame stateGame) {
-		for (short x = 0; x < Goban.LINE_V; x++)
-			for (short y = 0; y < Goban.LINE_H; y++) {
+		for (short x = 0; x < Configuration.LINE_V; x++)
+			for (short y = 0; y < Configuration.LINE_H; y++) {
 				if (! stateGame.isFree(x, y)) {
 					BufferedImage image = getImage(x, y, stateGame.isComputer(x, y));
 					g.drawImage(image, 10+(image.getWidth()*x), 10+(image.getHeight()*y), null);
@@ -37,21 +38,21 @@ public class Pierre {
 		if (y == 0) {
 			if (x == 0)
 				indice = 1;
-			else if (x == Goban.LINE_V-1)
+			else if (x == Configuration.LINE_V-1)
 				indice = 3;
 			else 
 				indice = 2;
-		} else if (y == Goban.LINE_H-1) {
+		} else if (y == Configuration.LINE_H-1) {
 			if (x == 0)
 				indice = 7;
-			else if (x == Goban.LINE_V-1)
+			else if (x == Configuration.LINE_V-1)
 				indice = 9;
 			else 
 				indice = 8;
 		} else {
 			if (x == 0)
 				indice = 4;
-			else if (x == Goban.LINE_V-1)
+			else if (x == Configuration.LINE_V-1)
 				indice = 6;
 			else
 				indice = 5;

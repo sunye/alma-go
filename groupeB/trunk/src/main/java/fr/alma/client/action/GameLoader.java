@@ -1,14 +1,16 @@
-package fr.alma.client.ihm;
+package fr.alma.client.action;
 
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import fr.alma.server.rule.Configuration;
+
 
 public class GameLoader {
 
-	private Boolean[][] intersection = new Boolean[Goban.LINE_V][Goban.LINE_H];
+	private Boolean[][] intersection = new Boolean[Configuration.LINE_V][Configuration.LINE_H];
 
 
 	public Boolean[][] loadGame(String fileName)  {
@@ -17,25 +19,21 @@ public class GameLoader {
 		try {
 			sc = new Scanner(file);
 
-
 			String line = null;
-			int i=0;
-			while(sc.hasNextLine() && i<Goban.LINE_V){
+			int i = 0;
+			while (sc.hasNextLine() && i < Configuration.LINE_V) {
 				line = sc.nextLine(); // lecture de la ligne courante
-				if(line!=null)
-					for (int j = 0; j < Goban.LINE_H; j++) {
-
-						if(line.charAt(j)=='x') intersection[j][i] = false;
-						else if(line.charAt(j)=='o') intersection[j][i] = true;
+				if (line != null)
+					for (int j = 0; j < Configuration.LINE_H; j++) {
+						if (line.charAt(j) == 'x') intersection[j][i] = false;
+						else if (line.charAt(j)=='o') intersection[j][i] = true;
 					}
 				i++; // pour traitement de la ligne suivante
 			}
 			sc.close();
 			System.out.println("GameLoaded.loadGame()");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			System.err.println("File "+fileName+" doesn't exist!");
-			System.exit(1);
+			System.err.println("File " + fileName + " doesn't exist!");
 		}
 
 		return intersection;

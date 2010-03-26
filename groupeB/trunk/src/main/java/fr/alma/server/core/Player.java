@@ -12,14 +12,13 @@ public class Player extends AbstractPlayer {
 	IStateGame stateGame; 
 	MouseListener listener = null;
 	boolean enable = false;
-	IPlayer player = this; 
+	IPlayer player = this;
 	
 	
 	public Player(String name, boolean color, Goban goban, IStateGame stateGame) {
 		super(name, color);
 		this.goban = goban;
 		this.stateGame = stateGame;
-		play();
 	}
 
 	@Override
@@ -27,7 +26,7 @@ public class Player extends AbstractPlayer {
 	 * A appeler une seule fois pour le joueur
 	 */
 	public void play() {
-		if (listener == null) {	
+		if (listener == null) {
 			listener = new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -35,12 +34,15 @@ public class Player extends AbstractPlayer {
 					short x = (short)Math.round((e.getX()-25.0)/30.0);
 					short y = (short)Math.round((e.getY()-25.0)/30.0);
 
-					if (raiseEvent(new PlayEvent(player, PlayEvent.AVANT, new Emplacement(x, y)))) {
-					
-						if (stateGame.play(x, y, getColor())) {
-							//goban.repaint();
-							raiseEvent(new PlayEvent(player, PlayEvent.APRES, new Emplacement(x, y)));
+					if (raiseEvent(new PlayEvent(player, PlayEvent.BEFORE, new Emplacement(x, y)))) {
+						try {
+							if (stateGame.play(x, y, getColor())) {
+								raiseEvent(new PlayEvent(player, PlayEvent.AFTER, new Emplacement(x, y)));
+							}							
+						} catch (Exception e2) {
+							System.out.println("Internal error : " + e2.getLocalizedMessage());
 						}
+
 					}
 				}
 			};

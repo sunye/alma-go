@@ -1,20 +1,21 @@
 package fr.alma.server.rule;
 
+import fr.alma.server.core.IEmplacement;
+import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 
-public class RuleAlreadyBusy implements IRule {
 
-	private IStateGame stateGame = null;
+public class RuleAlreadyBusy implements IRule {
 	
 	
-	public RuleAlreadyBusy(IStateGame stateGame) {
-		this.stateGame = stateGame;
+	public RuleAlreadyBusy() {
+		super();
 	}
 	
 	
 	@Override
-	public boolean accept(short col, short row) {
-		return stateGame.isFree(col, row);
+	public boolean accept(IStateGame stateGame, IEmplacement emplacement, IPlayer currentPlayer) {
+		return stateGame.isFree(emplacement.getCol(), emplacement.getRow());
 	}
 
 }
