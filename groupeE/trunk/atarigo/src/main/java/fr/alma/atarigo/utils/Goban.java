@@ -132,4 +132,8 @@ public class Goban {
         }
         return libertes;
     }
+
+    public PionVal[][] getGoban(){
+        return goban;
+    }
 }

@@ -94,6 +94,10 @@ public class Groupe {
         yeux.add(oeil);
     }
 
+    public int nbYeux(){
+        return yeux.size();
+    }
+
     public int getLibertes() {
         return libertes;
     }
