@@ -9,14 +9,16 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
+import fr.alma.server.rule.Configuration;
+
 public class Cadrillage {
 
 	private static BufferedImage[] arrayImage = new BufferedImage[10];
 
 	
 	public static void paintCadrillage(Graphics g) { 
-		for (short x = 0; x < Goban.LINE_V; x++)
-			for (short y = 0; y < Goban.LINE_H; y++) {
+		for (short x = 0; x < Configuration.LINE_V; x++)
+			for (short y = 0; y < Configuration.LINE_H; y++) {
 				BufferedImage image = getImage(x, y);
 				g.drawImage(image, 10+(image.getWidth()*x), 10+(image.getHeight()*y), null);
 			}
@@ -29,21 +31,21 @@ public class Cadrillage {
 		if (y == 0) {
 			if (x == 0)
 				indice = 1;
-			else if (x == Goban.LINE_V-1)
+			else if (x == Configuration.LINE_V-1)
 				indice = 3;
 			else 
 				indice = 2;
-		} else if (y == Goban.LINE_H-1) {
+		} else if (y == Configuration.LINE_H-1) {
 			if (x == 0)
 				indice = 7;
-			else if (x == Goban.LINE_V-1)
+			else if (x == Configuration.LINE_V-1)
 				indice = 9;
 			else 
 				indice = 8;
 		} else {
 			if (x == 0)
 				indice = 4;
-			else if (x == Goban.LINE_V-1)
+			else if (x == Configuration.LINE_V-1)
 				indice = 6;
 			else
 				indice = 5;

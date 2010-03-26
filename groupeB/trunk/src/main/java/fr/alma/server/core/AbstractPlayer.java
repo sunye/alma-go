@@ -14,6 +14,7 @@ public abstract class AbstractPlayer implements IPlayer {
 		this.color = color;
 	}
 	
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -30,6 +31,11 @@ public abstract class AbstractPlayer implements IPlayer {
 		return getPlayerListeners().remove(playListener);
 	}
 
+	public void removePlayListeners() {
+		getPlayerListeners().clear();
+	}
+	
+	
 	public List<PlayListener> getPlayerListeners() {
 		if (listPlayerActionListener == null) {
 			listPlayerActionListener = new Vector<PlayListener>();
@@ -40,7 +46,7 @@ public abstract class AbstractPlayer implements IPlayer {
 	protected boolean raiseEvent(PlayEvent event) {
 		boolean retour = true;
 		for (PlayListener listener : getPlayerListeners()) {
-			if (!listener.actionPerformed(event)) {
+			if (! listener.actionPerformed(event)) {
 				retour = false;
 			}
 		}

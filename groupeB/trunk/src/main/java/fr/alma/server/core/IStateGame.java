@@ -1,16 +1,14 @@
 package fr.alma.server.core;
 
-import fr.alma.client.ihm.GameLoader;
+import fr.alma.client.action.GameLoader;
 
 
 public interface IStateGame extends Cloneable {
-	public static final Boolean PLAYER = false;
-	public static final Boolean COMPUTER = true;
 	
 	boolean existChild();
 	
 	boolean isPlayable(short col, short row);
-	boolean play(short col, short row, boolean computer);
+	boolean play(short col, short row, boolean computer) throws Exception;
 	void remove(short col, short row);
 	short getMaxCol();
 	short getMaxRow();

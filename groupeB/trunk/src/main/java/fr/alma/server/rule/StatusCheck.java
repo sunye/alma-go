@@ -13,6 +13,7 @@ public class StatusCheck {
 	public boolean isCanPlay() {
 		return canPlay;
 	}
+	
 	public void setCanPlay(boolean canPlay) {
 		this.canPlay = canPlay;
 	}

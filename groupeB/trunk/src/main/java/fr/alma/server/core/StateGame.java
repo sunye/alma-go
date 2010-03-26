@@ -1,12 +1,12 @@
 package fr.alma.server.core;
 
 
-import fr.alma.client.ihm.GameLoader;
-import fr.alma.client.ihm.Goban;
+import fr.alma.client.action.GameLoader;
+import fr.alma.server.rule.Configuration;
 
 public class StateGame implements IStateGame {
 
-	private Boolean[][] intersection = new Boolean[Goban.LINE_V][Goban.LINE_H];
+	private Boolean[][] intersection = new Boolean[Configuration.LINE_V][Configuration.LINE_H];
 	
 	
 	@Override
@@ -14,16 +14,19 @@ public class StateGame implements IStateGame {
 		return false;
 	}
 
+	
 	@Override
 	public short getMaxCol() {
-		return Goban.LINE_V;
+		return Configuration.LINE_V;
 	}
 
+	
 	@Override
 	public short getMaxRow() {
-		return Goban.LINE_H;
+		return Configuration.LINE_H;
 	}
 
+	
 	@Override
 	public boolean isOver() {
 		// catch stone
@@ -38,15 +41,14 @@ public class StateGame implements IStateGame {
 
 	/**
 	 * Verifier les regles du jeu !
+	 * @throws Exception 
 	 */
 	@Override
-	public boolean play(short col, short row, boolean computer) {
-		/*
-		 *  Verifier les regles du jeu
-		 *  - Piece deja presente a l'emplacement
-		 *  - ...
-		 */
-		
+	public boolean play(short col, short row, boolean computer) throws Exception {
+		if (! isFree(col, row)) {
+			throw new Exception("busy box !");
+		}
+			
 		intersection[col][row] = computer;
 		return true;
 	}
@@ -58,7 +60,7 @@ public class StateGame implements IStateGame {
 
 	@Override
 	public boolean isComputer(short col, short row) {
-		return (intersection[col][row] == COMPUTER);
+		return (intersection[col][row] == Configuration.getColorComputer());
 	}
 
 	@Override
@@ -77,13 +79,15 @@ public class StateGame implements IStateGame {
 
 	@Override
 	public boolean isPlayer(short col, short row) {
-		return (intersection[col][row] == PLAYER);
+		return (intersection[col][row] == Configuration.getColorPlayer());
 	}
+	
 	
 	public Boolean[][] getGoban(){
 		return intersection;
 	}
 
+	
 	@Override
 	public Object getIntersection(short col, short row) {
 		return intersection[col][row];
@@ -95,7 +99,6 @@ public class StateGame implements IStateGame {
 		this.intersection = partyLoaded.loadGame(fileName);
 	}
 
-	
 	
 	@Override
 	public int countLocationOccupied() {
@@ -117,8 +120,13 @@ public class StateGame implements IStateGame {
 		
 		for (short cptCol = 0; cptCol < getMaxRow(); cptCol++) {
 			for (short cptRow = 0; cptRow < getMaxCol(); cptRow++) {
-				if (! isFree(cptCol, cptRow))
-					clone.play(cptCol, cptRow, (Boolean)getIntersection(cptCol, cptRow));
+				if (! isFree(cptCol, cptRow)) {
+					try {
+						clone.play(cptCol, cptRow, (Boolean)getIntersection(cptCol, cptRow));
+					} catch (Exception e) {
+						System.out.println("Internal error : " + e.getLocalizedMessage());
+					}
+				}
 			}
 		}
 		return clone;

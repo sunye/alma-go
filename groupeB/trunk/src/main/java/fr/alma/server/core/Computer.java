@@ -16,11 +16,15 @@ public class Computer extends AbstractPlayer {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				System.out.println("Computer start play ...");
+				System.out.println("Start thread computer");
 				IEmplacement emplacement = strategieGame.getEmplacementMax();
-				strategieGame.getStateGame().play(emplacement.getCol(), emplacement.getRow(), getColor());
-				System.out.println("Computer stop play ...");
-				raiseEvent(new PlayEvent(player, PlayEvent.APRES, emplacement));
+				try {
+					strategieGame.getStateGame().play(emplacement.getCol(), emplacement.getRow(), getColor());
+				} catch (Exception e) {
+					System.out.println("Internal error : " + e.getLocalizedMessage());
+				}
+				raiseEvent(new PlayEvent(player, PlayEvent.AFTER, emplacement));
+				System.out.println("Stop thread computer : " + emplacement);
 			}
 		};
 		new Thread(runnable).start();
@@ -32,6 +36,11 @@ public class Computer extends AbstractPlayer {
 		this.enable = enable;
 	}
 
+	
+	public boolean isEnabled() {
+		return enable;
+	}
+	
 	
 	public void setStrategieGame(IStrategy strategieGame) {
 		this.strategieGame = strategieGame;
