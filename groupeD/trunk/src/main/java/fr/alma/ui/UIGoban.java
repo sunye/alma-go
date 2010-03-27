@@ -107,19 +107,20 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 		//ici on reinit...
 		this.atariGo = myApplication.atarigo;
 		time=0;
-		if(!atariGo.currentPlayer.isHuman()){
+		while(!atariGo.currentPlayer.isHuman() && !atariGo.isOver()){
 			Tree jeu = new Tree(atariGo.goban);
 			ValuedGoban plv = new ValuedGoban(0);
 			AlphaBeta.init(3);
 			plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color);
-			atariGo.playMove(atariGo.currentPlayer.color, atariGo.goban.getDifference(plv.goban_));					
+			putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
 			System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes);
-
 			repaint();
-			atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
+			//atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
 		}		
 		repaint();
 	}
+	
+	
 	
 	
 	public void actionPerformed(ActionEvent e) {
@@ -166,11 +167,11 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 					ValuedGoban plv = new ValuedGoban(0);
 					AlphaBeta.init(3);
 					plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color);
-					atariGo.playMove(atariGo.currentPlayer.color, atariGo.goban.getDifference(plv.goban_));					
+					putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
 					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes);
 
 					repaint();
-					atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
+					//atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
 				}
 			}
 		}
@@ -183,7 +184,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	    case WIN:
 		myApplication.panInfos.setBlackLife(atariGo.captureObjective-atariGo.caughtBlack);
 		myApplication.panInfos.setWhiteLife(atariGo.captureObjective-atariGo.caughtWhite);
-	    repaint();
+		repaint();
 	    atariGo.shutDown();
 	    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" a gagné !", "Information", JOptionPane.INFORMATION_MESSAGE);
 		//sortie.println(plateau.toString());
