@@ -26,13 +26,16 @@ import fr.alma.server.rule.Configuration;
 public class IHMParam extends AbstractDialog {
 	public static final String[] LIST_GRIDSIZE = new String[]{"6x6", "9x9"};
 	public static final String[] LIST_COLOR = new String[]{"Black", "White"};
-	public static final String[] LIST_ROLE = new String[]{"Player", "Assistant"};
+	public static final String[] LIST_PLAYER = new String[]{"Computer", "Player"};
 	
 	JTextField tfTimeLimite;
+	
 	JCheckBox chkbPossibilityInterruption;
+	JCheckBox chkbAssistant;
 	JComboBox cbGrille;
 	JComboBox cbColorComputer;
-	JComboBox cbRoleComputer;
+	JComboBox cbOpponent;
+	
 	JTextField tfTargetCaptureComputer;
 	JTextField tfTargetCapturePlayer;
 	
@@ -51,7 +54,7 @@ public class IHMParam extends AbstractDialog {
     	
     	SpringLayout layout = new SpringLayout();
     	JPanel panel = new JPanel(layout);
-    	panel.setPreferredSize(new Dimension(400, 200));
+    	panel.setPreferredSize(new Dimension(410, 220));
     	panel.setBorder(loweredetched);
     	
     	getMainPanel().add(panel, BorderLayout.CENTER);
@@ -76,22 +79,28 @@ public class IHMParam extends AbstractDialog {
         cbGrille= new JComboBox(LIST_GRIDSIZE);
         cbGrille.setSelectedIndex(0);
         panel.add(cbGrille);
+        
+        JLabel labelOpponent = new JLabel("Play against : ");
+        panel.add(labelOpponent);
+        
+        cbOpponent = new JComboBox(LIST_PLAYER);
+        cbOpponent.setSelectedIndex(0);
+        panel.add(cbOpponent);
 
-        JLabel labelColorComputer = new JLabel("Color computer : ");
+        JLabel labelColorComputer = new JLabel("Color opponent : ");
         panel.add(labelColorComputer);
         
         cbColorComputer = new JComboBox(LIST_COLOR);
         cbColorComputer.setSelectedIndex(0);
         panel.add(cbColorComputer);
-
-        JLabel labelRoleComputer = new JLabel("Role computer : ");
+        
+        JLabel labelRoleComputer = new JLabel("Assistant : ");
         panel.add(labelRoleComputer);
         
-        cbRoleComputer = new JComboBox(LIST_ROLE);
-        cbRoleComputer.setSelectedIndex(0);
-        panel.add(cbRoleComputer);
+        chkbAssistant = new JCheckBox();
+        panel.add(chkbAssistant);
 
-        JLabel labelTargetCaptureComputer = new JLabel("Target capture computer : ");
+        JLabel labelTargetCaptureComputer = new JLabel("Target capture opponent : ");
         panel.add(labelTargetCaptureComputer);
         
         tfTargetCaptureComputer = new JTextField(5);
@@ -108,7 +117,7 @@ public class IHMParam extends AbstractDialog {
         panel.add(tfTargetCapturePlayer);
 
         SpringUtilities.makeCompactGrid(panel,
-                7, 2,		 //rows, cols
+                8, 2,		 //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
         
@@ -151,8 +160,16 @@ public class IHMParam extends AbstractDialog {
 	}
 
 	
-	public String getRoleComputer() {
-		return (String)cbGrille.getSelectedItem();
+	public boolean getAssitant() {
+		return  chkbAssistant.isSelected();
+	}
+	
+	private boolean getOpponent() {
+		if (cbOpponent.getSelectedIndex() == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public short getTargetCaptureComputer() {
@@ -202,12 +219,14 @@ public class IHMParam extends AbstractDialog {
 		param.setColorComputer(getColorComputer());
 		param.setGrille(getGridSize());
 		param.setPossibilityInterruption(getPossibilityInterruption());
-		param.setRoleComputer(getRoleComputer());
+		param.setAssistant(getAssitant());
+		param.setOpponent(getOpponent());
 		param.setTargetCaptureComputer(getTargetCaptureComputer());
 		param.setTargetCapturePlayer(getTargetCapturePlayer());
 		param.setTimeLimite(getTimeLimite());
 		return param;
 	}
+
 
 	@Override
 	public void actionOk() {

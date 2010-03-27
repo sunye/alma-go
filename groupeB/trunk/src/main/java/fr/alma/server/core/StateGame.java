@@ -9,7 +9,8 @@ public class StateGame implements IStateGame {
 	private Boolean[][] intersection = null;
 	private short lineV;
 	private short lineH;
-	
+	private short countLimitComputer;
+	private short countLimitPlayer;
 	
 	public StateGame(short lineV, short lineH) {
 		this.lineV = lineV;
@@ -141,10 +142,19 @@ public class StateGame implements IStateGame {
 		return clone;
 	}
 
-
 	@Override
 	public void clear() {
 		intersection = new Boolean[this.lineV][this.lineH];
+	}
+
+	@Override
+	public int countLimitComputer() {
+		return countLimitComputer;
+	}
+
+	@Override
+	public int countLimitPlayer() {
+		return countLimitPlayer;
 	}
 	
 }

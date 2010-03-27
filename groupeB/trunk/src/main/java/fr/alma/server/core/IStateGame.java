@@ -25,5 +25,7 @@ public interface IStateGame extends Cloneable {
 	public int countLocationOccupied();
 	public Object clone();
 	public void clear();
+	public int countLimitComputer();
+	public int countLimitPlayer();
 
 }

@@ -9,8 +9,7 @@ public class Configuration {
 	public static final Boolean BLACK = false;
 	
 	public static final short LINE_H = 6;
-	public static final short LINE_V = 6;
-	
+	public static final short LINE_V = 6;	
 	
 	public static boolean getColorFirstPlayer() {
 		return BLACK;
@@ -25,7 +24,6 @@ public class Configuration {
 	public static Boolean getColorComputer() {
 		return BLACK;
 	}
-	
 	
 	public static int getMaxDeepLevel() {
 		return LEVEL_MAX;

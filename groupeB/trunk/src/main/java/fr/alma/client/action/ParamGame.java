@@ -6,9 +6,10 @@ public class ParamGame {
 	private boolean possibilityInterruption;
 	private short grille;
 	private boolean colorComputer;
-	private String roleComputer;
+	private boolean assistant;
 	private short targetCaptureComputer;
 	private short targetCapturePlayer;
+	private boolean opponent;
 	
 	public short getTimeLimite() {
 		return timeLimite;
@@ -34,14 +35,6 @@ public class ParamGame {
 		this.grille = grille;
 	}
 	
-	public String getRoleComputer() {
-		return roleComputer;
-	}
-	
-	public void setRoleComputer(String roleComputer) {
-		this.roleComputer = roleComputer;
-	}
-	
 	public short getTargetCaptureComputer() {
 		return targetCaptureComputer;
 	}
@@ -64,5 +57,23 @@ public class ParamGame {
 
 	public void setColorComputer(boolean colorComputer) {
 		this.colorComputer = colorComputer;
+	}
+	
+	public boolean getAssistant(){
+		return assistant;
+	}
+
+	public void setAssistant(boolean assistant) {
+		this.assistant = assistant;
+		
+	}
+	
+	public boolean getOpponent(){
+		return opponent;
+	}
+	
+	public void setOpponent(boolean opponent) {
+		this.opponent = opponent;
+		
 	}
 }

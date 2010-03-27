@@ -24,59 +24,60 @@ import fr.alma.server.rule.RuleManager;
 public class Go extends JFrame {
 
 	Goban goban;
-	
+
 	public Go() {
 		super("Go Game");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 300, 340);
-		
-		
+
+
 		/*
-		 * Demander qui commence
-		 * Celui qui commence dispose des pierres blanches.
+		 * ask who start
+		 * who starts has the black stones
 		 */
 		IStateGame stateGame = Factory.getStateGame();
 		//stateGame.load(new GameLoader(), "TestCaptureSuicidaire.txt");
-		
+
 		Goban goban = Factory.getGoban(stateGame);
 		RuleManager ruleManager = Factory.getRuleManager();
-		
+
 		Coordinator coordinator = new Coordinator(goban, stateGame, ruleManager);
-		
-		IPlayer computer = new Computer("computer", Configuration.getColorComputer());		
-		IPlayer player = new Player("player", Configuration.getColorPlayer(), goban, stateGame);
-		
+		Context context = new Context();
+		IPlayer computer = new Computer("Computer", context.getParamGame().getColorComputer());
+		IPlayer player = new Player("Player", Configuration.getColorPlayer(), goban, stateGame);
+
 		IEvaluation evaluation = Factory.getEvaluation(computer, player);
-		
-		coordinator.setPlayers(player, computer);
-		
+
 		IStrategy strategy = Factory.getStrategy(coordinator);
 		computer.setStrategy(strategy);
 		computer.setEvaluation(evaluation);
 
-		Context context = new Context();
+		//Context context = new Context();
 		context.setMainFrame(this);
+		
+		coordinator.setPlayers(player, computer);
 		context.setCoordinator(coordinator);
 
 		setJMenuBar(Factory.getMenuBar(context));
 		setContentPane(goban);
 		Tools.center(this);
 		setVisible(true);
+		
 	}
-	
-	
-    public Container createContentPane() {
-        //Create the content-pane-to-be.
-        JPanel contentPane = new JPanel(new BorderLayout());
-        contentPane.setOpaque(true);
-        
-        //Add the goban to the content pane.
-        contentPane.add(goban, BorderLayout.CENTER);
 
-        return contentPane;
-    }
-    
-	
+
+	public Container createContentPane() {
+		//Create the content-pane-to-be.
+		JPanel contentPane = new JPanel(new BorderLayout());
+		contentPane.setOpaque(true);
+
+		//Add the goban to the content pane.
+		contentPane.add(goban, BorderLayout.CENTER);
+
+		return contentPane;
+	}
+
+
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -85,5 +86,5 @@ public class Go extends JFrame {
 			}				
 		});
 	}
-	
+
 }
