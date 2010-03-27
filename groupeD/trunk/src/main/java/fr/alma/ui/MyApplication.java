@@ -19,14 +19,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * Représente l'application graphique du jeu d'Atarigo.
+ * Represent the graphic application of the Atarigo game.
  * @author vincent
  *
  */
 class MyApplication extends JFrame {
 
 /**
- * plateau de l'atarigo
+ * board of the atarigo
  */
  protected UIGoban uiGoban;
  //TODO decrire les autres attributs
@@ -41,12 +41,12 @@ class MyApplication extends JFrame {
  
  
 /**
- * action consistant à quitter l'application. 
+ * action that quit the application. 
  */
  protected QuitAction quitAction;
 
 /**
- *  construit les barres de menus et d'outils.  
+ *  build the toobar and menus.  
  */
  protected void buildAll() {
 	menBar = new JMenuBar();
@@ -71,24 +71,14 @@ class MyApplication extends JFrame {
  }
 
 /**
- * constructeur logique
+ * logic constructor
  */
  public MyApplication() {
 
 	// Construction de la barre de menus et d'outils.
 	buildAll();
-
 	atarigo = new AtariGo(9,9);
-	atarigo.shutDown();
-
-	//création d'une instance du plateau
-	//Plateau plateau = new Plateau(9,9);
-	//atarigo = new AtariGo(9,9);
-	//test
-	//plateau.ecrireCase(new Position(0,0), Pion.BLANC);
-	//plateau.ecrireCase(new Position(1,2), Pion.NOIR);
-	//plateau.ecrireCase(new Position(8,8), Pion.NOIR);
-	
+	atarigo.shutDown();	
 	// Création d'une instance graphique du plateau.
 	uiGoban = new UIGoban(this);
 	uiGoban.setMaximumSize(new Dimension(360,360));
@@ -102,10 +92,8 @@ class MyApplication extends JFrame {
 	//uiplateau.tempo.start();
 	// Nom de la fenêtre.
 	setTitle("Atarigo");
-	
 	// Positionnement initial au milieu de l'écran.
 	setLocationRelativeTo(null);
-
 	// Comportement par défaut en cas de suppression de la fenêtre : tout
 	// doit passer par l'action Quitter.
 	addWindowListener(new WindowAdapter() {
@@ -117,9 +105,9 @@ class MyApplication extends JFrame {
  }
  
  /**
-  * démarre une partie d'Atarigo
-  * @param player1 le type de joueur humain ou IA
-  * @param player2 le type de joueur humain ou IA
+  * start a game of Atarigo
+  * @param player1 the type of player human or AI
+  * @param player2 the type of player human or AI
   * @throws InterruptedException
   */
  public void startGame(Player player1, Player player2,int challengeNb) throws InterruptedException{

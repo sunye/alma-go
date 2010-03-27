@@ -5,20 +5,20 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 /**
- * définition d'une classe {MonAction} représentant une action
- * commune à une entrée de menu et une entrée de barre d'outils.
+ * Definition of a classe {MyAction} representing an action
+ * from the menu and/or the toolbar.
  * @author vincent
  *
  */
 abstract class MyAction extends AbstractAction {
  
 /**
- * application de rattachement
+ * the attached application
  */
  protected MyApplication myApplication;
 
 /**
- * constructeur logique.
+ * logic constructor.
  */
  public MyAction(String nom, 
 		     Icon icone,

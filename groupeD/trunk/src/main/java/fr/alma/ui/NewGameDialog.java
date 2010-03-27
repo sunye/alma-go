@@ -24,7 +24,7 @@ import fr.alma.atarigo.IAPlayer;
 import fr.alma.atarigo.Stone;
 
 /**
- * Classe implémentant la boite de dialogue pour les paramètres d'une nouvelle partie.
+ * Dialogbox for the parameters of a new game.
  * @author vincent
  *
  */
@@ -56,7 +56,7 @@ public class NewGameDialog extends JDialog {
     JSpinner spinner1 = new JSpinner(model1);
 
 	/**
-	 * initialise les différents composants de la boite de dialogue
+	 * initialise the different components of the dialog box.
 	 *
 	 */
 	public void initComponent(){
@@ -85,7 +85,7 @@ public class NewGameDialog extends JDialog {
 	}
 	
 	/**
-     * classe qui écoute notre bouton Go !
+     * listener of the go button starting the game
      */
     public class GoListener implements ActionListener{
 
@@ -130,8 +130,8 @@ public class NewGameDialog extends JDialog {
     }
     
     /**
-     * enregistre les paramètres de la nouvelle partie
-     * et appelle la méthode demarrer de la classe {MonApplication}
+     * save the parameters of the new game
+     * and call the methode start of the class {MyApplication}
      * @throws InterruptedException
      */
     public void startGame() throws InterruptedException {
@@ -155,7 +155,7 @@ public class NewGameDialog extends JDialog {
     }
     
     /**
-     * classe qui écoute notre bouton Quitter
+     * class listening the button quit
      */
     public class QuitListener implements ActionListener{
 
