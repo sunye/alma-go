@@ -1,0 +1,27 @@
+<project name="Obi-Go">
+    <publishDate position="right"/>
+    <version position="right"/>
+    <bannerLeft>
+        <name>ObiGo</name>
+        <src>http://guille.adrien.free.fr/obigo.png</src>
+    </bannerLeft>
+    <bannerRight>
+        <src>http://guille.adrien.free.fr/obigo.png</src>
+    </bannerRight>
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-stylus-skin</artifactId>
+        <version>1.0</version>
+    </skin>
+    <body>
+        <menu name="Project Guide">
+            <item name="Presentation" href="guide.html"/>
+            <item name="How-to" href="basics.html"/>
+        </menu>
+        <menu ref="reports"/>
+        <links>
+            <item name="Master ALMA" href="http://alma.univ-nantes.fr/"/>
+        </links>
+
+    </body>
+</project>
