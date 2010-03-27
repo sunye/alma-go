@@ -9,43 +9,44 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
-import fr.alma.server.rule.Configuration;
+import fr.alma.client.action.Context;
+
 
 public class Cadrillage {
 
 	private static BufferedImage[] arrayImage = new BufferedImage[10];
 
 	
-	public static void paintCadrillage(Graphics g) { 
-		for (short x = 0; x < Configuration.LINE_V; x++)
-			for (short y = 0; y < Configuration.LINE_H; y++) {
-				BufferedImage image = getImage(x, y);
+	public static void paintCadrillage(Graphics g, Context context) { 
+		for (int x = 0; x < context.getSizeGoban(); x++)
+			for (int y = 0; y < context.getSizeGoban(); y++) {
+				BufferedImage image = getImage(x, y, context);
 				g.drawImage(image, 10+(image.getWidth()*x), 10+(image.getHeight()*y), null);
 			}
 	}
 	
 	
-	public static BufferedImage getImage(short x, short y) {
-		short indice = 0;
+	public static BufferedImage getImage(int x, int y, Context context) {
+		int indice = 0;
 
 		if (y == 0) {
 			if (x == 0)
 				indice = 1;
-			else if (x == Configuration.LINE_V-1)
+			else if (x == context.getSizeGoban()-1)
 				indice = 3;
 			else 
 				indice = 2;
-		} else if (y == Configuration.LINE_H-1) {
+		} else if (y == context.getSizeGoban()-1) {
 			if (x == 0)
 				indice = 7;
-			else if (x == Configuration.LINE_V-1)
+			else if (x == context.getSizeGoban()-1)
 				indice = 9;
 			else 
 				indice = 8;
 		} else {
 			if (x == 0)
 				indice = 4;
-			else if (x == Configuration.LINE_V-1)
+			else if (x == context.getSizeGoban()-1)
 				indice = 6;
 			else
 				indice = 5;

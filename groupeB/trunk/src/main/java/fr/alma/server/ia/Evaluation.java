@@ -3,6 +3,7 @@ package fr.alma.server.ia;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.alma.client.action.Context;
 import fr.alma.server.core.Emplacement;
 import fr.alma.server.core.IEmplacement;
 import fr.alma.server.core.IPlayer;
@@ -11,13 +12,11 @@ import fr.alma.server.rule.StatusCheck;
 
 public class Evaluation implements IEvaluation {
 
-	private IPlayer computer = null;
-	private IPlayer player = null;
-
+	Context context = null;
 	
-	public Evaluation(IPlayer computer, IPlayer player) {
-		this.computer = computer;
-		this.player = player;
+	
+	public Evaluation(Context context) {
+		this.context = context;
 	}
 	
 	
@@ -53,14 +52,14 @@ public class Evaluation implements IEvaluation {
 	private int[] searchDegrees(IPlayer player, IStateGame stateGame) {
 		
 		List<IEmplacement> emplacements = new ArrayList<IEmplacement>();
-		int[] aDegreeFree = new int[Tools.getMaxDegreeFree()];
+		int[] aDegreeFree = new int[Tools.getMaxDegreeFree(context)];
 		IEmplacement emplacement = null;
 		int degreeFree = 0;
 		boolean find;
 		boolean isComputer = (player == getComputer());
 
-		for (short col = 0; col < stateGame.getMaxCol(); col++) {
-			for (short row = 0; row < stateGame.getMaxRow(); row++) {
+		for (int col = 0; col < stateGame.getMaxCol(); col++) {
+			for (int row = 0; row < stateGame.getMaxRow(); row++) {
 				if ((isComputer && stateGame.isPlayer(col, row)) || ((! isComputer) && stateGame.isComputer(col, row))) {
 					emplacement = new Emplacement(col, row);
 					find = false;
@@ -95,12 +94,12 @@ public class Evaluation implements IEvaluation {
 	
 	
 	public IPlayer getComputer() {
-		return computer;
+		return context.getComputer();
 	}
 
 	
 	public IPlayer getPlayer() {
-		return player;
+		return context.getPlayer();
 	}
 
 }

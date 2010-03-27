@@ -2,20 +2,20 @@ package fr.alma.client.action;
 
 
 public class ParamGame {
-	private short timeLimite;
+	private int timeLimite;
 	private boolean possibilityInterruption;
-	private short grille;
+	private int grille;
 	private boolean colorComputer;
 	private boolean assistant;
-	private short targetCaptureComputer;
-	private short targetCapturePlayer;
+	private int targetCaptureComputer;
+	private int targetCapturePlayer;
 	private boolean opponent;
 	
-	public short getTimeLimite() {
+	public int getTimeLimite() {
 		return timeLimite;
 	}
 	
-	public void setTimeLimite(short timeLimite) {
+	public void setTimeLimite(int timeLimite) {
 		this.timeLimite = timeLimite;
 	}
 	
@@ -27,27 +27,27 @@ public class ParamGame {
 		this.possibilityInterruption = possibilityInterruption;
 	}
 	
-	public short getGrille() {
+	public int getGrille() {
 		return grille;
 	}
 	
-	public void setGrille(short grille) {
+	public void setGrille(int grille) {
 		this.grille = grille;
 	}
 	
-	public short getTargetCaptureComputer() {
+	public int getTargetCaptureComputer() {
 		return targetCaptureComputer;
 	}
 	
-	public void setTargetCaptureComputer(short targetCaptureComputer) {
+	public void setTargetCaptureComputer(int targetCaptureComputer) {
 		this.targetCaptureComputer = targetCaptureComputer;
 	}
 	
-	public short getTargetCapturePlayer() {
+	public int getTargetCapturePlayer() {
 		return targetCapturePlayer;
 	}
 	
-	public void setTargetCapturePlayer(short targetCapturePlayer) {
+	public void setTargetCapturePlayer(int targetCapturePlayer) {
 		this.targetCapturePlayer = targetCapturePlayer;
 	}
 

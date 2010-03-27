@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.alma.client.action.Context;
+import fr.alma.client.action.ParamGame;
 import fr.alma.server.core.Computer;
 import fr.alma.server.core.Factory;
 import fr.alma.server.core.ICoordinator;
@@ -29,17 +31,20 @@ public class TestAlphaBeta {
 	RuleManager ruleManager;
 	ICoordinator coordinator;
 	IStrategy strategy;
+	Context context;
 	
 	
 	@Before
 	public void setUp() throws Exception {
 		
-		short lineV = 2;
-		short lineH = 2;
-		stateGame = new StateGame(lineV, lineH);
-		computer = new Computer("computer", Configuration.getColorComputer());
-		player = new Player("adversaire", Configuration.getColorPlayer(), null, stateGame);	
-		stateGame.play((short)0, (short)0, player.getColor());
+		context = new Context();
+		ParamGame param = new ParamGame();
+		param.setGrille(2);
+				
+		stateGame = new StateGame(context);
+		computer = new Computer("computer", Configuration.BLACK);
+		player = new Player("adversaire", Configuration.WHITE, null, stateGame);	
+		stateGame.play(0, 0, player.getColor());
 		evaluation = new TestEvaluation();
 		ruleManager = Factory.getRuleManager();
 		
@@ -67,6 +72,10 @@ public class TestAlphaBeta {
 
 			@Override
 			public void startGame() {
+			}
+
+			@Override
+			public void cleanUp() {
 			}
 			
 		};
@@ -100,10 +109,10 @@ public class TestAlphaBeta {
 			
 			/* P C 
 			 * P C */
-			if	(stateGame.isPlayer((short)0, (short)0) 
-				&& stateGame.isPlayer((short)0, (short)1)
-				&& stateGame.isComputer((short)1, (short)0)
-				&& stateGame.isComputer((short)1, (short)1)) {
+			if	(stateGame.isPlayer(0, 0) 
+				&& stateGame.isPlayer(0, 1)
+				&& stateGame.isComputer(1, 0)
+				&& stateGame.isComputer(1, 1)) {
 
 				if (status.getWinner() == computer)
 					return 1;
@@ -112,10 +121,10 @@ public class TestAlphaBeta {
 
 				/* P P
 				 * C C */
-			} else if (stateGame.isPlayer((short)0, (short)0) 
-				&& stateGame.isPlayer((short)1, (short)0)
-				&& stateGame.isComputer((short)0, (short)1)
-				&& stateGame.isComputer((short)1, (short)1)) {
+			} else if (stateGame.isPlayer(0, 0) 
+				&& stateGame.isPlayer(1, 0)
+				&& stateGame.isComputer(0, 1)
+				&& stateGame.isComputer(1, 1)) {
 
 				if (status.getWinner() == computer)
 					return 1;
@@ -124,20 +133,20 @@ public class TestAlphaBeta {
 
 				/* P C
 				 *   P */
-			} else if (stateGame.isPlayer((short)0, (short)0) 
-				&& stateGame.isPlayer((short)1, (short)1)
-				&& stateGame.isComputer((short)1, (short)0)
-				&& stateGame.isFree((short)0, (short)1)) {
+			} else if (stateGame.isPlayer(0, 0) 
+				&& stateGame.isPlayer(1, 1)
+				&& stateGame.isComputer(1, 0)
+				&& stateGame.isFree(0, 1)) {
 				
 				assertTrue(status.getWinner() == player);
 				return -1;
 				
 			/* P 
 			 * C P */
-			} else if (stateGame.isPlayer((short)0, (short)0) 
-				&& stateGame.isPlayer((short)1, (short)1)
-				&& stateGame.isFree((short)1, (short)0)
-				&& stateGame.isComputer((short)0, (short)1)) {				
+			} else if (stateGame.isPlayer(0, 0) 
+				&& stateGame.isPlayer(1, 1)
+				&& stateGame.isFree(1, 0)
+				&& stateGame.isComputer(0, 1)) {				
 			
 				assertTrue(status.getWinner() == player);
 				return -1;

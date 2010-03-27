@@ -2,9 +2,10 @@ package fr.alma.server.core;
 
 import java.util.List;
 
+import fr.alma.client.ihm.GoObject;
 import fr.alma.server.ia.IEvaluation;
 
-public interface IPlayer {
+public interface IPlayer extends GoObject {
 	
 	Boolean getColor();
 	void play();

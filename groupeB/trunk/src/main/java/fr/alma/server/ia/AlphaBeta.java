@@ -29,11 +29,11 @@ public class AlphaBeta implements IStrategy {
 
 	
 	/* Interet de les avoir en global : toujours disponibes ! */
-	private short rowMax = -1, colMax = -1;
+	private int rowMax = -1, colMax = -1;
 	int cpt = 0;
 	boolean gameOver = false;
-	short cptCol = 0;
-	short cptRow = 0;
+	int cptCol = 0;
+	int cptRow = 0;
 	boolean trace;
 	
 	
@@ -117,8 +117,8 @@ public class AlphaBeta implements IStrategy {
 		if (trace)
 			System.out.println("Level " + level + " -> Recherche max");
 		
-		for (short col = 0; col < stateGame.getMaxCol(); col++) {
-			for (short row = 0; row < stateGame.getMaxRow(); row++) {
+		for (int col = 0; col < stateGame.getMaxCol(); col++) {
+			for (int row = 0; row < stateGame.getMaxRow(); row++) {
 				StatusCheck status = coordinator.getRuleManager().checkBefore(stateGame, new Emplacement(col, row), getComputer());
 				if ((max < extremum) && status.isCanPlay()) {
 					try {
@@ -147,8 +147,8 @@ public class AlphaBeta implements IStrategy {
 		
 		if (trace)
 			System.out.println("Level " + level + " -> Recherche min");
-		for (short col = 0; col < stateGame.getMaxCol(); col++) {
-			for (short row = 0; row < stateGame.getMaxRow(); row++) {
+		for (int col = 0; col < stateGame.getMaxCol(); col++) {
+			for (int row = 0; row < stateGame.getMaxRow(); row++) {
 				StatusCheck status = coordinator.getRuleManager().checkBefore(stateGame, new Emplacement(col, row), getPlayer());
 				if ((min > extremum) && status.isCanPlay()) {
 					try {

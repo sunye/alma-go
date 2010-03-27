@@ -19,7 +19,16 @@ import fr.alma.client.action.Context;
 import fr.alma.client.action.ParamGame;
 import fr.alma.common.ui.SpringUtilities;
 import fr.alma.common.ui.Tools;
+import fr.alma.server.core.Computer;
+import fr.alma.server.core.Coordinator;
+import fr.alma.server.core.Factory;
+import fr.alma.server.core.IPlayer;
+import fr.alma.server.core.IStateGame;
+import fr.alma.server.core.IStrategy;
+import fr.alma.server.core.Player;
+import fr.alma.server.ia.IEvaluation;
 import fr.alma.server.rule.Configuration;
+import fr.alma.server.rule.RuleManager;
 
 
 @SuppressWarnings("serial")
@@ -40,7 +49,7 @@ public class IHMParam extends AbstractDialog {
 	JTextField tfTargetCapturePlayer;
 	
 	Context context = null;
-	
+	Goban goban = null;
 	
 	
 	public IHMParam(Context context) {
@@ -134,8 +143,8 @@ public class IHMParam extends AbstractDialog {
 	}
 	
 	
-	public short getTimeLimite() {
-		return new Short(tfTimeLimite.getText()).shortValue();
+	public int getTimeLimite() {
+		return new Integer(tfTimeLimite.getText()).intValue();
 	}
 
 
@@ -143,7 +152,7 @@ public class IHMParam extends AbstractDialog {
 		return chkbPossibilityInterruption.isSelected();
 	}
 	
-	public short getGridSize() {
+	public int getGridSize() {
 		if (cbGrille.getSelectedIndex() == 0) {
 			return 6;
 		} else {
@@ -172,13 +181,13 @@ public class IHMParam extends AbstractDialog {
 		}
 	}
 
-	public short getTargetCaptureComputer() {
-		return new Short(tfTargetCaptureComputer.getText()).shortValue();
+	public int getTargetCaptureComputer() {
+		return new Integer(tfTargetCaptureComputer.getText()).intValue();
 	}
 	
 	
-	public short getTargetCapturePlayer() {
-		return new Short(tfTargetCapturePlayer.getText()).shortValue();
+	public int getTargetCapturePlayer() {
+		return new Integer(tfTargetCapturePlayer.getText()).intValue();
 	}
 	
 	
@@ -232,15 +241,61 @@ public class IHMParam extends AbstractDialog {
 	public void actionOk() {
 		
 		if (controlSaisie()) {
-			getContext().setParamGame(getParamGame());
+			initContext();
 			this.setVisible(false);
 			getContext().getCoordinator().startGame();
 		}
+	}
+	
+	
+	private void initContext() {
+		
+		if (getContext().getCoordinator() != null) {
+			getContext().getCoordinator().cleanUp();
+			getContext().getStateGame().cleanUp();
+			getContext().getComputer().cleanUp();
+			getContext().getPlayer().cleanUp();
+		}
+		
+		getContext().setParamGame(getParamGame());
+		
+		IStateGame stateGame = Factory.getStateGame(getContext());
+		getContext().setStateGame(stateGame);
+		
+		RuleManager ruleManager = Factory.getRuleManager();
+		getContext().setRuleManger(ruleManager);
+		
+		Coordinator coordinator = new Coordinator(getContext());
+
+		if (goban == null) {
+			getContext().setGoban(getGoban());
+			context.getMainFrame().setContentPane(goban);
+		}
+		goban.revalidate();
+		
+		IPlayer computer = new Computer("Computer", context.getParamGame().getColorComputer());
+		IPlayer player = new Player("Player", ! context.getParamGame().getColorComputer(), goban, stateGame);
+
+		IEvaluation evaluation = Factory.getEvaluation(context);
+		IStrategy strategy = Factory.getStrategy(coordinator);
+		computer.setStrategy(strategy);
+		computer.setEvaluation(evaluation);
+		getContext().setPlayer(player);
+		getContext().setComputer(computer);
+		
+		context.setCoordinator(coordinator);
 	}
 
 
 	public Context getContext() {
 		return context;
+	}
+	
+	public Goban getGoban() {
+		if (goban == null) {
+			goban = Factory.getGoban(getContext());
+		}
+		return goban;			
 	}
 }
 

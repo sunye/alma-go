@@ -1,25 +1,26 @@
 package fr.alma.server.core;
 
 import fr.alma.client.action.GameLoader;
+import fr.alma.client.ihm.GoObject;
 
 
-public interface IStateGame extends Cloneable {
+public interface IStateGame extends Cloneable, GoObject {
 	
 	boolean existChild();
 	
-	boolean isPlayable(short col, short row);
-	boolean play(short col, short row, boolean computer) throws Exception;
-	void remove(short col, short row);
-	short getMaxCol();
-	short getMaxRow();
+	boolean isPlayable(int col, int row);
+	boolean play(int col, int row, boolean computer) throws Exception;
+	void remove(int col, int row);
+	int getMaxCol();
+	int getMaxRow();
 	boolean isOver();
-	boolean isFree(short col, short row);
-	boolean isComputer(short col, short row);
-	boolean isPlayer(short col, short row);
+	boolean isFree(int col, int row);
+	boolean isComputer(int col, int row);
+	boolean isPlayer(int col, int row);
 
-	boolean onGoban(short col, short row);
+	boolean onGoban(int col, int row);
 
-	Object getIntersection(short col, short row);
+	Object getIntersection(int col, int row);
 
 	void load(GameLoader gameLoaded, String fileName);
 	public int countLocationOccupied();

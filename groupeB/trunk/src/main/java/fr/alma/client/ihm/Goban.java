@@ -3,25 +3,25 @@ package fr.alma.client.ihm;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
-import fr.alma.server.core.IStateGame;
+import fr.alma.client.action.Context;
 
 @SuppressWarnings("serial")
 public class Goban extends JPanel {
 	
-	private IStateGame stateGame;
+	private Context context;
 	
 	
-	public Goban(IStateGame stateGame) {
+	public Goban(Context context) {
 		super(null);
-		this.stateGame = stateGame; 		
+		this.context = context; 		
 	}
 	
 	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Cadrillage.paintCadrillage(g);
-		Pierre.paintPierre(g, stateGame);
+		Cadrillage.paintCadrillage(g, context);
+		Pierre.paintPierre(g, context);
 	}
 
 }

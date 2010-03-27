@@ -1,8 +1,9 @@
 package fr.alma.server.core;
 
+import fr.alma.client.ihm.GoObject;
 import fr.alma.server.rule.RuleManager;
 
-public interface ICoordinator {
+public interface ICoordinator extends GoObject{
 
 	public abstract IPlayer getComputer();
 

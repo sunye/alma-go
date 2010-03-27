@@ -10,7 +10,6 @@ import fr.alma.client.ihm.Menu;
 import fr.alma.server.ia.AlphaBeta;
 import fr.alma.server.ia.Evaluation;
 import fr.alma.server.ia.IEvaluation;
-import fr.alma.server.rule.Configuration;
 import fr.alma.server.rule.RuleManager;
 
 
@@ -22,13 +21,13 @@ public class Factory {
 	}
 	
 	
-	public static IStateGame getStateGame() {
-		return new StateGame(Configuration.LINE_V, Configuration.LINE_H);
+	public static IStateGame getStateGame(Context context) {
+		return new StateGame(context);
 	}
 	
 	
-	public static Goban getGoban(IStateGame stateGame) {
-		return new Goban(stateGame);
+	public static Goban getGoban(Context context) {
+		return new Goban(context);
 	}
 	
 	
@@ -37,8 +36,8 @@ public class Factory {
 	}
 
 	
-	public static IEvaluation getEvaluation(IPlayer computer, IPlayer player) {
-		return new Evaluation(computer, player);
+	public static IEvaluation getEvaluation(Context context) {
+		return new Evaluation(context);
 	}
 	
 	
