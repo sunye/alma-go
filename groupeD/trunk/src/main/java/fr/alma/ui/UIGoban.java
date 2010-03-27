@@ -107,6 +107,17 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 		//ici on reinit...
 		this.atariGo = myApplication.atarigo;
 		time=0;
+		if(!atariGo.currentPlayer.isHuman()){
+			Tree jeu = new Tree(atariGo.goban);
+			ValuedGoban plv = new ValuedGoban(0);
+			AlphaBeta.init(3);
+			plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color);
+			atariGo.playMove(atariGo.currentPlayer.color, atariGo.goban.getDifference(plv.goban_));					
+			System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes);
+
+			repaint();
+			atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
+		}		
 		repaint();
 	}
 	
