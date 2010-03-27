@@ -24,5 +24,6 @@ public interface IStateGame extends Cloneable {
 	void load(GameLoader gameLoaded, String fileName);
 	public int countLocationOccupied();
 	public Object clone();
+	public void clear();
 
 }

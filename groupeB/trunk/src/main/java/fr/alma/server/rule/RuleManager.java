@@ -38,6 +38,7 @@ public class RuleManager {
 			status.setCanPlay(true);
 			status.setGameOver(true);
 			status.setEmplacement(emplacement);
+			status.setWinner(currentPlayer);
 			return status;
 		}
 		
@@ -57,6 +58,7 @@ public class RuleManager {
 			status.setCanPlay(true);
 			status.setGameOver(true);
 			status.setEmplacement(emplacement);
+			status.setWinner(currentPlayer);
 			return status;
 		}
 		

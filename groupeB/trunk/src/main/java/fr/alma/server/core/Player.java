@@ -5,14 +5,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import fr.alma.client.ihm.Goban;
+import fr.alma.server.ia.IEvaluation;
 
 public class Player extends AbstractPlayer {
 
-	Goban goban = null;
-	IStateGame stateGame; 
-	MouseListener listener = null;
-	boolean enable = false;
-	IPlayer player = this;
+	private Goban goban = null;
+	private IStateGame stateGame; 
+	private MouseListener listener = null;
+	private boolean enabled = false;
+	private IPlayer player = this;
 	
 	
 	public Player(String name, boolean color, Goban goban, IStateGame stateGame) {
@@ -52,8 +53,12 @@ public class Player extends AbstractPlayer {
 	
 	
 	@Override
-	public void setEnabled(boolean enable) {
-		this.enable = enable;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+	
+	public boolean isEnabled() {
+		return enabled;
 	}
 	
 	
@@ -62,7 +67,16 @@ public class Player extends AbstractPlayer {
 	}
 	
 	
-	public void setStrategieGame(IStrategy strategieGame) {
+	@Override
+	public void setStrategy(IStrategy strategieGame) {
+	}
+
+	@Override
+	public void setEvaluation(IEvaluation evaluation) {
+	}
+
+	public boolean isEnable() {
+		return enabled;
 	}
 	
 }

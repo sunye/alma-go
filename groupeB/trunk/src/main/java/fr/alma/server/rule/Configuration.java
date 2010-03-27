@@ -3,13 +3,13 @@ package fr.alma.server.rule;
 
 public class Configuration {
 
-	private static final int LEVEL_MAX = 7;
+	private static final int LEVEL_MAX = 6;
 	
 	public static final Boolean WHITE = true;
 	public static final Boolean BLACK = false;
 	
-	public static final short LINE_H = 9;
-	public static final short LINE_V = 9;
+	public static final short LINE_H = 6;
+	public static final short LINE_V = 6;
 	
 	
 	public static boolean getColorFirstPlayer() {

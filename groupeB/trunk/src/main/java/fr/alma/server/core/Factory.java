@@ -8,6 +8,9 @@ import fr.alma.client.ihm.Goban;
 import fr.alma.client.ihm.IHMParam;
 import fr.alma.client.ihm.Menu;
 import fr.alma.server.ia.AlphaBeta;
+import fr.alma.server.ia.Evaluation;
+import fr.alma.server.ia.IEvaluation;
+import fr.alma.server.rule.Configuration;
 import fr.alma.server.rule.RuleManager;
 
 
@@ -20,7 +23,7 @@ public class Factory {
 	
 	
 	public static IStateGame getStateGame() {
-		return new StateGame();
+		return new StateGame(Configuration.LINE_V, Configuration.LINE_H);
 	}
 	
 	
@@ -29,9 +32,15 @@ public class Factory {
 	}
 	
 	
-	public static IStrategy getStrategy(Coordinator coordinator) {
+	public static IStrategy getStrategy(ICoordinator coordinator) {
 		return new AlphaBeta(coordinator);
 	}
+
+	
+	public static IEvaluation getEvaluation(IPlayer computer, IPlayer player) {
+		return new Evaluation(computer, player);
+	}
+	
 	
 	
 	public static JMenuBar getMenuBar(Context context) {

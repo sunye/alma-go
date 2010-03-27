@@ -2,11 +2,11 @@ package fr.alma.client.action;
 
 import javax.swing.JFrame;
 
-import fr.alma.server.core.Coordinator;
+import fr.alma.server.core.ICoordinator;
 
 public class Context {
 
-	Coordinator coordinator;
+	ICoordinator coordinator;
 	JFrame MainFrame;
 	ParamGame paramGame;
 	
@@ -24,12 +24,12 @@ public class Context {
 	}
 
 
-	public Coordinator getCoordinator() {
+	public ICoordinator getCoordinator() {
 		return coordinator;
 	}
 
 	
-	public void setCoordinator(Coordinator coordinator) {
+	public void setCoordinator(ICoordinator coordinator) {
 		this.coordinator = coordinator;
 	}
 

@@ -52,4 +52,8 @@ public abstract class AbstractPlayer implements IPlayer {
 		}
 		return retour;
 	};
+	
+	public String toString() {
+		return name;
+	}
 }

@@ -2,10 +2,11 @@ package fr.alma.server.core;
 
 
 import fr.alma.client.ihm.Goban;
+import fr.alma.server.ia.Tools;
 import fr.alma.server.rule.Configuration;
 import fr.alma.server.rule.RuleManager;
 
-public class Coordinator {
+public class Coordinator implements ICoordinator {
 	
 	private PlayListener playListener;
 	private IPlayer player;
@@ -25,6 +26,7 @@ public class Coordinator {
 
 	
 	public void startGame() {
+		getStateGame().clear();
 		setCurrentPlayer(getPlayer(Configuration.getColorFirstPlayer()));
 		playInThread();
 	}
@@ -63,6 +65,7 @@ public class Coordinator {
 					
 					/* Control if the game is over */
 					if (getRuleManager().checkAfter(stateGame, e.getEmplacement(), getCurrentPlayer()).isGameOver()) {
+						Tools.showGobanOnConsole(stateGame);
 						System.out.println("Game over - winner is : " + getCurrentPlayer().getName());
 						getPlayer().setEnabled(false);
 						getComputer().setEnabled(false);
@@ -95,11 +98,17 @@ public class Coordinator {
 	}
 
 	
+	/* (non-Javadoc)
+	 * @see fr.alma.server.core.IGenerator#getComputer()
+	 */
 	public IPlayer getComputer() {
 		return computer;
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see fr.alma.server.core.IGenerator#getPlayer()
+	 */
 	public IPlayer getPlayer() {
 		return player;
 	}
@@ -133,11 +142,17 @@ public class Coordinator {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see fr.alma.server.core.IGenerator#getRuleManager()
+	 */
 	public RuleManager getRuleManager() {
 		return ruleManager;
 	}
 
 
+	/* (non-Javadoc)
+	 * @see fr.alma.server.core.IGenerator#getStateGame()
+	 */
 	public IStateGame getStateGame() {
 		return stateGame;
 	}
