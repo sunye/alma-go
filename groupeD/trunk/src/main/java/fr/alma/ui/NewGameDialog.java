@@ -149,6 +149,9 @@ public class NewGameDialog extends JDialog {
     	else{
     		player2 = new IAPlayer(Stone.WHITE,"obi");
     	}
+    	myApp.panInfos.setChallenge(model1.getNumber().intValue());
+    	myApp.panInfos.setBlackLife(model1.getNumber().intValue());
+    	myApp.panInfos.setWhiteLife(model1.getNumber().intValue());
     	myApp.startGame(player1,player2,model1.getNumber().intValue());
     	setVisible(false);
     	

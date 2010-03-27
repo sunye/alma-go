@@ -152,6 +152,8 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 				//ici on joue le coup  et on test avant pr savoir etat du jeu en cours...
 				switch (atariGo.playMove(atariGo.currentPlayer.color, new Position(x,y))) {
 			    case WIN:
+				myApplication.panInfos.setBlackLife(atariGo.captureObjective-atariGo.caughtBlack);
+				myApplication.panInfos.setWhiteLife(atariGo.captureObjective-atariGo.caughtWhite);
 			    repaint();
 			    atariGo.shutDown();
 			    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" a gagné !", "Information", JOptionPane.INFORMATION_MESSAGE);
@@ -162,6 +164,8 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 			    case NEUTRAL:
 				//nombreCoups --;
 			    atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
+			    myApplication.panInfos.setBlackLife(atariGo.captureObjective-atariGo.caughtBlack);
+			    myApplication.panInfos.setWhiteLife(atariGo.captureObjective-atariGo.caughtWhite);
 				System.out.println("onpasse au joueur"+atariGo.currentPlayer.toString());
 			    break;
 			    default:
