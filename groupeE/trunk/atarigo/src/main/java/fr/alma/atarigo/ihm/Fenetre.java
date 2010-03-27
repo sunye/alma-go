@@ -1,3 +1,9 @@
+/**
+ * @file Fenetre.java
+ *
+ * This file has been originaly developed by Anthony Caillaud. Thanks to him for sharing.
+ */
+
 package fr.alma.atarigo.ihm;
 
 import java.awt.*;
@@ -9,6 +15,11 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.*;
 
+/**
+ * This class describes the main window of the application. It defines main buttons and actions.
+ * 
+ * @author judu
+ */
 public class Fenetre extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 1L;

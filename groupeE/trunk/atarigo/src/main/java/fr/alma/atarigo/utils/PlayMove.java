@@ -24,7 +24,7 @@ public class PlayMove {
      * @param pion
      * @return
      */
-    public Groupe getGroupeContaining(Pion pion) {
+    public Groupe getGroupeContaining(Stone pion) {
         for (Groupe groupe : groups) {
             if (groupe.contains(pion)) {
                 return groupe;

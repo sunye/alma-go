@@ -60,52 +60,55 @@ public class Goban {
             return goban[ligne][colonne];
     }
 
-    public List<Pion> getVoisins(Pion pion) {
-        ArrayList<Pion> pions = new ArrayList<Pion>(4);
+    public List<Stone> getVoisins(Stone pion) {
+        ArrayList<Stone> pions = new ArrayList<Stone>(4);
 
         if (bonneCoords(pion.getLigne() + 1, pion.getColonne()) && (goban[pion.getLigne() + 1][pion.getColonne()] != PionVal.RIEN)) {
-            pions.add(new Pion(goban[pion.getLigne() + 1][pion.getColonne()], pion.getLigne() + 1, pion.getColonne()));
+            pions.add(new Stone(goban[pion.getLigne() + 1][pion.getColonne()], pion.getLigne() + 1, pion.getColonne()));
         }
 
         if (bonneCoords(pion.getLigne() - 1, pion.getColonne()) && (goban[pion.getLigne() - 1][pion.getColonne()] != PionVal.RIEN)) {
-            pions.add(new Pion(goban[pion.getLigne() - 1][pion.getColonne()], pion.getLigne() - 1, pion.getColonne()));
+            pions.add(new Stone(goban[pion.getLigne() - 1][pion.getColonne()], pion.getLigne() - 1, pion.getColonne()));
         }
 
         if (bonneCoords(pion.getLigne(), pion.getColonne() + 1) && (goban[pion.getLigne()][pion.getColonne() + 1] != PionVal.RIEN)) {
-            pions.add(new Pion(goban[pion.getLigne()][pion.getColonne() + 1], pion.getLigne(), pion.getColonne() + 1));
+            pions.add(new Stone(goban[pion.getLigne()][pion.getColonne() + 1], pion.getLigne(), pion.getColonne() + 1));
         }
 
         if (bonneCoords(pion.getLigne(), pion.getColonne() - 1) && (goban[pion.getLigne()][pion.getColonne() - 1] != PionVal.RIEN)) {
-            pions.add(new Pion(goban[pion.getLigne()][pion.getColonne() - 1], pion.getLigne(), pion.getColonne() - 1));
+            pions.add(new Stone(goban[pion.getLigne()][pion.getColonne() - 1], pion.getLigne(), pion.getColonne() - 1));
         }
 
         return pions;
     }
 
 
-    public List<Pion> getLibertes(Pion pion){
-        ArrayList<Pion> pions = new ArrayList<Pion>(4);
+    public List<Stone> getLibertes(Stone pion){
+        ArrayList<Stone> pions = new ArrayList<Stone>(4);
 
         if (bonneCoords(pion.getLigne() + 1, pion.getColonne()) && (goban[pion.getLigne() + 1][pion.getColonne()] == PionVal.RIEN)) {
-            pions.add(new Pion(PionVal.RIEN, pion.getLigne() + 1, pion.getColonne()));
+            pions.add(new Stone(PionVal.RIEN, pion.getLigne() + 1, pion.getColonne()));
         }
 
         if (bonneCoords(pion.getLigne() - 1, pion.getColonne()) && (goban[pion.getLigne() - 1][pion.getColonne()] == PionVal.RIEN)) {
-            pions.add(new Pion(PionVal.RIEN, pion.getLigne() - 1, pion.getColonne()));
+            pions.add(new Stone(PionVal.RIEN, pion.getLigne() - 1, pion.getColonne()));
         }
 
         if (bonneCoords(pion.getLigne(), pion.getColonne() + 1) && (goban[pion.getLigne()][pion.getColonne() + 1] == PionVal.RIEN)) {
-            pions.add(new Pion(PionVal.RIEN, pion.getLigne(), pion.getColonne() + 1));
+            pions.add(new Stone(PionVal.RIEN, pion.getLigne(), pion.getColonne() + 1));
         }
 
         if (bonneCoords(pion.getLigne(), pion.getColonne() - 1) && (goban[pion.getLigne()][pion.getColonne() - 1] == PionVal.RIEN)) {
-            pions.add(new Pion(PionVal.RIEN, pion.getLigne(), pion.getColonne() - 1));
+            pions.add(new Stone(PionVal.RIEN, pion.getLigne(), pion.getColonne() - 1));
         }
 
         return pions;
     }
 
-    public int libertesPion(int ligne, int col) {
+    public int libertesPion(Stone pion) {
+        int ligne = pion.getLigne();
+        int col = pion.getColonne();
+
         int libertes = 4;
         if (!bonneCoords(ligne + 1, col)){
             --libertes;

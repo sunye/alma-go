@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * This class was originaly developed by Anthony Caillaud. Thanks to him for sharing.
  */
 package fr.alma.atarigo.ihm;
 
@@ -9,21 +8,18 @@ import fr.alma.atarigo.utils.exceptions.BadPlaceException;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 /**
- *
+ * This class describes the Goban board, with the stones.
+ * We start and play the game threw it.
  * @author judu
  */
 class GobanPanel extends JPanel {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     private ImageIcon goban;
     private ImageIcon pionB;
@@ -77,7 +73,6 @@ class GobanPanel extends JPanel {
     private void processMouseClicked(MouseEvent evt) {
 
         int resteX = Math.max((evt.getX() - debutX) % coteCase, 0);
-        //System.out.println("resteX " + resteX);
         int col = Math.max(evt.getX() - debutX, 0) / coteCase; // On récupère
 
         if (resteX > ((precision - 1) * coteCase / precision)) {
@@ -86,10 +81,8 @@ class GobanPanel extends JPanel {
             return;
         }
 
-//        System.out.println("col " + col);
 
         int resteY = Math.max((evt.getY() - debutY) % coteCase, 0);
-//        System.out.println("resteY " + resteY);
         int lin = Math.max(evt.getY() - debutY, 0) / coteCase; // On récupère
 
         if (resteY > ((precision - 1) * coteCase / precision)) {
@@ -98,12 +91,15 @@ class GobanPanel extends JPanel {
             return;
         }
 
-//        System.out.println("lin " + lin);
-
         game.playAt(lin, col);
 
         repaint();
+        /**
+         * At a certain point, the game will end. At this point, we need to stop the listener.
+         */
+
         if (game.isEnd()) {
+            // TODO: display the winner.
             removeMouseListener(mouseL);
         }
     }
@@ -125,7 +121,7 @@ class GobanPanel extends JPanel {
                         xPion = i * coteCase + debutX - (cotePion / 2);
                         yPion = j * coteCase + debutY - (cotePion / 2);
 
-                        switch (game.getPion(j, i).getCouleur()) {
+                        switch (game.getStone(j, i).getCouleur()) {
                             case NOIR:
                                 g.drawImage(pionN.getImage(), xPion, yPion, this);
                                 break;
