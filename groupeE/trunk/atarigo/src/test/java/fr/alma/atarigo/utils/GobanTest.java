@@ -4,11 +4,8 @@
  */
 package fr.alma.atarigo.utils;
 
-import fr.alma.atarigo.utils.exceptions.BadPlaceException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import junit.framework.TestCase;
 
 /**
@@ -90,7 +87,7 @@ public class GobanTest extends TestCase {
      */
     public void testGetVoisins() {
         System.out.println("getVoisins");
-        Pion pion = new Pion(PionVal.NOIR, 0, 0);
+        Stone pion = new Stone(PionVal.NOIR, 0, 0);
         Goban instance = new Goban();
         List expResult = new ArrayList();
         List result = instance.getVoisins(pion);
@@ -103,28 +100,28 @@ public class GobanTest extends TestCase {
      */
     public void testGetLibertesCorner() {
         System.out.println("getLibertes");
-        Pion pion = new Pion(PionVal.BLANC, 0,0);
+        Stone pion = new Stone(PionVal.BLANC, 0,0);
         Goban instance = new Goban();
-        List<Pion> expResult = new ArrayList(4);
-        expResult.add(new Pion(PionVal.RIEN,1,0));
-        expResult.add(new Pion(PionVal.RIEN,0,1));
+        List<Stone> expResult = new ArrayList(4);
+        expResult.add(new Stone(PionVal.RIEN,1,0));
+        expResult.add(new Stone(PionVal.RIEN,0,1));
 
-        List<Pion> result = instance.getLibertes(pion);
+        List<Stone> result = instance.getLibertes(pion);
         assertEquals(expResult, result);
     }
 
 
     public void testGetLibertesSurrounded(){
         System.out.println("getLibertes 2");
-        Pion pion = new Pion(PionVal.BLANC, 3,3);
+        Stone pion = new Stone(PionVal.BLANC, 3,3);
         Goban instance = new Goban();
         instance.setCase(2, 3, PionVal.NOIR);
         instance.setCase(4, 3, PionVal.NOIR);
         
-        List<Pion> expResult = new ArrayList(2);
-        expResult.add(new Pion(PionVal.RIEN,3,4));
-        expResult.add(new Pion(PionVal.RIEN,3,2));
-        List<Pion> result = instance.getLibertes(pion);
+        List<Stone> expResult = new ArrayList(2);
+        expResult.add(new Stone(PionVal.RIEN,3,4));
+        expResult.add(new Stone(PionVal.RIEN,3,2));
+        List<Stone> result = instance.getLibertes(pion);
         assertEquals(expResult, result);
 
 
@@ -139,7 +136,7 @@ public class GobanTest extends TestCase {
         int col = 0;
         Goban instance = new Goban();
         int expResult = 2;
-        int result = instance.libertesPion(ligne, col);
+        int result = instance.libertesPion(new Stone(PionVal.BLANC, ligne, col));
         assertEquals(expResult, result);
     }
 }

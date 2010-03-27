@@ -4,34 +4,31 @@ import fr.alma.atarigo.utils.Game;
 import fr.alma.atarigo.utils.Goban;
 import fr.alma.atarigo.utils.Groupe;
 import fr.alma.atarigo.utils.Modif;
-import fr.alma.atarigo.utils.Pion;
+import fr.alma.atarigo.utils.Stone;
 import fr.alma.atarigo.utils.PionVal;
 import fr.alma.atarigo.utils.PlayMove;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class EvalFunc {
 
-    public void calculeYeux(Game game) {
+
+    static public void calculateEyes(Game game) {
         for (int ligne = 0; ligne < Goban.getTaille(); ++ligne) {
             for (int col = 0; col < Goban.getTaille(); ++col) {
                 try {
-                    if (game.getPion(ligne, col).getCouleur() == PionVal.RIEN) {
-                        // Si c'est une case vide
-                        if (game.nbLibPion(ligne, col) == 0) {
-                            // Si cette case n'a qu'une liberté
-                            //TODO: gérer un groupe de cases vides.
-                            Pion oeil = new Pion(PionVal.RIEN, ligne, col);
-                            HashSet<Groupe> groupes = game.getSurroundingGroups(oeil);
-                            if (groupes.size() == 1) {
-                                Iterator<Groupe> groupeIt = groupes.iterator();
-                                while (groupeIt.hasNext()) {
-                                    Groupe gr = groupeIt.next();
-                                    gr.addOeil(oeil);
-                                }
-                            }
+                    Stone spot = game.getStone(ligne, col);
+                    if (spot.getCouleur() == PionVal.RIEN) {
+                        // If empty spot, we need its "empty group"
+                        Groupe emptyGroup = game.getEmptyGroupContaining(spot);
+                        List<Groupe> surrounders = game.getEmptySpotGroupSurrounders(emptyGroup);
+                        if(surrounders.size() == 1 && surrounders.get(0).size() > 3){
+                            // We have only one surrounding Groupe, big enough.
+                            surrounders.get(0).addEye(emptyGroup);
                         }
                     }
                 } catch (Exception ex) {
@@ -55,7 +52,7 @@ public class EvalFunc {
             score -= 10;
         }
 
-        Groupe containing = pm.getGroupeContaining(new Pion(putPion.getAfter(),putPion.getLine(),putPion.getColumn()));
+        Groupe containing = pm.getGroupeContaining(new Stone(putPion.getAfter(),putPion.getLine(),putPion.getColumn()));
         if(containing.getLibertes() >= containing.size()*2){
             score += 5;
         } else if(containing.getLibertes() <= containing.size()){
@@ -69,7 +66,7 @@ public class EvalFunc {
     }
 
     private int nbKeima(Modif putPion) {
-        //TODO: détecter le nombre de hoshi
+        //TODO: détecter le nombre de keima
         return 0;
     }
 }

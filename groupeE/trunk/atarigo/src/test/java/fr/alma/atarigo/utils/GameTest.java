@@ -38,8 +38,8 @@ public class GameTest extends TestCase {
         Game instance = new Game();
         instance.posePion(line, column, color);
 
-        Pion pion = instance.getPion(line,column);
-        Pion expResult = new Pion(color,line,column);
+        Stone pion = instance.getStone(line,column);
+        Stone expResult = new Stone(color,line,column);
 
         assertEquals(expResult, pion);
     }

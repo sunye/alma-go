@@ -3,38 +3,49 @@ package fr.alma.atarigo.utils;
 import java.util.HashSet;
 
 import fr.alma.atarigo.utils.exceptions.BadCouleurException;
+import java.util.Collection;
 
 public class Groupe {
 
-    private HashSet<Pion> pions;
-    private HashSet<Pion> yeux;
+    private HashSet<Stone> stones;
+    private HashSet<Groupe> yeux;
     private int libertes;
     private PionVal couleur;
 
     public Groupe(PionVal couleur) {
         super();
         this.couleur = couleur;
-        pions = new HashSet<Pion>();
-        yeux = new HashSet<Pion>();
+        stones = new HashSet<Stone>();
+        yeux = new HashSet<Groupe>();
     }
 
-    public boolean contains(Pion p) {
-        return pions.contains(p);
+    public boolean contains(Stone p) {
+        return stones.contains(p);
     }
 
-    public void addPion(Pion p) throws BadCouleurException {
+    /**
+     * Add a Stone to this group, but only a Stone with the same color.
+     * @param p The Stone to add
+     * @throws BadCouleurException
+     */
+    public void addStone(Stone p) throws BadCouleurException {
         if (p.getCouleur() == couleur) {
-            this.pions.add(p);
+            this.stones.add(p);
         } else {
             throw new BadCouleurException("Ce groupe est de couleur " + couleur.valeur());
         }
     }
 
+    /**
+     * Checks if the <em>autre</em> Groupe share at least one Stone with <em>this</em>.
+     * @param autre
+     * @return
+     */
     public boolean intersectionNonVide(Groupe autre) {
         if (!couleur.equals(autre.getCouleur())) {
             return false;
         }
-        for (Pion p : pions) {
+        for (Stone p : stones) {
             if (autre.contains(p)) {
                 return true;
             }
@@ -51,8 +62,8 @@ public class Groupe {
         if (this.intersectionNonVide(autre)) {
             //Si on partage un pion, alors on doit fusionner les deux groupes.
             sortie = new Groupe(couleur);
-            sortie.pions.addAll(pions);
-            sortie.pions.addAll(autre.pions);
+            sortie.stones.addAll(stones);
+            sortie.stones.addAll(autre.stones);
         }
 
         return sortie;
@@ -60,7 +71,13 @@ public class Groupe {
 
     public void addAll(Groupe autre) {
         if (this.getCouleur() == autre.getCouleur()) {
-            this.pions.addAll(autre.pions);
+            this.stones.addAll(autre.stones);
+        }
+    }
+
+    public void addAll(Collection<Stone> collec) throws BadCouleurException{
+        for(Stone pion:collec){
+            this.addStone(pion);
         }
     }
 
@@ -73,7 +90,7 @@ public class Groupe {
             return false;
         }
         final Groupe other = (Groupe) obj;
-        if (this.pions != other.pions && (this.pions == null || !this.pions.equals(other.pions))) {
+        if (this.stones != other.stones && (this.stones == null || !this.stones.equals(other.stones))) {
             return false;
         }
         if (this.couleur != other.couleur && (this.couleur == null || !this.couleur.equals(other.couleur))) {
@@ -85,13 +102,13 @@ public class Groupe {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 59 * hash + (this.pions != null ? this.pions.hashCode() : 0);
+        hash = 59 * hash + (this.stones != null ? this.stones.hashCode() : 0);
         hash = 59 * hash + (this.couleur != null ? this.couleur.hashCode() : 0);
         return hash;
     }
 
-    public void addOeil(Pion oeil) {
-        yeux.add(oeil);
+    public void addEye(Groupe group) {
+        yeux.add(group);
     }
 
     public int nbYeux(){
@@ -106,12 +123,12 @@ public class Groupe {
         this.libertes = libertes;
     }
 
-    public Iterable<Pion> getPions() {
-        return pions;
+    public Collection<Stone> getStones() {
+        return stones;
     }
 
     public int size(){
-        return pions.size();
+        return stones.size();
     }
 
 }

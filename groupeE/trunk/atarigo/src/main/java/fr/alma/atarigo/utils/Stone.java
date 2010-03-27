@@ -2,13 +2,13 @@ package fr.alma.atarigo.utils;
 
 import fr.alma.atarigo.utils.PionVal;
 
-public class Pion {
+public class Stone {
 
 	private PionVal couleur;
 	private short colonne;
 	private short ligne;
 	
-	public Pion(PionVal couleur, short ligne, short colonne) {
+	public Stone(PionVal couleur, short ligne, short colonne) {
 		super();
 		this.couleur = couleur;
 		this.colonne = colonne;
@@ -16,7 +16,7 @@ public class Pion {
 	}
 
 	
-	public Pion(PionVal couleur2, int realLigne, int realCol) {
+	public Stone(PionVal couleur2, int realLigne, int realCol) {
 		this.couleur = couleur2;
 		this.colonne = (short) realCol;
 		this.ligne = (short) realLigne;
@@ -47,7 +47,7 @@ public class Pion {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Pion other = (Pion) obj;
+		Stone other = (Stone) obj;
 		if (colonne != other.colonne)
 			return false;
 		if (couleur == null) {
