@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="Frequently Asked Questions">
+    <part id="General">
+        <faq id="utility">
+            <question>Est-ce que ce projet est utile ? </question>
+            <answer>
+                <p>
+                    Pas du tout. Ce n'est qu'un projet exemple. 
+                </p>
+            </answer>
+        </faq>
+        <faq id="article">
+            <question>Qui est l'auteur de ce projet ? </question>
+            <answer>
+                <p>
+                    Baptiste Wicht. 
+                </p>
+            </answer>
+        </faq>
+    </part>
+	<part id="Article">
+		<faq id="article">
+            <question>Est-ce que l'article est utile ? </question>
+            <answer>
+                <p>
+                    Oui. Il vous apprendra à créer et à personnaliser un site pour un projet Maven 2. 
+                </p>
+            </answer>
+        </faq>
+		<faq id="article">
+            <question>De quoi traite cet article ? </question>
+            <answer>
+                <p>
+                    Il traite de la génération de site dans Maven 2. 
+                </p>
+            </answer>
+        </faq>
+	</part>
+</faqs>
