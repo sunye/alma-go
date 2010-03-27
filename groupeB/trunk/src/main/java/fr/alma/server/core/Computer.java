@@ -1,8 +1,11 @@
 package fr.alma.server.core;
 
+import fr.alma.server.ia.IEvaluation;
+
 
 public class Computer extends AbstractPlayer {
-	private IStrategy strategieGame;
+	private IEvaluation evaluation;
+	private IStrategy strategy;
 	private boolean enable = false;
 	IPlayer player = this;
 	
@@ -17,9 +20,9 @@ public class Computer extends AbstractPlayer {
 			@Override
 			public void run() {
 				System.out.println("Start thread computer");
-				IEmplacement emplacement = strategieGame.getEmplacementMax();
+				IEmplacement emplacement = getStrategy().getEmplacementMax(getEvaluation(), false);
 				try {
-					strategieGame.getStateGame().play(emplacement.getCol(), emplacement.getRow(), getColor());
+					strategy.getStateGame().play(emplacement.getCol(), emplacement.getRow(), getColor());
 				} catch (Exception e) {
 					System.out.println("Internal error : " + e.getLocalizedMessage());
 				}
@@ -40,10 +43,26 @@ public class Computer extends AbstractPlayer {
 	public boolean isEnabled() {
 		return enable;
 	}
+
+	
+	public IStrategy getStrategy() {
+		return strategy;
+	}
 	
 	
-	public void setStrategieGame(IStrategy strategieGame) {
-		this.strategieGame = strategieGame;
+	public void setStrategy(IStrategy strategieGame) {
+		this.strategy = strategieGame;
+	}
+	
+
+	public IEvaluation getEvaluation() {
+		return evaluation;
+	}
+	
+
+	public void setEvaluation(IEvaluation evaluation) {
+		this.evaluation = evaluation;
 	}
 
+	
 }

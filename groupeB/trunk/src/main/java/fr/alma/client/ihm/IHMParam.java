@@ -60,6 +60,7 @@ public class IHMParam extends AbstractDialog {
         panel.add(labelTimeLimite);
         
         tfTimeLimite = new JTextField(5);
+        tfTimeLimite.setText("15");
         Tools.addFocusListener(tfTimeLimite);
         panel.add(tfTimeLimite);
 
@@ -93,14 +94,16 @@ public class IHMParam extends AbstractDialog {
         JLabel labelTargetCaptureComputer = new JLabel("Target capture computer : ");
         panel.add(labelTargetCaptureComputer);
         
-        tfTargetCaptureComputer= new JTextField(5);
+        tfTargetCaptureComputer = new JTextField(5);
+        tfTargetCaptureComputer.setText("1");
         Tools.addFocusListener(tfTargetCaptureComputer);
         panel.add(tfTargetCaptureComputer);
 
         JLabel labelTargetCapturePlayer = new JLabel("Target capture player : ");
         panel.add(labelTargetCapturePlayer);
         
-        tfTargetCapturePlayer= new JTextField(5);
+        tfTargetCapturePlayer = new JTextField(5);
+        tfTargetCapturePlayer.setText("1");
         Tools.addFocusListener(tfTargetCapturePlayer);
         panel.add(tfTargetCapturePlayer);
 
@@ -208,9 +211,12 @@ public class IHMParam extends AbstractDialog {
 
 	@Override
 	public void actionOk() {
-		getContext().setParamGame(getParamGame());
-		this.setVisible(false);
-		getContext().getCoordinator().startGame();
+		
+		if (controlSaisie()) {
+			getContext().setParamGame(getParamGame());
+			this.setVisible(false);
+			getContext().getCoordinator().startGame();
+		}
 	}
 
 

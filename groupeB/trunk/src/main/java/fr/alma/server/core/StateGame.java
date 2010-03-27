@@ -6,7 +6,16 @@ import fr.alma.server.rule.Configuration;
 
 public class StateGame implements IStateGame {
 
-	private Boolean[][] intersection = new Boolean[Configuration.LINE_V][Configuration.LINE_H];
+	private Boolean[][] intersection = null;
+	private short lineV;
+	private short lineH;
+	
+	
+	public StateGame(short lineV, short lineH) {
+		this.lineV = lineV;
+		this.lineH = lineH;
+		clear();
+	}
 	
 	
 	@Override
@@ -17,13 +26,13 @@ public class StateGame implements IStateGame {
 	
 	@Override
 	public short getMaxCol() {
-		return Configuration.LINE_V;
+		return lineV;
 	}
 
 	
 	@Override
 	public short getMaxRow() {
-		return Configuration.LINE_H;
+		return lineH;
 	}
 
 	
@@ -116,7 +125,7 @@ public class StateGame implements IStateGame {
 	
 	@Override
 	public Object clone() {
-		StateGame clone = new StateGame();
+		StateGame clone = new StateGame(lineV, lineH);
 		
 		for (short cptCol = 0; cptCol < getMaxRow(); cptCol++) {
 			for (short cptRow = 0; cptRow < getMaxCol(); cptRow++) {
@@ -130,6 +139,12 @@ public class StateGame implements IStateGame {
 			}
 		}
 		return clone;
+	}
+
+
+	@Override
+	public void clear() {
+		intersection = new Boolean[this.lineV][this.lineH];
 	}
 	
 }

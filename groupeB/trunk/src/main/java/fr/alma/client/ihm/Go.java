@@ -16,6 +16,7 @@ import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 import fr.alma.server.core.IStrategy;
 import fr.alma.server.core.Player;
+import fr.alma.server.ia.IEvaluation;
 import fr.alma.server.rule.Configuration;
 import fr.alma.server.rule.RuleManager;
 
@@ -45,10 +46,13 @@ public class Go extends JFrame {
 		IPlayer computer = new Computer("computer", Configuration.getColorComputer());		
 		IPlayer player = new Player("player", Configuration.getColorPlayer(), goban, stateGame);
 		
+		IEvaluation evaluation = Factory.getEvaluation(computer, player);
+		
 		coordinator.setPlayers(player, computer);
 		
 		IStrategy strategy = Factory.getStrategy(coordinator);
-		computer.setStrategieGame(strategy);
+		computer.setStrategy(strategy);
+		computer.setEvaluation(evaluation);
 
 		Context context = new Context();
 		context.setMainFrame(this);

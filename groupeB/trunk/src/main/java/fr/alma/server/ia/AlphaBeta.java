@@ -1,9 +1,9 @@
 package fr.alma.server.ia;
 
 
-import fr.alma.server.core.Coordinator;
 import fr.alma.server.core.Emplacement;
 import fr.alma.server.core.IEmplacement;
+import fr.alma.server.core.ICoordinator;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 import fr.alma.server.core.IStrategy;
@@ -23,7 +23,7 @@ import fr.alma.server.rule.StatusCheck;
  */
 public class AlphaBeta implements IStrategy {
 
-	private Coordinator coordinator;
+	private ICoordinator coordinator;
 	private IEvaluation evaluation;
 	private IStateGame stateGame;
 
@@ -34,21 +34,22 @@ public class AlphaBeta implements IStrategy {
 	boolean gameOver = false;
 	short cptCol = 0;
 	short cptRow = 0;
+	boolean trace;
 	
 	
-	public AlphaBeta(Coordinator coordinator) {
+	public AlphaBeta(ICoordinator coordinator) {
 		this.coordinator = coordinator;
-		evaluation = new Evaluation(coordinator.getComputer(), coordinator.getPlayer());
 	}
 	
 	
-	public IEmplacement getEmplacementMax() {
+	public IEmplacement getEmplacementMax(IEvaluation evaluation, boolean trace) {
 		cpt = 0;
-		
+		this.evaluation = evaluation;
+		this.trace = trace;
 		/* The stateGame will be modified to simulate 
 		 * the differents possibilities. For that, we muste
 		 * clone it */
-		stateGame = (IStateGame)coordinator.getStateGame().clone();
+		stateGame = (IStateGame)getStateGame().clone();
 		
 		getValue(2, stateGame, 0, null);
 		
@@ -70,7 +71,9 @@ public class AlphaBeta implements IStrategy {
 		int value;
 		cpt++;
 		
-		//System.out.println("Alpha-Beta - getValue() Level : " + level);
+		if (trace)
+			System.out.println("Alpha-Beta - getValue() Level : " + level);
+		
 		if ((level < Configuration.getMaxDeepLevel()) && existChildStateGame(status)) {
 			/* who has to play : if Odd level, it is the turn of the player
 			 * otherwise it is the computer */
@@ -89,15 +92,19 @@ public class AlphaBeta implements IStrategy {
 			//System.out.println("Level " + level + " -> Resultat evaluation : " + value);
 			//Tools.showGobanOnConsole(stateGame);
 		}
-		//System.out.println("return the getValue(level="+level+")" + value);
+		
+		if (trace)
+			System.out.println("return the getValue(level="+level+")" + value);
+		
 		return value;
 	}
 	
 	
 	private boolean existChildStateGame(StatusCheck status) {
 		boolean result = ((status == null)  || ! status.isGameOver());
-		//if (! result)
-		//	System.out.println("Alpha-Beta : Game is over");
+		if (trace && (! result)) 
+			System.out.println("Alpha-Beta : Game is over - winner = " + status.getWinner());
+		
 		return result;
 	}
 	
@@ -107,7 +114,8 @@ public class AlphaBeta implements IStrategy {
 	 */
 	private int max(int level, IStateGame stateGame, int extremum) {
 		int max = Integer.MIN_VALUE;
-		//System.out.println("Level " + level + " -> Recherche max");
+		if (trace)
+			System.out.println("Level " + level + " -> Recherche max");
 		
 		for (short col = 0; col < stateGame.getMaxCol(); col++) {
 			for (short row = 0; row < stateGame.getMaxRow(); row++) {
@@ -128,6 +136,8 @@ public class AlphaBeta implements IStrategy {
 				}
 			}
 		}
+		if (trace)
+			System.out.println("Level(" + level + ") -> return max = " + max);
 		return max;
 	}
 	
@@ -135,7 +145,8 @@ public class AlphaBeta implements IStrategy {
 	private int min(int level, IStateGame stateGame, int extremum) {
 		int min = Integer.MAX_VALUE;
 		
-		//System.out.println("Level " + level + " -> Recherche min");
+		if (trace)
+			System.out.println("Level " + level + " -> Recherche min");
 		for (short col = 0; col < stateGame.getMaxCol(); col++) {
 			for (short row = 0; row < stateGame.getMaxRow(); row++) {
 				StatusCheck status = coordinator.getRuleManager().checkBefore(stateGame, new Emplacement(col, row), getPlayer());
@@ -153,6 +164,8 @@ public class AlphaBeta implements IStrategy {
 				}
 			}
 		}
+		if (trace)
+			System.out.println("Level(" + level + ") -> return min = " + min);
 		return min;	
 	}
 

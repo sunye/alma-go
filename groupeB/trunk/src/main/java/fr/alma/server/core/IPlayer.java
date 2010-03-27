@@ -2,6 +2,8 @@ package fr.alma.server.core;
 
 import java.util.List;
 
+import fr.alma.server.ia.IEvaluation;
+
 public interface IPlayer {
 	
 	Boolean getColor();
@@ -11,6 +13,7 @@ public interface IPlayer {
 	public void removePlayListeners();
 	List<PlayListener> getPlayerListeners();
 	void setEnabled(boolean enable);
-	public void setStrategieGame(IStrategy strategieGame);
+	public void setStrategy(IStrategy strategieGame);
+	public void setEvaluation(IEvaluation evaluation);
 	public String getName();
 }
