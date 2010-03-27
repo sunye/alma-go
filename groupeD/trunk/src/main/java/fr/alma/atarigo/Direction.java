@@ -1,8 +1,8 @@
 package fr.alma.atarigo;
 
  /**
- * Enumeration representation les 8 directions possibles avec,
- * pour chaque, les corrections a apporter a une position.
+ * Enumeration of the 4 possible directions.
+ * and for each of them, the corrections to give.
  */
 enum Direction {
 
@@ -16,17 +16,17 @@ enum Direction {
  //NORD_OUEST(-1, -1);
 
  /**
-  * correction a apporter a une ligne. 
+  * correction to give to a line. 
   */
  private int deltaLine;
 
  /**
-  * correction a apporter a une colonne.
+  * correction to give to a column.
   */
  private int deltacolumn;
 
  /**
- * constructeur logique.
+ * logic constructor.
  */
  private Direction(int line, int column) {
 	this.deltaLine = line;
@@ -34,7 +34,7 @@ enum Direction {
  }
 
  /**
-  * accesseur en lecture
+  * accessor of deltaline
   */
  public int getDeltaLine() {
 	return deltaLine;
@@ -42,21 +42,21 @@ enum Direction {
  
 
  /**
-  * accesseur en lecture.
+  * accessor of deltacolumn.
   */
  public int getDeltacolumn() {
 	return deltacolumn;
  }
 
  /**
-  * retourne la direction suivante dans l'ordre de l'enumeration.
+  * return the next direction in the order of the enumeration.
   */
  public Direction next() {
 	return values()[(ordinal() + 1) % values().length];
  }
 
  /**
- * retourne l'opposee de la direction.
+ * return the oposite direction.
  */
  public Direction opposit() {
 	return values()[(ordinal() + 2) % values().length];

@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 /**
- * Classe implémentant la liste de toutes les listes de pierres de go.
- * @author vincent
+ * GroupsList.java represent the list of all the list of stones in a Atarigo game.
+ * @author VINCENT FERREIRA, ADRIEN GUILLE
  *
  */
 public class GroupsList implements Cloneable{
@@ -17,7 +17,7 @@ public class GroupsList implements Cloneable{
 	}
 	
 	/**
-	 * renvoie une copie de la liste de groupes.
+	 * return a copy of the list of groups.
 	 */
 	public GroupsList clone(){
 		GroupsList groupList;
@@ -37,7 +37,7 @@ public class GroupsList implements Cloneable{
 	}
 	
 	/**
-	 * cherche le groupe contenant la position recherchée
+	 * return the group containing the position
 	 */
  	public Group getGroup(Position position){
  		Group currentGroup;
@@ -54,7 +54,7 @@ public class GroupsList implements Cloneable{
  	}
 
  	/**
- 	 * affiche tous les groupes du jeu
+ 	 * print the groups of the current game
  	 */
 	public void print(){
 		System.out.println("affichage de la liste des groupes :");
@@ -71,8 +71,9 @@ public class GroupsList implements Cloneable{
 	}
 	
 	/**
-	 * renvoie une nouvelle liste de groupe en fonction d'un pion joué
-	 * il y a donc clonage de la liste en cours, actualisation sur le clone et renvoi du clone.
+	 * calculate a new list of group after a new move has been played.
+	 * there is a copy of the current list, actualisation on the clone.
+	 * @return the new list
 	 */
  	public GroupsList updateGroups(Goban plateau, Position position,Stone joueur){
  		boolean estAjoute=false;
@@ -109,10 +110,10 @@ public class GroupsList implements Cloneable{
 	}
  	
  	/**
- 	 * ajoute le groupe 1 au groupe 2 et renvoie le groupe 1.
- 	 * @param groupe1
- 	 * @param groupe2
- 	 * @return le groupe fusionné
+ 	 * add the group2 to the group1 and return the group1 .
+ 	 * @param group1
+ 	 * @param group2
+ 	 * @return merged group
  	 */
  	public Group fusionner(Group groupe1,Group groupe2){
  		groupe1.linkedStones.addAll(groupe2.linkedStones);

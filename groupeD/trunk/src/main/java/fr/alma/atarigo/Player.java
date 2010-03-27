@@ -1,7 +1,7 @@
 package fr.alma.atarigo;
 
 /**
- * classe abstraite implémentant un type de joueur
+ * Player.java is an abstract class representing a type of player.
  * @author VINCENT FERREIRA, ADRIEN GUILLE
  *
  */
@@ -12,8 +12,8 @@ public abstract class Player {
 
 	/**
 	 * 
-	 * @param color couleur du joueur
-	 * @param name nom du joueur (pas encore utilisé)
+	 * @param color color of the stones played by the player
+	 * @param name name of the player (not used yet)
 	 */
 	public Player(Stone color, String name){
 		this.color = color;
@@ -21,7 +21,7 @@ public abstract class Player {
 	}
 	
 	/**
-	 * vérifie si le joueur est humain
+	 * verify if the player is human
 	 */
 	public abstract boolean isHuman();
 
