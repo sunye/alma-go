@@ -4,29 +4,27 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Classe implémentant le jeu AtariGo. Contient les principaux mécanismes de jeu.
+ * AtariGo.java contains the game rules and mechanisms of Atarigo.
  * @author VINCENT FERREIRA, ADRIEN GUILLE
  */
 public class AtariGo {
 
- // +----------------------------------------------------------------------+
- // | Type      : Coup.                                                    |
- // | Utilite   : enumeration representant les differents types de coups.  |
- // | Remarques : aucune.                                                  |
- // +----------------------------------------------------------------------+
 /**
- *  Enumération représentant les différents types de coups.
+ *  Enumeration of the different types of moves.
  */
  public enum Move { INVALID, WIN, NEUTRAL };
  
+ /**
+  * Total number of moves played during a game.
+  */
  public int totalMoves;
  public boolean end;
  /**
-  *  Plateau de jeu
+  *  Game board
   */
  public Goban goban;
  /**
-  * Liste des groupes de pierres de go
+  * List of stone groups 
   */
  private GroupsList groupsList;
  public int caughtBlack;
@@ -39,10 +37,10 @@ public class AtariGo {
  public Player player2;
 
  /**
-  *  Joue un nouveau coup et retourne le résultat.
-  * @param player le joueur jouant le coup.
-  * @param position la position du coup
-  * @return le type de coup résultant  INVALIDE, GAGNANT ou NEUTRE .
+  * Play a move and return the result. If necessary, calculates new groups and caught stones.
+  * @param player The player playing the move.
+  * @param position The position of the move.
+  * @return The type of the resulting move INVALID, WIN or NEUTRAL .
   */
  public Move playMove(Stone player, Position position) {
 	// ces conditions n'ont pas besoin de changer l'état du plateau pour savoir si le placement est possible
@@ -104,9 +102,9 @@ public class AtariGo {
  
  	
 /**
- * Constructeur logique basique
- * @param lines nombre de ligne du goban
- * @param columns nombre de colonnes du goban
+ * Logic constructor
+ * @param lines number of lines of the Goban
+ * @param columns number of columns of the Goban
  */
  public AtariGo(int lines, int columns) {
 	goban = new Goban(lines, columns);
@@ -119,11 +117,11 @@ public class AtariGo {
 	captureObjective = 1;
  }
  /**
-  * Constructeur logique
-  * @param lines nombre de lignes du goban
-  * @param columns nombre de colonnes du goban
-  * @param player1 type de joueur (humain ou IA)
-  * @param player2 type de joueur (humain ou IA)
+  * Logic constructor
+  * @param lines number of lines of the Goban
+  * @param columns number of columns of the Goban
+  * @param player1 type of the player (human or AI)
+  * @param player2 type of the player (humain or AI)
   */
  public AtariGo(int lines, int columns,Player player1,Player player2) {
 		goban = new Goban(lines, columns);
@@ -141,37 +139,37 @@ public class AtariGo {
 	 }
 
  /**
-  * retourne si la partie est fini ou non
+  * return if the game is over or not
   * @return le booleen fini
   */
  public boolean isOver(){
 	 return end;
  }
  
- /*
-  * désactive la partie et donc la fini
+ /**
+  * desactivate the game
   */
  public void shutDown(){
 	 end = true;
  }
  
 
- /*
-  * accesseur en lecture
+ /**
+  * accessor for lines
   */
  public int getLines() {
 	return goban.getLines();
  }
 
-/*
- * accesseur en lecture
+/**
+ * accessor for columns
  */
  public int getColumns() {
 	return goban.getColumns();
  }
 
 /**
- * prépare le jeu pour une nouvelle partie.
+ * prepare the game for a new game
  */
  public void newGame() {
 	goban.newGame();
@@ -182,7 +180,7 @@ public class AtariGo {
 
 /**
  * @deprecated
- * lance la partie en mode console
+ * launch the game in console mode
  */
  public void jouer(Stone joueur, InputStream entree, PrintStream sortie) {
 	int nombreCoups = getLines() * getColumns();

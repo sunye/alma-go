@@ -13,17 +13,17 @@ import javax.swing.JPanel;
 
 
 /**
- * classe representant le plateau de jeu.
+ * Goban.java is a representation of the board game.
  */
 public class Goban {
 
  /**
-  * grille de pions
+  * matrice of stones
   */
  public Stone[][] matrice;
  
 /**
- * constructeur logique
+ * logic constructor
  */
  public Goban(int line, int column) {
 	this.matrice = new Stone[line][column];
@@ -38,7 +38,7 @@ public class Goban {
  }
 
  /**
-  * supprime tous les pions du plateau en vue d'une nouvelle partie.
+  * remove all the stones from the board for a new game.
   */
  public void newGame() {
 	for (int i = 0; i < getLines(); i ++) {
@@ -49,28 +49,28 @@ public class Goban {
  }
 
 /**
- * accesseur en lecture
+ * accessor for lines
  */
  public int getLines() {
 	return matrice.length;
  }
 
  /**
-  * accesseur en lecture
+  * accessor for columns
   */
  public int getColumns() {
 	return matrice[0].length;
  }
 
  /**
-  * accesseur en lecture
+  * accessor for stones
   */
  public Stone readCell(Position position) {
 	return matrice[position.getLine()][position.getColumn()];
  }
 
  /**
-  * accesseur en écriture.
+  * setter for squares.
   */
  public void writeCell(Position position, Stone stone) {
 	matrice[position.getLine()][position.getColumn()] = stone;
@@ -78,7 +78,7 @@ public class Goban {
  
  /**
   * @deprecated
-  * transforme la case en une case vide
+  * empty a square
   * @param position
   */
  public void emptyCell(Position position) {
@@ -86,8 +86,8 @@ public class Goban {
 	 }
 
  /**
-  * indique si la position fournie en argument appartient au plateau.
-  * @param position position testée
+  * indicate if the position belongs to the board.
+  * @param position tested position
   */
  public boolean isValid(Position position) {
 	//test si rentre dans le plateau
@@ -98,9 +98,10 @@ public class Goban {
  }
 
  /**
-  * vérifie si le pion est pacé dans une case entourée par des pions opposés
-  * forme basique de suicide
-  * @return si suicide ou pas
+  * verify if the stone is placed in a square surrounded by oposite stones
+  * basic form of a suicide
+  * @param position tested position
+  * @param position tested type of stone
   */
  public boolean isSuicidal(Position position, Stone player){
 	boolean isValid;
@@ -127,9 +128,9 @@ public class Goban {
  }
  
  /**
-  * test si le groupe entré en paramètre est capturé ou non.
-  * @param goup groupe à tester
-  * @return capturé ou non
+  * test if the groupe is captured or not.
+  * @param goup groupe to test
+  * @return captured or not
   */
 	public boolean isCaught(Group goup){
 		Position currentPosition;
@@ -147,7 +148,7 @@ public class Goban {
 	}
 
  /**
-  * indique le nombre de libertés que possède la position
+  * indicate the number of liberties owned by the position
   */
  public int getLiberty(Position position){
 	 int count = 0;
@@ -166,10 +167,10 @@ public class Goban {
  }
  
  /**
-  * retourne si le coup est gagnant ou non
-  * @param position position testée
-  * @param lg liste de groupes testée
-  * @return si le coup est gagnant ou non
+  * return if the move has caught stones or not.
+  * @param position position to test
+  * @param lg list of groups to test
+  * @return if the move has caught or not
   */
  public GroupsList hasCaught(Position position,GroupsList lg){
 	 GroupsList result= new GroupsList();
@@ -188,7 +189,7 @@ public class Goban {
  }
  
  /**
-  * surcharge
+  * override to show the Goban in console mode
   */
  public String toString() {
 	final int LINES = getLines();

@@ -1,7 +1,7 @@
 package fr.alma.atarigo;
 
 /**
- * Classe implémentant le type de joueur IA
+ * AIPlayer represent a AI player.
  * @author 
  *
  */

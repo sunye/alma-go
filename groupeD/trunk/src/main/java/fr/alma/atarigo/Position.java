@@ -2,22 +2,22 @@ package fr.alma.atarigo;
 
 
 /**
- * classe représentant une position dans une grille.
+ * Position.java represent a position in a board.
  */
 public class Position {
 
  /**
-  * numéro de ligne. 
+  * number of the line.
   */
  private int line;
 
  /**
-  * numéro de colonne
+  * number of the column
   */
  private int column;
 
- /*
-  * constructeur logique.
+ /**
+  * logic constructor.
   */
  public Position(int l, int c) {
 	this.line = l;
@@ -30,35 +30,35 @@ public class Position {
 }
 
 /**
- * accesseur en lecture.
+ * getter for the line attribute.
  */
  public int getLine() {
 	return line;
  }
 
 /**
- * accesseur en écriture.
+ * setter for the line attribute.
  */
  public void writeLine(int newLine) {
 	this.line = newLine;
  }
 
 /**
- * accesseur en lecture.
+ * getter for the column attribute.
  */
  public int getColumn() {
 	return column;
  }
 
 /**
- * accesseur en écriture
+ * setter for the column attribute.
  */
  public void writeColumn(int col) {
 	this.column = col;
  }
 
 /**
- * retourne la position voisine selon une direction donnée.
+ * return the neighbor position from a given position.
  */
  public Position neighbor(Direction direction) {
 	return new Position(line + direction.getDeltaLine(),
@@ -66,16 +66,15 @@ public class Position {
  }
 
 /**
- * surcharge
+ * override for the console mode game.
  */
  public String toString() {
 	return "{ " + line + ", " + column + " }";
  }
  
  /**
-  * vérifie l'égalité avec une autre position
-  * @param position
-  * @return
+  * verify the equality with an other position
+  * @param position tested position
   */
  public boolean isEqual(Position position){
 	 return position.getLine()==this.getLine() && position.getColumn()==this.getColumn();

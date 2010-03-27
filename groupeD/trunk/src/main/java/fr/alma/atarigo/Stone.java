@@ -2,7 +2,7 @@ package fr.alma.atarigo;
 
 
 /**
- * Enumeration representant les différents types de pions.
+ * Enumeration of the different types of stones.
  */
 public enum Stone {WHITE, BLACK, EMPTY;
 	

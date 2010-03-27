@@ -3,7 +3,7 @@ package fr.alma.atarigo;
 import java.util.LinkedList;
 import java.util.ListIterator;
 /**
- * Classe implémentant un groupe de positions d'une meme couleur.
+ * Group.java represents a group of stones from the same color.
  * @author VINCENT FERREIRA, ADRIEN GUILLE 
  */
 public class Group implements Cloneable{
@@ -12,9 +12,9 @@ public class Group implements Cloneable{
 	public Stone stone;
 	
 /**
- * Constructeur
- * @param linkedList liste de pierre
- * @param color du groupe
+ * Logic constructor
+ * @param linkedList list of stones
+ * @param color of the group
  */
 	public Group(LinkedList<Position> linkedList, Stone color) {
 		// TODO Auto-generated constructor stub
@@ -23,8 +23,8 @@ public class Group implements Cloneable{
 	}
 	
 	/**
-	 * retourne une copie du groupe
-	 * @return groupe clonée
+	 * retourne une copy of the group
+	 * @return cloned group
 	 */
 	public Group clone(){
 		Group group = new Group(new LinkedList<Position>(),stone);
@@ -38,9 +38,9 @@ public class Group implements Cloneable{
 	}
 	
 	/**
-	 * retourne si la position fait partie du groupe
+	 * return if the position is in the group
 	 * @param position
-	 * @return vrai si la position fait partie du groupe
+	 * @return true if the position is in the group
 	 */
 	public boolean hasPos(Position position){
 		Position currentPosition;
@@ -58,7 +58,7 @@ public class Group implements Cloneable{
 	}
 	
 	/**
-	 * affiche le groupe. utile pour le déboguage
+	 * print the group. Usefull for debugging.
 	 *
 	 */
 	public void print(){
@@ -73,8 +73,8 @@ public class Group implements Cloneable{
 	}
 	
 	/**
-	 * ajoute une position dans le groupe
-	 * @param position position de la pierre
+	 * add a position in the group
+	 * @param position position of the stone
 	 */
 	public void add(Position position){
 		linkedStones.add(position);

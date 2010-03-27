@@ -1,7 +1,7 @@
 package fr.alma.atarigo;
 
 /**
- * Classe implémentant le type de joueur humain
+ * HumanPlayer.java represent a human player
  * @author VINCENT FERREIRA, ADRIEN GUILLE
  *
  */
