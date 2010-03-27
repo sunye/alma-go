@@ -35,7 +35,6 @@ public class ActionManager {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Factory.getIHMParam(context).setVisible(true);
-					//getContext().getCoordinator().startGame();
 				}
 			};
 		}

@@ -2,13 +2,24 @@ package fr.alma.client.action;
 
 import javax.swing.JFrame;
 
+import fr.alma.client.ihm.GoObject;
+import fr.alma.client.ihm.Goban;
 import fr.alma.server.core.ICoordinator;
+import fr.alma.server.core.IPlayer;
+import fr.alma.server.core.IStateGame;
+import fr.alma.server.rule.RuleManager;
 
-public class Context {
+public class Context implements GoObject {
 
-	ICoordinator coordinator;
-	JFrame MainFrame;
-	ParamGame paramGame;
+	private ICoordinator coordinator;
+	private JFrame MainFrame;
+	private ParamGame paramGame;
+	private IStateGame stateGame;
+	private Goban goban;
+	private RuleManager ruleManger;
+	private IPlayer computer;
+	private IPlayer player;
+	
 	
 	public Context() {
 	}
@@ -43,5 +54,69 @@ public class Context {
 		this.paramGame = paramGame;
 	}
 	
+	
+	public int getSizeGoban() {
+		return getParamGame().getGrille();
+	}
+
+
+	public IStateGame getStateGame() {
+		return stateGame;
+	}
+
+
+	public void setStateGame(IStateGame stateGame) {
+		this.stateGame = stateGame;
+	}
+
+
+	@Override
+	public void cleanUp() {
+		coordinator = null;
+		coordinator = null;
+		stateGame = null;
+		goban = null;
+		ruleManger = null;
+	}
+
+
+	public Goban getGoban() {
+		return goban;
+	}
+
+
+	public void setGoban(Goban goban) {
+		this.goban = goban;
+	}
+
+
+	public RuleManager getRuleManger() {
+		return ruleManger;
+	}
+
+
+	public void setRuleManger(RuleManager ruleManger) {
+		this.ruleManger = ruleManger;
+	}
+
+
+	public IPlayer getComputer() {
+		return computer;
+	}
+
+
+	public void setComputer(IPlayer computer) {
+		this.computer = computer;
+	}
+
+
+	public IPlayer getPlayer() {
+		return player;
+	}
+
+
+	public void setPlayer(IPlayer player) {
+		this.player = player;
+	}
 	
 }

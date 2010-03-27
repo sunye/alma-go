@@ -1,20 +1,18 @@
 package fr.alma.server.core;
 
 
+import fr.alma.client.action.Context;
 import fr.alma.client.action.GameLoader;
-import fr.alma.server.rule.Configuration;
 
 public class StateGame implements IStateGame {
 
 	private Boolean[][] intersection = null;
-	private short lineV;
-	private short lineH;
-	private short countLimitComputer;
-	private short countLimitPlayer;
+	private Context context = null;
+	private int countLimitComputer;
+	private int countLimitPlayer;
 	
-	public StateGame(short lineV, short lineH) {
-		this.lineV = lineV;
-		this.lineH = lineH;
+	public StateGame(Context context) {
+		this.context = context;
 		clear();
 	}
 	
@@ -26,14 +24,14 @@ public class StateGame implements IStateGame {
 
 	
 	@Override
-	public short getMaxCol() {
-		return lineV;
+	public int getMaxCol() {
+		return context.getSizeGoban();
 	}
 
 	
 	@Override
-	public short getMaxRow() {
-		return lineH;
+	public int getMaxRow() {
+		return context.getSizeGoban();
 	}
 
 	
@@ -45,7 +43,7 @@ public class StateGame implements IStateGame {
 	}
 
 	@Override
-	public boolean isPlayable(short col, short row) {
+	public boolean isPlayable(int col, int row) {
 		return (intersection[col][row] == null);
 	}
 
@@ -54,7 +52,7 @@ public class StateGame implements IStateGame {
 	 * @throws Exception 
 	 */
 	@Override
-	public boolean play(short col, short row, boolean computer) throws Exception {
+	public boolean play(int col, int row, boolean computer) throws Exception {
 		if (! isFree(col, row)) {
 			throw new Exception("busy box !");
 		}
@@ -64,17 +62,17 @@ public class StateGame implements IStateGame {
 	}
 
 	@Override
-	public void remove(short col, short row) {
+	public void remove(int col, int row) {
 		intersection[col][row] = null;
 	}
 
 	@Override
-	public boolean isComputer(short col, short row) {
-		return (intersection[col][row] == Configuration.getColorComputer());
+	public boolean isComputer(int col, int row) {
+		return (intersection[col][row] == context.getComputer().getColor());
 	}
 
 	@Override
-	public boolean isFree(short col, short row) {
+	public boolean isFree(int col, int row) {
 		if(onGoban(col, row)){
 			return (intersection[col][row] == null);
 		}
@@ -82,14 +80,14 @@ public class StateGame implements IStateGame {
 	}
 
 	@Override
-	public boolean onGoban(short col, short row) {
+	public boolean onGoban(int col, int row) {
 		return (col >= 0 && col < getMaxCol() && row >= 0 &&  row < getMaxRow());
 	}
 
 
 	@Override
-	public boolean isPlayer(short col, short row) {
-		return (intersection[col][row] == Configuration.getColorPlayer());
+	public boolean isPlayer(int col, int row) {
+		return (intersection[col][row] == context.getPlayer().getColor());
 	}
 	
 	
@@ -99,7 +97,7 @@ public class StateGame implements IStateGame {
 
 	
 	@Override
-	public Object getIntersection(short col, short row) {
+	public Object getIntersection(int col, int row) {
 		return intersection[col][row];
 	}
 
@@ -113,8 +111,8 @@ public class StateGame implements IStateGame {
 	@Override
 	public int countLocationOccupied() {
 		int cptOccupied = 0;
-		for (short cptCol = 0; cptCol < getMaxRow(); cptCol++) {
-			for (short cptRow = 0; cptRow < getMaxCol(); cptRow++) {
+		for (int cptCol = 0; cptCol < getMaxRow(); cptCol++) {
+			for (int cptRow = 0; cptRow < getMaxCol(); cptRow++) {
 				if (! isFree(cptCol, cptRow)) {
 					cptOccupied++;
 				}
@@ -126,10 +124,10 @@ public class StateGame implements IStateGame {
 	
 	@Override
 	public Object clone() {
-		StateGame clone = new StateGame(lineV, lineH);
+		StateGame clone = new StateGame(context);
 		
-		for (short cptCol = 0; cptCol < getMaxRow(); cptCol++) {
-			for (short cptRow = 0; cptRow < getMaxCol(); cptRow++) {
+		for (int cptCol = 0; cptCol < getMaxRow(); cptCol++) {
+			for (int cptRow = 0; cptRow < getMaxCol(); cptRow++) {
 				if (! isFree(cptCol, cptRow)) {
 					try {
 						clone.play(cptCol, cptRow, (Boolean)getIntersection(cptCol, cptRow));
@@ -144,7 +142,7 @@ public class StateGame implements IStateGame {
 
 	@Override
 	public void clear() {
-		intersection = new Boolean[this.lineV][this.lineH];
+		intersection = new Boolean[context.getSizeGoban()][context.getSizeGoban()];
 	}
 
 	@Override
@@ -155,6 +153,13 @@ public class StateGame implements IStateGame {
 	@Override
 	public int countLimitPlayer() {
 		return countLimitPlayer;
+	}
+
+
+	@Override
+	public void cleanUp() {
+		clear();
+		
 	}
 	
 }

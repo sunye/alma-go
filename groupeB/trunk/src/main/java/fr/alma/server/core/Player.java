@@ -32,8 +32,8 @@ public class Player extends AbstractPlayer {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					super.mouseClicked(e);
-					short x = (short)Math.round((e.getX()-25.0)/30.0);
-					short y = (short)Math.round((e.getY()-25.0)/30.0);
+					int x = (int)Math.round((e.getX()-25.0)/30.0);
+					int y = (int)Math.round((e.getY()-25.0)/30.0);
 
 					if (raiseEvent(new PlayEvent(player, PlayEvent.BEFORE, new Emplacement(x, y)))) {
 						try {
@@ -77,6 +77,18 @@ public class Player extends AbstractPlayer {
 
 	public boolean isEnable() {
 		return enabled;
+	}
+
+	@Override
+	public void cleanUp() {
+		if (listener != null) {
+			goban.removeMouseListener(listener);
+			listener = null;
+		}
+		goban = null;
+		stateGame = null;
+		listener = null;
+		player = null;		
 	}
 	
 }

@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.alma.client.action.Context;
 import fr.alma.client.action.GameLoader;
+import fr.alma.client.action.ParamGame;
 import fr.alma.server.core.Computer;
 import fr.alma.server.core.Emplacement;
 import fr.alma.server.core.Factory;
@@ -27,14 +29,20 @@ public class TestCapture {
 	IEmplacement emplacement = null;
 	IPlayer computer = null;
 	IPlayer player = null;
+	Context context;
 	
 	
 	@Before
 	public void setUp() throws Exception {
-		stateGame = Factory.getStateGame();
+		
+		context = new Context();
+		ParamGame param = new ParamGame();
+		param.setGrille(9);
+		
+		stateGame = Factory.getStateGame(context);
 		stateGame.load(new GameLoader(), "TestEvaluation-1.txt");
-		computer = new Computer("computer", Configuration.getColorComputer());
-		player = new Player("adversaire", Configuration.getColorPlayer(), null, stateGame);
+		computer = new Computer("computer", Configuration.BLACK);
+		player = new Player("adversaire", Configuration.WHITE, null, stateGame);
 		
 		//evaluation = new Evaluation(computer, player);
 		ruleManager = Factory.getRuleManager();	

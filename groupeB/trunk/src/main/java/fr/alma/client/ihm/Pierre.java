@@ -9,8 +9,9 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
-import fr.alma.server.core.IStateGame;
+import fr.alma.client.action.Context;
 import fr.alma.server.rule.Configuration;
+
 
 public class Pierre {
 
@@ -21,47 +22,59 @@ public class Pierre {
 	private static BufferedImage[] arrayImageN = new BufferedImage[18];
 	private static BufferedImage[] arrayImage = null;
 	
-	public static void paintPierre(Graphics g, IStateGame stateGame) {
-		for (short x = 0; x < Configuration.LINE_V; x++)
-			for (short y = 0; y < Configuration.LINE_H; y++) {
-				if (! stateGame.isFree(x, y)) {
-					BufferedImage image = getImage(x, y, stateGame.isComputer(x, y));
+	public static void paintPierre(Graphics g, Context context) {
+		for (int x = 0; x < context.getSizeGoban(); x++)
+			for (int y = 0; y < context.getSizeGoban(); y++) {
+				if (! context.getStateGame().isFree(x, y)) {
+					BufferedImage image = getImage(x, y, context);
 					g.drawImage(image, 10+(image.getWidth()*x), 10+(image.getHeight()*y), null);
 				}
 			}
 	}
 	
 	
-	public static BufferedImage getImage(short x, short y, boolean computer) {
-		short indice = 1;
-		
+	public static BufferedImage getImage(int x, int y, Context context) {
+		int indice = 1;
+		// 
 		if (y == 0) {
 			if (x == 0)
 				indice = 1;
-			else if (x == Configuration.LINE_V-1)
+			else if (x == context.getSizeGoban()-1)
 				indice = 3;
 			else 
 				indice = 2;
-		} else if (y == Configuration.LINE_H-1) {
+		} else if (y == context.getSizeGoban()-1) {
 			if (x == 0)
 				indice = 7;
-			else if (x == Configuration.LINE_V-1)
+			else if (x == context.getSizeGoban()-1)
 				indice = 9;
 			else 
 				indice = 8;
 		} else {
 			if (x == 0)
 				indice = 4;
-			else if (x == Configuration.LINE_V-1)
+			else if (x == context.getSizeGoban()-1)
 				indice = 6;
 			else
 				indice = 5;
 		}
 		
-		arrayImage = (computer ? arrayImageB : arrayImageN);
+		if (context.getStateGame().isComputer(x, y)) {
+			if (context.getComputer().getColor() == Configuration.WHITE) {
+				arrayImage = arrayImageB;
+			} else {
+				arrayImage = arrayImageN;
+			}
+		} else {
+			if (context.getPlayer().getColor() == Configuration.WHITE) {
+				arrayImage = arrayImageB;
+			} else {
+				arrayImage = arrayImageN;
+			} 
+		}
 		
 		if (arrayImage[indice-1] == null) {
-			String imageFileName = "image/" + (computer ? PIERRE_BLANCHE : PIERRE_NOIRE) + indice + ".png"; 
+			String imageFileName = "image/" + getColorPierre(x, y, context) + indice + ".png"; 
 			URL imageSrc = null;
 			try {
 				imageSrc = ((new File(imageFileName)).toURI()).toURL();
@@ -82,4 +95,25 @@ public class Pierre {
 		return arrayImage[indice-1];
 	}
 
+	
+	private static String getColorPierre(int x, int y, Context context) {
+		String color = null;
+		
+		if (context.getStateGame().isComputer(x, y)) {
+			if (context.getComputer().getColor() == Configuration.WHITE) {
+				color = PIERRE_BLANCHE;
+			} else {
+				color = PIERRE_NOIRE;
+			}
+		} else {
+			if (context.getPlayer().getColor() == Configuration.WHITE) {
+				color = PIERRE_BLANCHE;
+			} else {
+				color = PIERRE_NOIRE;
+			}
+		}
+		return color;
+	}
+
+	
 }

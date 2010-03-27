@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.alma.client.action.Context;
 import fr.alma.client.action.GameLoader;
+import fr.alma.client.action.ParamGame;
 import fr.alma.server.core.Computer;
 import fr.alma.server.core.Factory;
 import fr.alma.server.core.IPlayer;
@@ -22,12 +24,21 @@ public class TestEvaluation {
 	
 	@Before
 	public void setUp() throws Exception {
-		stateGame = Factory.getStateGame();
-		stateGame.load(new GameLoader(), "TestEvaluation.txt");
-		IPlayer computer = new Computer("computer", Configuration.getColorComputer());
-		IPlayer player = new Player("adversaire", Configuration.getColorPlayer(), null, stateGame);
+		Context context;
+		context = new Context();
+		ParamGame param = new ParamGame();
+		param.setGrille(9);
 		
-		evaluation = new Evaluation(computer, player);
+		stateGame = Factory.getStateGame(context);
+		stateGame.load(new GameLoader(), "TestEvaluation.txt");
+		IPlayer computer = new Computer("computer", Configuration.BLACK);
+		IPlayer player = new Player("adversaire", Configuration.WHITE, null, stateGame);
+		
+		context.setComputer(computer);
+		context.setPlayer(player);
+		context.setStateGame(stateGame);
+		
+		evaluation = new Evaluation(context);
 	}
 
 	@Test

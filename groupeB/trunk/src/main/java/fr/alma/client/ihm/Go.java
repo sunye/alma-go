@@ -35,14 +35,15 @@ public class Go extends JFrame {
 		 * ask who start
 		 * who starts has the black stones
 		 */
+		
+		/*
 		IStateGame stateGame = Factory.getStateGame();
-		//stateGame.load(new GameLoader(), "TestCaptureSuicidaire.txt");
 
 		Goban goban = Factory.getGoban(stateGame);
 		RuleManager ruleManager = Factory.getRuleManager();
 
 		Coordinator coordinator = new Coordinator(goban, stateGame, ruleManager);
-		Context context = new Context();
+		
 		IPlayer computer = new Computer("Computer", context.getParamGame().getColorComputer());
 		IPlayer player = new Player("Player", Configuration.getColorPlayer(), goban, stateGame);
 
@@ -51,15 +52,16 @@ public class Go extends JFrame {
 		IStrategy strategy = Factory.getStrategy(coordinator);
 		computer.setStrategy(strategy);
 		computer.setEvaluation(evaluation);
-
-		//Context context = new Context();
-		context.setMainFrame(this);
-		
 		coordinator.setPlayers(player, computer);
 		context.setCoordinator(coordinator);
-
-		setJMenuBar(Factory.getMenuBar(context));
 		setContentPane(goban);
+		 */
+		
+		Context context = new Context();
+		context.setMainFrame(this);
+		
+		setJMenuBar(Factory.getMenuBar(context));
+		
 		Tools.center(this);
 		setVisible(true);
 		

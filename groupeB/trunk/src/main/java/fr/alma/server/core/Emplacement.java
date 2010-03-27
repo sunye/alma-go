@@ -4,21 +4,21 @@ import java.util.List;
 
 public class Emplacement implements IEmplacement {
 
-	private short row;
-	private short col;
+	private int row;
+	private int col;
 	
-	public Emplacement(short col, short row) {
+	public Emplacement(int col, int row) {
 		this.col = col;
 		this.row = row;
 	}
 	
 	@Override
-	public short getCol() {
+	public int getCol() {
 		return col;
 	}
 
 	@Override
-	public short getRow() {
+	public int getRow() {
 		return row;
 	}
 	

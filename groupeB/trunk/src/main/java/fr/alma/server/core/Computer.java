@@ -64,5 +64,12 @@ public class Computer extends AbstractPlayer {
 		this.evaluation = evaluation;
 	}
 
+	@Override
+	public void cleanUp() {
+		evaluation = null;
+		strategy = null;
+		player = null;
+	}
+
 	
 }

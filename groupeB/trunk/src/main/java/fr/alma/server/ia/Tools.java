@@ -3,16 +3,17 @@ package fr.alma.server.ia;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.alma.client.action.Context;
 import fr.alma.server.core.Emplacement;
 import fr.alma.server.core.IEmplacement;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
-import fr.alma.server.rule.Configuration;
+
 
 public class Tools {
 
-	public static short getMaxDegreeFree() {
-		return ((Configuration.LINE_H * Configuration.LINE_V) / 2) + 2;
+	public static int getMaxDegreeFree(Context context) {
+		return ((context.getSizeGoban() * context.getSizeGoban()) / 2) + 2;
 	}
 	
 	
@@ -21,19 +22,19 @@ public class Tools {
 		emplacements.add(e);
 
 		//case Top
-		short rowTop = (short) (e.getRow() - 1);
+		int rowTop = (e.getRow() - 1);
 		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(e.getCol(), rowTop), stateGame, player, emplacements);
 
 		//case Bottom
-		short rowBottom = (short) (e.getRow() + 1);
+		int rowBottom = (e.getRow() + 1);
 		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(e.getCol(), rowBottom), stateGame, player, emplacements);
 
 		//case Left
-		short colLeft =(short) (e.getCol() -1);
+		int colLeft = (e.getCol() -1);
 		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(colLeft, e.getRow()), stateGame, player, emplacements);
 
 		//case Right
-		short colRight =(short) (e.getCol() +1);
+		int colRight = (e.getCol() +1);
 		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(colRight, e.getRow()), stateGame, player, emplacements);
 
 		return nbFreeDegrees;
@@ -59,14 +60,14 @@ public class Tools {
 	
 	public static void showGobanOnConsole(IStateGame stateGame) {
 		StringBuffer chaine = new StringBuffer();
-		for (short col = 0; col < stateGame.getMaxCol(); col++) {
+		for (int col = 0; col < stateGame.getMaxCol(); col++) {
 			chaine.append(" " + col);
 		}
 		System.out.println("\n " + chaine.toString());
 		
-		for (short row = 0; row < stateGame.getMaxRow(); row++) {
+		for (int row = 0; row < stateGame.getMaxRow(); row++) {
 			System.out.print(row);
-			for (short col = 0; col < stateGame.getMaxCol(); col++) {
+			for (int col = 0; col < stateGame.getMaxCol(); col++) {
 				if (stateGame.isPlayer(col, row)) {
 					System.out.print("|P");
 				} else if (stateGame.isComputer(col, row)) {
@@ -95,7 +96,7 @@ public class Tools {
 		List<IEmplacement> emplacements = new ArrayList<IEmplacement>();
 		emplacements.add(e);
 		//case Top
-		short rowTop = (short) (e.getRow() - 1);
+		int rowTop = (e.getRow() - 1);
 		//System.out.println("Voisin TOP ["+e.getCol()+"]["+rowTop+"]");
 		
 		if (stateGame.onGoban(e.getCol(), rowTop)) {
@@ -104,17 +105,16 @@ public class Tools {
 
 		if (hasFreedom != 0) {
 			//case Bottom
-			short rowBottom = (short) (e.getRow() + 1);
+			int rowBottom = (e.getRow() + 1);
 			//System.out.println("Voisin BOTTOM ["+e.getCol()+"]["+rowBottom+"]");
 
 			if (stateGame.onGoban(e.getCol(), rowBottom)) {
 				hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Emplacement(e.getCol(), rowBottom), emplacements);
 			}
 			
-
 			if (hasFreedom != 0) {
 				//case Left
-				short colLeft =(short) (e.getCol() -1);
+				int colLeft = (e.getCol() -1);
 				//System.out.println("Voisin LEFT ["+colLeft+"]["+e.getRow()+"]");
 
 				if(stateGame.onGoban(colLeft, e.getRow())) {
@@ -123,7 +123,7 @@ public class Tools {
 
 				if (hasFreedom != 0) {
 					//case Right
-					short colRight =(short) (e.getCol() +1);
+					int colRight = (e.getCol() +1);
 					//System.out.println("Voisin RIGHT ["+colRight+"]["+e.getRow()+"]");
 					
 					if(stateGame.onGoban(colRight, e.getRow())) {

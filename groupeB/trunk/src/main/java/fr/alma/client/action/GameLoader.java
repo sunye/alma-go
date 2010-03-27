@@ -5,12 +5,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import fr.alma.server.rule.Configuration;
 
 
 public class GameLoader {
 
-	private Boolean[][] intersection = new Boolean[Configuration.LINE_V][Configuration.LINE_H];
+	private Boolean[][] intersection = new Boolean[9][9];
 
 
 	public Boolean[][] loadGame(String fileName)  {
@@ -21,10 +20,10 @@ public class GameLoader {
 
 			String line = null;
 			int i = 0;
-			while (sc.hasNextLine() && i < Configuration.LINE_V) {
+			while (sc.hasNextLine() && i < 9) {
 				line = sc.nextLine(); // lecture de la ligne courante
 				if (line != null)
-					for (int j = 0; j < Configuration.LINE_H; j++) {
+					for (int j = 0; j < 9; j++) {
 						if (line.charAt(j) == 'x') intersection[j][i] = false;
 						else if (line.charAt(j)=='o') intersection[j][i] = true;
 					}
