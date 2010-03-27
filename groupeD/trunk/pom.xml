@@ -1,0 +1,168 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0http://maven.apache.org/maven-v4_0_0.xsd">
+    
+	<modelVersion>4.0.0</modelVersion>
+    <groupId>fr.alma</groupId>
+	<artifactId>Obi-Go</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0</version>
+    
+	<name>Obi-Go</name>
+	<description>Go game based on MinMax and AlphaBeta algorithms, with embedded user interface developped with Swing©.
+    </description>
+	<url>http://maven.apache.org</url>
+    
+    <developers>
+      <developer>
+        <id>adrienGuille</id>
+        <name>Adrien GUILLE</name>
+        <email>adrien.guille@gmail.com</email>
+        <organization>Université de Nantes</organization>
+        
+        <roles>
+          <role>developer</role>
+        </roles>
+      </developer>
+      <developer>
+        <id>vincentFerreira</id>
+        <name>Vincent FERREIRA</name>
+        <email>vincent.ferreira14@gmail.com</email>
+        <organization>Université de Nantes</organization>
+        
+        <roles>
+          <role>developer</role>
+        </roles>
+      </developer>
+    </developers>
+    
+    <licenses>
+    <license>
+        <name>GNU GPL V3</name>
+        <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+        <distribution>repo</distribution>
+    </license>
+    <license>
+        <name>Apache Software License, Version 2.0</name>
+        <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        <distribution>repo</distribution>
+        <comments>La licence de Maven</comments>
+    </license>
+</licenses>
+    
+	<scm>
+		<connection>scm:svn:http://alma-go.googlecode.com/svn/groupeD/</connection>
+		<developerConnection>scm:svn:https://alma-go.googlecode.com/svn/groupeD/</developerConnection>
+		<url>http://code.google.com/p/alma-go/</url>
+	</scm>
+    
+
+	<build>
+		<plugins>
+            <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-compiler-plugin</artifactId>
+                 <configuration>
+                    <source>1.5</source> 
+                    <target>1.5</target>  
+                 </configuration>
+              </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>fr.alma.ui.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>java</executable>
+					<mainClass>fr.alma.gtd.ihm.MainIHM</mainClass>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2-beta-5</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>fr.alma.ui.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id><!--thisisusedforinheritancemerges-->
+						<phase>package</phase><!--appendtothepackagingphase.-->
+						<goals>
+							<goal>single</goal><!--goals==mojos-->
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+        </plugins>
+	</build>
+
+    <reporting>
+      <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <version>2.4</version>
+            <configuration> 
+                <linkXref>true</linkXref>
+                <sourceEncoding>utf-8</sourceEncoding>
+                <minimumTokens>100</minimumTokens> 
+                <targetJdk>1.5</targetJdk> 
+                <rulesets>
+                    <ruleset>/rulesets/sunsecure.xml</ruleset> 
+                </rulesets>
+            </configuration>
+        </plugin>
+        <!--
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.6</version>
+        </plugin>
+        -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-report-plugin</artifactId>
+            <version>2.4.2</version>
+        </plugin>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>cobertura-maven-plugin</artifactId>
+            <version>2.3</version>
+        </plugin>
+      </plugins>
+    </reporting>
+    
+    <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
