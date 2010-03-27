@@ -25,7 +25,7 @@ import javax.swing.JPanel;
  * @author vincent
  *
  */
-public class UIGoban extends JPanel implements MouseListener,MouseMotionListener,ActionListener,Runnable{
+public class UIGoban extends JPanel implements MouseListener,MouseMotionListener,ActionListener{
 
 	
 	private static final long serialVersionUID = 1L;
@@ -35,7 +35,6 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	int currentStoneX;
 	int currentStoneY;
 	// variables pour le thread de jeu
-	public Thread tempo;
 	private int time=0;
 	boolean running = true;
 	public boolean stop=false;
@@ -53,7 +52,6 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 		this.atariGo = myApplication.atarigo;
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		tempo = new Thread(this);
 	}
 
 	/**
@@ -148,34 +146,50 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 				int y=e.getY();
 				x=(x)/40;
 				y=(y)/40;
-				//System.out.println("clic sur la case"+"["+x+","+y+"]");
-				//ici on joue le coup  et on test avant pr savoir etat du jeu en cours...
-				switch (atariGo.playMove(atariGo.currentPlayer.color, new Position(x,y))) {
-			    case WIN:
-				myApplication.panInfos.setBlackLife(atariGo.captureObjective-atariGo.caughtBlack);
-				myApplication.panInfos.setWhiteLife(atariGo.captureObjective-atariGo.caughtWhite);
-			    repaint();
-			    atariGo.shutDown();
-			    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" a gagné !", "Information", JOptionPane.INFORMATION_MESSAGE);
-				//sortie.println(plateau.toString());
-				//sortie.println("=> Vous avez gagne"); 
-				//scanner.close();
-				return;
-			    case NEUTRAL:
-				//nombreCoups --;
-			    atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
-			    myApplication.panInfos.setBlackLife(atariGo.captureObjective-atariGo.caughtBlack);
-			    myApplication.panInfos.setWhiteLife(atariGo.captureObjective-atariGo.caughtWhite);
-				System.out.println("onpasse au joueur"+atariGo.currentPlayer.toString());
-			    break;
-			    default:
-				//sortie.println("=> Erreur : position invalide");
-				break;
-			    }
+				putStone(x,y);
 				//TODO ajouter une actualisation du panneau info...
 				repaint();
+				
+				if(!atariGo.currentPlayer.isHuman()){
+					Tree jeu = new Tree(atariGo.goban);
+					ValuedGoban plv = new ValuedGoban(0);
+					AlphaBeta.init(3);
+					plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color);
+					atariGo.playMove(atariGo.currentPlayer.color, atariGo.goban.getDifference(plv.goban_));					
+					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes);
+
+					repaint();
+					atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
+				}
 			}
 		}
+	}
+	
+	public void putStone(int x,int y){
+		//System.out.println("clic sur la case"+"["+x+","+y+"]");
+		//ici on joue le coup  et on test avant pr savoir etat du jeu en cours...
+		switch (atariGo.playMove(atariGo.currentPlayer.color, new Position(x,y))) {
+	    case WIN:
+		myApplication.panInfos.setBlackLife(atariGo.captureObjective-atariGo.caughtBlack);
+		myApplication.panInfos.setWhiteLife(atariGo.captureObjective-atariGo.caughtWhite);
+	    repaint();
+	    atariGo.shutDown();
+	    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" a gagné !", "Information", JOptionPane.INFORMATION_MESSAGE);
+		//sortie.println(plateau.toString());
+		//sortie.println("=> Vous avez gagne"); 
+		//scanner.close();
+		break;
+	    case NEUTRAL:
+		//nombreCoups --;
+	    atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
+	    myApplication.panInfos.setBlackLife(atariGo.captureObjective-atariGo.caughtBlack);
+	    myApplication.panInfos.setWhiteLife(atariGo.captureObjective-atariGo.caughtWhite);
+		System.out.println("onpasse au joueur"+atariGo.currentPlayer.toString());
+	    break;
+	    default:
+		//sortie.println("=> Erreur : position invalide");
+		break;
+	    }
 	}
 
 	public void mouseDragged(MouseEvent arg0) {
@@ -198,7 +212,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 /**
  * Game loop. need to be removed...
  */
-	public void run() {
+/*	public void run() {
 		//boucle de jeu
 		pause=false;
 		System.out.println("tempo start");
@@ -224,7 +238,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 							
 							System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes);
 						//on sort de la boucle on joue le coup
-						/*switch (atariGo.jouerCoup(atariGo.joueurEnCours.couleur, meilleurCoup)) {
+						switch (atariGo.jouerCoup(atariGo.joueurEnCours.couleur, meilleurCoup)) {
 					    case GAGNANT:
 					    //fini = true;
 						//sortie.println(plateau.toString());
@@ -239,7 +253,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 					    default:
 						//sortie.println("=> Erreur : position invalide");
 						break;
-					    }*/
+					    }
 						repaint();
 						
 						try{
@@ -254,6 +268,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 			}
 		}
 	}
+	*/
 	
 	
 }

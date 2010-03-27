@@ -18,7 +18,6 @@ public class Main {
 	myApplication.setLocationRelativeTo(null);
 	// Affichage de la fenêtre : il existe maintenant deux threads.
 	myApplication.setVisible(true);
-	myApplication.uiGoban.tempo.start();
     }
 
 }
