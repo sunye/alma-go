@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Random;
 
 /**
- * Classe implémentant une l'action consistant à lancer une nouvelle partie.
+ * NewGameAction is the action launching a new game.
  * @author vincent
  *
  */
@@ -21,7 +21,8 @@ class NewGameAction extends MyAction {
 	NewGameDialog nvdialog;
 
 /**
- * constructeur logique
+ * logic constructor
+ * 
  */
  public NewGameAction(MyApplication myApplication) {
 	super("Nouvelle partie", 
@@ -33,7 +34,7 @@ class NewGameAction extends MyAction {
  }
 
 /**
- * redéfinition
+ * override
  */
  public void actionPerformed(ActionEvent evt) {
 	 Thread t = new Thread() {

@@ -9,15 +9,14 @@ import javax.swing.JOptionPane;
 import javax.swing.Action;
 
 /**
- * l'action consistant à quitter une application consiste à effectuer 
- * d'éventuelles sauvegardes de fichiers avant d'interrompre l'exécution de l'application.
+ * QuitAction.java represent the action that operate the shuting down of the application. 
  * @author vincent
  *
  */
 class QuitAction extends MyAction {
 
 /**
- * constructeur logique
+ * logic constructor
  */
  public QuitAction(MyApplication myApplication) {
 	super("Quitter", 
@@ -29,14 +28,14 @@ class QuitAction extends MyAction {
  }
 
 /**
- *  effectue les sauvegardes éventuelles avant d'interrompre l'application.
+ *  quit the application
  */
  public void quit() {
 	System.exit(0);
  }
 
 /**
- * redefinition
+ * override
  */
  public void actionPerformed(ActionEvent evt) {
 	 Thread t = new Thread() {

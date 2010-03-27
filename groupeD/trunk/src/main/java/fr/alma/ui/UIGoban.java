@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- * Classe implémentant la représentation graphique du Goban
+ * UIGoban.java is the graphic representation of the board game of Atarigo
  * @author vincent
  *
  */
@@ -45,8 +45,8 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	int pos = 0;
 	
 	/**
-	 * constructeur logique
-	 * @param myApp Application rattachée
+	 * logic constructor
+	 * @param myApp attached application
 	 */
 	public UIGoban(MyApplication myApp){
 		this.myApplication=myApp;
@@ -57,7 +57,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	}
 
 	/**
-	 * dessin du plateau
+	 * drawing of the board
 	 */
 	public void paintComponent(Graphics g){
 		if(atariGo!=null){
@@ -103,7 +103,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	}
 	
 	/**
-	 * réinitialisation du plateau
+	 * initialisation of the board
 	 */
 	public void newGame(){
 		//ici on reinit...
@@ -137,7 +137,8 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	}
 
 	/**
-	 * définition du comportement du relachement du bouton gauche de la souris sur le plateau
+	 * define the behavior of the mouse click on the board game.
+	 * 
 	 */
 	public void mouseReleased(MouseEvent e) {
 		if (!atariGo.isOver()) {
@@ -178,7 +179,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 		
 	}
 /**
- * définition du comportement du mouvement de la souris sur le plateau
+ * define the behavior of the mouse move on the board. 
  */
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -191,7 +192,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	}
 	
 /**
- * boucle de jeu
+ * Game loop. need to be removed...
  */
 	public void run() {
 		//boucle de jeu

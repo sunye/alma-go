@@ -8,14 +8,14 @@ import java.awt.event.InputEvent;
 import javax.swing.JOptionPane;
 import javax.swing.Action;
 /**
- * Action affichant la fenetre "A Propos"
+ * Action showing the window "A Propos"
  * @author vincent
  *
  */
 class AboutAction extends MyAction {
 
  /**
-  * constructeur logique
+  * logic constructor
   * 
   */
  public AboutAction(MyApplication myApplication) {
@@ -28,7 +28,7 @@ class AboutAction extends MyAction {
  }
 
 /**
- * redefinition
+ * override
  */
  public void actionPerformed(ActionEvent evt) {
 	 Thread t = new Thread() {
