@@ -20,7 +20,8 @@ public class InfoPanel extends JPanel {
 	private JLabel capturedBlack;
 	private JLabel capturedWhite;
 	private JLabel difficultyTitle;
-	private JLabel difficulty;
+	private JLabel dif1;
+	private JLabel dif2;
 	
 	
 	
@@ -71,20 +72,19 @@ public class InfoPanel extends JPanel {
         gBC.ipady = 40;
         add(capturedWhite, gBC);
         
-        /*
+        
 		// titre "Niveau du joueur"
-		challengeTitle = new JLabel("Captures pour gagner");
+        dif1 = new JLabel();
 		gBC.weightx = 0.5;
         gBC.gridx = 0;
         gBC.gridy = 3;
-        add(challengeTitle, gBC);
+        add(dif1, gBC);
         
         // nombre de captures pour gagner
-		challengeNb = new JLabel("0");
+        dif2 = new JLabel();
         gBC.gridx = 2;
         gBC.gridy = 3;
-        add(challengeNb, gBC);
-        */
+        add(dif2, gBC);
         
 	}
 	
@@ -98,6 +98,23 @@ public class InfoPanel extends JPanel {
 	
 	public void setWhiteLife(int n){
 		capturedWhite.setText(String.valueOf(n));
+	}
+	
+	public void setBlackDif(int n){
+		dif1.setText("dif : "+String.valueOf(n));
+	}
+	
+	public void rmBlackDif(){
+		dif1.setText("");
+	}
+	
+	
+	public void setWhiteDif(int n){
+		dif2.setText("dif : "+String.valueOf(n));
+	}
+	
+	public void rmWhiteDif(){
+		dif2.setText("");
 	}
 	
 	
