@@ -63,7 +63,7 @@ public class AlphaBeta {
 		int i = 0;
 		while(max.evaluation_<ExtremumCourant && edj.getChildren().size()>i){
 			totalNodes++;
-			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),max.evaluation_,pion.opponent(),groups);
+			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),max.evaluation_,pion.opponent(),groups.updateGroups(edj.getGoban(),edj.getGoban().getDifference(edj.getChildren().get(i).getGoban()),pion));
 			if(V.evaluation_>max.evaluation_){
 				max.clone(new ValuedGoban(V.evaluation_,edj.getChildren().get(i).getMove()));
 			}
@@ -78,7 +78,7 @@ public class AlphaBeta {
 		int i = 0;
 		while(min.evaluation_>ExtremumCourant && edj.getChildren().size()>i){
 			totalNodes++;
-			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),min.evaluation_,pion.opponent(),groups);
+			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),min.evaluation_,pion.opponent(),groups.updateGroups(edj.getGoban(),edj.getGoban().getDifference(edj.getChildren().get(i).getGoban()),pion));
 			if(V.evaluation_<min.evaluation_){
 				min.clone(new ValuedGoban(V.evaluation_,edj.getChildren().get(i).getMove()));
 			}
