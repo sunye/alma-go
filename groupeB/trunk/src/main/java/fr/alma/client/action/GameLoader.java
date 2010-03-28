@@ -120,7 +120,6 @@ public class GameLoader {
 			context.setComputer(computer);
 			
 			context.setCoordinator(coordinator);
-			//Factory.getIHMParam(context).actionOkforGameLoader();
 			context.getStateGame().load(intersection);
 			context.getGoban().repaint();
 			context.getCoordinator().startGame();

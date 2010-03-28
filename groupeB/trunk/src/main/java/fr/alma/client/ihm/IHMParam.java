@@ -247,16 +247,6 @@ public class IHMParam extends AbstractDialog {
 		}
 	}
 	
-	public void actionOkforGameLoader() {
-		
-		if (controlSaisie()) {
-			initContext();
-			this.setVisible(false);
-			//getContext().getCoordinator().startGame();
-		}
-	}
-	
-	
 	private void initContext() {
 		
 		if (getContext().getCoordinator() != null) {
