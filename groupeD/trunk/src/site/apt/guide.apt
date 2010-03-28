@@ -1,15 +1,16 @@
 1. Aim of the project
 
-	Description of the project.
+	The aim of that project was to develop a Go game based on MinMax and AlphaBeta algorithms, within the artificial intelligence module, as part of the Master1 ALMA at the University of Nantes. It features a graphical interface which provides a better game experience.
 	
-	Here we make reference to Source Repository in Project Documentation. 
+	To know how to get the sources, please refer to the article "Source Repository" in the "Project Documentation" menu. 
 
 * 1 How to run the project
 
-	Here we explain how to generate the .jar 
+	First, build the project by entering the command "mvn package".
+	Then simply enter : java -jar target/ObiGo-1.0.jar
 
 * 2 How to play
 
-	Here we give the bascis rules to play. 
-
-
+	Clic on the "+" button to start a new game.
+	In this panel, you can choose the kind of game you want to play (i.e. Human vs Human, Human vs Computer, etc...) and the condition to win the match.
+	You can also adjust the difficulty of the IA if you want, by modifying the level under each opponent's stone.
