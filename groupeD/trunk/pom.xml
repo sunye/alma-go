@@ -14,7 +14,7 @@
     
     <developers>
       <developer>
-        <id>adrienGuille</id>
+        <id>adrien.guille</id>
         <name>Adrien GUILLE</name>
         <email>adrien.guille@gmail.com</email>
         <organization>Université de Nantes</organization>
@@ -24,9 +24,9 @@
         </roles>
       </developer>
       <developer>
-        <id>vincentFerreira</id>
+        <id>ferreira.vincent14</id>
         <name>Vincent FERREIRA</name>
-        <email>vincent.ferreira14@gmail.com</email>
+        <email>ferreira.vincent14@gmail.com</email>
         <organization>Université de Nantes</organization>
         
         <roles>
