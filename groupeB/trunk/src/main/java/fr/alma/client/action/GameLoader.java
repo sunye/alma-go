@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import fr.alma.client.ihm.IHMParam;
 import fr.alma.server.core.Computer;
 import fr.alma.server.core.Coordinator;
 import fr.alma.server.core.Factory;
@@ -99,7 +98,7 @@ public class GameLoader {
 			context.setStateGame(stateGame);
 			
 			RuleManager ruleManager = Factory.getRuleManager();
-			context.setRuleManger(ruleManager);
+			context.setRuleManager(ruleManager);
 			
 			Coordinator coordinator = new Coordinator(context);
 
@@ -113,7 +112,7 @@ public class GameLoader {
 			IPlayer player = new Player("Player", ! context.getParamGame().getColorComputer(), context.getGoban(), stateGame);
 
 			IEvaluation evaluation = Factory.getEvaluation(context);
-			IStrategy strategy = Factory.getStrategy(coordinator);
+			IStrategy strategy = Factory.getStrategy(context);
 			computer.setStrategy(strategy);
 			computer.setEvaluation(evaluation);
 			context.setPlayer(player);

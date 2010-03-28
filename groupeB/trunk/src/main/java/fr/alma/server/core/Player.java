@@ -90,6 +90,10 @@ public class Player extends AbstractPlayer {
 		listener = null;
 		player = null;		
 	}
+
+	@Override
+	public void interrupt() {
+	}
 	
 }
 

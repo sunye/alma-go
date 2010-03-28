@@ -1,8 +1,11 @@
 package fr.alma.server.core;
 
 
+import javax.swing.JOptionPane;
+
 import fr.alma.client.action.Context;
 import fr.alma.client.ihm.Goban;
+import fr.alma.common.ui.Tools;
 import fr.alma.server.ia.FreedomDegrees;
 import fr.alma.server.rule.Configuration;
 import fr.alma.server.rule.RuleManager;
@@ -54,6 +57,7 @@ public class Coordinator implements ICoordinator {
 					/* Control if the game is over */
 					if (getRuleManager().checkAfter(getStateGame(), e.getEmplacement(), getCurrentPlayer()).isGameOver()) {
 						FreedomDegrees.showGobanOnConsole(getStateGame());
+						Tools.message(context.getMainFrame(), "Game over", "Winner is : " + getCurrentPlayer().getName(), JOptionPane.INFORMATION_MESSAGE);
 						System.out.println("Game over - winner is : " + getCurrentPlayer().getName());
 						getPlayer().setEnabled(false);
 						getComputer().setEnabled(false);
@@ -79,7 +83,7 @@ public class Coordinator implements ICoordinator {
 		}
 		return playListener;
 	}
-
+	
 	
 	public IPlayer getCurrentPlayer() {
 		return currentPlayer;
@@ -134,7 +138,7 @@ public class Coordinator implements ICoordinator {
 	 * @see fr.alma.server.core.IGenerator#getRuleManager()
 	 */
 	public RuleManager getRuleManager() {
-		return context.getRuleManger();
+		return context.getRuleManager();
 	}
 
 
@@ -158,4 +162,5 @@ public class Coordinator implements ICoordinator {
 		currentPlayer = null;
 		runnable = null;
 	}
+
 }

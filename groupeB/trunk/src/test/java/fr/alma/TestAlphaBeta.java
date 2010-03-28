@@ -79,7 +79,7 @@ public class TestAlphaBeta {
 			}
 			
 		};
-		strategy = Factory.getStrategy(coordinator);
+		strategy = Factory.getStrategy(context);
 	}
 
 	@Test

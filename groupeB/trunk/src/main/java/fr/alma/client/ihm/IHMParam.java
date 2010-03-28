@@ -262,7 +262,7 @@ public class IHMParam extends AbstractDialog {
 		getContext().setStateGame(stateGame);
 		
 		RuleManager ruleManager = Factory.getRuleManager();
-		getContext().setRuleManger(ruleManager);
+		getContext().setRuleManager(ruleManager);
 		
 		Coordinator coordinator = new Coordinator(getContext());
 
@@ -276,7 +276,7 @@ public class IHMParam extends AbstractDialog {
 		IPlayer player = new Player("Player", ! context.getParamGame().getColorComputer(), goban, stateGame);
 
 		IEvaluation evaluation = Factory.getEvaluation(context);
-		IStrategy strategy = Factory.getStrategy(coordinator);
+		IStrategy strategy = Factory.getStrategy(context);
 		computer.setStrategy(strategy);
 		computer.setEvaluation(evaluation);
 		getContext().setPlayer(player);

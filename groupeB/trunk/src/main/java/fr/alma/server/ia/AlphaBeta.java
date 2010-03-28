@@ -1,9 +1,9 @@
 package fr.alma.server.ia;
 
 
+import fr.alma.client.action.Context;
 import fr.alma.server.core.Emplacement;
 import fr.alma.server.core.IEmplacement;
-import fr.alma.server.core.ICoordinator;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 import fr.alma.server.core.IStrategy;
@@ -23,22 +23,20 @@ import fr.alma.server.rule.StatusCheck;
  */
 public class AlphaBeta implements IStrategy {
 
-	private ICoordinator coordinator;
 	private IEvaluation evaluation;
 	private IStateGame stateGame;
+	private Context context;
 
 	
 	/* Interet de les avoir en global : toujours disponibes ! */
 	private int rowMax = -1, colMax = -1;
-	int cpt = 0;
-	boolean gameOver = false;
-	int cptCol = 0;
-	int cptRow = 0;
-	boolean trace;
+	private int cpt = 0;
+	private boolean trace;
+	private boolean interrupted = false;
 	
 	
-	public AlphaBeta(ICoordinator coordinator) {
-		this.coordinator = coordinator;
+	public AlphaBeta(Context context) {
+		this.context = context;
 	}
 	
 	
@@ -50,8 +48,9 @@ public class AlphaBeta implements IStrategy {
 		 * the differents possibilities. For that, we muste
 		 * clone it */
 		stateGame = (IStateGame)getStateGame().clone();
+		setInterrupted(false);
 		
-		getValue(2, stateGame, 0, null);
+		getValue(2, stateGame, Integer.MAX_VALUE, null);
 		
 		//System.out.println("nb appels a gatValue() : " + cpt);
 		return new Emplacement(colMax, rowMax);
@@ -74,7 +73,7 @@ public class AlphaBeta implements IStrategy {
 		if (trace)
 			System.out.println("Alpha-Beta - getValue() Level : " + level);
 		
-		if ((level < Configuration.getMaxDeepLevel()) && existChildStateGame(status)) {
+		if ((level < Configuration.getMaxDeepLevel(context.getSizeGoban())) && existChildStateGame(status) && ! isInterrupted()) {
 			/* who has to play : if Odd level, it is the turn of the player
 			 * otherwise it is the computer */
 			if (level%2 == 0) {
@@ -119,20 +118,25 @@ public class AlphaBeta implements IStrategy {
 		
 		for (int col = 0; col < stateGame.getMaxCol(); col++) {
 			for (int row = 0; row < stateGame.getMaxRow(); row++) {
-				StatusCheck status = coordinator.getRuleManager().checkBefore(stateGame, new Emplacement(col, row), getComputer());
-				if ((max < extremum) && status.isCanPlay()) {
-					try {
-						stateGame.play(col, row, getComputer().getColor());
-					} catch (Exception e) {
-						System.out.println("Internal error : " + e.getLocalizedMessage());
+				if (max < extremum) {
+					StatusCheck status = context.getRuleManager().checkBefore(stateGame, new Emplacement(col, row), getComputer());
+					if (status.isCanPlay()) {
+						try {
+							stateGame.play(col, row, getComputer().getColor());
+						} catch (Exception e) {
+							System.out.println("Internal error : " + e.getLocalizedMessage());
+						}
+						int value = getValue(level+1, stateGame, max, status);
+						if (value > max) {
+							max = value;
+							colMax = col;
+							rowMax = row;
+						}
+						stateGame.remove(col, row);
 					}
-					int value = getValue(level+1, stateGame, max, status);
-					if (value > max) { 
-						max = value;
-						colMax = col;
-						rowMax = row;
-					}
-					stateGame.remove(col, row);
+				} else {
+					col = stateGame.getMaxCol();
+					row = stateGame.getMaxRow();					
 				}
 			}
 		}
@@ -149,18 +153,23 @@ public class AlphaBeta implements IStrategy {
 			System.out.println("Level " + level + " -> Recherche min");
 		for (int col = 0; col < stateGame.getMaxCol(); col++) {
 			for (int row = 0; row < stateGame.getMaxRow(); row++) {
-				StatusCheck status = coordinator.getRuleManager().checkBefore(stateGame, new Emplacement(col, row), getPlayer());
-				if ((min > extremum) && status.isCanPlay()) {
-					try {
-						stateGame.play(col, row, getPlayer().getColor());
-					} catch (Exception e) {
-						System.out.println("Internal error : " + e.getLocalizedMessage());
+				if (min > extremum) {
+					StatusCheck status = context.getRuleManager().checkBefore(stateGame, new Emplacement(col, row), getPlayer());
+					if (status.isCanPlay()) {
+						try {
+							stateGame.play(col, row, getPlayer().getColor());
+						} catch (Exception e) {
+							System.out.println("Internal error : " + e.getLocalizedMessage());
+						}
+						int value = getValue(level+1, stateGame, min, status);
+						if (value < min) { 
+							min = value;
+						}
+						stateGame.remove(col, row);
 					}
-					int value = getValue(level+1, stateGame, min, status);
-					if (value < min) { 
-						min = value;
-					}
-					stateGame.remove(col, row);
+				} else {
+					col = stateGame.getMaxCol();
+					row = stateGame.getMaxRow();
 				}
 			}
 		}
@@ -168,19 +177,34 @@ public class AlphaBeta implements IStrategy {
 			System.out.println("Level(" + level + ") -> return min = " + min);
 		return min;	
 	}
-
+	
 	
 	public IStateGame getStateGame() {
-		return coordinator.getStateGame();
+		return context.getStateGame();
 	}
 	
 	
 	public IPlayer getComputer() {
-		return coordinator.getComputer();
+		return context.getComputer();
 	}
 
 	
 	public IPlayer getPlayer() {
-		return coordinator.getPlayer();
+		return context.getPlayer();
+	}
+	
+	@Override
+	public void interrupt() {
+		setInterrupted(true);	
+	}
+
+
+	public synchronized boolean isInterrupted() {
+		return interrupted;
+	}
+
+
+	public synchronized void setInterrupted(boolean interrupted) {
+		this.interrupted = interrupted;
 	}
 }

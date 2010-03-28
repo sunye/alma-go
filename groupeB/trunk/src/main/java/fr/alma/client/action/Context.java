@@ -16,7 +16,7 @@ public class Context implements GoObject {
 	private ParamGame paramGame;
 	private IStateGame stateGame;
 	private Goban goban;
-	private RuleManager ruleManger;
+	private RuleManager ruleManager;
 	private IPlayer computer;
 	private IPlayer player;
 	
@@ -76,7 +76,7 @@ public class Context implements GoObject {
 		coordinator = null;
 		stateGame = null;
 		goban = null;
-		ruleManger = null;
+		ruleManager = null;
 	}
 
 
@@ -90,13 +90,13 @@ public class Context implements GoObject {
 	}
 
 
-	public RuleManager getRuleManger() {
-		return ruleManger;
+	public RuleManager getRuleManager() {
+		return ruleManager;
 	}
 
 
-	public void setRuleManger(RuleManager ruleManger) {
-		this.ruleManger = ruleManger;
+	public void setRuleManager(RuleManager ruleManager) {
+		this.ruleManager = ruleManager;
 	}
 
 
