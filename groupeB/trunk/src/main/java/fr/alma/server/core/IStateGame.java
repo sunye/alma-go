@@ -22,7 +22,7 @@ public interface IStateGame extends Cloneable, GoObject {
 
 	Object getIntersection(int col, int row);
 
-	void load(GameLoader gameLoaded, String fileName);
+	void load(Boolean[][] intersection);
 	public int countLocationOccupied();
 	public Object clone();
 	public void clear();

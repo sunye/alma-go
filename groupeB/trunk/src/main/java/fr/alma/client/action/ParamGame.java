@@ -74,6 +74,5 @@ public class ParamGame {
 	
 	public void setOpponent(boolean opponent) {
 		this.opponent = opponent;
-		
 	}
 }

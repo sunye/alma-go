@@ -16,7 +16,7 @@ import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 import fr.alma.server.core.Player;
 import fr.alma.server.ia.Evaluation;
-import fr.alma.server.ia.Tools;
+import fr.alma.server.ia.FreedomDegrees;
 import fr.alma.server.rule.Configuration;
 import fr.alma.server.rule.RuleManager;
 import fr.alma.server.rule.StatusCheck;
@@ -40,7 +40,8 @@ public class TestCapture {
 		param.setGrille(9);
 		
 		stateGame = Factory.getStateGame(context);
-		stateGame.load(new GameLoader(), "TestEvaluation-1.txt");
+		GameLoader gl = new GameLoader();
+		gl.load("TestEvaluation-1.txt", context);
 		computer = new Computer("computer", Configuration.BLACK);
 		player = new Player("adversaire", Configuration.WHITE, null, stateGame);
 		
@@ -50,7 +51,7 @@ public class TestCapture {
 
 	@Test
 	public void testCapture() {
-		Tools.showGobanOnConsole(stateGame);
+		FreedomDegrees.showGobanOnConsole(stateGame);
 		emplacement = new Emplacement((short)0, (short)1);
 		StatusCheck status = ruleManager.checkAfter(stateGame, emplacement, computer);
 		assertFalse(status.isGameOver());

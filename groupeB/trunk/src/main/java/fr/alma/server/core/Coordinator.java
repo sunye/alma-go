@@ -3,7 +3,7 @@ package fr.alma.server.core;
 
 import fr.alma.client.action.Context;
 import fr.alma.client.ihm.Goban;
-import fr.alma.server.ia.Tools;
+import fr.alma.server.ia.FreedomDegrees;
 import fr.alma.server.rule.Configuration;
 import fr.alma.server.rule.RuleManager;
 
@@ -53,7 +53,7 @@ public class Coordinator implements ICoordinator {
 					
 					/* Control if the game is over */
 					if (getRuleManager().checkAfter(getStateGame(), e.getEmplacement(), getCurrentPlayer()).isGameOver()) {
-						Tools.showGobanOnConsole(getStateGame());
+						FreedomDegrees.showGobanOnConsole(getStateGame());
 						System.out.println("Game over - winner is : " + getCurrentPlayer().getName());
 						getPlayer().setEnabled(false);
 						getComputer().setEnabled(false);
