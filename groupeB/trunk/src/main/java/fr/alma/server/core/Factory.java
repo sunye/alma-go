@@ -1,9 +1,12 @@
 package fr.alma.server.core;
 
+import javax.swing.Action;
 import javax.swing.JMenuBar;
 
+import fr.alma.client.action.ActionEscape;
 import fr.alma.client.action.ActionManager;
 import fr.alma.client.action.Context;
+import fr.alma.client.action.IAction;
 import fr.alma.client.ihm.Goban;
 import fr.alma.client.ihm.IHMParam;
 import fr.alma.client.ihm.Menu;
@@ -31,8 +34,8 @@ public class Factory {
 	}
 	
 	
-	public static IStrategy getStrategy(ICoordinator coordinator) {
-		return new AlphaBeta(coordinator);
+	public static IStrategy getStrategy(Context context) {
+		return new AlphaBeta(context);
 	}
 
 	
@@ -49,5 +52,11 @@ public class Factory {
 	
 	public static IHMParam getIHMParam(Context context) {
 		return new IHMParam(context);
+	}
+	
+	
+	public static IAction getActionEscape(Context context) {
+		IAction action = new ActionEscape(context);
+		return action;
 	}
 }

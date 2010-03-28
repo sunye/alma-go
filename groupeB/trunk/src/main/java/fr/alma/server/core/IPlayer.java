@@ -15,6 +15,7 @@ public interface IPlayer extends GoObject {
 	List<PlayListener> getPlayerListeners();
 	void setEnabled(boolean enable);
 	public void setStrategy(IStrategy strategieGame);
+	public void interrupt();
 	public void setEvaluation(IEvaluation evaluation);
 	public String getName();
 }

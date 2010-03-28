@@ -2,7 +2,6 @@ package fr.alma.server.core;
 
 
 import fr.alma.client.action.Context;
-import fr.alma.client.action.GameLoader;
 
 public class StateGame implements IStateGame {
 
@@ -132,7 +131,7 @@ public class StateGame implements IStateGame {
 					try {
 						clone.play(cptCol, cptRow, (Boolean)getIntersection(cptCol, cptRow));
 					} catch (Exception e) {
-						System.out.println("Internal error : " + e.getLocalizedMessage());
+						System.out.println("Internal error in clone operation : " + e.getLocalizedMessage());
 					}
 				}
 			}

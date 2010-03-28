@@ -1,6 +1,7 @@
 package fr.alma.client.ihm;
 
 import java.awt.Graphics;
+
 import javax.swing.JPanel;
 
 import fr.alma.client.action.Context;
@@ -8,12 +9,11 @@ import fr.alma.client.action.Context;
 @SuppressWarnings("serial")
 public class Goban extends JPanel {
 	
-	private Context context;
-	
+	private Context context = null;
 	
 	public Goban(Context context) {
 		super(null);
-		this.context = context; 		
+		this.context = context;
 	}
 	
 	

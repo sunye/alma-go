@@ -71,5 +71,10 @@ public class Computer extends AbstractPlayer {
 		player = null;
 	}
 
+	@Override
+	public void interrupt() {
+		strategy.interrupt();
+	}
+
 	
 }
