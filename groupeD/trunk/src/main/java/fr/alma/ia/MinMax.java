@@ -1,5 +1,6 @@
 package fr.alma.ia;
 
+import fr.alma.atarigo.GroupsList;
 import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Goban;
 
@@ -42,7 +43,7 @@ public class MinMax {
 	 * @param pion the current color to play
 	 * @return a ValuedGoban which indicates the best move
 	 */	
-	public static ValuedGoban value(int level, Tree stateOfGame, Stone stone){
+	public static ValuedGoban value(int level, Tree stateOfGame, Stone stone, GroupsList groups){
 		if(level<maxLevel)
 			stateOfGame.generateChildren(stone);
 		
@@ -50,23 +51,23 @@ public class MinMax {
 		//appel récursif
 			if(level%2==0 || level==0){
 				//recherche du max
-				return max(level, stateOfGame, stone);
+				return max(level, stateOfGame, stone, groups);
 			}else{
 				//recherche du min
-				return min(level, stateOfGame, stone);
+				return min(level, stateOfGame, stone, groups);
 			}
 		}else{
-			return Evaluation.evaluate(stateOfGame.getGoban(),stone);
+			return Evaluation.evaluate(stateOfGame.getGoban(),stone,groups);
 		}
 	}
 
-	public static ValuedGoban max(int niveau, Tree edj,Stone pion){
+	public static ValuedGoban max(int niveau, Tree edj,Stone pion, GroupsList groups){
 		//recherche du max
 		ValuedGoban max = new ValuedGoban(-100000);
 		int i = 0;
 		while(edj.getChildren().size()>i){
 			totalNodes++;
-			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),pion.opponent());
+			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),pion.opponent(),groups);
 			if(V.evaluation_>max.evaluation_){
 				max.clone(new ValuedGoban(V.evaluation_,edj.getChildren().get(i).getMove()));
 			}
@@ -75,13 +76,13 @@ public class MinMax {
 		return max;		
 	}
 	
-	public static ValuedGoban min(int niveau, Tree edj,Stone pion){
+	public static ValuedGoban min(int niveau, Tree edj,Stone pion, GroupsList groups){
 		//recherche du min
 		ValuedGoban min = new ValuedGoban(100000);
 		int i = 0;
 		while(edj.getChildren().size()>i){
 			totalNodes++;
-			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),pion.opponent());
+			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),pion.opponent(),groups);
 			if(V.evaluation_<min.evaluation_){
 				min.clone(new ValuedGoban(V.evaluation_,edj.getChildren().get(i).getMove()));
 			}

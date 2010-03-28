@@ -115,7 +115,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 			
 			if(atariGo.totalMoves>5){
 				AlphaBeta.init(3);
-				plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color);
+				plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo.groupsList);
 			}else{
 				plv.goban_ = RandomMove.play(atariGo.goban,atariGo.currentPlayer.color);
 			}
@@ -174,7 +174,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 					Tree jeu = new Tree(atariGo.goban);
 					ValuedGoban plv = new ValuedGoban(0);
 					AlphaBeta.init(3);
-					plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color);
+					plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo.groupsList);
 					putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
 					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+"  nombre de coups joués = "+atariGo.totalMoves);
 

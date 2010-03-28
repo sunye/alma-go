@@ -26,7 +26,7 @@ public class AtariGo {
  /**
   * List of stone groups 
   */
- private GroupsList groupsList;
+ public GroupsList groupsList;
  public int caughtBlack;
  public int caughtWhite;
  public int captureObjective;

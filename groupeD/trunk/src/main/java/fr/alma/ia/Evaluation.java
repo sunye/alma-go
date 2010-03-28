@@ -1,5 +1,6 @@
 package fr.alma.ia;
 
+import fr.alma.atarigo.GroupsList;
 import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Goban;
 import fr.alma.atarigo.Position;
@@ -14,7 +15,7 @@ public class Evaluation {
 		return cmpt;
 	}
 	
-	static ValuedGoban evaluate(Goban plateau, Stone pion){
+	static ValuedGoban evaluate(Goban plateau, Stone pion, GroupsList groups){
 		ValuedGoban cmpt = new ValuedGoban(0,plateau);
 		for(Position pos : plateau.getCells(pion.opponent()))
 			if(plateau.getLiberty(pos)==1)
