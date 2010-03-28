@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs xmlns="http://maven.apache.org/FML/1.0.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/FML/1.0.1 http://maven.apache.org/xsd/fml-1.0.1.xsd"
+  title="Frequently Asked Questions"
+  toplink="false">
+
+  <part id="install">
+
+    <title>Installation</title>
+
+    <faq id="how-run">
+      <question>
+        How do I run Obi-Go?
+      </question>
+      <answer>
+        <p>First, build the project by entering the command "mvn package".
+	Then simply enter : java -jar target/ObiGo-1.0.jar</p>
+      </answer>
+    </faq>
+
+  </part>
+
+  <part id="usage">
+    <title>Usage</title>
+
+    <faq id="how-play">
+      <question>
+        How to play
+      </question>
+      <answer>
+        <p>Clic on the "+" button to start a new game.</p>
+		<p>In this panel, you can choose the kind of game you want to play (i.e. Human vs Human, Human vs Computer, etc...) and the condition to win the 				match.</p>
+		<p>	You can also adjust the difficulty of the IA if you want, by modifying the level under each opponent's stone.</p>
+      </answer>
+    </faq>
+
+  </part>
+
+  <part id="other">
+    <title>Other</title>
+
+    <faq id="Origins">
+      <question>
+        What is the origin of the name Obi-Go?
+      </question>
+      <answer>
+		<p>	The Obi-Go project is named after the Portuguese sprint athlete Obi Kwelu and the Go game. </p>
+      </answer>
+    </faq>
+
+  </part>
+
+
+
+</faqs>
+
