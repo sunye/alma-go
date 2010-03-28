@@ -25,4 +25,9 @@ public abstract class Player {
 	 */
 	public abstract boolean isHuman();
 
+	public int getDifficulty() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

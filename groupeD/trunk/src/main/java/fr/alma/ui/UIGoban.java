@@ -173,10 +173,10 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 				if(!atariGo.currentPlayer.isHuman()){
 					Tree jeu = new Tree(atariGo.goban);
 					ValuedGoban plv = new ValuedGoban(0);
-					AlphaBeta.init(3);
+					AlphaBeta.init(atariGo.currentPlayer.getDifficulty());
 					plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo.groupsList);
 					putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
-					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+"  nombre de coups jou�s = "+atariGo.totalMoves);
+					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+"  nombre de coups jous = "+atariGo.totalMoves);
 
 					repaint();
 					//atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
@@ -228,67 +228,5 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 			repaint();
 		}
 	}
-	
-/**
- * Game loop. need to be removed...
- */
-/*	public void run() {
-		//boucle de jeu
-		pause=false;
-		System.out.println("tempo start");
-		while(true){
-			//si décommenté boucle marche...prob EDT ?
-			//System.out.println("true");
-			synchronized(this){
-				while(!atariGo.isOver()){
-					//boucles des joueurs...
-					//test
-					time++;
-					//System.out.println("ok");
-					if(!atariGo.currentPlayer.isHuman()){
-						System.out.println("dns la bcle");
-						stop=true;
-							Tree jeu = new Tree(atariGo.goban);
-							ValuedGoban plv = new ValuedGoban(0);
-							AlphaBeta.init(3);
-							
-							plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color);
-							
-							atariGo.playMove(atariGo.currentPlayer.color, atariGo.goban.getDifference(plv.goban_));
-							
-							System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes);
-						//on sort de la boucle on joue le coup
-						switch (atariGo.jouerCoup(atariGo.joueurEnCours.couleur, meilleurCoup)) {
-					    case GAGNANT:
-					    //fini = true;
-						//sortie.println(plateau.toString());
-						//sortie.println("=> Vous avez gagne"); 
-						//scanner.close();
-						return;
-					    case NEUTRE:
-						//nombreCoups --;
-					    atariGo.joueurEnCours = atariGo.joueurEnCours == atariGo.joueur2 ? atariGo.joueur1 : atariGo.joueur2;
-						System.out.println("onpasse au joueur"+atariGo.joueurEnCours.toString());
-					    break;
-					    default:
-						//sortie.println("=> Erreur : position invalide");
-						break;
-					    }
-						repaint();
-						
-						try{
-							Thread.sleep(1000);
-						}catch(InterruptedException e){}
-						
-						//aprs avoir jouer on passe a l'autre joueur
-						atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
-						//System.out.println("on passe au joueur "+atariGo.joueurEnCours.toString());
-					}
-				}
-			}
-		}
-	}
-	*/
-	
-	
+		
 }

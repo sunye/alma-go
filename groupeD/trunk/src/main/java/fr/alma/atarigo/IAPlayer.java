@@ -8,9 +8,11 @@ package fr.alma.atarigo;
 public class IAPlayer extends Player{
 
 	public Position bestMove;
+	private int difficulty;
 	
-	public IAPlayer(Stone color, String name) {
+	public IAPlayer(Stone color, String name,int dif) {
 		super(color, name);
+		difficulty = dif;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -22,5 +24,8 @@ public class IAPlayer extends Player{
 		return bestMove;
 	}
 	
+	public int getDifficulty(){
+		return difficulty;
+	}
 	
 }

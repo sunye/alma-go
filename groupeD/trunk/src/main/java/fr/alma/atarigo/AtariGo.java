@@ -153,7 +153,6 @@ public class AtariGo {
 	 end = true;
  }
  
-
  /**
   * accessor for lines
   */
