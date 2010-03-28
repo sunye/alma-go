@@ -175,21 +175,25 @@ public class NewGameDialog extends JDialog {
     	Player player2;
     	if(combo1.getSelectedItem().toString().equals("Humain")){
     		player1 = new HumanPlayer(Stone.BLACK,"bob");
+    		myApp.panInfos.rmBlackDif();
     	}
     	else{
     		int difIA1 = dif1.getNumber().intValue();
     		player1 = new IAPlayer(Stone.BLACK,"bob",difIA1);
+    		myApp.panInfos.setBlackDif(difIA1);
     	}
     	if(combo2.getSelectedItem().toString().equals("Humain")){
     		player2 = new HumanPlayer(Stone.WHITE,"obi");
+    		myApp.panInfos.rmWhiteDif();
     	}
     	else{
     		int difIA2 = dif2.getNumber().intValue();
     		player2 = new IAPlayer(Stone.WHITE,"obi",difIA2);
+    		myApp.panInfos.setWhiteDif(difIA2);
     	}
     	myApp.panInfos.setChallenge(model1.getNumber().intValue());
     	myApp.panInfos.setBlackLife(model1.getNumber().intValue());
-    	myApp.panInfos.setWhiteLife(model1.getNumber().intValue());
+    	myApp.panInfos.setWhiteLife(model1.getNumber().intValue());    	
     	myApp.startGame(player1,player2,model1.getNumber().intValue());
     	setVisible(false);
     	

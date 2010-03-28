@@ -29,6 +29,7 @@ public class AlphaBeta {
 			extremum=0;
 			totalNodes=0;
 			maxLevel=nvmax;
+			System.out.println(nvmax);
 		}
 
 	/**
@@ -44,7 +45,7 @@ public class AlphaBeta {
 			stateOfGame.generateChildren(stone);
 		
 		if(level<maxLevel && !stateOfGame.isLeaf()){
-		//appel récursif
+		//appel rcursif
 			if(level%2==0 || level==0){
 				//recherche du max
 				return max(level, stateOfGame, currentExtremum, stone, groups);
