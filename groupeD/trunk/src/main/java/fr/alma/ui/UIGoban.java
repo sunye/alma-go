@@ -1,9 +1,11 @@
 package fr.alma.ui;
 
 import fr.alma.atarigo.AtariGo;
+import fr.alma.atarigo.Goban;
 import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Position;
 import fr.alma.ia.AlphaBeta;
+import fr.alma.ia.RandomMove;
 import fr.alma.ia.Tree;
 import fr.alma.ia.MinMax;
 import fr.alma.ia.ValuedGoban;
@@ -110,8 +112,14 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 		while(!atariGo.currentPlayer.isHuman() && !atariGo.isOver()){
 			Tree jeu = new Tree(atariGo.goban);
 			ValuedGoban plv = new ValuedGoban(0);
-			AlphaBeta.init(3);
-			plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color);
+			
+			if(atariGo.totalMoves>5){
+				AlphaBeta.init(3);
+				plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color);
+			}else{
+				plv.goban_ = RandomMove.play(atariGo.goban,atariGo.currentPlayer.color);
+			}
+			
 			putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
 			System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes);
 			repaint();
@@ -168,7 +176,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 					AlphaBeta.init(3);
 					plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color);
 					putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
-					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes);
+					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+"  nombre de coups joués = "+atariGo.totalMoves);
 
 					repaint();
 					//atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
