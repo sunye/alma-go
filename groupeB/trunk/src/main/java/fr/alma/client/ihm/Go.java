@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import fr.alma.client.action.Context;
+import fr.alma.client.action.GameLoader;
 import fr.alma.common.ui.Tools;
 import fr.alma.server.core.Computer;
 import fr.alma.server.core.Coordinator;
@@ -43,8 +44,7 @@ public class Go extends JFrame {
 		RuleManager ruleManager = Factory.getRuleManager();
 
 		Coordinator coordinator = new Coordinator(goban, stateGame, ruleManager);
-		
-		IPlayer computer = new Computer("Computer", context.getParamGame().getColorComputer());
+
 		IPlayer player = new Player("Player", Configuration.getColorPlayer(), goban, stateGame);
 
 		IEvaluation evaluation = Factory.getEvaluation(computer, player);
@@ -52,6 +52,7 @@ public class Go extends JFrame {
 		IStrategy strategy = Factory.getStrategy(coordinator);
 		computer.setStrategy(strategy);
 		computer.setEvaluation(evaluation);
+
 		coordinator.setPlayers(player, computer);
 		context.setCoordinator(coordinator);
 		setContentPane(goban);
@@ -64,6 +65,9 @@ public class Go extends JFrame {
 		
 		Tools.center(this);
 		setVisible(true);
+		
+		//GameLoader gl = new GameLoader();
+		//gl.load("TestCaptureSuicidaire.txt", context);
 		
 	}
 

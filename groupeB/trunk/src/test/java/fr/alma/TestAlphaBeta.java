@@ -17,7 +17,7 @@ import fr.alma.server.core.IStrategy;
 import fr.alma.server.core.Player;
 import fr.alma.server.core.StateGame;
 import fr.alma.server.ia.IEvaluation;
-import fr.alma.server.ia.Tools;
+import fr.alma.server.ia.FreedomDegrees;
 import fr.alma.server.rule.Configuration;
 import fr.alma.server.rule.RuleManager;
 import fr.alma.server.rule.StatusCheck;
@@ -84,7 +84,7 @@ public class TestAlphaBeta {
 
 	@Test
 	public void testElphaBeta() {
-		Tools.showGobanOnConsole(stateGame);
+		FreedomDegrees.showGobanOnConsole(stateGame);
 		IEmplacement emplacement = strategy.getEmplacementMax(evaluation, true);
 		System.out.println("-> Emplacement trouve : " + emplacement);
 		assertTrue(emplacement.getCol()==1 && emplacement.getRow()==1);
@@ -105,7 +105,7 @@ public class TestAlphaBeta {
 		public int evaluate(IStateGame stateGame, StatusCheck status) {
 			
 			System.out.println("\nEvaluation");
-			Tools.showGobanOnConsole(stateGame);
+			FreedomDegrees.showGobanOnConsole(stateGame);
 			
 			/* P C 
 			 * P C */

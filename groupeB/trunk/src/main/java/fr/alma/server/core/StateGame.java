@@ -103,8 +103,8 @@ public class StateGame implements IStateGame {
 
 
 	@Override
-	public void load(GameLoader partyLoaded, String fileName) {
-		this.intersection = partyLoaded.loadGame(fileName);
+	public void load(Boolean[][] intersection) {
+		this.intersection = intersection;
 	}
 
 	

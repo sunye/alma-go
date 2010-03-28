@@ -14,7 +14,7 @@ import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 import fr.alma.server.core.Player;
 import fr.alma.server.ia.Evaluation;
-import fr.alma.server.ia.Tools;
+import fr.alma.server.ia.FreedomDegrees;
 import fr.alma.server.rule.Configuration;
 
 public class TestEvaluation {
@@ -24,13 +24,16 @@ public class TestEvaluation {
 	
 	@Before
 	public void setUp() throws Exception {
+				
 		Context context;
 		context = new Context();
 		ParamGame param = new ParamGame();
 		param.setGrille(9);
 		
+		
+		GameLoader gl = new GameLoader();
+		gl.load("TestEvaluation.txt", context);
 		stateGame = Factory.getStateGame(context);
-		stateGame.load(new GameLoader(), "TestEvaluation.txt");
 		IPlayer computer = new Computer("computer", Configuration.BLACK);
 		IPlayer player = new Player("adversaire", Configuration.WHITE, null, stateGame);
 		
@@ -43,12 +46,13 @@ public class TestEvaluation {
 
 	@Test
 	public void testEvaluate() {
-		Tools.showGobanOnConsole(stateGame);
+		FreedomDegrees.showGobanOnConsole(stateGame);
 		int result1 = evaluation.evaluate(stateGame, null);
 		System.out.println("Resultat de l'évalution 1 : " + result1);
-		
-		stateGame.load(new GameLoader(), "TestEvaluation-1.txt");
-		Tools.showGobanOnConsole(stateGame);
+		GameLoader gl = new GameLoader();
+		Context context = new Context();
+		gl.load("TestEvaluation-1.txt", context);
+		FreedomDegrees.showGobanOnConsole(stateGame);
 		int result2 = evaluation.evaluate(stateGame, null);
 		System.out.println("Resultat de l'évalution 2 : " + result2);
 		

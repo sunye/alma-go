@@ -52,7 +52,7 @@ public class Evaluation implements IEvaluation {
 	private int[] searchDegrees(IPlayer player, IStateGame stateGame) {
 		
 		List<IEmplacement> emplacements = new ArrayList<IEmplacement>();
-		int[] aDegreeFree = new int[Tools.getMaxDegreeFree(context)];
+		int[] aDegreeFree = new int[FreedomDegrees.getMaxDegreeFree(context)];
 		IEmplacement emplacement = null;
 		int degreeFree = 0;
 		boolean find;
@@ -69,7 +69,7 @@ public class Evaluation implements IEvaluation {
 						}
 					}
 					if (! find) {
-						degreeFree = Tools.countFreeDegrees(stateGame, ! player.getColor(), emplacement, emplacements);
+						degreeFree = FreedomDegrees.countFreeDegrees(stateGame, ! player.getColor(), emplacement, emplacements);
 						aDegreeFree[degreeFree]++;
 					}
 				}
