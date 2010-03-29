@@ -42,7 +42,7 @@ public class TestAlphaBeta {
 		param.setGrille(2);
 				
 		stateGame = new StateGame(context);
-		computer = new Computer("computer", Configuration.BLACK);
+		computer = new Computer("computer", Configuration.BLACK, 0, null);
 		player = new Player("adversaire", Configuration.WHITE, null, stateGame);	
 		stateGame.play(0, 0, player.getColor());
 		evaluation = new TestEvaluation();

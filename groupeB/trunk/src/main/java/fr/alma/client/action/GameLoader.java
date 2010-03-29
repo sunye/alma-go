@@ -108,7 +108,8 @@ public class GameLoader {
 			
 			context.getGoban().revalidate();
 			
-			IPlayer computer = new Computer("Computer", context.getParamGame().getColorComputer());
+			IPlayer computer = new Computer("Computer", context.getParamGame().getColorComputer(),
+					context.getParamGame().getTimeLimite(), null);
 			IPlayer player = new Player("Player", ! context.getParamGame().getColorComputer(), context.getGoban(), stateGame);
 
 			IEvaluation evaluation = Factory.getEvaluation(context);

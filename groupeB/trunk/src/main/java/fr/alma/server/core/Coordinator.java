@@ -1,7 +1,9 @@
 package fr.alma.server.core;
 
+import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 import fr.alma.client.action.Context;
 import fr.alma.client.ihm.Goban;
@@ -152,8 +154,8 @@ public class Coordinator implements ICoordinator {
 	public Goban getGoban() {
 		return context.getGoban();
 	}
-
-
+	
+	
 	@Override
 	public void cleanUp() {
 		getPlayer().removePlayListeners();
