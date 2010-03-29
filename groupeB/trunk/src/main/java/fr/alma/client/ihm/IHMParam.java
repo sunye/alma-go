@@ -274,7 +274,7 @@ public class IHMParam extends AbstractDialog {
 		goban.revalidate();
 		
 		IPlayer computer = new Computer("Computer", context.getParamGame().getColorComputer(),
-				context.getParamGame().getTimeLimite(), Factory.getActionEscape(context));
+				context.getParamGame().getTimeLimite());
 		IPlayer player = new Player("Player", ! context.getParamGame().getColorComputer(), goban, stateGame);
 
 		IEvaluation evaluation = Factory.getEvaluation(context);

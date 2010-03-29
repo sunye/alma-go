@@ -15,7 +15,9 @@ public class ActionEscape implements IAction {
 	
 	@Override
 	public void run() {
-		context.getComputer().interrupt();
+		if (context.getParamGame().isPossibilityInterruption()) {
+			context.getComputer().interrupt();
+		}
 	}
 
 }
