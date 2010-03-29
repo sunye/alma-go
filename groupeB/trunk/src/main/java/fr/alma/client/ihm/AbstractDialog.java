@@ -30,6 +30,7 @@ public abstract class AbstractDialog extends JDialog {
         initComponents();
         
         pack();
+        setResizable(false);
         Tools.center(this);
     }
     
