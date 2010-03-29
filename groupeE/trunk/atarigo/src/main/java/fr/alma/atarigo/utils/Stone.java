@@ -5,37 +5,37 @@ import fr.alma.atarigo.utils.PionVal;
 public class Stone {
 
 	private PionVal couleur;
-	private short colonne;
-	private short ligne;
+	private short column;
+	private short line;
 	
 	public Stone(PionVal couleur, short ligne, short colonne) {
 		super();
 		this.couleur = couleur;
-		this.colonne = colonne;
-		this.ligne = ligne;
+		this.column = colonne;
+		this.line = ligne;
 	}
 
 	
 	public Stone(PionVal couleur2, int realLigne, int realCol) {
 		this.couleur = couleur2;
-		this.colonne = (short) realCol;
-		this.ligne = (short) realLigne;
+		this.column = (short) realCol;
+		this.line = (short) realLigne;
 	}
 
 
-	public short getColonne() {
-		return colonne;
+	public short getColumn() {
+		return column;
 	}
 
 
-	public short getLigne() {
-		return ligne;
+	public short getLine() {
+		return line;
 	}
 
 
 	@Override
 	public int hashCode() {
-		return (Goban.getTaille()*colonne+ligne)*((couleur == null) ?0:couleur.valeur());
+		return (Goban.getTaille()*column+line)*((couleur == null) ?0:couleur.valeur());
 	}
 
 
@@ -48,14 +48,14 @@ public class Stone {
 		if (getClass() != obj.getClass())
 			return false;
 		Stone other = (Stone) obj;
-		if (colonne != other.colonne)
+		if (column != other.column)
 			return false;
 		if (couleur == null) {
 			if (other.couleur != null)
 				return false;
 		} else if (!couleur.equals(other.couleur))
 			return false;
-		if (ligne != other.ligne)
+		if (line != other.line)
 			return false;
 		return true;
 	}
@@ -63,7 +63,7 @@ public class Stone {
 
 	@Override
 	public String toString() {
-            return "Pion(x:"+colonne+",y:"+ligne+",c:"+couleur+")";
+            return "Pion(x:"+column+",y:"+line+",c:"+couleur+")";
 	}
 
 

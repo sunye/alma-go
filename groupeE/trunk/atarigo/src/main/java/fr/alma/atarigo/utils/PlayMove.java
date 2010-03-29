@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class PlayMove {
 
     private Set<Modif> diff;
-    private Modif putPion;
+    private Modif putStone;
     private ArrayList<Groupe> groups;
 
     /**
@@ -88,12 +88,12 @@ public class PlayMove {
         groups = groupes;
     }
 
-    public Modif getPutPion() {
-        return putPion;
+    public Modif getPutStone() {
+        return putStone;
     }
 
-    public void setPutPion(Modif putPion) {
-        this.putPion = putPion;
+    public void setPutStone(Modif putPion) {
+        this.putStone = putPion;
     }
 
     
