@@ -48,12 +48,20 @@ public class Modif {
         }
     }
     
-    void apply(PionVal[][] goban) throws BadGobanStateException{
+    public void apply(PionVal[][] goban) throws BadGobanStateException{
         if(goban[line][column] != this.before){
             throw new BadGobanStateException("Cannot apply this modification to the goban, since the before state is not right.");
         } else {
             goban[line][column] = this.after;
         }
+    }
+
+    public Stone getOldStone(){
+        return new Stone(getBefore(), line, column);
+    }
+
+    public Stone getNewStone(){
+        return new Stone(getAfter(), line, column);
     }
 
 }
