@@ -63,7 +63,7 @@ public class IHMParam extends AbstractDialog {
     	
     	SpringLayout layout = new SpringLayout();
     	JPanel panel = new JPanel(layout);
-    	panel.setPreferredSize(new Dimension(410, 220));
+    	panel.setPreferredSize(new Dimension(410, 240));
     	panel.setBorder(loweredetched);
     	
     	getMainPanel().add(panel, BorderLayout.CENTER);

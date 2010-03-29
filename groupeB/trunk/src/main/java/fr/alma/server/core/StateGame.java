@@ -7,8 +7,8 @@ public class StateGame implements IStateGame {
 
 	private Boolean[][] intersection = null;
 	private Context context = null;
-	private int countLimitComputer;
-	private int countLimitPlayer;
+	private int countLimitComputer = 0;
+	private int countLimitPlayer = 0;
 	
 	public StateGame(Context context) {
 		this.context = context;
