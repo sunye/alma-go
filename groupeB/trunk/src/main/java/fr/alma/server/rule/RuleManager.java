@@ -54,6 +54,14 @@ public class RuleManager {
 	public StatusCheck checkAfter(IStateGame stateGame, IEmplacement emplacement, IPlayer currentPlayer) {
 		StatusCheck status = new StatusCheck();
 		
+		if ((emplacement.getCol()== -1) && (emplacement.getRow() == -1)) {
+			status.setCanPlay(false);
+			status.setGameOver(true);
+			status.setEmplacement(emplacement);
+			status.setWinner(null);
+			return status;
+		}
+		
 		if (ruleCapture.provokeCapture(stateGame, emplacement, currentPlayer)) {
 			status.setCanPlay(true);
 			status.setGameOver(true);

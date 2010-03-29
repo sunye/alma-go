@@ -1,6 +1,9 @@
 package fr.alma.server.ia;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.alma.client.action.Context;
 import fr.alma.server.core.Emplacement;
 import fr.alma.server.core.IEmplacement;
@@ -29,8 +32,8 @@ public class AlphaBeta implements IStrategy {
 
 	
 	/* Interet de les avoir en global : toujours disponibes ! */
-	private int rowMax = -1, colMax = -1;
-	private int cpt = 0;
+	private int rowMax, colMax;
+	private int cpt;
 	private boolean trace;
 	private boolean interrupted = false;
 	
@@ -42,12 +45,15 @@ public class AlphaBeta implements IStrategy {
 	
 	public IEmplacement getEmplacementMax(IEvaluation evaluation, boolean trace) {
 		cpt = 0;
+		rowMax = -1;
+		colMax = -1;
 		this.evaluation = evaluation;
 		this.trace = trace;
 		/* The stateGame will be modified to simulate 
 		 * the differents possibilities. For that, we muste
 		 * clone it */
 		stateGame = (IStateGame)getStateGame().clone();
+		FreedomDegrees.showGobanOnConsole(stateGame);
 		setInterrupted(false);
 		
 		getValue(2, stateGame, Integer.MAX_VALUE, null);
@@ -113,35 +119,36 @@ public class AlphaBeta implements IStrategy {
 	 */
 	private int max(int level, IStateGame stateGame, int extremum) {
 		int max = Integer.MIN_VALUE;
+		
 		if (trace)
 			System.out.println("Level " + level + " -> Recherche max");
 		
-		for (int col = 0; col < stateGame.getMaxCol(); col++) {
-			for (int row = 0; row < stateGame.getMaxRow(); row++) {
-				if (max < extremum) {
-					StatusCheck status = context.getRuleManager().checkBefore(stateGame, new Emplacement(col, row), getComputer());
-					if (status.isCanPlay()) {
-						try {
-							stateGame.play(col, row, getComputer().getColor());
-						} catch (Exception e) {
-							System.out.println("Internal error : " + e.getLocalizedMessage());
-						}
-						int value = getValue(level+1, stateGame, max, status);
-						if (value > max) {
-							max = value;
-							colMax = col;
-							rowMax = row;
-						}
-						stateGame.remove(col, row);
+		List<IEmplacement> emplacements = getChild(getComputer().getColor(), stateGame);
+		
+		for (IEmplacement emplacement : emplacements) {
+			if (max < extremum) {
+				StatusCheck status = context.getRuleManager().checkBefore(stateGame, emplacement, getComputer());
+				if (status.isCanPlay()) {
+					//StateGame newStateGame = (StateGame)stateGame.clone();
+					try {
+						stateGame.play(emplacement.getCol(), emplacement.getRow(), getComputer().getColor());
+					} catch (Exception e) {
+						System.out.println("AlphaBeta - Max : Internal error : " + e.getLocalizedMessage());
 					}
-				} else {
-					col = stateGame.getMaxCol();
-					row = stateGame.getMaxRow();					
+					int value = getValue(level+1, stateGame, max, status);
+					if (value > max) {
+						max = value;
+						colMax = emplacement.getCol();
+						rowMax = emplacement.getRow();
+					}
+					stateGame.remove(emplacement.getCol(), emplacement.getRow());
 				}
 			}
 		}
+		
 		if (trace)
 			System.out.println("Level(" + level + ") -> return max = " + max);
+		
 		return max;
 	}
 	
@@ -151,31 +158,46 @@ public class AlphaBeta implements IStrategy {
 		
 		if (trace)
 			System.out.println("Level " + level + " -> Recherche min");
-		for (int col = 0; col < stateGame.getMaxCol(); col++) {
-			for (int row = 0; row < stateGame.getMaxRow(); row++) {
-				if (min > extremum) {
-					StatusCheck status = context.getRuleManager().checkBefore(stateGame, new Emplacement(col, row), getPlayer());
-					if (status.isCanPlay()) {
-						try {
-							stateGame.play(col, row, getPlayer().getColor());
-						} catch (Exception e) {
-							System.out.println("Internal error : " + e.getLocalizedMessage());
-						}
-						int value = getValue(level+1, stateGame, min, status);
-						if (value < min) { 
-							min = value;
-						}
-						stateGame.remove(col, row);
+		
+		List<IEmplacement> emplacements = getChild(getPlayer().getColor(), stateGame);
+		
+		for (IEmplacement emplacement : emplacements) {
+			if (min > extremum) {
+				StatusCheck status = context.getRuleManager().checkBefore(stateGame, emplacement, getPlayer());
+				if (status.isCanPlay()) {
+					//StateGame newStateGame = (StateGame)stateGame.clone();
+					try {
+						stateGame.play(emplacement.getCol(), emplacement.getRow(), getPlayer().getColor());
+					} catch (Exception e) {
+						System.out.println("AlphaBeta - Min : Internal error : " + e.getLocalizedMessage());
 					}
-				} else {
-					col = stateGame.getMaxCol();
-					row = stateGame.getMaxRow();
+					int value = getValue(level+1, stateGame, min, status);
+					if (value < min) { 
+						min = value;
+					}
+					stateGame.remove(emplacement.getCol(), emplacement.getRow());
 				}
 			}
 		}
+		
 		if (trace)
 			System.out.println("Level(" + level + ") -> return min = " + min);
+		
 		return min;	
+	}
+
+	
+	private List<IEmplacement> getChild(boolean player, IStateGame stateGame) {
+		List<IEmplacement> result = new ArrayList<IEmplacement>();
+		
+		for (int col = 0; col < stateGame.getMaxCol(); col++) {
+			for (int row = 0; row < stateGame.getMaxRow(); row++) {
+				if (stateGame.isFree(col, row)) {
+					result.add(new Emplacement(col, row));
+				}
+			}
+		}
+		return result;
 	}
 	
 	
