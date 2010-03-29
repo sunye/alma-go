@@ -11,6 +11,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 
 public class Tools {
@@ -54,9 +55,16 @@ public class Tools {
 	
 	public static void message(Component parent, String title, Object message, int msgType) {
 		JOptionPane pane = new JOptionPane(message, msgType);
-		JDialog dialog = pane.createDialog(parent, title);
+		final JDialog dialog = pane.createDialog(parent, title);
 		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		dialog.setVisible(true);
+		
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				dialog.setVisible(true);
+			}
+		};
+		SwingUtilities.invokeLater(runnable);
 	}
 	
 }

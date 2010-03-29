@@ -1,6 +1,5 @@
 package fr.alma.server.core;
 
-import fr.alma.client.action.GameLoader;
 import fr.alma.client.ihm.GoObject;
 
 

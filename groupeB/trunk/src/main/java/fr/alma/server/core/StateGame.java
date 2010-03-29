@@ -53,9 +53,9 @@ public class StateGame implements IStateGame {
 	@Override
 	public boolean play(int col, int row, boolean computer) throws Exception {
 		if (! isFree(col, row)) {
-			throw new Exception("busy box !");
+			throw new Exception("busy box at col = " + col + ", row = " + row + " !");
 		}
-			
+		
 		intersection[col][row] = computer;
 		return true;
 	}
@@ -72,7 +72,7 @@ public class StateGame implements IStateGame {
 
 	@Override
 	public boolean isFree(int col, int row) {
-		if(onGoban(col, row)){
+		if (onGoban(col, row)) {
 			return (intersection[col][row] == null);
 		}
 		return false;

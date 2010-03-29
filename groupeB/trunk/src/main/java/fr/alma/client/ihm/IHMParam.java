@@ -87,7 +87,7 @@ public class IHMParam extends AbstractDialog {
         panel.add(labelGridSize);
         
         cbGrille= new JComboBox(LIST_GRIDSIZE);
-        cbGrille.setSelectedIndex(0);
+        cbGrille.setSelectedIndex(1);
         panel.add(cbGrille);
         
         JLabel labelOpponent = new JLabel("Play against : ");

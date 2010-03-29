@@ -1,6 +1,5 @@
 package fr.alma.server.core;
 
-import javax.swing.Action;
 import javax.swing.JMenuBar;
 
 import fr.alma.client.action.ActionEscape;

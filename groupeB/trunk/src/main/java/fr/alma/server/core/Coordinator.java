@@ -1,9 +1,7 @@
 package fr.alma.server.core;
 
-import java.awt.event.ActionListener;
-
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
+import javax.swing.SwingUtilities;
 
 import fr.alma.client.action.Context;
 import fr.alma.client.ihm.Goban;
@@ -11,6 +9,7 @@ import fr.alma.common.ui.Tools;
 import fr.alma.server.ia.FreedomDegrees;
 import fr.alma.server.rule.Configuration;
 import fr.alma.server.rule.RuleManager;
+import fr.alma.server.rule.StatusCheck;
 
 public class Coordinator implements ICoordinator {
 	
@@ -32,7 +31,6 @@ public class Coordinator implements ICoordinator {
 		playInThread();
 	}
 	
-
 	
 	public IPlayer getPlayer(boolean color) {
 		return getPlayer().getColor() == color ? getPlayer() : getComputer();
@@ -53,14 +51,24 @@ public class Coordinator implements ICoordinator {
 						return getRuleManager().checkBefore(getStateGame(), e.getEmplacement(), e.getPlayer()).isCanPlay();
 					}
 					
-					/* AFTER */
-					getGoban().repaint();
+					Runnable runnable = new Runnable() {
+						@Override
+						public void run() {
+							/* AFTER */
+							getGoban().repaint();
+						}
+					};
+					SwingUtilities.invokeLater(runnable);
 					
 					/* Control if the game is over */
-					if (getRuleManager().checkAfter(getStateGame(), e.getEmplacement(), getCurrentPlayer()).isGameOver()) {
+					StatusCheck status = getRuleManager().checkAfter(getStateGame(), e.getEmplacement(), getCurrentPlayer());
+					if (status.isGameOver()) {
 						FreedomDegrees.showGobanOnConsole(getStateGame());
-						Tools.message(context.getMainFrame(), "Game over", "Winner is : " + getCurrentPlayer().getName(), JOptionPane.INFORMATION_MESSAGE);
-						System.out.println("Game over - winner is : " + getCurrentPlayer().getName());
+						if (! status.isCanPlay()) {
+							status.setWinner(getPlayer());
+						}
+						Tools.message(context.getMainFrame(), "Game over", "Winner is : " + status.getWinner().getName(), JOptionPane.INFORMATION_MESSAGE);
+						System.out.println("Game over - winner is : " + status.getWinner().getName());
 						getPlayer().setEnabled(false);
 						getComputer().setEnabled(false);
 						return false;

@@ -41,7 +41,7 @@ public class Player extends AbstractPlayer {
 								raiseEvent(new PlayEvent(player, PlayEvent.AFTER, new Emplacement(x, y)));
 							}							
 						} catch (Exception e2) {
-							System.out.println("Internal error : " + e2.getLocalizedMessage());
+							System.out.println("Player - Internal error : " + e2.getLocalizedMessage());
 						}
 
 					}

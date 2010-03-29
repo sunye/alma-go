@@ -33,10 +33,12 @@ public class Computer extends AbstractPlayer {
 				startTimer();
 				IEmplacement emplacement = getStrategy().getEmplacementMax(getEvaluation(), false);
 				stopTimer();
-				try {
-					strategy.getStateGame().play(emplacement.getCol(), emplacement.getRow(), getColor());
-				} catch (Exception e) {
-					System.out.println("Internal error : " + e.getLocalizedMessage());
+				if ((emplacement.getCol() != -1) && (emplacement.getRow() != -1)) {
+					try {
+						strategy.getStateGame().play(emplacement.getCol(), emplacement.getRow(), getColor());
+					} catch (Exception e) {
+						System.out.println("Computer - Internal error : " + e.getLocalizedMessage());
+					}
 				}
 				raiseEvent(new PlayEvent(player, PlayEvent.AFTER, emplacement));
 				System.out.println("Stop thread computer : " + emplacement);
