@@ -23,13 +23,24 @@ public class GobanStructure {
 	public List<GroupePieces> getBlancs() {
 		return blancs;
 	}
-
 	public List<GroupePieces> getNoirs() {
 		return noirs;
+	}
+	public List<GroupePieces> getGroupes(Couleur couleur){
+		if(couleur == Couleur.blanc){
+			return blancs;
+		}else if (couleur == Couleur.noir){
+			return noirs;
+		}
+		return null;
 	}
 	public Integer getTaille() {
 		return taille;
 	}
+	public GroupePieces[][] getPlateau() {
+		return plateau;
+	}
+
 	
 	/* Constructeur */	
 	public GobanStructure() {
@@ -37,7 +48,8 @@ public class GobanStructure {
 		blancs = new LinkedList<GroupePieces>();
 		noirs = new LinkedList<GroupePieces>();
 		taille = 9;
-		plateau = new GroupePieces[taille+1][taille+1];
+		/* on prend le plateau avec 2 ligne et colonne de plus pour avoir toujours des cases vide autour */
+		plateau = new GroupePieces[taille+2][taille+2];
 		
 	}
 	
@@ -46,7 +58,8 @@ public class GobanStructure {
 		blancs = new LinkedList<GroupePieces>();
 		noirs = new LinkedList<GroupePieces>(); 		
 		this.taille = t;
-		plateau = new GroupePieces[taille+1][taille+1];
+		/* on prend le plateau avec 2 ligne et colonne de plus pour avoir toujours des cases vide autour */
+		plateau = new GroupePieces[taille+2][taille+2];
 	}
 	
 	/* Fonctions */
@@ -87,18 +100,6 @@ public class GobanStructure {
 			return 2;
 		}
 		
-		/* sans matrice
-		for(GroupePieces g : blancs){
-			if(g.testPosition(coord)){
-				return 1;
-			}			
-		}
-		for(GroupePieces g : noirs){
-			if(g.testPosition(coord)){
-				return 2;
-			}			
-		}*/
-		
 		return 1;
 	}	
 
@@ -110,75 +111,41 @@ public class GobanStructure {
 	 */
 	public boolean ajoutPiece(Coordonnees coord, Couleur couleur){
 		
-		if (this.testPosition(coord)==0){
+		if (testPosition(coord)==0 ){
 			/* La position est vide */
 			
-			/* On test si la piece a poser est adjacente a un groupe de sa couleur deja existant */
-			GroupePieces nouv=new GroupePieces(coord,this.testLiberte(coord),couleur);
+			/* On cré un nouveau groupe de piece en lui donnant la nouvel piece */
+			GroupePieces nouv=new GroupePieces(coord,testLiberte(coord), couleur);
 			
-			/* On fusionne les groupes adjacent */				
-			fusion(nouv,groupesAdjacents(coord,couleur),couleur);
-
+			/* On fusionne les groupes adjacent */
+			for(GroupePieces g : groupesAdjacents(coord,couleur)){
+				nouv.getPieces().addAll(g.getPieces());
+				if(couleur == Couleur.blanc){
+					blancs.remove(g);
+				}else{
+					noirs.remove(g);
+				}
+			}
+						
+			/* on calcul le nombre de liberte du nouveau groupe */
+			nouv.setLiberte(caluleLibertees(nouv));
 			
+			getGroupes(couleur).add(nouv);
+			
+			/* on diminu les liberte de chaque groupe de la couleur adverse adjacent de 1*/
+			for(GroupePieces g : groupesAdjacents(coord,couleur.invCouleur())){
+				g.setLiberte(g.getLiberte()-1);
+			}
+			
+			/* on met a jour le plateau de jeu */
 			for(Coordonnees c : nouv.getPieces()){
 				plateau[c.getX()][c.getY()] = nouv;
-			}
-			
-			for(GroupePieces g : blancs){
-				g.setLiberte(caluleLibertees(g));			
-			}
-			for(GroupePieces g : noirs){
-				g.setLiberte(caluleLibertees(g));		
 			}			
 					
 			return true;
 		}else{
 			return false;
 		}
-	}
-	
-	/**
-	 * fusion un groupe de pieces avec une liste de groupe de pieces et l'ajoute dans la liste d'une des couleurs
-	 * @param nouv : groupe de piece qui va recevoir la fusion
-	 * @param groupesAdjacents : liste des groupe a fusionner a nouv
-	 * @param estBlanc : true si la couleur des groupes est blanc , false pour noir
-	 */
-	private void fusion(GroupePieces nouv,
-			List<GroupePieces> groupesAdjacents,Couleur couleur) {
-		
-		/* TEST
-		for(Coordonnees p : nouv.getPieces()  ){
-			System.out.print("- (" + p.getX() + "," + p.getY() + ") est fusionner avec : ");
-		}
-		for(GroupePieces gp : groupesAdjacents){
-			System.out.print("[ ");
-			for(Coordonnees pa : gp.getPieces()){
-				System.out.print("(" + pa.getX() + "," + pa.getY() + ")");
-			}
-			System.out.print(" ]");
-		}
-		System.out.println();
-	*/
-		
-		/* on parcour les groupe de piece adjacent */
-		for(GroupePieces g : groupesAdjacents){
-			for (Coordonnees coord : g.getPieces() ){
-				nouv.getPieces().add(coord);
-			}
-			
-			if(couleur == Couleur.blanc){		
-				blancs.remove(g);
-			}else{
-				noirs.remove(g);
-			}			
-		}	
-				
-		if(couleur == Couleur.blanc){		
-			blancs.add(nouv);
-		}else{
-			noirs.add(nouv);
-		}
-		
 	}
 	
 	/**
@@ -245,13 +212,7 @@ public class GobanStructure {
 				}
 			}		
 		}		
-			
-		/* TEST
-		for(Coordonnees c : coordLib){
-			System.out.print("("+ c.getX() +","+c.getY() +"),");
-		}
-		System.out.println();
-		 */
+
 		return coordLib.size();
 	}
 	
@@ -289,36 +250,26 @@ public class GobanStructure {
 		
 		List<GroupePieces> gadj = new LinkedList<GroupePieces>();
 		
-		if( (plateau[c.getX()-1][c.getY()] != null) && ( plateau[c.getX()-1][c.getY()].getCouleur() == couleur) ){
-			gadj.add(plateau[c.getX()-1][c.getY()]);
-		}
-		if( (plateau[c.getX()+1][c.getY()] != null) && ( plateau[c.getX()+1][c.getY()].getCouleur() == couleur) ){
-			gadj.add(plateau[c.getX()+1][c.getY()]);
-		}
-		if( (plateau[c.getX()][c.getY()-1] != null) && ( plateau[c.getX()][c.getY()-1].getCouleur() == couleur) ){
-			gadj.add(plateau[c.getX()][c.getY()-1]);
-		}
-		if( (plateau[c.getX()][c.getY()+1] != null) && ( plateau[c.getX()][c.getY()+1].getCouleur() == couleur) ){
-			gadj.add(plateau[c.getX()][c.getY()+1]);
-		}
-		/* sans matrice
-		List<GroupePieces> groupeTraite; 
-		 
-		if(couleur == Couleur.blanc){		
-			groupeTraite=blancs;
-		}else{
-			groupeTraite=noirs;
+		GroupePieces gt = plateau[c.getX()-1][c.getY()];
+		if( (gt != null) && ( gt.getCouleur() == couleur) ){
+			gadj.add(gt);
 		}
 		
-		for(GroupePieces g : groupeTraite){
-			for(Coordonnees coord : g.getPieces() ){
-				if( c.estAdjacent(coord) && (!gadj.contains(g))){
-					gadj.add(g);				
-				}
-			}
+		gt = plateau[c.getX()+1][c.getY()];
+		if( (gt != null) && ( gt.getCouleur() == couleur) && !gadj.contains(gt)){
+			gadj.add(gt);
 		}
 		
-		*/
+		gt=plateau[c.getX()][c.getY()-1];
+		if( (gt != null) && ( gt.getCouleur() == couleur) && !gadj.contains(gt)){
+			gadj.add(gt);
+		}
+		
+		gt=plateau[c.getX()][c.getY()+1];
+		if( (gt != null) && ( gt.getCouleur() == couleur) && !gadj.contains(gt)){
+			gadj.add(gt);
+		}
+
 		return gadj;
 	}
 	
@@ -326,36 +277,44 @@ public class GobanStructure {
 	 * 
 	 * @return
 	 */
-	public Integer fin(){
+	public boolean fin(Couleur joueur){
 		
-		for(GroupePieces g : blancs ){
+		for(GroupePieces g : getGroupes(joueur.invCouleur()) ){
 			if(g.getLiberte() == 0){
-				return 2;
+				return true;
 			}
 		}
-		for(GroupePieces g : noirs ){
-			if(g.getLiberte() == 0){
-				return 1;
-			}
-		}
-		return 0;
+
+		return false;
 	}
 
 	/**
-	 * 
+	 * Test si le coup jouer par coord n'est pas un scuicide
 	 * @param coord
 	 * @param couleur
 	 * @return
 	 */
 	public boolean coupValide(Coordonnees coord, Couleur couleur){
 		
-		int liberte = testLiberte(coord);
+		boolean ok=true;
 		
-		for(GroupePieces ga : groupesAdjacents(coord, couleur)){
-			liberte = liberte + ga.getLiberte() -1;
+		/* si la place tester n'a pas de liberter */
+		if(testLiberte(coord) == 0){
+			ok=false;
+			/* on verifie si cette place est la derniere liberte des groupes ajacent de meme couleur */
+			for(GroupePieces ga : groupesAdjacents(coord, couleur)){
+				ok = ok || (ga.getLiberte() > 1)  ;
+			}
+			/* si en prenant cette place on suprime la derniere liberter des groupe adjacent de meme couleur */
+			if(!ok){
+				/* on verifie si on suprime la derniere liberte d'un groupe adjacent de la couleur adverse */
+				for(GroupePieces ga : groupesAdjacents(coord, couleur.invCouleur())){
+					ok = ok || (ga.getLiberte() == 1) ;
+				}
+			}	
 		}
 		
-		return liberte>0;
+		return ok;
 	}
 
 	

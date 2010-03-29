@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>IAProject</groupId>
   <artifactId>IAProject</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <name>IAProject</name>
+  <version>0.0.1-SNAPSHOT</version>
   <description>IA Project</description>
 </project>
