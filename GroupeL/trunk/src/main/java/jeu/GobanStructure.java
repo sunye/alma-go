@@ -16,6 +16,9 @@ public class GobanStructure {
 	private List<GroupePieces> noirs;
 	private Integer taille;
 	
+	/* representation du plateau de jeux dans chaque case est stocker 
+	 * une reference vers un groupe de pieces 
+	 */
 	private GroupePieces[][] plateau; 
 	
 	/* Getters - Setters */		
@@ -25,6 +28,14 @@ public class GobanStructure {
 	public List<GroupePieces> getNoirs() {
 		return noirs;
 	}
+	public Integer getTaille() {
+		return taille;
+	}
+	public GroupePieces[][] getPlateau() {
+		return plateau;
+	}
+	
+	/* permet de recupere le groupe de pieces correspondant a la couleur chosi  */
 	public List<GroupePieces> getGroupes(Couleur couleur){
 		if(couleur == Couleur.blanc){
 			return blancs;
@@ -32,12 +43,6 @@ public class GobanStructure {
 			return noirs;
 		}
 		return null;
-	}
-	public Integer getTaille() {
-		return taille;
-	}
-	public GroupePieces[][] getPlateau() {
-		return plateau;
 	}
 
 	
@@ -119,6 +124,7 @@ public class GobanStructure {
 			/* On fusionne les groupes adjacent */
 			for(GroupePieces g : groupesAdjacents(coord,couleur)){
 				nouv.getPieces().addAll(g.getPieces());
+				
 				if(couleur == Couleur.blanc){
 					blancs.remove(g);
 				}else{
