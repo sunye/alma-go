@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-import fr.alma.client.action.IAction;
 import fr.alma.server.ia.IEvaluation;
 
 
@@ -17,13 +16,11 @@ public class Computer extends AbstractPlayer {
 	private Timer timer = null;
 	private ActionListener timerAction = null;
 	private int timeLimite = 0;
-	private IAction actionStop;
 	
 	
-	public Computer(String name, boolean color, int timeLimite, IAction actionStop) {
+	public Computer(String name, boolean color, int timeLimite) {
 		super(name, color);
 		this.timeLimite = timeLimite;
-		this.actionStop = actionStop;
 	}
 	
 	
@@ -88,7 +85,6 @@ public class Computer extends AbstractPlayer {
 		timer.stop();
 		timer = null;
 		timerAction = null;
-		actionStop = null;
 	}
 
 	
@@ -99,7 +95,7 @@ public class Computer extends AbstractPlayer {
 	
 	
 	private void startTimer() {
-		if ((actionStop != null) && (timeLimite > 0)) {
+		if (timeLimite > 0) {
 			if (timer == null) {
 				timer = new Timer(getDelay(), getActionTimer());
 				timer.setRepeats(false);
@@ -122,8 +118,8 @@ public class Computer extends AbstractPlayer {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					System.out.println("time exceeded : interruption of the calculation ....");
-					actionStop.run();
+					System.out.println("Time exceeded : interruption of the calculation ....");
+					interrupt();
 				}
 			};
 		}

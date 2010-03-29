@@ -42,7 +42,7 @@ public class TestCapture {
 		stateGame = Factory.getStateGame(context);
 		GameLoader gl = new GameLoader();
 		gl.load("TestEvaluation-1.txt", context);
-		computer = new Computer("computer", Configuration.BLACK, 0, null);
+		computer = new Computer("computer", Configuration.BLACK, 0);
 		player = new Player("adversaire", Configuration.WHITE, null, stateGame);
 		
 		//evaluation = new Evaluation(computer, player);
