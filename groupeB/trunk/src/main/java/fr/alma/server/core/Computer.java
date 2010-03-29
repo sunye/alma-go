@@ -1,5 +1,11 @@
 package fr.alma.server.core;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+
+import fr.alma.client.action.IAction;
 import fr.alma.server.ia.IEvaluation;
 
 
@@ -7,12 +13,19 @@ public class Computer extends AbstractPlayer {
 	private IEvaluation evaluation;
 	private IStrategy strategy;
 	private boolean enable = false;
-	IPlayer player = this;
+	private IPlayer player = this;
+	private Timer timer = null;
+	private ActionListener timerAction = null;
+	private int timeLimite = 0;
+	private IAction actionStop;
 	
 	
-	public Computer(String name, boolean color) {
+	public Computer(String name, boolean color, int timeLimite, IAction actionStop) {
 		super(name, color);
+		this.timeLimite = timeLimite;
+		this.actionStop = actionStop;
 	}
+	
 	
 	@Override
 	public void play() {
@@ -20,7 +33,9 @@ public class Computer extends AbstractPlayer {
 			@Override
 			public void run() {
 				System.out.println("Start thread computer");
+				startTimer();
 				IEmplacement emplacement = getStrategy().getEmplacementMax(getEvaluation(), false);
+				stopTimer();
 				try {
 					strategy.getStateGame().play(emplacement.getCol(), emplacement.getRow(), getColor());
 				} catch (Exception e) {
@@ -64,17 +79,60 @@ public class Computer extends AbstractPlayer {
 		this.evaluation = evaluation;
 	}
 
+	
 	@Override
 	public void cleanUp() {
 		evaluation = null;
 		strategy = null;
 		player = null;
+		timer.stop();
+		timer = null;
+		timerAction = null;
+		actionStop = null;
 	}
 
+	
 	@Override
 	public void interrupt() {
 		strategy.interrupt();
 	}
-
 	
+	
+	private void startTimer() {
+		if ((actionStop != null) && (timeLimite > 0)) {
+			if (timer == null) {
+				timer = new Timer(getDelay(), getActionTimer());
+				timer.setRepeats(false);
+			}
+			timer.start();
+		}
+	}
+	
+	
+	private void stopTimer() {
+		if (timer != null) {
+			timer.stop();
+		}
+	}
+	
+	
+	private ActionListener getActionTimer() {
+		if (timerAction == null) {
+			timerAction = new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					System.out.println("time exceeded : interruption of the calculation ....");
+					actionStop.run();
+				}
+			};
+		}
+		return timerAction;
+	}
+	
+	
+	public int getDelay() {
+		return timeLimite * 1000;
+	}
+
 }

@@ -73,6 +73,7 @@ public class IHMParam extends AbstractDialog {
         
         tfTimeLimite = new JTextField(5);
         tfTimeLimite.setText("15");
+        tfTimeLimite.setToolTipText("in seconds");
         Tools.addFocusListener(tfTimeLimite);
         panel.add(tfTimeLimite);
 
@@ -199,7 +200,7 @@ public class IHMParam extends AbstractDialog {
 	 */
 	public boolean controlSaisie() {
 		try {
-			if (getTimeLimite() <= 0) {
+			if (getTimeLimite() < 0) {
 				Tools.message(this, "Time Limite", "Invalid data", JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
@@ -272,7 +273,8 @@ public class IHMParam extends AbstractDialog {
 		}
 		goban.revalidate();
 		
-		IPlayer computer = new Computer("Computer", context.getParamGame().getColorComputer());
+		IPlayer computer = new Computer("Computer", context.getParamGame().getColorComputer(),
+				context.getParamGame().getTimeLimite(), Factory.getActionEscape(context));
 		IPlayer player = new Player("Player", ! context.getParamGame().getColorComputer(), goban, stateGame);
 
 		IEvaluation evaluation = Factory.getEvaluation(context);

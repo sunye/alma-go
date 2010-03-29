@@ -34,7 +34,7 @@ public class TestEvaluation {
 		GameLoader gl = new GameLoader();
 		gl.load("TestEvaluation.txt", context);
 		stateGame = Factory.getStateGame(context);
-		IPlayer computer = new Computer("computer", Configuration.BLACK);
+		IPlayer computer = new Computer("computer", Configuration.BLACK, 0, null);
 		IPlayer player = new Player("adversaire", Configuration.WHITE, null, stateGame);
 		
 		context.setComputer(computer);
