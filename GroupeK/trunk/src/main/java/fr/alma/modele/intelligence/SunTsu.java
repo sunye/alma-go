@@ -1,5 +1,6 @@
 package fr.alma.modele.intelligence;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -7,6 +8,7 @@ import fr.alma.modele.Coordonnee;
 import fr.alma.modele.CouleurPion;
 import fr.alma.modele.Coup;
 import fr.alma.modele.GoBan;
+import fr.alma.modele.Groupe;
 import fr.alma.modele.Pion;
 
 
@@ -21,41 +23,44 @@ public class SunTsu {
 
 	private CouleurPion coul;
 	private Difficulte diff;
-	
 	private GoBan situation;
-	private Pion[] bibliothequeLaVengeance;
-	
+		
 	
 	
 	
 	
 	
 	public SunTsu(){
-		
-		
+		this.situation=new GoBan();
+		this.diff=Difficulte.Debutant;
+	}
+	
+	public Difficulte getDiff() {
+		return diff;
+	}
+	
+	public void setDiff(Difficulte diff) {
+		this.diff = diff;
 	}
 	
 
 	
-	public Coordonnee coupJouer(GoBan situation){
+	public Coordonnee coupJouer(GoBan actuel, CouleurPion coulp){
+		//recopie du goban actuel
+		situation.setGoban(actuel.getGoban().clone());
+		situation.setNbBlanc(actuel.getNbBlanc());
+		situation.setNbNoir(actuel.getNbNoir());
+		situation.setNum(actuel.getNum());
 		
-		this.situation=situation;
+		this.coul=coulp;
 		
-		
-		
-		bibliothequeLaVengeance= new Pion[6];
-		
-		
-		/*
-		 * -Construction de l'arbre
-		 * -evaluation
-		 */
-		
-		
-		return  null;
+		//calcul profondeur en fonction de la difficulté
+		int profondeur= diff.ordinal()+1*3;
+
+		return  alphaLeBeta(profondeur, null, coul).getPosition();
 	}
 	
-	private Integer conseille(CouleurPion joueur){
+	private Integer conseille(){
 		
 		return 0;
 	}
@@ -66,8 +71,6 @@ public class SunTsu {
 		}else{
 			return CouleurPion.BLANC;
 		}
-		
-		
 	}
 	
 	
@@ -76,14 +79,14 @@ public class SunTsu {
 	private Coup alphaLeBeta(int profondeur, Coup precedentResult, CouleurPion ajouer){
 		Coup temporaire=null;
 		Coup result=null;
-		for (int i=0; i<9; i++){
-			for (int j=0;j<9;j++){
+		for (int i=0; i<GoBan.TAILLE_GO_BAN; i++){
+			for (int j=0;j<GoBan.TAILLE_GO_BAN;j++){
 				if(situation.estLegal(i, j, ajouer)){
 					situation.ajouterPion(i, j, ajouer);
 					Coup coupActuel= new Coup(i, j,ajouer);
 					if ( profondeur ==1){
 										
-						coupActuel.setNote(this.conseille(ajouer));
+						coupActuel.setNote(this.conseille());
 						
 						if (coul==ajouer){
 							result= result==null?coupActuel:(result.getNote()<coupActuel.getNote()?result:coupActuel);
@@ -136,13 +139,52 @@ public class SunTsu {
 				}
 			}
 		}
-		
-		
-		
 		return result;
 	}
+
 	
 	
+	/*
+	 * 
+	 * Borgne:
+	 * une case vide entouré par un seul et même groupe ne possédant qu'une liberté
+	 * 
+	 * 
+	 * oeil:
+	 * groupe de case vide entouré par un seul et même groupe
+	 * 
+	 * 
+	 * yeux: 
+	 * plusieurs groupe de vide différent entouré par un seul et même groupe
+	 */
+	private void constructionEuristique(){
+		Pion[][] matrice= situation.getGoban();
+		HashSet<Pion> caseVide=new HashSet<Pion>();
+		HashSet<Groupe> groupeNoir= new HashSet<Groupe>();
+		HashSet<Groupe> groupeBlanc= new HashSet<Groupe>();
+		
+		//on récupère toutes les cases vides
+		//et tous les groupes de pions
+		for(int i=0;i<GoBan.TAILLE_GO_BAN;i++){
+			for(int j=0; j<GoBan.TAILLE_GO_BAN;j++){
+				if( matrice[i][j].getCouleur()==CouleurPion.EMPTY){
+					caseVide.add(matrice[i][j]);
+				}else if(matrice[i][j].getCouleur()==CouleurPion.BLANC){
+					groupeBlanc.add(matrice[i][j].getGroupe());					
+				} else{
+					groupeNoir.add(matrice[i][j].getGroupe());
+				}
+			}
+		}
+		
+		/*
+		 * Parcours du set contenant les cases vides pour constitué des groupes de cases vides
+		 * pour pouvoir calculer les yeux etc.
+		 */
+		
+		
+		
+	}
 	
 	
 	

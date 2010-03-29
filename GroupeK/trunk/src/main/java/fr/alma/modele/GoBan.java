@@ -22,12 +22,31 @@ public class GoBan {
 	public Pion[][] getGoban() {
 		return goban;
 	}
+	
 	public int getNbBlanc() {
 		return nbBlanc;
 	}
 	public int getNbNoir() {
 		return nbNoir;
 	}
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
+	public void setGoban(Pion[][] goban) {
+		this.goban = goban;
+	}
+	public void setNbBlanc(int nbBlanc) {
+		this.nbBlanc = nbBlanc;
+	}
+	public void setNbNoir(int nbNoir) {
+		this.nbNoir = nbNoir;
+	}
+	
+	
+	
 
 	public boolean ajouterPion(int position, int positiony){
 		//Si le nombre est pair alors c'est au blanc de jouer
@@ -260,6 +279,7 @@ public class GoBan {
 		}
 	}
 
+
 	// Connexion entre plusieurs groupes grâce au pion joué
 	public void connexionGroupes(int position, int positiony, CouleurPion coul, Vector<Groupe> listVoisinsAmis){
 
@@ -366,5 +386,7 @@ public class GoBan {
 				goban[i][k] = new Pion(CouleurPion.EMPTY, 0);
 			}
 	}
+
+	
 
 }

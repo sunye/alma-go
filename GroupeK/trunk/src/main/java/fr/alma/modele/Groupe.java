@@ -60,4 +60,5 @@ public class Groupe {
 		this.libertes = libertes;
 	}
 
+
 }
