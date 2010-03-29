@@ -133,7 +133,7 @@ public class GobanStructure {
 			}
 						
 			/* on calcul le nombre de liberte du nouveau groupe */
-			nouv.setLiberte(caluleLibertees(nouv));
+			nouv.setLiberte(calculeLibertees(nouv));
 			
 			getGroupes(couleur).add(nouv);
 			
@@ -154,11 +154,44 @@ public class GobanStructure {
 	}
 	
 	/**
+	 * 
+	 * @param coord
+	 * @return
+	 */
+	public boolean retirePiece(Coordonnees coord){
+		
+		if( testPosition(coord)>0 ){
+			
+			GroupePieces gc = plateau[coord.getX()][coord.getY()];			
+					
+			for(Coordonnees p : gc.getPieces()){
+				if(p.estEgal(coord)){
+					gc.getPieces().remove(p);
+					break;
+				}
+			}
+			
+			plateau[coord.getX()][coord.getY()] = null;		
+			
+			if(!gc.getPieces().isEmpty()){
+				gc.setLiberte(calculeLibertees(gc));
+			}else{
+				getGroupes(gc.getCouleur()).remove(gc);
+			}
+			
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	
+	/**
 	 * calcul le nombre de liberte d'un groupe de pieces
 	 * @param nouv
 	 * @return
 	 */
-	private Integer caluleLibertees(GroupePieces nouv) {
+	private Integer calculeLibertees(GroupePieces nouv) {
 		
 		LinkedList<Coordonnees> coordLib = new LinkedList<Coordonnees>();
 		
@@ -301,24 +334,27 @@ public class GobanStructure {
 	 */
 	public boolean coupValide(Coordonnees coord, Couleur couleur){
 		
-		boolean ok=true;
+		boolean ok=false;
 		
-		/* si la place tester n'a pas de liberter */
-		if(testLiberte(coord) == 0){
-			ok=false;
-			/* on verifie si cette place est la derniere liberte des groupes ajacent de meme couleur */
-			for(GroupePieces ga : groupesAdjacents(coord, couleur)){
-				ok = ok || (ga.getLiberte() > 1)  ;
-			}
-			/* si en prenant cette place on suprime la derniere liberter des groupe adjacent de meme couleur */
-			if(!ok){
-				/* on verifie si on suprime la derniere liberte d'un groupe adjacent de la couleur adverse */
-				for(GroupePieces ga : groupesAdjacents(coord, couleur.invCouleur())){
-					ok = ok || (ga.getLiberte() == 1) ;
+		/* on test si la place est libre */
+		if(plateau[coord.getX()][coord.getY()] == null){
+			ok=true;
+			/* si la place tester n'a pas de liberter */
+			if(testLiberte(coord) == 0){
+				ok=false;
+				/* on verifie si cette place est la derniere liberte des groupes ajacent de meme couleur */
+				for(GroupePieces ga : groupesAdjacents(coord, couleur)){
+					ok = ok || (ga.getLiberte() > 1)  ;
 				}
-			}	
+				/* si en prenant cette place on suprime la derniere liberter des groupe adjacent de meme couleur */
+				if(!ok){
+					/* on verifie si on suprime la derniere liberte d'un groupe adjacent de la couleur adverse */
+					for(GroupePieces ga : groupesAdjacents(coord, couleur.invCouleur())){
+						ok = ok || (ga.getLiberte() == 1) ;
+					}
+				}	
+			}
 		}
-		
 		return ok;
 	}
 

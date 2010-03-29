@@ -33,6 +33,9 @@ public class mainTest {
 		gb.ajoutPiece(new Coordonnees(2, 6), Couleur.blanc);
 		gb.ajoutPiece(new Coordonnees(3, 7), Couleur.blanc);
 		
+		gb.ajoutPiece(new Coordonnees(2, 2), Couleur.blanc);
+		gb.retirePiece(new Coordonnees(2, 2));
+		
 		/* ----------------------------- */
 		
 		do{
@@ -101,8 +104,10 @@ public class mainTest {
 					System.out.print(" ");
 				}else if(gb.getPlateau()[x][y].getCouleur() == Couleur.noir){
 					System.out.print("X");
-				}else{
+				}else if(gb.getPlateau()[x][y].getCouleur() == Couleur.blanc){
 					System.out.print("O");
+				}else{
+					System.out.print("8");
 				}
 			}
 			System.out.println(y);

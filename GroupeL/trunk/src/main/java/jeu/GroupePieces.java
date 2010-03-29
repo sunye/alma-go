@@ -14,14 +14,14 @@ public class GroupePieces {
 
 	private List<Coordonnees> pieces;
 	private Integer liberte;
-	private Couleur couleur; // true : blanc , false : noir
+	private Couleur couleur; 
 	
 	/* Constructeur */
 	public GroupePieces() {
 		super();
 		pieces = new LinkedList<Coordonnees>();
 		liberte = 0;
-		couleur = null;
+		couleur = Couleur.none;
 	}
 	
 	public GroupePieces(Coordonnees coord, Integer liberte, Couleur coul) {
