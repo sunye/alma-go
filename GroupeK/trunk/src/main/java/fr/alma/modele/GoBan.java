@@ -56,7 +56,7 @@ public class GoBan {
 		return true;
 	}
 
-
+	
 	public boolean ajouterPion(int position, int positiony, CouleurPion coul){
 		boolean result;
 		if(result=estLegal(position, positiony, coul)){
@@ -73,9 +73,27 @@ public class GoBan {
 		}
 		return result;
 	}
-
+	
+	
 	public boolean retirerPion(int position, int positiony, CouleurPion coul){
-		//TODO a implémenter.
+		//liste de groupes amis et ennemis
+		Vector<Groupe> listVoisinsAmis = new Vector<Groupe>();
+		Vector<Groupe> listVoisinsEnnemis = new Vector<Groupe>();
+
+		visitVoisinsPion(position, positiony, coul, listVoisinsAmis, listVoisinsEnnemis);
+		//ajouter ce pion en liberté des groupes ennemis
+		Enumeration<Groupe> e = listVoisinsEnnemis.elements();
+		   for(;e.hasMoreElements();) {
+			   Groupe groupeCourant = e.nextElement();
+			   groupeCourant.getLibertes().addElement(goban[position][positiony]);
+		   }
+		//ajouter ce pion en liberté du groupe ami
+		   goban[position][positiony].getGroupe().getLibertes().addElement(goban[position][positiony]);
+		   goban[position][positiony].getGroupe().getPions().removeElement(goban[position][positiony]);
+		//supprimer ce pion
+		   goban[position][positiony].setCouleur(CouleurPion.EMPTY);
+		   goban[position][positiony].setGroupe(null);
+		   goban[position][positiony].setListeLibertes();
 		return true;
 	}
 
@@ -319,7 +337,7 @@ public class GoBan {
 	}
 
 	// mise à jour des groupes d'ennemis
-	public void majListeEnnemis(int position, int positiony, CouleurPion coul, Vector<Groupe> listVoisinsEnnemis/*, Vector<Pion> modifications*/) {
+	public void majListeEnnemis(int position, int positiony, CouleurPion coul, Vector<Groupe> listVoisinsEnnemis) {
 
 	   Enumeration<Groupe> e = listVoisinsEnnemis.elements();
 	   for(;e.hasMoreElements();) {
