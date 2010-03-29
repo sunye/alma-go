@@ -8,25 +8,25 @@
 package jeu;
 
 public class Coordonnees {
-	private int x;
-	private int y;
+	private Integer x;
+	private Integer y;
 	
 	/* Getters - Setters */
-	public int getX() {
+	public Integer getX() {
 		return x;
 	}
-	public void setX(int x) {
+	public void setX(Integer x) {
 		this.x = x;
 	}
-	public int getY() {
+	public Integer getY() {
 		return y;
 	}
-	public void setY(int y) {
+	public void setY(Integer y) {
 		this.y = y;
 	}
 	
 	/* Constructors */
-	public Coordonnees(int x, int y) {
+	public Coordonnees(Integer x, Integer y) {
 		super();
 		this.x = x;
 		this.y = y;
