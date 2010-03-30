@@ -50,7 +50,7 @@ public class Evaluation implements IEvaluation {
 		int scorePlayer = getScore(searchDegrees(getPlayer(), stateGame));
 		int score = scoreComputer - scorePlayer;
 		//System.out.println("score computer : " + scoreComputer + " - score player : " + scorePlayer + " - total : " + score);
-		return score;
+		return (score / stateGame.getLevel());
 	}
 	
 

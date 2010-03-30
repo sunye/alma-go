@@ -104,6 +104,7 @@ public class AlphaBeta implements IStrategy {
 			}
 		} else { 
 			/* it is a leaf - Refresh the value of the game for this level*/
+			stateGame.setLevel(level);
 			value = evaluation.evaluate(stateGame, status);
 			//System.out.println("Level " + level + " -> Resultat evaluation : " + value);
 			//Tools.showGobanOnConsole(stateGame);

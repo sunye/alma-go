@@ -38,5 +38,8 @@ public interface IStateGame extends Cloneable, GoObject {
 	public void clear();
 	public int countLimitComputer();
 	public int countLimitPlayer();
+	
+	public int getLevel();
+	public void setLevel(int level);
 
 }
