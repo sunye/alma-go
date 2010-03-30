@@ -20,6 +20,10 @@ public class Coordonnee {
 		this.y = y;
 	}
 	
+	public boolean isValid(int max){
+		return x>=0&&y>=0&&x<max&&y<max;
+	}
+	
 	
 	
 }

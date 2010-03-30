@@ -9,7 +9,14 @@ public class Pion {
 	private Vector<Pion> listeLibertes;
 	//Groupe auquel il appartient
 	private Groupe groupe;
+	private boolean marque;
 
+	public boolean isMarque() {
+		return marque;
+	}
+	public void setMarque(boolean marque) {
+		this.marque = marque;
+	}
 	public CouleurPion getCouleur() {
 		return couleur;
 	}
