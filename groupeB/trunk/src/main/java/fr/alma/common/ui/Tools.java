@@ -1,3 +1,14 @@
+/*
+ * IA Project ATARI-GO
+ * UNIVERSITY OF NANTES
+ * MASTER ALMA 1
+ * 2009 - 2010
+ * Version 1.0
+ * @author Romain Gournay & Bruno Belin
+ * 
+ * Copyright 2010 Romain Gournay & Bruno Belin, All rights reserved.
+ * Use is subject to license terms.
+ */
 package fr.alma.common.ui;
 
 import java.awt.Component;
@@ -14,8 +25,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 
+/**
+ * Graphical tools
+ */
 public class Tools {
 
+	/** Focus Listener for all text fields */
 	private static FocusListener focusListener;
 	
 	
@@ -34,6 +49,10 @@ public class Tools {
 	}
 	
 	
+	/**
+	 * Manage the focus on all text fields
+	 * @param tf
+	 */
 	public static void addFocusListener(JTextField tf) {
 		if (focusListener == null) {
 			
@@ -53,6 +72,13 @@ public class Tools {
 	}
 	
 	
+	/**
+	 * Show a box message (Information, error, warning, ...)
+	 * @param parent
+	 * @param title
+	 * @param message
+	 * @param msgType
+	 */
 	public static void message(Component parent, String title, Object message, int msgType) {
 		JOptionPane pane = new JOptionPane(message, msgType);
 		final JDialog dialog = pane.createDialog(parent, title);

@@ -1,3 +1,14 @@
+/*
+ * IA Project ATARI-GO
+ * UNIVERSITY OF NANTES
+ * MASTER ALMA 1
+ * 2009 - 2010
+ * Version 1.0
+ * @author Romain Gournay & Bruno Belin
+ * 
+ * Copyright 2010 Romain Gournay & Bruno Belin, All rights reserved.
+ * Use is subject to license terms.
+ */
 package fr.alma.client.ihm;
 
 import java.awt.BorderLayout;
@@ -31,25 +42,28 @@ import fr.alma.server.rule.Configuration;
 import fr.alma.server.rule.RuleManager;
 
 
+/**
+ * IHM to define the game parameters
+ */
 @SuppressWarnings("serial")
 public class IHMParam extends AbstractDialog {
 	public static final String[] LIST_GRIDSIZE = new String[]{"6x6", "9x9"};
 	public static final String[] LIST_COLOR = new String[]{"Black", "White"};
 	public static final String[] LIST_PLAYER = new String[]{"Computer", "Player"};
 	
-	JTextField tfTimeLimite;
+	private JTextField tfTimeLimit;
 	
-	JCheckBox chkbPossibilityInterruption;
-	JCheckBox chkbAssistant;
-	JComboBox cbGrille;
-	JComboBox cbColorComputer;
-	JComboBox cbOpponent;
+	private JCheckBox chkbPossibilityInterruption;
+	private JCheckBox chkbAssistant;
+	private JComboBox cbGrid;
+	private JComboBox cbColorComputer;
+	private JComboBox cbOpponent;
 	
-	JTextField tfTargetCaptureComputer;
-	JTextField tfTargetCapturePlayer;
+	private JTextField tfTargetCaptureComputer;
+	private JTextField tfTargetCapturePlayer;
 	
-	Context context = null;
-	Goban goban = null;
+	private Context context = null;
+	private Goban goban = null;
 	
 	
 	public IHMParam(Context context) {
@@ -71,11 +85,11 @@ public class IHMParam extends AbstractDialog {
         JLabel labelTimeLimite = new JLabel("Time limit reflection Software : ");
         panel.add(labelTimeLimite);
         
-        tfTimeLimite = new JTextField(5);
-        tfTimeLimite.setText("15");
-        tfTimeLimite.setToolTipText("in seconds");
-        Tools.addFocusListener(tfTimeLimite);
-        panel.add(tfTimeLimite);
+        tfTimeLimit = new JTextField(5);
+        tfTimeLimit.setText("15");
+        tfTimeLimit.setToolTipText("in seconds");
+        Tools.addFocusListener(tfTimeLimit);
+        panel.add(tfTimeLimit);
 
         JLabel labelPossibilityInterruption = new JLabel("Possibility to interrupt the calculations : ");
         panel.add(labelPossibilityInterruption);
@@ -86,9 +100,9 @@ public class IHMParam extends AbstractDialog {
         JLabel labelGridSize = new JLabel("Grid size : ");
         panel.add(labelGridSize);
         
-        cbGrille= new JComboBox(LIST_GRIDSIZE);
-        cbGrille.setSelectedIndex(1);
-        panel.add(cbGrille);
+        cbGrid= new JComboBox(LIST_GRIDSIZE);
+        cbGrid.setSelectedIndex(1);
+        panel.add(cbGrid);
         
         JLabel labelOpponent = new JLabel("Play against : ");
         panel.add(labelOpponent);
@@ -144,8 +158,8 @@ public class IHMParam extends AbstractDialog {
 	}
 	
 	
-	public int getTimeLimite() {
-		return new Integer(tfTimeLimite.getText()).intValue();
+	public int getTimeLimit() {
+		return new Integer(tfTimeLimit.getText()).intValue();
 	}
 
 
@@ -154,7 +168,7 @@ public class IHMParam extends AbstractDialog {
 	}
 	
 	public int getGridSize() {
-		if (cbGrille.getSelectedIndex() == 0) {
+		if (cbGrid.getSelectedIndex() == 0) {
 			return 6;
 		} else {
 			return 9;
@@ -193,14 +207,14 @@ public class IHMParam extends AbstractDialog {
 	
 	
 	/**
-	 * Controle des elements saisis.
-	 * Affiche une box en cas d'anomalie detectee.
+	 * Check the values seized
+	 * Show a box with the mistakes
 	 * 
-	 * @return true si les saisies sont correctes
+	 * @return true if the values seized are valid
 	 */
 	public boolean controlSaisie() {
 		try {
-			if (getTimeLimite() < 0) {
+			if (getTimeLimit() < 0) {
 				Tools.message(this, "Time Limite", "Invalid data", JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
@@ -224,16 +238,19 @@ public class IHMParam extends AbstractDialog {
 	}
 
 	
+	/**
+	 * @return a new ParamGame
+	 */
 	private ParamGame getParamGame() {
 		ParamGame param = new ParamGame();
 		param.setColorComputer(getColorComputer());
-		param.setGrille(getGridSize());
+		param.setSizeGoban(getGridSize());
 		param.setPossibilityInterruption(getPossibilityInterruption());
 		param.setAssistant(getAssitant());
 		param.setOpponent(getOpponent());
 		param.setTargetCaptureComputer(getTargetCaptureComputer());
 		param.setTargetCapturePlayer(getTargetCapturePlayer());
-		param.setTimeLimite(getTimeLimite());
+		param.setTimeLimite(getTimeLimit());
 		return param;
 	}
 
@@ -248,6 +265,9 @@ public class IHMParam extends AbstractDialog {
 		}
 	}
 	
+	/**
+	 * Initialise the context of the game
+	 */
 	private void initContext() {
 		
 		if (getContext().getCoordinator() != null) {
@@ -286,14 +306,18 @@ public class IHMParam extends AbstractDialog {
 		
 		context.setCoordinator(coordinator);
 	}
-	
-	
 
 
 	public Context getContext() {
 		return context;
 	}
 	
+	
+	/**
+	 * Singleton Pattern
+	 * Necessary for good compatibility with Swing components 
+	 * @return
+	 */
 	public Goban getGoban() {
 		if (goban == null) {
 			goban = Factory.getGoban(getContext());

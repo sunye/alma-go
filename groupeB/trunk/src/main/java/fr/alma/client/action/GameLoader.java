@@ -1,3 +1,14 @@
+/*
+ * IA Project ATARI-GO
+ * UNIVERSITY OF NANTES
+ * MASTER ALMA 1
+ * 2009 - 2010
+ * Version 1.0
+ * @author Romain Gournay & Bruno Belin
+ * 
+ * Copyright 2010 Romain Gournay & Bruno Belin, All rights reserved.
+ * Use is subject to license terms.
+ */
 package fr.alma.client.action;
 
 import java.io.File;
@@ -15,8 +26,6 @@ import fr.alma.server.ia.IEvaluation;
 import fr.alma.server.rule.RuleManager;
 
 /**
- * 
- * @author Romain Gournay & Bruno Belin
  * To load Go's parties from a file
  */
 public class GameLoader {
@@ -28,8 +37,9 @@ public class GameLoader {
 	 * @param context
 	 */
 	public GameLoader(){
-		
+		super();
 	}
+
 
 	/**
 	 * To load a party in a particular state
@@ -55,7 +65,7 @@ public class GameLoader {
 					case 1 : param.setPossibilityInterruption(Boolean.parseBoolean(line)); break;
 					case 2 : 
 						if(Integer.parseInt(line)==6 || Integer.parseInt(line)==9) 
-							param.setGrille(Integer.parseInt(line));
+							param.setSizeGoban(Integer.parseInt(line));
 						break;
 					case 3 : 
 						if(line.equals("x"))
@@ -80,34 +90,33 @@ public class GameLoader {
 			}
 
 
-			Boolean[][] intersection = new Boolean[param.getGrille()][param.getGrille()];
+			Boolean[][] intersection = new Boolean[param.getSizeGoban()][param.getSizeGoban()];
 			i = 0;
-			while (sc.hasNextLine() && i < param.getGrille()) {
+			while (sc.hasNextLine() && i < param.getSizeGoban()) {
 				line = sc.nextLine(); // read the current line
 				if (line != null)
-					for (int j = 0; j <  param.getGrille(); j++) {
+					for (int j = 0; j <  param.getSizeGoban(); j++) {
 						if (line.charAt(j) == 'x') intersection[j][i] = false;
 						else if (line.charAt(j)=='o') intersection[j][i] = true;
 					}
 				i++; // to treat the next line
 			}
 			sc.close();
-			//System.out.println("GameLoaded.loadGame()");
 			context.setParamGame(param);
 			IStateGame stateGame = Factory.getStateGame(context);
 			context.setStateGame(stateGame);
-			
+
 			RuleManager ruleManager = Factory.getRuleManager();
 			context.setRuleManager(ruleManager);
-			
+
 			Coordinator coordinator = new Coordinator(context);
 
-			
-				context.setGoban(Factory.getGoban(context));
-				context.getMainFrame().setContentPane(context.getGoban());
-			
+
+			context.setGoban(Factory.getGoban(context));
+			context.getMainFrame().setContentPane(context.getGoban());
+
 			context.getGoban().revalidate();
-			
+
 			IPlayer computer = new Computer("Computer", context.getParamGame().getColorComputer(),
 					context.getParamGame().getTimeLimite());
 			IPlayer player = new Player("Player", ! context.getParamGame().getColorComputer(), context.getGoban(), stateGame);
@@ -118,19 +127,16 @@ public class GameLoader {
 			computer.setEvaluation(evaluation);
 			context.setPlayer(player);
 			context.setComputer(computer);
-			
+
 			context.setCoordinator(coordinator);
 			context.getStateGame().load(intersection);
 			context.getGoban().repaint();
 			context.getCoordinator().startGame();
-			
+
 		} catch (FileNotFoundException e) {
 			System.err.println("File " + fileName + " doesn't exist!");
 		}
 
-		
-		
-		//return intersection;
 	}
 
 }
