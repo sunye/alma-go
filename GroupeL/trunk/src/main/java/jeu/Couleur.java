@@ -11,4 +11,13 @@ public enum Couleur {
 		}
 		return none;
 	}
+	
+	public String toString(){
+		if(this == blanc){
+			return "blanc";
+		}else if (this == noir){
+			return "noir";
+		}
+		return "none";
+	}
 }
