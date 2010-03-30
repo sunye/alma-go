@@ -16,7 +16,7 @@ import java.util.List;
 
 import fr.alma.client.action.Context;
 import fr.alma.server.core.Emplacement;
-import fr.alma.server.core.IEmplacement;
+import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 
@@ -40,7 +40,7 @@ public class FreedomDegrees {
 	 * @param locationsAlreadyVisited
 	 * @return number degrees of freedom of the player stone location e and its group
 	 */
-	public static int countFreeDegrees(IStateGame stateGame, boolean player, IEmplacement e, List<IEmplacement> locationsAlreadyVisited) {
+	public static int countFreeDegrees(IStateGame stateGame, boolean player, ILocation e, List<ILocation> locationsAlreadyVisited) {
 		int nbFreeDegrees = 0;	
 		locationsAlreadyVisited.add(e);
 
@@ -72,10 +72,10 @@ public class FreedomDegrees {
 	 * @return the number of freedom degrees for a stone location
 	 */
 
-	private static int countCaseFreeDegrees(IEmplacement e, IStateGame stateGame, boolean player, List<IEmplacement> emplacements){
+	private static int countCaseFreeDegrees(ILocation e, IStateGame stateGame, boolean player, List<ILocation> emplacements){
 		int nbFreeDegrees = 0;
 		if (stateGame.onGoban(e.getCol(), e.getRow())) {
-			if (!((IEmplacement)e).isIn(emplacements)) {
+			if (!((ILocation)e).isIn(emplacements)) {
 				if (stateGame.isFree(e.getCol(), e.getRow())) {
 					nbFreeDegrees++;
 					emplacements.add(e);
@@ -120,10 +120,10 @@ public class FreedomDegrees {
 	 * @param e is the location chosen by the current player
 	 * @return true if the player capturing opponent stones
 	 */
-	public static int hasCapturedWithThisEmplacement(IStateGame stateGame, IEmplacement e, IPlayer currentPlayer) {
+	public static int hasCapturedWithThisEmplacement(IStateGame stateGame, ILocation e, IPlayer currentPlayer) {
 		int hasFreedom = 999;
 		Boolean otherIPlayer = ! currentPlayer.getColor();
-		List<IEmplacement> emplacements = new ArrayList<IEmplacement>();
+		List<ILocation> emplacements = new ArrayList<ILocation>();
 		emplacements.add(e);
 		//case Top
 		int rowTop = (e.getRow() - 1);
@@ -164,7 +164,7 @@ public class FreedomDegrees {
 	 * @param locationsAlreadyVisited
 	 * @return the number of freedom degrees of the opponent
 	 */
-	public static int checkOpponentHasFreedom(IStateGame stateGame, Boolean otherIPlayer, IEmplacement opponentEmplacement, List<IEmplacement> locationsAlreadyVisited){
+	public static int checkOpponentHasFreedom(IStateGame stateGame, Boolean otherIPlayer, ILocation opponentEmplacement, List<ILocation> locationsAlreadyVisited){
 		int hasFreedom = 999;
 		// if the opponentEmplacement have been already tested
 		if (!((opponentEmplacement).isIn(locationsAlreadyVisited))) {
@@ -173,7 +173,7 @@ public class FreedomDegrees {
 			if (!stateGame.isFree(opponentEmplacement.getCol(), opponentEmplacement.getRow())) {
 				// if opponentEmplacement is the opponent player
 				if (stateGame.getIntersection(opponentEmplacement.getCol(), opponentEmplacement.getRow()).equals(otherIPlayer)) {
-					hasFreedom = countFreeDegrees(stateGame, otherIPlayer, opponentEmplacement, new ArrayList<IEmplacement>()); 
+					hasFreedom = countFreeDegrees(stateGame, otherIPlayer, opponentEmplacement, new ArrayList<ILocation>()); 
 				}
 			}
 		}

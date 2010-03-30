@@ -13,7 +13,7 @@ package fr.alma.server.rule;
 
 import java.util.List;
 import java.util.ArrayList;
-import fr.alma.server.core.IEmplacement;
+import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 import fr.alma.server.ia.FreedomDegrees;
@@ -26,8 +26,8 @@ public class RuleSuicide {
 	}
 
 	
-	public boolean provokeSuicide(IStateGame stateGame, IEmplacement emplacement, IPlayer currentPlayer) {
-		List<IEmplacement> emplacements = new ArrayList<IEmplacement>();
+	public boolean provokeSuicide(IStateGame stateGame, ILocation emplacement, IPlayer currentPlayer) {
+		List<ILocation> emplacements = new ArrayList<ILocation>();
 		int degrees = FreedomDegrees.countFreeDegrees(stateGame, currentPlayer.getColor(), emplacement, emplacements);
 		//System.out.println("Freedom degrees for group ["+col+"]["+row+"] d="+degrees);
 		//if (degrees == 0) System.out.println("SUICIDE");

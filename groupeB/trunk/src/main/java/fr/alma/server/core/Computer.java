@@ -19,6 +19,9 @@ import javax.swing.Timer;
 import fr.alma.server.ia.IEvaluation;
 
 
+/**
+ * Define the computer
+ */
 public class Computer extends AbstractPlayer {
 	private IEvaluation evaluation;
 	private IStrategy strategy;
@@ -28,13 +31,16 @@ public class Computer extends AbstractPlayer {
 	private ActionListener timerAction = null;
 	private int timeLimite = 0;
 	
-	
 	public Computer(String name, boolean color, int timeLimite) {
 		super(name, color);
 		this.timeLimite = timeLimite;
 	}
 	
 	
+	/** 
+	 * Thread is builded to execute the different action for the calculation
+	 * @see fr.alma.server.core.IPlayer#play()
+	 */
 	@Override
 	public void play() {
 		Runnable runnable = new Runnable() {
@@ -42,17 +48,17 @@ public class Computer extends AbstractPlayer {
 			public void run() {
 				System.out.println("Start thread computer");
 				startTimer();
-				IEmplacement emplacement = getStrategy().getEmplacementMax(getEvaluation(), false);
+				ILocation location = getStrategy().getBestLocation(getEvaluation(), false);
 				stopTimer();
-				if ((emplacement.getCol() != -1) && (emplacement.getRow() != -1)) {
+				if ((location.getCol() != -1) && (location.getRow() != -1)) {
 					try {
-						strategy.getStateGame().play(emplacement.getCol(), emplacement.getRow(), getColor());
+						strategy.getStateGame().play(location.getCol(), location.getRow(), getColor());
 					} catch (Exception e) {
 						System.out.println("Computer - Internal error : " + e.getLocalizedMessage());
 					}
 				}
-				raiseEvent(new PlayEvent(player, PlayEvent.AFTER, emplacement));
-				System.out.println("Stop thread computer : " + emplacement);
+				raiseEvent(new PlayEvent(player, PlayEvent.AFTER, location));
+				System.out.println("Stop thread computer : " + location);
 			}
 		};
 		new Thread(runnable).start();

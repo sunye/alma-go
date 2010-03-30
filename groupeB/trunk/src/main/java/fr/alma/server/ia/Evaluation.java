@@ -16,7 +16,7 @@ import java.util.List;
 
 import fr.alma.client.action.Context;
 import fr.alma.server.core.Emplacement;
-import fr.alma.server.core.IEmplacement;
+import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 import fr.alma.server.rule.StatusCheck;
@@ -62,9 +62,9 @@ public class Evaluation implements IEvaluation {
 	 */
 	private int[] searchDegrees(IPlayer player, IStateGame stateGame) {
 		
-		List<IEmplacement> emplacements = new ArrayList<IEmplacement>();
+		List<ILocation> emplacements = new ArrayList<ILocation>();
 		int[] aDegreeFree = new int[FreedomDegrees.getMaxDegreeFree(context)];
-		IEmplacement emplacement = null;
+		ILocation emplacement = null;
 		int degreeFree = 0;
 		boolean find;
 		boolean isComputer = (player == getComputer());
@@ -74,7 +74,7 @@ public class Evaluation implements IEvaluation {
 				if ((isComputer && stateGame.isPlayer(col, row)) || ((! isComputer) && stateGame.isComputer(col, row))) {
 					emplacement = new Emplacement(col, row);
 					find = false;
-					for (IEmplacement e : emplacements) {
+					for (ILocation e : emplacements) {
 						if (e.equals(emplacement)) {
 							find = true;
 						}

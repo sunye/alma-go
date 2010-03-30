@@ -14,11 +14,15 @@ package fr.alma.server.core;
 import java.util.List;
 import java.util.Vector;
 
+/**
+ * Define a basic player
+ */
 public abstract class AbstractPlayer implements IPlayer {
 	
 	private boolean color;
 	private String name;
 	protected List<PlayListener> listPlayerActionListener = null;
+	
 	
 	public AbstractPlayer(String name, boolean color) {
 		this.name = name;
@@ -30,23 +34,27 @@ public abstract class AbstractPlayer implements IPlayer {
 		return name;
 	}
 
+	@Override
 	public Boolean getColor() {
 		return color;
 	}
 
+	@Override
 	public boolean addPlayListener(PlayListener playListener) {
 		return getPlayerListeners().add(playListener);
 	}
 
+	@Override
 	public boolean removePlayListener(PlayListener playListener) {
 		return getPlayerListeners().remove(playListener);
 	}
-
+	
+	@Override
 	public void removePlayListeners() {
 		getPlayerListeners().clear();
 	}
 	
-	
+	@Override
 	public List<PlayListener> getPlayerListeners() {
 		if (listPlayerActionListener == null) {
 			listPlayerActionListener = new Vector<PlayListener>();
@@ -54,14 +62,19 @@ public abstract class AbstractPlayer implements IPlayer {
 		return listPlayerActionListener;
 	}
 
+	/**
+	 * Events spread toward listeners (bind with the observer pattern)
+	 * @param event
+	 * @return false if a listener have interrupted the current action
+	 */
 	protected boolean raiseEvent(PlayEvent event) {
-		boolean retour = true;
+		boolean result = true;
 		for (PlayListener listener : getPlayerListeners()) {
 			if (! listener.actionPerformed(event)) {
-				retour = false;
+				result = false;
 			}
 		}
-		return retour;
+		return result;
 	};
 	
 	public String toString() {

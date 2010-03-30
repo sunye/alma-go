@@ -14,12 +14,9 @@ package fr.alma.server.core;
 import java.util.List;
 
 /**
- * 
- * @author Romain Gournay & Bruno Belin
- * represent a location
- *
+ * Represent a location
  */
-public interface IEmplacement {
+public interface ILocation {
 	/**
 	 * @return the column of a context location
 	 */
@@ -31,16 +28,16 @@ public interface IEmplacement {
 	int getRow();
 	
 	/**
-	 * @param emplacements list of locations
+	 * @param locations list of locations
 	 * @return true if the context location is contained in the list of locations
 	 */
-	public boolean isIn(List<IEmplacement> emplacements);
+	public boolean isIn(List<ILocation> locations);
 	
 	/**
 	 * compare two locations
 	 * @param e1
 	 * @return true if context location is the same as the location e1
 	 */
-	boolean equals(IEmplacement e1);
+	boolean equals(ILocation e1);
 	
 }

@@ -22,7 +22,7 @@ import fr.alma.client.action.ParamGame;
 import fr.alma.server.core.Computer;
 import fr.alma.server.core.Emplacement;
 import fr.alma.server.core.Factory;
-import fr.alma.server.core.IEmplacement;
+import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 import fr.alma.server.core.Player;
@@ -37,7 +37,7 @@ public class TestCapture {
 	IStateGame stateGame = null;
 	Evaluation evaluation = null;
 	RuleManager ruleManager = null;
-	IEmplacement emplacement = null;
+	ILocation emplacement = null;
 	IPlayer computer = null;
 	IPlayer player = null;
 	Context context;
