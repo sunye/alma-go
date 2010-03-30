@@ -1,3 +1,14 @@
+/*
+ * IA Project ATARI-GO
+ * UNIVERSITY OF NANTES
+ * MASTER ALMA 1
+ * 2009 - 2010
+ * Version 1.0
+ * @author Romain Gournay & Bruno Belin
+ * 
+ * Copyright 2010 Romain Gournay & Bruno Belin, All rights reserved.
+ * Use is subject to license terms.
+ */
 package fr.alma.client.ihm;
 
 import java.awt.Graphics;
@@ -12,12 +23,15 @@ import javax.imageio.ImageIO;
 import fr.alma.client.action.Context;
 
 
-public class Cadrillage {
+/**
+ * Define the Grid of the Goban 
+ */
+public class Grid {
 
 	private static BufferedImage[] arrayImage = new BufferedImage[10];
 
 	
-	public static void paintCadrillage(Graphics g, Context context) { 
+	public static void paintGrid(Graphics g, Context context) { 
 		for (int x = 0; x < context.getSizeGoban(); x++)
 			for (int y = 0; y < context.getSizeGoban(); y++) {
 				BufferedImage image = getImage(x, y, context);

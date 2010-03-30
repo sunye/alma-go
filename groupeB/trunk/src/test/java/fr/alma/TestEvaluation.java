@@ -1,3 +1,14 @@
+/*
+ * IA Project ATARI-GO
+ * UNIVERSITY OF NANTES
+ * MASTER ALMA 1
+ * 2009 - 2010
+ * Version 1.0
+ * @author Romain Gournay & Bruno Belin
+ * 
+ * Copyright 2010 Romain Gournay & Bruno Belin, All rights reserved.
+ * Use is subject to license terms.
+ */
 package fr.alma;
 
 import static org.junit.Assert.*;
@@ -28,7 +39,7 @@ public class TestEvaluation {
 		Context context;
 		context = new Context();
 		ParamGame param = new ParamGame();
-		param.setGrille(9);
+		param.setSizeGoban(9);
 		
 		
 		GameLoader gl = new GameLoader();

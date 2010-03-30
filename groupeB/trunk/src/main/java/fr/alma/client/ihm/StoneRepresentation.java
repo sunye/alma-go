@@ -1,3 +1,14 @@
+/*
+ * IA Project ATARI-GO
+ * UNIVERSITY OF NANTES
+ * MASTER ALMA 1
+ * 2009 - 2010
+ * Version 1.0
+ * @author Romain Gournay & Bruno Belin
+ * 
+ * Copyright 2010 Romain Gournay & Bruno Belin, All rights reserved.
+ * Use is subject to license terms.
+ */
 package fr.alma.client.ihm;
 
 import java.awt.Graphics;
@@ -13,16 +24,19 @@ import fr.alma.client.action.Context;
 import fr.alma.server.rule.Configuration;
 
 
-public class Pierre {
+/**
+ * Paint the stones match with the state game
+ */
+public class StoneRepresentation {
 
-	public static final String PIERRE_BLANCHE = "wmoku";
-	public static final String PIERRE_NOIRE = "bmoku";
+	public static final String WHITE_STONE = "wmoku";
+	public static final String BLACK_STONE = "bmoku";
 	
 	private static BufferedImage[] arrayImageB = new BufferedImage[18];
 	private static BufferedImage[] arrayImageN = new BufferedImage[18];
 	private static BufferedImage[] arrayImage = null;
 	
-	public static void paintPierre(Graphics g, Context context) {
+	public static void paintStone(Graphics g, Context context) {
 		for (int x = 0; x < context.getSizeGoban(); x++)
 			for (int y = 0; y < context.getSizeGoban(); y++) {
 				if (! context.getStateGame().isFree(x, y)) {
@@ -74,7 +88,7 @@ public class Pierre {
 		}
 		
 		if (arrayImage[indice-1] == null) {
-			String imageFileName = "image/" + getColorPierre(x, y, context) + indice + ".png"; 
+			String imageFileName = "image/" + getColorStone(x, y, context) + indice + ".png"; 
 			URL imageSrc = null;
 			try {
 				imageSrc = ((new File(imageFileName)).toURI()).toURL();
@@ -96,24 +110,23 @@ public class Pierre {
 	}
 
 	
-	private static String getColorPierre(int x, int y, Context context) {
+	private static String getColorStone(int x, int y, Context context) {
 		String color = null;
 		
 		if (context.getStateGame().isComputer(x, y)) {
 			if (context.getComputer().getColor() == Configuration.WHITE) {
-				color = PIERRE_BLANCHE;
+				color = WHITE_STONE;
 			} else {
-				color = PIERRE_NOIRE;
+				color = BLACK_STONE;
 			}
 		} else {
 			if (context.getPlayer().getColor() == Configuration.WHITE) {
-				color = PIERRE_BLANCHE;
+				color = WHITE_STONE;
 			} else {
-				color = PIERRE_NOIRE;
+				color = BLACK_STONE;
 			}
 		}
 		return color;
 	}
 
-	
 }

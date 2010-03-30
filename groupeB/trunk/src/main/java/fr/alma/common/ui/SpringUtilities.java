@@ -1,3 +1,14 @@
+/*
+ * IA Project ATARI-GO
+ * UNIVERSITY OF NANTES
+ * MASTER ALMA 1
+ * 2009 - 2010
+ * Version 1.0
+ * @author Romain Gournay & Bruno Belin
+ * 
+ * Copyright 2010 Romain Gournay & Bruno Belin, All rights reserved.
+ * Use is subject to license terms.
+ */
 package fr.alma.common.ui;
 
 import java.awt.Component;
@@ -14,13 +25,11 @@ import javax.swing.SpringLayout;
  * SpringBox and SpringCompactGrid.
  */
 public class SpringUtilities {
-//==========================
     /**
      * A debugging utility that prints to stdout the component's
      * minimum, preferred, and maximum sizes.
      */
     public static void printSizes(Component c) {
-    //========================================
         System.out.println("minimumSize = " + c.getMinimumSize());
         System.out.println("preferredSize = " + c.getPreferredSize());
         System.out.println("maximumSize = " + c.getMaximumSize());
@@ -44,7 +53,6 @@ public class SpringUtilities {
                                 int rows, int cols,
                                 int initialX, int initialY,
                                 int xPad, int yPad) {
-    //=====================================================
         SpringLayout layout;
         try {
             layout = (SpringLayout)parent.getLayout();
@@ -124,7 +132,6 @@ public class SpringUtilities {
                                                 int row, int col,
                                                 Container parent,
                                                 int cols) {
-    //=============================================================
         SpringLayout layout = (SpringLayout) parent.getLayout();
         Component c = parent.getComponent(row * cols + col);
         return layout.getConstraints(c);
@@ -149,7 +156,6 @@ public class SpringUtilities {
                                        int rows, int cols,
                                        int initialX, int initialY,
                                        int xPad, int yPad) {
-    //============================================================
         SpringLayout layout;
         try {
             layout = (SpringLayout)parent.getLayout();
