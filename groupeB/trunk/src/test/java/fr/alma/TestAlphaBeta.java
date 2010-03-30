@@ -49,15 +49,16 @@ public class TestAlphaBeta {
 	public void setUp() throws Exception {
 		
 		context = new Context();
+		// Configuration.BLACK, 0
 		ParamGame param = new ParamGame();
 		param.setSizeGoban(2);
 				
 		stateGame = new StateGame(context);
-		computer = new Computer("computer", Configuration.BLACK, 0);
+		computer = new Computer("computer", context);
 		player = new Player("adversaire", Configuration.WHITE, null, stateGame);	
 		stateGame.play(0, 0, player.getColor());
 		evaluation = new TestEvaluation();
-		ruleManager = Factory.getRuleManager();
+		ruleManager = Factory.getRuleManager(context);
 		
 		coordinator = new ICoordinator() {
 

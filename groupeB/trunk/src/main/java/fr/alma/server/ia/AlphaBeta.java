@@ -43,7 +43,6 @@ public class AlphaBeta implements IStrategy {
 
 	
 	/* Interet de les avoir en global : toujours disponibes ! */
-	private int rowMax, colMax;
 	private int cpt;
 	private boolean trace;
 	private boolean interrupted = false;
@@ -56,21 +55,19 @@ public class AlphaBeta implements IStrategy {
 	
 	public ILocation getBestLocation(IEvaluation evaluation, boolean trace) {
 		cpt = 0;
-		rowMax = -1;
-		colMax = -1;
 		this.evaluation = evaluation;
 		this.trace = trace;
 		/* The stateGame will be modified to simulate 
 		 * the differents possibilities. For that, we muste
 		 * clone it */
 		stateGame = (IStateGame)getStateGame().clone();
-		FreedomDegrees.showGobanOnConsole(stateGame);
+		//FreedomDegrees.showGobanOnConsole(stateGame);
 		setInterrupted(false);
 		
-		getValue(2, stateGame, Integer.MAX_VALUE, null);
+		return getValue(2, stateGame, Integer.MAX_VALUE, null).getLocation();
 		
 		//System.out.println("nb appels a gatValue() : " + cpt);
-		return new Emplacement(colMax, rowMax);
+		//return new Emplacement(colMax, rowMax);
 	}
 	
 	/*
@@ -83,8 +80,8 @@ public class AlphaBeta implements IStrategy {
 	 * => We start at level 2
 	 * The state of the game will undergo changes
 	 */
-	public int getValue(int level, IStateGame stateGame, int extremum, StatusCheck status) {
-		int value;
+	public Value getValue(int level, IStateGame stateGame, int extremum, StatusCheck status) {
+		Value value;
 		cpt++;
 		
 		if (trace)
@@ -105,7 +102,7 @@ public class AlphaBeta implements IStrategy {
 		} else { 
 			/* it is a leaf - Refresh the value of the game for this level*/
 			stateGame.setLevel(level);
-			value = evaluation.evaluate(stateGame, status);
+			value = new Value(evaluation.evaluate(stateGame, status), null);
 			//System.out.println("Level " + level + " -> Resultat evaluation : " + value);
 			//Tools.showGobanOnConsole(stateGame);
 		}
@@ -129,8 +126,8 @@ public class AlphaBeta implements IStrategy {
 	/*
 	 * Recherche du Max
 	 */
-	private int max(int level, IStateGame stateGame, int extremum) {
-		int max = Integer.MIN_VALUE;
+	private Value max(int level, IStateGame stateGame, int extremum) {
+		Value max = new Value(Integer.MIN_VALUE);
 		
 		if (trace)
 			System.out.println("Level " + level + " -> Recherche max");
@@ -138,7 +135,7 @@ public class AlphaBeta implements IStrategy {
 		List<ILocation> emplacements = getChild(getComputer().getColor(), stateGame);
 		
 		for (ILocation emplacement : emplacements) {
-			if (max < extremum) {
+			if (max.getValue() < extremum) {
 				StatusCheck status = context.getRuleManager().checkBefore(stateGame, emplacement, getComputer());
 				if (status.isCanPlay()) {
 					//StateGame newStateGame = (StateGame)stateGame.clone();
@@ -147,11 +144,10 @@ public class AlphaBeta implements IStrategy {
 					} catch (Exception e) {
 						System.out.println("AlphaBeta - Max : Internal error : " + e.getLocalizedMessage());
 					}
-					int value = getValue(level+1, stateGame, max, status);
-					if (value > max) {
+					Value value = getValue(level+1, stateGame, max.getValue(), status);
+					if (value.getValue() > max.getValue()) {
 						max = value;
-						colMax = emplacement.getCol();
-						rowMax = emplacement.getRow();
+						max.setLocation(emplacement);
 					}
 					stateGame.remove(emplacement.getCol(), emplacement.getRow());
 				}
@@ -165,8 +161,8 @@ public class AlphaBeta implements IStrategy {
 	}
 	
 	
-	private int min(int level, IStateGame stateGame, int extremum) {
-		int min = Integer.MAX_VALUE;
+	private Value min(int level, IStateGame stateGame, int extremum) {
+		Value min = new Value(Integer.MAX_VALUE);
 		
 		if (trace)
 			System.out.println("Level " + level + " -> Recherche min");
@@ -174,7 +170,7 @@ public class AlphaBeta implements IStrategy {
 		List<ILocation> emplacements = getChild(getPlayer().getColor(), stateGame);
 		
 		for (ILocation emplacement : emplacements) {
-			if (min > extremum) {
+			if (min.getValue() > extremum) {
 				StatusCheck status = context.getRuleManager().checkBefore(stateGame, emplacement, getPlayer());
 				if (status.isCanPlay()) {
 					//StateGame newStateGame = (StateGame)stateGame.clone();
@@ -183,9 +179,10 @@ public class AlphaBeta implements IStrategy {
 					} catch (Exception e) {
 						System.out.println("AlphaBeta - Min : Internal error : " + e.getLocalizedMessage());
 					}
-					int value = getValue(level+1, stateGame, min, status);
-					if (value < min) { 
+					Value value = getValue(level+1, stateGame, min.getValue(), status);
+					if (value.getValue() < min.getValue()) { 
 						min = value;
+						min.setLocation(emplacement);
 					}
 					stateGame.remove(emplacement.getCol(), emplacement.getRow());
 				}
@@ -210,6 +207,38 @@ public class AlphaBeta implements IStrategy {
 			}
 		}
 		return result;
+	}
+	
+	
+	class Value {
+		int value;
+		ILocation location;
+		
+		public Value(int value) {
+			this.value = value;
+			location = null;
+		}
+		
+		public Value(int value, ILocation location) {
+			this.value = value;
+			this.location = location; 
+		}
+
+		public synchronized int getValue() {
+			return value;
+		}
+
+		public synchronized void setValue(int value) {
+			this.value = value;
+		}
+
+		public synchronized ILocation getLocation() {
+			return location;
+		}
+
+		public synchronized void setLocation(ILocation location) {
+			this.location = location;
+		}
 	}
 	
 	

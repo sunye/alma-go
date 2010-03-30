@@ -11,6 +11,7 @@
  */
 package fr.alma.server.rule;
 
+import fr.alma.client.action.Context;
 import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
@@ -18,12 +19,14 @@ import fr.alma.server.core.IStateGame;
 
 public class RuleManager {
 	
-	RuleSuicide ruleSuicide = null;
-	RuleCapture ruleCapture = null;
-	RuleAlreadyBusy ruleAlreadyBusy = null;
+	private RuleSuicide ruleSuicide = null;
+	private RuleCapture ruleCapture = null;
+	private RuleAlreadyBusy ruleAlreadyBusy = null;
+	private Context context = null;
 	
 	
-	public RuleManager() {
+	public RuleManager(Context context) {
+		this.context = context;
 		ruleAlreadyBusy = new RuleAlreadyBusy();
 		ruleSuicide = new RuleSuicide();
 		ruleCapture = new RuleCapture();
@@ -45,7 +48,14 @@ public class RuleManager {
 			return status;
 		}
 		
-		if (ruleCapture.provokeCapture(stateGame, emplacement, currentPlayer)) {
+		try {
+			stateGame.play(emplacement.getCol(), emplacement.getRow(), currentPlayer.getColor());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		boolean provokeCapture = ruleCapture.provokeCapture(stateGame, emplacement, currentPlayer);
+		stateGame.remove(emplacement.getCol(), emplacement.getRow());
+		if (provokeCapture) {
 			status.setCanPlay(true);
 			status.setGameOver(true);
 			status.setEmplacement(emplacement);
@@ -65,7 +75,7 @@ public class RuleManager {
 	public StatusCheck checkAfter(IStateGame stateGame, ILocation emplacement, IPlayer currentPlayer) {
 		StatusCheck status = new StatusCheck();
 		
-		if ((emplacement.getCol()== -1) && (emplacement.getRow() == -1)) {
+		if ((emplacement == null)) {
 			status.setCanPlay(false);
 			status.setGameOver(true);
 			status.setEmplacement(emplacement);
@@ -82,6 +92,11 @@ public class RuleManager {
 		}
 		
 		return status;
+	}
+
+
+	public Context getContext() {
+		return context;
 	}
 	
 }

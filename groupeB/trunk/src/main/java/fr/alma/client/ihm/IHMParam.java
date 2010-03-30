@@ -282,19 +282,18 @@ public class IHMParam extends AbstractDialog {
 		IStateGame stateGame = Factory.getStateGame(getContext());
 		getContext().setStateGame(stateGame);
 		
-		RuleManager ruleManager = Factory.getRuleManager();
+		RuleManager ruleManager = Factory.getRuleManager(getContext());
 		getContext().setRuleManager(ruleManager);
 		
 		Coordinator coordinator = new Coordinator(getContext());
 
 		if (goban == null) {
 			getContext().setGoban(getGoban());
-			context.getMainFrame().setContentPane(goban);
+			context.getMainFrame().add(goban);
 		}
 		goban.revalidate();
 		
-		IPlayer computer = new Computer("Computer", context.getParamGame().getColorComputer(),
-				context.getParamGame().getTimeLimite());
+		IPlayer computer = new Computer("Computer", context);
 		IPlayer player = new Player("Player", ! context.getParamGame().getColorComputer(), goban, stateGame);
 
 		IEvaluation evaluation = Factory.getEvaluation(context);

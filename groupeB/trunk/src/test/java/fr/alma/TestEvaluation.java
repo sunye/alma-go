@@ -38,6 +38,7 @@ public class TestEvaluation {
 				
 		Context context;
 		context = new Context();
+		// Configuration.BLACK, 0
 		ParamGame param = new ParamGame();
 		param.setSizeGoban(9);
 		
@@ -45,7 +46,7 @@ public class TestEvaluation {
 		GameLoader gl = new GameLoader();
 		gl.load("TestEvaluation.txt", context);
 		stateGame = Factory.getStateGame(context);
-		IPlayer computer = new Computer("computer", Configuration.BLACK, 0);
+		IPlayer computer = new Computer("computer", context);
 		IPlayer player = new Player("adversaire", Configuration.WHITE, null, stateGame);
 		
 		context.setComputer(computer);

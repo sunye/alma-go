@@ -12,6 +12,7 @@
 package fr.alma.client.ihm;
 
 
+import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -41,12 +42,14 @@ public class Go extends JFrame {
 	public Go() {
 		super("Go Game");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 300, 340);
+		setBounds(100, 100, 300, 360);
 		
 		Context context = new Context();
 		context.setMainFrame(this);
-		
+		context.setStatusBar(Factory.getStatutBarre());
+			
 		setJMenuBar(Factory.getMenuBar(context));
+		add(context.getStatusBar(), BorderLayout.SOUTH);
 		
 		actionEscape = Factory.getActionEscape(context);
 		addKeyListener(getKeyListener());
