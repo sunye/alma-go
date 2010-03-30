@@ -20,6 +20,8 @@ public class StateGame implements IStateGame {
 	private Context context = null;
 	private int countLimitComputer = 0;
 	private int countLimitPlayer = 0;
+	private int level = 0;
+	
 	
 	public StateGame(Context context) {
 		this.context = context;
@@ -165,11 +167,19 @@ public class StateGame implements IStateGame {
 		return countLimitPlayer;
 	}
 
-
 	@Override
 	public void cleanUp() {
 		clear();
 		
 	}
+
+	@Override
+	public int getLevel() {
+		return level;
+	}
 	
+	@Override
+	public void setLevel(int level) {
+		this.level = level;
+	}
 }
