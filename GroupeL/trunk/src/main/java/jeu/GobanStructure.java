@@ -45,6 +45,26 @@ public class GobanStructure {
 		return null;
 	}
 
+	/**
+	 * fonction permettant de recuperer une liste des coordonnée libre du plateau
+	 * @return
+	 */
+	public List<Coordonnees> getCoordLibre(){
+		
+		LinkedList<Coordonnees> lcl = new LinkedList<Coordonnees>();
+		
+		for(int y=1 ; y<= taille ; y++){
+			for(int x=1 ; x<=taille ; x++){
+				if(plateau[x][y]==null){
+					lcl.add(new Coordonnees(x, y));
+				}
+			}
+		}
+		
+		return lcl;
+	}
+	
+	
 	
 	/* Constructeur */	
 	public GobanStructure() {
