@@ -1,6 +1,7 @@
 package fr.alma.ia;
 
 import fr.alma.atarigo.GroupsList;
+import fr.alma.atarigo.Position;
 import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Goban;
 
@@ -22,17 +23,19 @@ public class MinMax {
 		static public int extremum;
 		static public int totalNodes;
 		static public int maxLevel;
+		static public GroupsList currentGroups;
 		
 	
 	/**
 	 * Static method that initialize static properties
 	 * @param nvmax the maximum depth of the search
 	 */	
-		public static void init(int nvmax){
+		public static void init(int nvmax,GroupsList groups){
 			bestMove=new ValuedGoban(0);
 			extremum=0;
 			totalNodes=0;
 			maxLevel=nvmax;
+			currentGroups=groups;
 		}
 
 
@@ -57,7 +60,7 @@ public class MinMax {
 				return min(level, stateOfGame, stone, groups);
 			}
 		}else{
-			return Evaluation.evaluate(stateOfGame.getGoban(),stone,groups);
+			return Evaluation.evaluate(stateOfGame.getGoban(),currentGroups,stone,groups,new Position(1,1));
 		}
 	}
 

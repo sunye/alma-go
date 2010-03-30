@@ -114,8 +114,14 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 			ValuedGoban plv = new ValuedGoban(0);
 			
 			if(atariGo.totalMoves>5){
-				AlphaBeta.init(3);
-				plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo.groupsList);
+				AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.groupsList);
+				plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo.groupsList,new Position(0,0));
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}else{
 				plv.goban_ = RandomMove.play(atariGo.goban,atariGo.currentPlayer.color);
 			}
@@ -173,8 +179,8 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 				if(!atariGo.currentPlayer.isHuman()){
 					Tree jeu = new Tree(atariGo.goban);
 					ValuedGoban plv = new ValuedGoban(0);
-					AlphaBeta.init(atariGo.currentPlayer.getDifficulty());
-					plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo.groupsList);
+					AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.groupsList);
+					plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo.groupsList,new Position(0,0));
 					putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
 					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+"  nombre de coups jous = "+atariGo.totalMoves);
 

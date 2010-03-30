@@ -3,13 +3,25 @@ package fr.alma.ia;
 import java.util.List;
 
 import fr.alma.atarigo.Goban;
+import fr.alma.atarigo.Position;
 import fr.alma.atarigo.Stone;
+
+import static java.lang.Math.random;
 
 public class RandomMove {
 
 	public static Goban play(Goban goban,Stone stone){
-		List<Goban> list = goban.computeMoves(stone);
-		int randomPosition = (int)((Math.random())*list.size());
-		return list.get(randomPosition);
+		int x,y;
+		x=(int)(random()*6+1);
+		y=(int)(random()*6+1);
+		Position position = new Position(x,y);
+		while(!goban.isValid(position)){
+			x=(int)(random()*6+1);
+			y=(int)(random()*6+1);
+			position = new Position(x,y);
+		}
+		Goban result = new Goban(goban);
+		result.writeCell(position,stone);
+		return result;
 	}
 }

@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -251,6 +252,7 @@ public LinkedList<Goban> computeMoves(Stone stone){
 		 newGoban.writeCell(position, stone);
 		 gobanList.add(newGoban);
 	 }
+	 Collections.shuffle(gobanList);
 	 return gobanList;	 
 }
 
