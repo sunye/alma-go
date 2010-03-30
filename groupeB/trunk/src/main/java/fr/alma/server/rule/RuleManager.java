@@ -11,7 +11,7 @@
  */
 package fr.alma.server.rule;
 
-import fr.alma.server.core.IEmplacement;
+import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 
@@ -37,7 +37,7 @@ public class RuleManager {
 	 * @param emplacement
 	 * @return
 	 */
-	public StatusCheck checkBefore(IStateGame stateGame, IEmplacement emplacement, IPlayer currentPlayer) {
+	public StatusCheck checkBefore(IStateGame stateGame, ILocation emplacement, IPlayer currentPlayer) {
 		StatusCheck status = new StatusCheck();
 		
 		if (! ruleAlreadyBusy.accept(stateGame, emplacement, currentPlayer)) {
@@ -62,7 +62,7 @@ public class RuleManager {
 		return status;
 	}
 	
-	public StatusCheck checkAfter(IStateGame stateGame, IEmplacement emplacement, IPlayer currentPlayer) {
+	public StatusCheck checkAfter(IStateGame stateGame, ILocation emplacement, IPlayer currentPlayer) {
 		StatusCheck status = new StatusCheck();
 		
 		if ((emplacement.getCol()== -1) && (emplacement.getRow() == -1)) {

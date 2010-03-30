@@ -11,14 +11,14 @@
  */
 package fr.alma.server.rule;
 
-import fr.alma.server.core.IEmplacement;
+import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 
 public class StatusCheck {
 	boolean canPlay = true;
 	boolean gameOver = false;
 	IPlayer winner = null;
-	IEmplacement emplacement = null;
+	ILocation emplacement = null;
 	
 	
 	public boolean isCanPlay() {
@@ -45,11 +45,11 @@ public class StatusCheck {
 		this.winner = winner;
 	}
 	
-	public IEmplacement getEmplacement() {
+	public ILocation getEmplacement() {
 		return emplacement;
 	}
 	
-	public void setEmplacement(IEmplacement emplacement) {
+	public void setEmplacement(ILocation emplacement) {
 		this.emplacement = emplacement;
 	}
 }

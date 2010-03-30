@@ -11,7 +11,7 @@
  */
 package fr.alma.server.rule;
 
-import fr.alma.server.core.IEmplacement;
+import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 import fr.alma.server.ia.FreedomDegrees;
@@ -36,7 +36,7 @@ public class RuleCapture {
 	 * @param currentPlayer
 	 * @return true if there is a capture by the player who has just played
 	 */
-	public boolean provokeCapture(IStateGame stateGame, IEmplacement emplacement, IPlayer currentPlayer) {
+	public boolean provokeCapture(IStateGame stateGame, ILocation emplacement, IPlayer currentPlayer) {
 		int isZeroFreeDegrees = FreedomDegrees.hasCapturedWithThisEmplacement(stateGame, emplacement, currentPlayer);
 		return (isZeroFreeDegrees == 0);
 	}

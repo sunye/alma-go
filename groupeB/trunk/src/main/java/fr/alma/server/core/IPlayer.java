@@ -19,13 +19,41 @@ import fr.alma.server.ia.IEvaluation;
 public interface IPlayer extends GoObject {
 	
 	Boolean getColor();
+	
+	
+	/**
+	 * Define all the actions when the player put a stone on the goban
+	 */
 	void play();
+	
+	/**
+	 * OBSERVER PATTERN
+	 * Define listeners on player actions
+	 */
 	boolean addPlayListener(PlayListener actionListener);
+	
+	/**
+	 * Remove a listener on player
+	 */
 	boolean removePlayListener(PlayListener playListener);
+	
+	/**
+	 * Remove all listeners on player
+	 */
 	public void removePlayListeners();
+	
 	List<PlayListener> getPlayerListeners();
+	
+	/**
+	 * @param enable false when the game is over
+	 */
 	void setEnabled(boolean enable);
-	public void setStrategy(IStrategy strategieGame);
+	
+	/**
+	 * @param strategyGame
+	 */
+	public void setStrategy(IStrategy strategyGame);
+
 	public void interrupt();
 	public void setEvaluation(IEvaluation evaluation);
 	public String getName();

@@ -17,7 +17,7 @@ import java.util.List;
 
 import fr.alma.client.action.Context;
 import fr.alma.server.core.Emplacement;
-import fr.alma.server.core.IEmplacement;
+import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 import fr.alma.server.core.IStrategy;
@@ -54,7 +54,7 @@ public class AlphaBeta implements IStrategy {
 	}
 	
 	
-	public IEmplacement getEmplacementMax(IEvaluation evaluation, boolean trace) {
+	public ILocation getBestLocation(IEvaluation evaluation, boolean trace) {
 		cpt = 0;
 		rowMax = -1;
 		colMax = -1;
@@ -134,9 +134,9 @@ public class AlphaBeta implements IStrategy {
 		if (trace)
 			System.out.println("Level " + level + " -> Recherche max");
 		
-		List<IEmplacement> emplacements = getChild(getComputer().getColor(), stateGame);
+		List<ILocation> emplacements = getChild(getComputer().getColor(), stateGame);
 		
-		for (IEmplacement emplacement : emplacements) {
+		for (ILocation emplacement : emplacements) {
 			if (max < extremum) {
 				StatusCheck status = context.getRuleManager().checkBefore(stateGame, emplacement, getComputer());
 				if (status.isCanPlay()) {
@@ -170,9 +170,9 @@ public class AlphaBeta implements IStrategy {
 		if (trace)
 			System.out.println("Level " + level + " -> Recherche min");
 		
-		List<IEmplacement> emplacements = getChild(getPlayer().getColor(), stateGame);
+		List<ILocation> emplacements = getChild(getPlayer().getColor(), stateGame);
 		
-		for (IEmplacement emplacement : emplacements) {
+		for (ILocation emplacement : emplacements) {
 			if (min > extremum) {
 				StatusCheck status = context.getRuleManager().checkBefore(stateGame, emplacement, getPlayer());
 				if (status.isCanPlay()) {
@@ -198,8 +198,8 @@ public class AlphaBeta implements IStrategy {
 	}
 
 	
-	private List<IEmplacement> getChild(boolean player, IStateGame stateGame) {
-		List<IEmplacement> result = new ArrayList<IEmplacement>();
+	private List<ILocation> getChild(boolean player, IStateGame stateGame) {
+		List<ILocation> result = new ArrayList<ILocation>();
 		
 		for (int col = 0; col < stateGame.getMaxCol(); col++) {
 			for (int row = 0; row < stateGame.getMaxRow(); row++) {

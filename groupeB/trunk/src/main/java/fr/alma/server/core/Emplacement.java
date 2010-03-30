@@ -13,7 +13,7 @@ package fr.alma.server.core;
 
 import java.util.List;
 
-public class Emplacement implements IEmplacement {
+public class Emplacement implements ILocation {
 
 	private int row;
 	private int col;
@@ -34,14 +34,14 @@ public class Emplacement implements IEmplacement {
 	}
 	
 	@Override
-	public boolean equals(IEmplacement e1){
+	public boolean equals(ILocation e1){
 		//System.out.println("Emplacement.equals()["+e1.getCol()+"]["+e1.getRow()+"]");
 		return (this.col == e1.getCol() && this.row == e1.getRow());
 	}
 	
 	@Override
-	public boolean isIn(List<IEmplacement> emplacements){
-		for(IEmplacement e :emplacements ){
+	public boolean isIn(List<ILocation> emplacements){
+		for(ILocation e :emplacements ){
 			if(this.equals(e))
 				return true;
 		}

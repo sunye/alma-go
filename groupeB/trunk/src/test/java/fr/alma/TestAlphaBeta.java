@@ -21,7 +21,7 @@ import fr.alma.client.action.ParamGame;
 import fr.alma.server.core.Computer;
 import fr.alma.server.core.Factory;
 import fr.alma.server.core.ICoordinator;
-import fr.alma.server.core.IEmplacement;
+import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 import fr.alma.server.core.IStrategy;
@@ -96,7 +96,7 @@ public class TestAlphaBeta {
 	@Test
 	public void testElphaBeta() {
 		FreedomDegrees.showGobanOnConsole(stateGame);
-		IEmplacement emplacement = strategy.getEmplacementMax(evaluation, true);
+		ILocation emplacement = strategy.getBestLocation(evaluation, true);
 		System.out.println("-> Emplacement trouve : " + emplacement);
 		assertTrue(emplacement.getCol()==1 && emplacement.getRow()==1);
 	}

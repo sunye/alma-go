@@ -18,10 +18,10 @@ public class PlayEvent {
 	
 	private IPlayer player = null;
 	private int when;
-	private IEmplacement emplacement;
+	private ILocation emplacement;
 	
 	
-	public PlayEvent(IPlayer player, int when, IEmplacement emplacement) {
+	public PlayEvent(IPlayer player, int when, ILocation emplacement) {
 		super();
 		setPlayer(player);
 		setWhen(when);
@@ -53,12 +53,12 @@ public class PlayEvent {
 	}
 
 
-	public IEmplacement getEmplacement() {
+	public ILocation getEmplacement() {
 		return emplacement;
 	}
 
 
-	public void setEmplacement(IEmplacement emplacement) {
+	public void setEmplacement(ILocation emplacement) {
 		this.emplacement = emplacement;
 	}
 	

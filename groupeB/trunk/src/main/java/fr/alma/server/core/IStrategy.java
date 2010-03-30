@@ -13,8 +13,26 @@ package fr.alma.server.core;
 
 import fr.alma.server.ia.IEvaluation;
 
+/**
+ * Represent a strategy for the computer calculation
+ * (Min-Max, Alpha-Beta, etc.)
+ */
 public interface IStrategy {
-	public IEmplacement getEmplacementMax(IEvaluation evaluation, boolean trace);
+	/**
+	 * @param evaluation
+	 * @param trace
+	 * @return the best location on the goban
+	 */
+	public ILocation getBestLocation(IEvaluation evaluation, boolean trace);
+	
+	/**
+	 * @return the current state of the game 
+	 */
 	public IStateGame getStateGame();
+	
+	/**
+	 * Called to interrupt getBestLocation
+	 * @see fr.alma.server.core.IStrategy#getBestLocation()
+	 */
 	public void interrupt();
 }
