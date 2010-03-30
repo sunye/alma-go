@@ -38,19 +38,29 @@ public class Evaluation implements IEvaluation {
 	 */
 	@Override
 	public int evaluate(IStateGame stateGame, StatusCheck status) {
+		
+		int scoreComputer;
+		int scorePlayer;
+		int score;
+		
 		/* Here we exploit recent inspection findings */
 		if ((status != null) && status.isGameOver()) {
 			if (status.getWinner() == getComputer()) {
-				return 100000;
+				score = 1000000 / (stateGame.getLevel() - 2);
+				//System.out.println("Level : " + stateGame.getLevel() + " - computer can win at : " + status.getEmplacement() + " score : " + score);
+				return score;
 			} else {
-				return -100000;
+				score = -1000000 / (stateGame.getLevel() - 2);
+				//System.out.println("Level : " + stateGame.getLevel() + " - player can win at : " + status.getEmplacement() + " score : " + score);
+				return score;
 			}
 		}
-		int scoreComputer = getScore(searchDegrees(getComputer(), stateGame));
-		int scorePlayer = getScore(searchDegrees(getPlayer(), stateGame));
-		int score = scoreComputer - scorePlayer;
+		scoreComputer = getScore(searchDegrees(getComputer(), stateGame));
+		scorePlayer = getScore(searchDegrees(getPlayer(), stateGame));
+		score = scoreComputer - scorePlayer;
+		//int score = scoreComputer - (scorePlayer * 2);
 		//System.out.println("score computer : " + scoreComputer + " - score player : " + scorePlayer + " - total : " + score);
-		return (score / stateGame.getLevel());
+		return (score / (stateGame.getLevel()-2));
 	}
 	
 

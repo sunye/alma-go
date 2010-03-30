@@ -11,6 +11,7 @@
  */
 package fr.alma.server.core;
 
+import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 
 import fr.alma.client.action.ActionEscape;
@@ -28,8 +29,8 @@ import fr.alma.server.rule.RuleManager;
 
 public class Factory {
 	
-	public static RuleManager getRuleManager() {
-		RuleManager ruleManager = new RuleManager();	
+	public static RuleManager getRuleManager(Context context) {
+		RuleManager ruleManager = new RuleManager(context);	
 		return ruleManager;
 	}
 	
@@ -68,5 +69,11 @@ public class Factory {
 	public static IAction getActionEscape(Context context) {
 		IAction action = new ActionEscape(context);
 		return action;
+	}
+	
+	public static JLabel getStatutBarre() {
+		JLabel labelStatus = new JLabel("Powered by Romain Gournay & Bruno BELIN");
+		labelStatus.setOpaque(true);
+		return labelStatus;	
 	}
 }

@@ -12,6 +12,7 @@
 package fr.alma.client.action;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import fr.alma.client.ihm.GoObject;
 import fr.alma.client.ihm.Goban;
@@ -30,6 +31,7 @@ public class Context implements GoObject {
 	private RuleManager ruleManager;
 	private IPlayer computer;
 	private IPlayer player;
+	private JLabel statusBar;
 	
 	
 	public Context() {
@@ -128,6 +130,16 @@ public class Context implements GoObject {
 
 	public void setPlayer(IPlayer player) {
 		this.player = player;
+	}
+
+
+	public synchronized JLabel getStatusBar() {
+		return statusBar;
+	}
+
+
+	public synchronized void setStatusBar(JLabel statusBar) {
+		this.statusBar = statusBar;
 	}
 	
 }

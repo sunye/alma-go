@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
+import fr.alma.client.action.Context;
 import fr.alma.server.ia.IEvaluation;
 
 
@@ -29,11 +30,11 @@ public class Computer extends AbstractPlayer {
 	private IPlayer player = this;
 	private Timer timer = null;
 	private ActionListener timerAction = null;
-	private int timeLimite = 0;
+	private Context context = null;
 	
-	public Computer(String name, boolean color, int timeLimite) {
-		super(name, color);
-		this.timeLimite = timeLimite;
+	public Computer(String name, Context context) {
+		super(name, context.getParamGame().getColorComputer());
+		this.context = context;
 	}
 	
 	
@@ -46,19 +47,21 @@ public class Computer extends AbstractPlayer {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				System.out.println("Start thread computer");
+				context.getStatusBar().setText("Computer is playing");
 				startTimer();
 				ILocation location = getStrategy().getBestLocation(getEvaluation(), false);
 				stopTimer();
-				if ((location.getCol() != -1) && (location.getRow() != -1)) {
+				if ((location != null)) {
 					try {
 						strategy.getStateGame().play(location.getCol(), location.getRow(), getColor());
+						context.getStatusBar().setText("Last position : " + location);
 					} catch (Exception e) {
 						System.out.println("Computer - Internal error : " + e.getLocalizedMessage());
 					}
+				} else {
+					context.getStatusBar().setText("");
 				}
 				raiseEvent(new PlayEvent(player, PlayEvent.AFTER, location));
-				System.out.println("Stop thread computer : " + location);
 			}
 		};
 		new Thread(runnable).start();
@@ -114,7 +117,7 @@ public class Computer extends AbstractPlayer {
 	
 	
 	private void startTimer() {
-		if (timeLimite > 0) {
+		if (context.getParamGame().getTimeLimite() > 0) {
 			if (timer == null) {
 				timer = new Timer(getDelay(), getActionTimer());
 				timer.setRepeats(false);
@@ -147,7 +150,7 @@ public class Computer extends AbstractPlayer {
 	
 	
 	public int getDelay() {
-		return timeLimite * 1000;
+		return context.getParamGame().getTimeLimite() * 1000;
 	}
 
 }

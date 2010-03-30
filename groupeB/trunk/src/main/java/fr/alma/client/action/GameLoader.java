@@ -106,7 +106,7 @@ public class GameLoader {
 			IStateGame stateGame = Factory.getStateGame(context);
 			context.setStateGame(stateGame);
 
-			RuleManager ruleManager = Factory.getRuleManager();
+			RuleManager ruleManager = Factory.getRuleManager(context);
 			context.setRuleManager(ruleManager);
 
 			Coordinator coordinator = new Coordinator(context);
@@ -117,8 +117,7 @@ public class GameLoader {
 
 			context.getGoban().revalidate();
 
-			IPlayer computer = new Computer("Computer", context.getParamGame().getColorComputer(),
-					context.getParamGame().getTimeLimite());
+			IPlayer computer = new Computer("Computer", context);
 			IPlayer player = new Player("Player", ! context.getParamGame().getColorComputer(), context.getGoban(), stateGame);
 
 			IEvaluation evaluation = Factory.getEvaluation(context);

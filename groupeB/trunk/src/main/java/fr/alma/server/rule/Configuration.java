@@ -26,9 +26,9 @@ public class Configuration {
 	
 	public static int getMaxDeepLevel(int sizeGoban) {
 		if (sizeGoban == 6) {
-			return 6;
+			return 7;
 		} else {
-			return 5;
+			return 6;
 		}
 	}
 	

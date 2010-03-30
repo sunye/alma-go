@@ -47,17 +47,18 @@ public class TestCapture {
 	public void setUp() throws Exception {
 		
 		context = new Context();
+		// Configuration.BLACK, 0
 		ParamGame param = new ParamGame();
 		param.setSizeGoban(9);
 		
 		stateGame = Factory.getStateGame(context);
 		GameLoader gl = new GameLoader();
 		gl.load("TestEvaluation-1.txt", context);
-		computer = new Computer("computer", Configuration.BLACK, 0);
+		computer = new Computer("computer", context);
 		player = new Player("adversaire", Configuration.WHITE, null, stateGame);
 		
 		//evaluation = new Evaluation(computer, player);
-		ruleManager = Factory.getRuleManager();	
+		ruleManager = Factory.getRuleManager(context);	
 	}
 
 	@Test
