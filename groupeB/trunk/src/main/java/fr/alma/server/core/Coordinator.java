@@ -22,46 +22,55 @@ import fr.alma.server.rule.Configuration;
 import fr.alma.server.rule.RuleManager;
 import fr.alma.server.rule.StatusCheck;
 
+/**
+ * Coordinate the game between the two players
+ */
 public class Coordinator implements ICoordinator {
-	
+
 	private PlayListener playListener;
 	private IPlayer currentPlayer = null;
 	private Runnable runnable;
 	private Context context = null;
-	
-	
+
+
 	public Coordinator(Context context) {
 		this.context = context;
 	}
 
-	
+	/*
+	 * (non-Javadoc)
+	 * @see fr.alma.server.core.ICoordinator#startGame()
+	 */
+	@Override
 	public void startGame() {
 		getPlayer().addPlayListener(getPlayListener());
 		getComputer().addPlayListener(getPlayListener());
 		setCurrentPlayer(getPlayer(Configuration.getColorFirstPlayer()));
 		playInThread();
 	}
-	
-	
+
+	/**
+	 * @param color
+	 * @return the IPlayer gave with his color in parameter
+	 */
 	public IPlayer getPlayer(boolean color) {
 		return getPlayer().getColor() == color ? getPlayer() : getComputer();
 	}
-	
-	
+
+
 	public PlayListener getPlayListener() {
 		if (playListener == null) {
 			playListener = new PlayListener() {
 				@Override
 				public boolean actionPerformed(PlayEvent e) {
 					if (e.getWhen() == PlayEvent.BEFORE) {
-						//System.out.println("Le playeur veut jouer ..." + e.getPlayer());
 						/* Must Verify the rules */
 						if (getCurrentPlayer() != e.getPlayer())
 							return false;
-						
+
 						return getRuleManager().checkBefore(getStateGame(), e.getEmplacement(), e.getPlayer()).isCanPlay();
 					}
-					
+
 					Runnable runnable = new Runnable() {
 						@Override
 						public void run() {
@@ -70,7 +79,7 @@ public class Coordinator implements ICoordinator {
 						}
 					};
 					SwingUtilities.invokeLater(runnable);
-					
+
 					/* Control if the game is over */
 					StatusCheck status = getRuleManager().checkAfter(getStateGame(), e.getEmplacement(), getCurrentPlayer());
 					if (status.isGameOver()) {
@@ -84,14 +93,14 @@ public class Coordinator implements ICoordinator {
 						getComputer().setEnabled(false);
 						return false;
 					}
-					
+
 					/* Change the current player and play again */
 					if (getCurrentPlayer() == getPlayer()) {
 						setCurrentPlayer(getComputer());
 					} else {
 						setCurrentPlayer(getPlayer());
 					}
-					
+
 					/*
 					 * when the current player is the computer, the treatments
 					 * are realize with a thread -> be carrefull !
@@ -104,41 +113,41 @@ public class Coordinator implements ICoordinator {
 		}
 		return playListener;
 	}
-	
-	
+
+
 	public IPlayer getCurrentPlayer() {
 		return currentPlayer;
 	}
 
-	
+
 	/* (non-Javadoc)
 	 * @see fr.alma.server.core.IGenerator#getComputer()
 	 */
 	public IPlayer getComputer() {
 		return context.getComputer();
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see fr.alma.server.core.IGenerator#getPlayer()
 	 */
 	public IPlayer getPlayer() {
 		return context.getPlayer();
 	}
-	
-	
+
+
 	public void setCurrentPlayer(IPlayer playerCurrent) {
 		this.currentPlayer = playerCurrent;
 	}
-	
-	
+
+
 	private void playInThread() {
 		//thread = new Thread(getRunnable());
 		//thread.start();
 		getCurrentPlayer().play();
 	}
-	
-	
+
+
 	public Runnable getRunnable() {
 		runnable = new Runnable() {
 			@Override
@@ -147,7 +156,7 @@ public class Coordinator implements ICoordinator {
 				 * Boucle infinie ---tester gameOver() !
 				 */
 				while (true) {
-					
+
 				}
 			}
 		};
@@ -169,12 +178,13 @@ public class Coordinator implements ICoordinator {
 	public IStateGame getStateGame() {
 		return context.getStateGame();
 	}
+
 	
 	public Goban getGoban() {
 		return context.getGoban();
 	}
-	
-	
+
+
 	@Override
 	public void cleanUp() {
 		getPlayer().removePlayListeners();

@@ -11,6 +11,9 @@
  */
 package fr.alma.server.core;
 
+/**
+ * Define the event play
+ */
 public class PlayEvent {
 
 	public static final int BEFORE = 0;

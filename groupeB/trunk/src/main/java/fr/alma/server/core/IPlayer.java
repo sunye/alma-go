@@ -18,6 +18,9 @@ import fr.alma.server.ia.IEvaluation;
 
 public interface IPlayer extends GoObject {
 	
+	/**
+	 * @return the color that have a player
+	 */
 	Boolean getColor();
 	
 	
@@ -55,6 +58,8 @@ public interface IPlayer extends GoObject {
 	public void setStrategy(IStrategy strategyGame);
 
 	public void interrupt();
+	
 	public void setEvaluation(IEvaluation evaluation);
+	
 	public String getName();
 }

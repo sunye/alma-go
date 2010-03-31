@@ -29,31 +29,54 @@ public abstract class AbstractPlayer implements IPlayer {
 		this.color = color;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see fr.alma.server.core.IPlayer#getName()
+	 */
 	@Override
 	public String getName() {
 		return name;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see fr.alma.server.core.IPlayer#getColor()
+	 */
 	@Override
 	public Boolean getColor() {
 		return color;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see fr.alma.server.core.IPlayer#addPlayListener(fr.alma.server.core.PlayListener)
+	 */
 	@Override
 	public boolean addPlayListener(PlayListener playListener) {
 		return getPlayerListeners().add(playListener);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see fr.alma.server.core.IPlayer#removePlayListener(fr.alma.server.core.PlayListener)
+	 */
 	@Override
 	public boolean removePlayListener(PlayListener playListener) {
 		return getPlayerListeners().remove(playListener);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see fr.alma.server.core.IPlayer#removePlayListeners()
+	 */
 	@Override
 	public void removePlayListeners() {
 		getPlayerListeners().clear();
 	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see fr.alma.server.core.IPlayer#getPlayerListeners()
+	 */
 	@Override
 	public List<PlayListener> getPlayerListeners() {
 		if (listPlayerActionListener == null) {

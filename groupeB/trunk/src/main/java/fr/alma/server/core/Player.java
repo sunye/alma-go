@@ -35,7 +35,7 @@ public class Player extends AbstractPlayer {
 
 	@Override
 	/**
-	 * A appeler une seule fois pour le joueur
+	 * Call once for the player 
 	 */
 	public void play() {
 		if (listener == null) {
@@ -46,10 +46,10 @@ public class Player extends AbstractPlayer {
 					int x = (int)Math.round((e.getX()-25.0)/30.0);
 					int y = (int)Math.round((e.getY()-25.0)/30.0);
 
-					if (raiseEvent(new PlayEvent(player, PlayEvent.BEFORE, new Emplacement(x, y)))) {
+					if (raiseEvent(new PlayEvent(player, PlayEvent.BEFORE, new Location(x, y)))) {
 						try {
 							if (stateGame.play(x, y, getColor())) {
-								raiseEvent(new PlayEvent(player, PlayEvent.AFTER, new Emplacement(x, y)));
+								raiseEvent(new PlayEvent(player, PlayEvent.AFTER, new Location(x, y)));
 							}							
 						} catch (Exception e2) {
 							System.out.println("Player - Internal error : " + e2.getLocalizedMessage());

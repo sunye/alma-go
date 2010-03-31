@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.alma.client.action.Context;
-import fr.alma.server.core.Emplacement;
+import fr.alma.server.core.Location;
 import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
@@ -24,16 +24,8 @@ import fr.alma.server.core.IStrategy;
 import fr.alma.server.rule.Configuration;
 import fr.alma.server.rule.StatusCheck;
 
-
 /**
- * @author Romain & bruno
- * 
- * Questions :
- * - abstraction du tree avec déduction des enfants au fil de l'eau
- * - jouer chaque coup, faire les traitements et retirer le coup afin de limiter l'emprunte mémoire
- * - niveau 2 : premier coup à jouer par l'ordinateur.
- * - dans l'analyse, ne prendre en compte que les zones occupées avec des éléments proches sauf
- *   pour le premier coup qui sera joué au hasard.
+ * Improve the Min-Max algorithm
  */
 public class AlphaBeta implements IStrategy {
 
@@ -41,8 +33,7 @@ public class AlphaBeta implements IStrategy {
 	private IStateGame stateGame;
 	private Context context;
 
-	
-	/* Interet de les avoir en global : toujours disponibes ! */
+	/*global variables because because of they are always accessible ! */
 	private int cpt;
 	private boolean trace;
 	private boolean interrupted = false;
@@ -52,33 +43,41 @@ public class AlphaBeta implements IStrategy {
 		this.context = context;
 	}
 	
-	
+	/*
+	 * (non-Javadoc)
+	 * @see fr.alma.server.core.IStrategy#getBestLocation(fr.alma.server.ia.IEvaluation, boolean)
+	 */
+	@Override
 	public ILocation getBestLocation(IEvaluation evaluation, boolean trace) {
 		cpt = 0;
 		this.evaluation = evaluation;
 		this.trace = trace;
 		/* The stateGame will be modified to simulate 
-		 * the differents possibilities. For that, we muste
+		 * the different possibilities. For that, we must
 		 * clone it */
 		stateGame = (IStateGame)getStateGame().clone();
 		//FreedomDegrees.showGobanOnConsole(stateGame);
-		setInterrupted(false);
-		
-		return getValue(2, stateGame, Integer.MAX_VALUE, null).getLocation();
-		
+		setInterrupted(false);		
 		//System.out.println("nb appels a gatValue() : " + cpt);
-		//return new Emplacement(colMax, rowMax);
+		return getValue(2, stateGame, Integer.MAX_VALUE, null).getLocation();
+
 	}
 	
-	/*
-	 * levelMax  : niveau correspondant aux feuilles
-	 * level = 1 : racine de l'arbre (etat courant du jeu)
-	 * level = 2 : prochain coups possibles pour l'ordinateur
-	 * level = 3 : prochain coups possibles pour le joueur
-	 * level = 4 : coups suivants pour l'ordinateur ...etc.
+	/**
+	 * levelMax  : level of the leaves
+	 * level = 1 : root node (current state game)
+	 * level = 2 : next moves possibles for computer
+	 * level = 3 : next moves possibles for player
+	 * level = 4 : next moves possibles for computer etc.
 	 * 
 	 * => We start at level 2
 	 * The state of the game will undergo changes
+
+	 * @param level
+	 * @param stateGame
+	 * @param extremum
+	 * @param status
+	 * @return the value of a stateGame
 	 */
 	public Value getValue(int level, IStateGame stateGame, int extremum, StatusCheck status) {
 		Value value;
@@ -124,11 +123,16 @@ public class AlphaBeta implements IStrategy {
 	
 	
 	/*
-	 * Recherche du Max
+	 * Research of Max
+	 */
+	/**
+	 * @param level
+	 * @param stateGame
+	 * @param extremum
+	 * @return the maximum value of state game
 	 */
 	private Value max(int level, IStateGame stateGame, int extremum) {
-		Value max = new Value(Integer.MIN_VALUE);
-		
+		Value max = new Value(Integer.MIN_VALUE);		
 		if (trace)
 			System.out.println("Level " + level + " -> Recherche max");
 		
@@ -159,8 +163,16 @@ public class AlphaBeta implements IStrategy {
 		
 		return max;
 	}
-	
-	
+
+	/*
+	 * Research of Min
+	 */
+	/**
+	 * @param level
+	 * @param stateGame
+	 * @param extremum
+	 * @return the minimum value of state game
+	 */
 	private Value min(int level, IStateGame stateGame, int extremum) {
 		Value min = new Value(Integer.MAX_VALUE);
 		
@@ -196,13 +208,18 @@ public class AlphaBeta implements IStrategy {
 	}
 
 	
+	/**
+	 * @param player
+	 * @param stateGame
+	 * @return an ILocation list of the locations taken by the player for a state game
+	 */
 	private List<ILocation> getChild(boolean player, IStateGame stateGame) {
 		List<ILocation> result = new ArrayList<ILocation>();
 		
 		for (int col = 0; col < stateGame.getMaxCol(); col++) {
 			for (int row = 0; row < stateGame.getMaxRow(); row++) {
 				if (stateGame.isFree(col, row)) {
-					result.add(new Emplacement(col, row));
+					result.add(new Location(col, row));
 				}
 			}
 		}
