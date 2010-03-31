@@ -13,32 +13,92 @@ package fr.alma.server.core;
 
 import fr.alma.client.ihm.GoObject;
 
-
+/**
+ * Represent a state game
+ */
 public interface IStateGame extends Cloneable, GoObject {
 	
-	boolean existChild();
-	
-	boolean isPlayable(int col, int row);
+	/**
+	 * 
+	 * @param col
+	 * @param row
+	 * @param computer
+	 * @return true
+	 * @throws Exception
+	 */
 	boolean play(int col, int row, boolean computer) throws Exception;
+	
+	/**
+	 * Remove the stone on a location 
+	 * Use for the strategy function 
+	 * @param col
+	 * @param row
+	 */
 	void remove(int col, int row);
+	
+	/**
+	 * @return the width of the Goban
+	 */
 	int getMaxCol();
+	
+	/**
+	 * @return the height of Goban
+	 */
 	int getMaxRow();
-	boolean isOver();
+	
+	/**
+	 * @param col
+	 * @param row
+	 * @return true if the location is free
+	 */
 	boolean isFree(int col, int row);
+	
+	/**
+	 * @param col
+	 * @param row
+	 * @return true if the computer takes this location
+	 */
 	boolean isComputer(int col, int row);
+	
+	/**
+	 * @param col
+	 * @param row
+	 * @return true if the player takes this location
+	 */
 	boolean isPlayer(int col, int row);
 
+	/**
+	 * @param col
+	 * @param row
+	 * @return true if the Location on the Goban
+	 */
 	boolean onGoban(int col, int row);
 
+	/**
+	 * @param col
+	 * @param row
+	 * @return the color of the stone on the location
+	 */
 	Object getIntersection(int col, int row);
 
+	/**
+	 * Load a state game
+	 * @param intersection
+	 */
 	void load(Boolean[][] intersection);
-	public int countLocationOccupied();
-	public Object clone();
-	public void clear();
-	public int countLimitComputer();
-	public int countLimitPlayer();
 	
+	
+	/**
+	 * @return a state game cloned
+	 */
+	public Object clone();
+	
+	
+	public void clear();
+	
+	/**
+	 * @return the depth of the tree for the strategy algorithm used
+	 */
 	public int getLevel();
 	public void setLevel(int level);
 

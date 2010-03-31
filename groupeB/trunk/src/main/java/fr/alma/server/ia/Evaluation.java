@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.alma.client.action.Context;
-import fr.alma.server.core.Emplacement;
+import fr.alma.server.core.Location;
 import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
@@ -82,7 +82,7 @@ public class Evaluation implements IEvaluation {
 		for (int col = 0; col < stateGame.getMaxCol(); col++) {
 			for (int row = 0; row < stateGame.getMaxRow(); row++) {
 				if ((isComputer && stateGame.isPlayer(col, row)) || ((! isComputer) && stateGame.isComputer(col, row))) {
-					emplacement = new Emplacement(col, row);
+					emplacement = new Location(col, row);
 					find = false;
 					for (ILocation e : emplacements) {
 						if (e.equals(emplacement)) {

@@ -15,16 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.alma.client.action.Context;
-import fr.alma.server.core.Emplacement;
+import fr.alma.server.core.Location;
 import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 
 /**
- * 
- * @author Romain Gournay & Bruno Belin
  * list of functions about freedom degrees
- *
  */
 public class FreedomDegrees {
 
@@ -46,19 +43,19 @@ public class FreedomDegrees {
 
 		//case Top
 		int rowTop = (e.getRow() - 1);
-		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(e.getCol(), rowTop), stateGame, player, locationsAlreadyVisited);
+		nbFreeDegrees += countCaseFreeDegrees(new Location(e.getCol(), rowTop), stateGame, player, locationsAlreadyVisited);
 
 		//case Bottom
 		int rowBottom = (e.getRow() + 1);
-		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(e.getCol(), rowBottom), stateGame, player, locationsAlreadyVisited);
+		nbFreeDegrees += countCaseFreeDegrees(new Location(e.getCol(), rowBottom), stateGame, player, locationsAlreadyVisited);
 
 		//case Left
 		int colLeft = (e.getCol() -1);
-		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(colLeft, e.getRow()), stateGame, player, locationsAlreadyVisited);
+		nbFreeDegrees += countCaseFreeDegrees(new Location(colLeft, e.getRow()), stateGame, player, locationsAlreadyVisited);
 
 		//case Right
 		int colRight = (e.getCol() +1);
-		nbFreeDegrees += countCaseFreeDegrees(new Emplacement(colRight, e.getRow()), stateGame, player, locationsAlreadyVisited);
+		nbFreeDegrees += countCaseFreeDegrees(new Location(colRight, e.getRow()), stateGame, player, locationsAlreadyVisited);
 		
 		return nbFreeDegrees;
 	}
@@ -68,19 +65,19 @@ public class FreedomDegrees {
 	 * @param e
 	 * @param stateGame
 	 * @param player
-	 * @param emplacements
+	 * @param locationsAlreadyVisited
 	 * @return the number of freedom degrees for a stone location
 	 */
 
-	private static int countCaseFreeDegrees(ILocation e, IStateGame stateGame, boolean player, List<ILocation> emplacements){
+	private static int countCaseFreeDegrees(ILocation e, IStateGame stateGame, boolean player, List<ILocation> locationsAlreadyVisited){
 		int nbFreeDegrees = 0;
 		if (stateGame.onGoban(e.getCol(), e.getRow())) {
-			if (!((ILocation)e).isIn(emplacements)) {
+			if (!((ILocation)e).isIn(locationsAlreadyVisited)) {
 				if (stateGame.isFree(e.getCol(), e.getRow())) {
 					nbFreeDegrees++;
-					emplacements.add(e);
+					locationsAlreadyVisited.add(e);
 				} else if (stateGame.getIntersection(e.getCol(), e.getRow()).equals(player)) {
-					nbFreeDegrees += countFreeDegrees(stateGame, player, e, emplacements);
+					nbFreeDegrees += countFreeDegrees(stateGame, player, e, locationsAlreadyVisited);
 				}
 			}
 		}
@@ -129,30 +126,29 @@ public class FreedomDegrees {
 		int rowTop = (e.getRow() - 1);
 
 		if (stateGame.onGoban(e.getCol(), rowTop)) {
-			hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Emplacement(e.getCol(), rowTop), emplacements);
+			hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Location(e.getCol(), rowTop), emplacements);
 		}
 		if (hasFreedom != 0) {
 			//case Bottom
 			int rowBottom = (e.getRow() + 1);
 			if (stateGame.onGoban(e.getCol(), rowBottom)) {
-				hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Emplacement(e.getCol(), rowBottom), emplacements);
+				hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Location(e.getCol(), rowBottom), emplacements);
 			}
 			if (hasFreedom != 0) {
 				//case Left
 				int colLeft = (e.getCol() -1);
 				if(stateGame.onGoban(colLeft, e.getRow())) {
-					hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Emplacement(colLeft, e.getRow()), emplacements);
+					hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Location(colLeft, e.getRow()), emplacements);
 				}
 				if (hasFreedom != 0) {
 					//case Right
 					int colRight = (e.getCol() +1);
 					if(stateGame.onGoban(colRight, e.getRow())) {
-						hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Emplacement(colRight, e.getRow()), emplacements);
+						hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Location(colRight, e.getRow()), emplacements);
 					}
 				}
 			}
-		}
-		//System.out.println("Tools.hasCapturedWithThisEmplacement() retour de hasFreedom = "+hasFreedom);
+		}	
 		return hasFreedom;
 	}
 

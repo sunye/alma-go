@@ -82,7 +82,7 @@ public class IHMParam extends AbstractDialog {
     	
     	getMainPanel().add(panel, BorderLayout.CENTER);
 		
-        JLabel labelTimeLimite = new JLabel("Time limit reflection Software : ");
+        JLabel labelTimeLimite = new JLabel("Time limit reflection Software (seconds) : ");
         panel.add(labelTimeLimite);
         
         tfTimeLimit = new JTextField(5);
@@ -109,6 +109,7 @@ public class IHMParam extends AbstractDialog {
         
         cbOpponent = new JComboBox(LIST_PLAYER);
         cbOpponent.setSelectedIndex(0);
+        cbOpponent.setEnabled(false);
         panel.add(cbOpponent);
 
         JLabel labelColorComputer = new JLabel("Color opponent : ");
@@ -122,6 +123,7 @@ public class IHMParam extends AbstractDialog {
         panel.add(labelRoleComputer);
         
         chkbAssistant = new JCheckBox();
+        chkbAssistant.setEnabled(false);
         panel.add(chkbAssistant);
 
         JLabel labelTargetCaptureComputer = new JLabel("Target capture opponent : ");
@@ -129,6 +131,7 @@ public class IHMParam extends AbstractDialog {
         
         tfTargetCaptureComputer = new JTextField(5);
         tfTargetCaptureComputer.setText("1");
+        tfTargetCaptureComputer.setEnabled(false);
         Tools.addFocusListener(tfTargetCaptureComputer);
         panel.add(tfTargetCaptureComputer);
 
@@ -137,6 +140,8 @@ public class IHMParam extends AbstractDialog {
         
         tfTargetCapturePlayer = new JTextField(5);
         tfTargetCapturePlayer.setText("1");
+        tfTargetCapturePlayer.setEnabled(false);
+        
         Tools.addFocusListener(tfTargetCapturePlayer);
         panel.add(tfTargetCapturePlayer);
 

@@ -24,6 +24,7 @@ import fr.alma.server.ia.IEvaluation;
  * Define the computer
  */
 public class Computer extends AbstractPlayer {
+
 	private IEvaluation evaluation;
 	private IStrategy strategy;
 	private boolean enable = false;
@@ -36,8 +37,8 @@ public class Computer extends AbstractPlayer {
 		super(name, context.getParamGame().getColorComputer());
 		this.context = context;
 	}
-	
-	
+
+
 	/** 
 	 * Thread is builded to execute the different action for the calculation
 	 * @see fr.alma.server.core.IPlayer#play()
@@ -66,39 +67,52 @@ public class Computer extends AbstractPlayer {
 		};
 		new Thread(runnable).start();
 	}
-	
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see fr.alma.server.core.IPlayer#setEnabled(boolean)
+	 */
 	@Override
 	public void setEnabled(boolean enable) {
 		this.enable = enable;
 	}
 
-	
+
 	public boolean isEnabled() {
 		return enable;
 	}
 
-	
+	/**
+	 * @return the strategy adopted
+	 */
 	public IStrategy getStrategy() {
 		return strategy;
 	}
-	
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see fr.alma.server.core.IPlayer#setStrategy(fr.alma.server.core.IStrategy)
+	 */
+	@Override
 	public void setStrategy(IStrategy strategieGame) {
 		this.strategy = strategieGame;
 	}
-	
+
 
 	public IEvaluation getEvaluation() {
 		return evaluation;
 	}
-	
 
+	/*
+	 * (non-Javadoc)
+	 * @see fr.alma.server.core.IPlayer#setEvaluation(fr.alma.server.ia.IEvaluation)
+	 */
+	@Override
 	public void setEvaluation(IEvaluation evaluation) {
 		this.evaluation = evaluation;
 	}
 
-	
+
 	@Override
 	public void cleanUp() {
 		evaluation = null;
@@ -109,13 +123,15 @@ public class Computer extends AbstractPlayer {
 		timerAction = null;
 	}
 
-	
+
 	@Override
 	public void interrupt() {
 		strategy.interrupt();
 	}
-	
-	
+
+	/**
+	 * use to start the computer calculation
+	 */
 	private void startTimer() {
 		if (context.getParamGame().getTimeLimite() > 0) {
 			if (timer == null) {
@@ -125,19 +141,21 @@ public class Computer extends AbstractPlayer {
 			timer.start();
 		}
 	}
-	
-	
+
+	/**
+	 * use to stop the computer calculation
+	 */
 	private void stopTimer() {
 		if (timer != null) {
 			timer.stop();
 		}
 	}
-	
-	
+
+
 	private ActionListener getActionTimer() {
 		if (timerAction == null) {
 			timerAction = new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					System.out.println("Time exceeded : interruption of the calculation ....");
@@ -147,8 +165,11 @@ public class Computer extends AbstractPlayer {
 		}
 		return timerAction;
 	}
-	
-	
+
+	/**
+	 * use for the time calculation
+	 * @return the time in seconds
+	 */
 	public int getDelay() {
 		return context.getParamGame().getTimeLimite() * 1000;
 	}

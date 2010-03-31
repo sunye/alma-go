@@ -20,7 +20,7 @@ import fr.alma.client.action.Context;
 import fr.alma.client.action.GameLoader;
 import fr.alma.client.action.ParamGame;
 import fr.alma.server.core.Computer;
-import fr.alma.server.core.Emplacement;
+import fr.alma.server.core.Location;
 import fr.alma.server.core.Factory;
 import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
@@ -64,7 +64,7 @@ public class TestCapture {
 	@Test
 	public void testCapture() {
 		FreedomDegrees.showGobanOnConsole(stateGame);
-		emplacement = new Emplacement((short)0, (short)1);
+		emplacement = new Location((short)0, (short)1);
 		StatusCheck status = ruleManager.checkAfter(stateGame, emplacement, computer);
 		assertFalse(status.isGameOver());
 	}

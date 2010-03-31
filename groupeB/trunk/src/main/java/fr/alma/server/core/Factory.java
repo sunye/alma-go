@@ -26,7 +26,9 @@ import fr.alma.server.ia.Evaluation;
 import fr.alma.server.ia.IEvaluation;
 import fr.alma.server.rule.RuleManager;
 
-
+/**
+ * To build the different element of the Atari-Go game
+ */
 public class Factory {
 	
 	public static RuleManager getRuleManager(Context context) {
