@@ -1,5 +1,7 @@
 package ihm;
 
+import ia.AlphaBeta;
+
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,7 +30,8 @@ public class Goban extends JPanel{
         private int info;
         
         // jouer avec ou sans IA
-        private boolean IA;
+        private boolean withAI;
+        private AlphaBeta AI;
         
         private boolean partiFini;
         
@@ -37,8 +40,7 @@ public class Goban extends JPanel{
         
         public Goban() {
         	super();
-                
-            IA=true;
+                            
             partiFini=false;
                 
             /**
@@ -100,6 +102,8 @@ public class Goban extends JPanel{
                 
             /* on initialise le premier a blanc */
             joueur=Couleur.blanc;
+            withAI=true;
+            AlphaBeta AI = new AlphaBeta(goban_tab, joueur);    
         }
         
         /**
@@ -130,9 +134,10 @@ public class Goban extends JPanel{
 			            coupFini();
 			            
 			            // si l'IA doit jouer
-			            if(IA){
-	
-			            	// coup de l'IA
+			            if(withAI){
+			            	
+			            	// on recherche le meilleur coup
+			            	goban_tab.ajoutPiece(AI.createTree(),joueur);
 			            	
 			            	// on signifie que le coup est jouer
 			            	coupFini();
@@ -142,7 +147,7 @@ public class Goban extends JPanel{
 	            }
             }else{
             	partiFini = false;
-           		resetGame(IA);
+           		resetGame(withAI);
             }
         }
         
@@ -171,12 +176,11 @@ public class Goban extends JPanel{
 	        //Affichage de la couleur du joueur qui doit joueur
 		    if(partiFini){
 		    	g.drawImage(vainqueur.getImage(),plateau.getIconWidth()-vainqueur.getIconWidth(),plateau.getIconHeight()-vainqueur.getIconHeight(),this);
-		    }else{
-	        	if(joueur == Couleur.blanc){
-		        	g.drawImage(pionB.getImage(),plateau.getIconWidth()-bordure*3,info,this);
-		        }else if(joueur == Couleur.noir){
-		        	g.drawImage(pionN.getImage(),plateau.getIconWidth()-bordure*3,info,this);
-		        }
+		    }
+	        if(joueur == Couleur.blanc){
+	        	g.drawImage(pionB.getImage(),plateau.getIconWidth()-bordure*3,info,this);
+		    }else if(joueur == Couleur.noir){
+		        g.drawImage(pionN.getImage(),plateau.getIconWidth()-bordure*3,info,this);
 		    }
 	        
 	        //Affichage de tout les pions en parcourant la matrice
@@ -207,6 +211,6 @@ public class Goban extends JPanel{
 		public void resetGame(boolean type) {
 			goban_tab = new GobanStructure();
 			joueur = Couleur.blanc;
-			IA=type;
+			withAI=type;
 		}
 }
