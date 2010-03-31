@@ -111,85 +111,85 @@ public class AlphaBeta {
 	{
 		int note = 0;
 		
-		if (depth == depthMax)
-		{
-			/* We are in a leaf */
-			return evaluation(coord);
+		if(plateau.coupValide(coord, color)){
 			
-		} else {
-				/* We simulate that we put a token of the right color at coord */
-				hitSimul(coord, color, depth);
+			/* We simulate that we put a token of the right color at coord */
+			hitSimul(coord, depth);
+			
+			if (depth == depthMax)
+			{
+				/* We are in a leaf */
+				note = evaluation();
 				
-				/* We try to trunk the tree */
-				List<Coordonnees> emptySquares = plateau.getCoordLibre();
+				plateau.retirePiece(coord);
+				
+				return note;
+				
+			} else {
 
-				if ((depth % 2) != 0)
-				{
-					/* The depth is pair : we search for the minimal note value of all its sons. */
-					/* Here, we create its sons when we encounter an empty square */
-					
-					for(Coordonnees coordTmp : emptySquares){
-						
-						note = Math.min(note, createNode(coordTmp, depth+1, depthMax, alpha, beta));
-						
-						if (alpha >= note)
-						{
-							/* We don't need to go further, so we stop here */
-							return note;							
-						}
-						
-						beta = Math.min(beta, note);
-					}
+					/* We try to trunk the tree */
+					List<Coordonnees> emptySquares = plateau.getCoordLibre();
 	
-				} else {
-					
-					/* The depth is not pair : we search for the maximal note value of all its sons. */
-					/* Here, we create its sons when we encounter an empty square */
-					
-					for(Coordonnees coordTmp : emptySquares){
+					if ((depth % 2) != 0)
+					{
+						/* The depth is pair : we search for the minimal note value of all its sons. */
+						/* Here, we create its sons when we encounter an empty square */
 						
-						note = Math.max(note, createNode(coordTmp, 1, 3, alpha, beta));
-								
-						if (beta <= note)
-						{
-							/* We don't need to go further, so we stop here */
-							return note;							
+						for(Coordonnees coordTmp : emptySquares){
+							
+							note = Math.min(note, createNode(coordTmp, depth+1, depthMax, alpha, beta));
+							
+							if (alpha >= note)
+							{
+								/* We don't need to go further, so we stop here */
+								plateau.retirePiece(coord);
+								return note;							
+							}
+							
+							beta = Math.min(beta, note);
 						}
-								
-						alpha = Math.max(alpha, note);
-			
-					}
-					
-				}
-				
-			plateau.retirePiece(coord);
-			
-		}
 		
+					} else {
+						
+						/* The depth is not pair : we search for the maximal note value of all its sons. */
+						/* Here, we create its sons when we encounter an empty square */
+						
+						for(Coordonnees coordTmp : emptySquares){
+							
+							note = Math.max(note, createNode(coordTmp, depth+1, depthMax, alpha, beta));
+									
+							if (beta <= note)
+							{
+								/* We don't need to go further, so we stop here */
+								plateau.retirePiece(coord);
+								return note;							
+							}
+									
+							alpha = Math.max(alpha, note);
+				
+						}
+						
+					}		
+			}
+			plateau.retirePiece(coord);
+		}else{
+			note = -100000;
+		}
 		return note;
 	}
 	
-	private void hitSimul(Coordonnees coord, Couleur col, int depth){
+	private void hitSimul(Coordonnees coord, int depth){
 		
 		if ((depth % 2) == 0)
 		{					
-			if (color == Couleur.blanc)
-			{
-				plateau.ajoutPiece(coord, Couleur.blanc);
-			} else {
-				plateau.ajoutPiece(coord, Couleur.noir);
-			}
+			plateau.ajoutPiece(coord, color);
 		} else {
-			if (color == Couleur.blanc)
-			{
-				plateau.ajoutPiece(coord, Couleur.noir);
-			} else {
-				plateau.ajoutPiece(coord, Couleur.blanc);
-			}					
+			plateau.ajoutPiece(coord, color.invCouleur());
+								
 		}		
 	}
 	
-	private Integer evaluation(Coordonnees coord)
+	private Integer evaluation()
 	{
 		Integer max = 0;
 		Integer min = plateau.getTaille() * plateau.getTaille();

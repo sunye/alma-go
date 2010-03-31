@@ -180,7 +180,7 @@ public class GobanStructure {
 	 */
 	public boolean retirePiece(Coordonnees coord){
 		
-		if( testPosition(coord)>0 ){
+		if( testPosition(coord) > 0 ){
 			
 			GroupePieces gc = plateau[coord.getX()][coord.getY()];			
 					
@@ -198,6 +198,11 @@ public class GobanStructure {
 			}else{
 				getGroupes(gc.getCouleur()).remove(gc);
 			}
+			
+			for(GroupePieces ga : groupesAdjacents(coord, gc.getCouleur().invCouleur())){
+				ga.setLiberte(calculeLibertees(ga));
+			}
+			
 			
 			return true;
 		}else{
