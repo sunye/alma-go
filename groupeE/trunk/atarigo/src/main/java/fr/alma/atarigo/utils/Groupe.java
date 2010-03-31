@@ -4,11 +4,12 @@ import java.util.HashSet;
 
 import fr.alma.atarigo.utils.exceptions.BadCouleurException;
 import java.util.Collection;
+import java.util.Set;
 
 public class Groupe {
 
     private HashSet<Stone> stones;
-    private HashSet<Groupe> yeux;
+    private HashSet<Groupe> eyes;
     private int libertes;
     private PionVal couleur;
 
@@ -16,7 +17,7 @@ public class Groupe {
         super();
         this.couleur = couleur;
         stones = new HashSet<Stone>();
-        yeux = new HashSet<Groupe>();
+        eyes = new HashSet<Groupe>();
     }
 
     public boolean contains(Stone p) {
@@ -108,11 +109,15 @@ public class Groupe {
     }
 
     public void addEye(Groupe group) {
-        yeux.add(group);
+        eyes.add(group);
     }
 
-    public int nbYeux(){
-        return yeux.size();
+    public int nbEyes(){
+        return eyes.size();
+    }
+
+    public Set<Groupe> getEyes(){
+        return eyes;
     }
 
     public int getLibertes() {
