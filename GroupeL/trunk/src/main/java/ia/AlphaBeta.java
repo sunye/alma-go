@@ -5,6 +5,7 @@ import java.util.List;
 import jeu.Coordonnees;
 import jeu.Couleur;
 import jeu.GobanStructure;
+import jeu.GroupePieces;
 
 public class AlphaBeta {
 	
@@ -190,20 +191,23 @@ public class AlphaBeta {
 	
 	private Integer evaluation(Coordonnees coord)
 	{
-		Integer note = 0;
+		Integer max = 0;
+		Integer min = plateau.getTaille() * plateau.getTaille();
 		
+		for(GroupePieces g : plateau.getGroupes(color)){
+			if(max < g.getLiberte()){
+				max = g.getLiberte();
+			}
+		}
 		
-		// TODO
+		for(GroupePieces g : plateau.getGroupes(color.invCouleur())){
+			if(min > g.getLiberte()){
+				min = g.getLiberte();
+			}
+		}
 		
-		return note;
+		return max - min;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-
 }
+
