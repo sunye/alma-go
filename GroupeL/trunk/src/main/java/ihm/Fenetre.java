@@ -3,8 +3,6 @@ package ihm;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
@@ -24,7 +22,7 @@ public class Fenetre extends JFrame implements ActionListener {
        
         public Fenetre(String s){
                 super(s);
-                setSize(610,650);
+                setSize(710,650);
                
                 /**
          * Creations des différents outils permettant la mise en place de la barre de menu

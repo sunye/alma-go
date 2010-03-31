@@ -1,12 +1,10 @@
 package ia;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import jeu.Coordonnees;
 import jeu.Couleur;
 import jeu.GobanStructure;
-import jeu.GroupePieces;
 
 public class AlphaBeta {
 	
@@ -158,6 +156,7 @@ public class AlphaBeta {
 	private Integer evaluation(Coordonnees coord)
 	{
 		Integer note = 0;
+		
 		
 		// TODO
 		
