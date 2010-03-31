@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 public class EvalFunc {
 
+    static public final int GAGNE = 1000;
     static public final int TRESIMPORTANT = 20;
     static public final int IMPORTANT = 10;
     static public final int MOYEN = 5;
@@ -94,11 +95,11 @@ public class EvalFunc {
         if (minLibMySide.getLibertes() > minLibOtherSide.getLibertes() + 3) {
             score += importance;
         } else if (minLibMySide.getLibertes() > minLibOtherSide.getLibertes()) {
-            score += importance/2;
+            score += importance / 2;
         } else if (minLibMySide.getLibertes() < minLibOtherSide.getLibertes() - 3) {
             score -= importance;
         } else if (minLibMySide.getLibertes() < minLibOtherSide.getLibertes()) {
-            score -= importance/2;
+            score -= importance / 2;
         }
         return score;
     }
@@ -128,13 +129,64 @@ public class EvalFunc {
         return score;
     }
 
+
+    static private int checkEyes(Game game){
+        int score = 0;
+        Stone putStone = game.getCurrentMove().getPutStone().getNewStone();
+
+        for (Groupe groupe : game.getCurrentMove().getGroupes()) {
+            if (groupe.getCouleur() == putStone.getCouleur()) {
+                if (groupe.nbEyes() > 2) {
+                    score += IMPORTANT;
+                } else if (groupe.nbEyes() == 1) {
+                    for (Groupe eye : groupe.getEyes()) {
+                        if (eye.size() == 1) {
+                            if (groupe.getLibertes() == 1) {
+                                // If it's the last liberty, we lose much than him, because, he just has to play.
+                                score -= (GAGNE+GAGNE);
+                            } else if (groupe.getLibertes() > groupe.size()) {
+                                // If we still have some liberties, it's better.
+                                score -= MOYEN;
+                            } else {
+                                // If we don't have enough liberties, it's really bad.
+                                score -= TRESIMPORTANT;
+                            }
+                        }
+                    }
+                }
+            } else {
+                // If this group is an ennemy
+                if (groupe.nbEyes() > 2) {
+                    score -= IMPORTANT;
+                } else if (groupe.nbEyes() == 1) {
+                    for (Groupe eye : groupe.getEyes()) {
+                        if (eye.size() == 1) {
+                            if (groupe.getLibertes() == 1) {
+                                // If it's the last liberty, we almost win...
+                                score += TRESIMPORTANT;
+                            } else if (groupe.getLibertes() > groupe.size()) {
+                                // If we still have some liberties, it's better.
+                                score += MOYEN;
+                            } else {
+                                // If we don't have enough liberties, it's really bad.
+                                score += IMPORTANT;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return score;
+    }
+
     static public int evaluateFollowing(Game game) {
         int score = 0;
+        Stone putStone = game.getCurrentMove().getPutStone().getNewStone();
 
         score += evaluateGroupsLiberties(game, TRESIMPORTANT);
         score += checkStonePlaces(game, MOYEN);
-
-
+        calculateEyes(game);
+        score += checkEyes(game);
         return score;
     }
 
