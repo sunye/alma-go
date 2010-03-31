@@ -122,6 +122,10 @@ public class GobanPanel extends JPanel{
 	public void update(Graphics g) {
 	     paintComponent(g);
 	}
+	
+	public GoBan getGoban(){
+		return goban_tab;
+	}
 }
 	
 	
