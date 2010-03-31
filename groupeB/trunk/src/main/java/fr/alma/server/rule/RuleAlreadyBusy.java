@@ -18,7 +18,6 @@ import fr.alma.server.core.IStateGame;
 
 public class RuleAlreadyBusy implements IRule {
 	
-	
 	public RuleAlreadyBusy() {
 		super();
 	}

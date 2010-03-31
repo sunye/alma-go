@@ -55,15 +55,6 @@ public abstract class AbstractPlayer implements IPlayer {
 	public boolean addPlayListener(PlayListener playListener) {
 		return getPlayerListeners().add(playListener);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see fr.alma.server.core.IPlayer#removePlayListener(fr.alma.server.core.PlayListener)
-	 */
-	@Override
-	public boolean removePlayListener(PlayListener playListener) {
-		return getPlayerListeners().remove(playListener);
-	}
 	
 	/*
 	 * (non-Javadoc)

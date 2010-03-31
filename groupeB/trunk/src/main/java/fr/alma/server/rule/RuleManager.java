@@ -16,7 +16,9 @@ import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 
-
+/**
+ * Manage the different rules
+ */
 public class RuleManager {
 	
 	private RuleSuicide ruleSuicide = null;

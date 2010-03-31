@@ -17,8 +17,6 @@ import fr.alma.server.core.IStateGame;
 import fr.alma.server.ia.FreedomDegrees;
 
 /**
- * 
- * @author Romain Gournay & Bruno Belin
  * describe the rule to catch opponent stones
  */
 public class RuleCapture {

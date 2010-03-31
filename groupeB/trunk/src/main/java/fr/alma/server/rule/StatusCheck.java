@@ -14,6 +14,9 @@ package fr.alma.server.rule;
 import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 
+/**
+ * Different status of the Game
+ */
 public class StatusCheck {
 	boolean canPlay = true;
 	boolean gameOver = false;

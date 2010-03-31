@@ -15,6 +15,15 @@ import fr.alma.server.core.ILocation;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
 
+/**
+ * Rule interface
+ */
 public interface IRule {
+	/**
+	 * @param stateGame
+	 * @param emplacement
+	 * @param currentPlayer
+	 * @return true if the rule is respected
+	 */
 	public boolean accept(IStateGame stateGame, ILocation emplacement, IPlayer currentPlayer);
 }

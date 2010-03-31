@@ -36,11 +36,6 @@ public interface IPlayer extends GoObject {
 	boolean addPlayListener(PlayListener actionListener);
 	
 	/**
-	 * Remove a listener on player
-	 */
-	boolean removePlayListener(PlayListener playListener);
-	
-	/**
 	 * Remove all listeners on player
 	 */
 	public void removePlayListeners();
