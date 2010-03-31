@@ -82,7 +82,7 @@ public class GoBan {
 			goban[position][positiony].setCouleur(coul);
 			goban[position][positiony].setNumero(num);
 			goban[position][positiony].setListeLibertes();
-			apresJoue(position, positiony, coul);
+			apresJoueSansEnlevement(position, positiony, coul);
 			num++;
 			if( coul.equals(CouleurPion.NOIR)){
 			nbNoir++;
@@ -335,6 +335,24 @@ public class GoBan {
 		majListeEnnemis(position, positiony, coul, listVoisinsEnnemis);
 
 	}
+	
+	public void apresJoueSansEnlevement(int position, int positiony, CouleurPion coul) {
+		System.out.println("Apres joué");
+		// on fait les listes d'amis et d'ennemis
+		Vector<Groupe> listVoisinsAmis = new Vector<Groupe>();
+		Vector<Groupe> listVoisinsEnnemis = new Vector<Groupe>();
+
+
+		visitVoisinsPion(position, positiony, coul, listVoisinsAmis, listVoisinsEnnemis);
+
+		// une fois le pion joué, on le supprime des libertés des groupes voisins
+		enleveLibertesVoisins(position, positiony, coul, listVoisinsAmis, listVoisinsEnnemis);
+
+		// maj des groupes amis
+		majListeAmis(position, positiony, coul, listVoisinsAmis);
+
+	}
+	
 
 	public void enleveLibertesVoisins(int position, int positiony, CouleurPion coul, Vector<Groupe> listVoisinsAmis, Vector<Groupe> listVoisinsEnnemis) {
 

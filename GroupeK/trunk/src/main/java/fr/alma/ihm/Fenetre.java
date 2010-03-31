@@ -1,10 +1,17 @@
 package fr.alma.ihm;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.*;
+
+import fr.alma.modele.Coordonnee;
+import fr.alma.modele.CouleurPion;
+import fr.alma.modele.Coup;
+import fr.alma.modele.intelligence.SunTsu;
 
 public class Fenetre extends JFrame{
 	
@@ -33,6 +40,19 @@ public class Fenetre extends JFrame{
 		
 		nouv=new JMenuItem("Nouvelle partie");
 		quitter=new JMenuItem("Quitter");
+		
+		JMenuItem jouer= new JMenuItem("JOUE !");
+		jeu.add(jouer);
+		jouer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SunTsu intel=new SunTsu();
+				Coordonnee cp= intel.nextMove(Pan.getGoban(), CouleurPion.NOIR);
+				Pan.getGoban().ajouterPion(cp.getX(), cp.getY());
+				
+			}
+		});
 		
 		/**
          * Mise en place de la barre de menu
