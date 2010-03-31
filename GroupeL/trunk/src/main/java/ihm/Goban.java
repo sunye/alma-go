@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import jeu.Coordonnees;
 import jeu.Couleur;
 import jeu.GobanStructure;
+import jeu.GroupePieces;
 
 public class Goban extends JPanel{
         
@@ -63,7 +64,7 @@ public class Goban extends JPanel{
               * Creation de l'image du pion blanc
               */
                 
-             java.net.URL pionB_URL = Fenetre.class.getResource("images/Pion_blanc2.png");
+             java.net.URL pionB_URL = Fenetre.class.getResource("images/blanc.png");
              //vérification de l'existence de l'image
              if (pionB_URL != null) {
             	 pionB = new ImageIcon(pionB_URL);
@@ -74,7 +75,7 @@ public class Goban extends JPanel{
               * Creation de l'image du pion noir
               */
                 
-             java.net.URL pionN_URL = Fenetre.class.getResource("images/Pion_noir2.png");
+             java.net.URL pionN_URL = Fenetre.class.getResource("images/noir.png");
              //vérification de l'existence de l'image
              if (pionN_URL != null) {
             	 pionN = new ImageIcon(pionN_URL);
@@ -103,7 +104,7 @@ public class Goban extends JPanel{
             /* on initialise le premier a blanc */
             joueur=Couleur.blanc;
             withAI=true;
-            AlphaBeta AI = new AlphaBeta(goban_tab, joueur);    
+            AI = new AlphaBeta();    
         }
         
         /**
@@ -137,8 +138,11 @@ public class Goban extends JPanel{
 			            if(withAI){
 			            	
 			            	// on recherche le meilleur coup
-			            	goban_tab.ajoutPiece(AI.createTree(),joueur);
+			            	coup = AI.createTree(goban_tab,joueur);
 			            	
+			            	// on joue le coup
+			            	goban_tab.ajoutPiece(coup,joueur);
+			            	repaint();
 			            	// on signifie que le coup est jouer
 			            	coupFini();
 			            }		            
@@ -155,10 +159,21 @@ public class Goban extends JPanel{
          * fonction appeler pour completer un coup
          */
         private void coupFini() {
+        	System.out.println("-----------------------------");
+        	System.out.println("liberte des groupes blancs :");
+			for(GroupePieces g : goban_tab.getBlancs()){
+				System.out.println(g.getLiberte());
+			}
+			System.out.println("liberte des groupes noirs :");
+			for(GroupePieces g : goban_tab.getNoirs()){
+				System.out.println(g.getLiberte());
+			}
+        	
         	// verification de la fin de parti
         	if(goban_tab.fin(joueur)){
         		// si un joueur a gagner on termine la parti
         		partiFini = true;
+        		repaint();
             }else{   
             	// sinon on changhe de joueur
             	joueur=joueur.invCouleur();

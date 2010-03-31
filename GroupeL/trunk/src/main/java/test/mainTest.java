@@ -23,18 +23,7 @@ public class mainTest {
 		
 		/* on fait un oeil */
 		gb.ajoutPiece(new Coordonnees(6, 6), Couleur.noir);
-		gb.ajoutPiece(new Coordonnees(5, 5), Couleur.noir);
-		gb.ajoutPiece(new Coordonnees(4, 5), Couleur.noir);
-		gb.ajoutPiece(new Coordonnees(3, 6), Couleur.noir);
-		gb.ajoutPiece(new Coordonnees(4, 7), Couleur.noir);
-		gb.ajoutPiece(new Coordonnees(5, 7), Couleur.noir);
-		
-		gb.ajoutPiece(new Coordonnees(3, 5), Couleur.blanc);
-		gb.ajoutPiece(new Coordonnees(2, 6), Couleur.blanc);
-		gb.ajoutPiece(new Coordonnees(3, 7), Couleur.blanc);
-		
-		gb.ajoutPiece(new Coordonnees(2, 2), Couleur.blanc);
-		gb.retirePiece(new Coordonnees(2, 2));
+		gb.retirePiece(new Coordonnees(6, 6));
 		
 		/* ----------------------------- */
 		
