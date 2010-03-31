@@ -18,11 +18,17 @@ public class AlphaBeta {
 		this.color = color;
 	}
 	
-	/* Function of decision tree creation */
+	public AlphaBeta() {
+		super();
+		this.plateau = new GobanStructure();
+		this.color = Couleur.none;
+	}
+	
+	/* Function of decision tree creation (without parameters) */
 	public Coordonnees createTree()
 	{
 		Coordonnees toPlay = new Coordonnees();
-		int bestNote = -1;
+		int bestNote = -100000;
 		
 		/* We run the recursive function on every free square of the plateau */	
 		List<Coordonnees> emptySquares = plateau.getCoordLibre();
@@ -43,6 +49,33 @@ public class AlphaBeta {
 		return toPlay; 
 	}
 	
+	/* Function of decision tree creation (with parameters) */
+	public Coordonnees createTree(GobanStructure plateau, Couleur color)
+	{
+		this.plateau = plateau;
+		this.color = color;		
+		
+		Coordonnees toPlay = new Coordonnees();
+		int bestNote = -100000;
+		
+		/* We run the recursive function on every free square of the plateau */	
+		List<Coordonnees> emptySquares = plateau.getCoordLibre();
+		int note = -100000;
+		
+		for(Coordonnees coordTmp : emptySquares){
+			
+			note = createNode(coordTmp, 1, 3, -100000, 100000);
+			
+			if (note>bestNote)
+			{
+				/* We have the best move and we store it */
+				bestNote = note;
+				toPlay = coordTmp;
+			}
+		}
+		
+		return toPlay; 
+	}	
 	/*
 	 * Algorithme Alpha-Beta
 	 * 
@@ -127,6 +160,8 @@ public class AlphaBeta {
 					}
 					
 				}
+				
+			plateau.retirePiece(coord);
 			
 		}
 		
