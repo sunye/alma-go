@@ -186,30 +186,41 @@ public class GobanStructure {
 					
 			for(Coordonnees p : gc.getPieces()){
 				if(p.estEgal(coord)){
+					// on suprime la piece du groupe
 					gc.getPieces().remove(p);
+					// on partionne le groupe
+					LinkedList<GroupePieces> groupAdj = gc.separeGroupe();
+					// on réinitialise la case du plateau
+					plateau[coord.getX()][coord.getY()] = null;
+					// on suprime le groupe de la liste des groupes de sa couleur
+					getGroupes(gc.getCouleur()).remove(gc);
+					
+					// on calcul les liberte des groupe adjacent de couleur oposé
+					for(GroupePieces g : groupesAdjacents(coord, gc.getCouleur().invCouleur())){
+						g.setLiberte(calculeLibertees(g));
+					}
+					
+					// on calcul les liberte de chaque groupe issu de la partition
+					// et on réinitialise les coordonne du plateau appartenant a ses groupes
+					for(GroupePieces g : groupAdj){
+						g.setLiberte(calculeLibertees(g));
+						for(Coordonnees c : g.getPieces()){
+							plateau[c.getX()][c.getY()] = g;
+						}
+					}
+					
+					// on lui ajoute les groupes issu de la partition
+					getGroupes(gc.getCouleur()).addAll(groupAdj);
+					
 					break;
 				}
 			}
-			
-			plateau[coord.getX()][coord.getY()] = null;		
-			
-			if(!gc.getPieces().isEmpty()){
-				gc.setLiberte(calculeLibertees(gc));
-			}else{
-				getGroupes(gc.getCouleur()).remove(gc);
-			}
-			
-			for(GroupePieces ga : groupesAdjacents(coord, gc.getCouleur().invCouleur())){
-				ga.setLiberte(calculeLibertees(ga));
-			}
-			
 			
 			return true;
 		}else{
 			return false;
 		}
 	}
-	
 	
 	/**
 	 * calcul le nombre de liberte d'un groupe de pieces

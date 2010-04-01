@@ -52,6 +52,46 @@ public class GroupePieces {
 		return couleur;
 	}
 	
+	
+	public LinkedList<GroupePieces> separeGroupe() {
+				
+		LinkedList<GroupePieces> groupAdj = new LinkedList<GroupePieces>();
+		
+		while(pieces.size() != 0)
+		{
+			/* On prend la premiere piece */
+			/* On la retire de gc */
+			GroupePieces gcTmp = new GroupePieces(pieces.get(0),0,couleur);
+			pieces.remove(0);
+			
+			int i = 0;
+			/* on parcour la liste des pieces adjacentes */
+			while(i < gcTmp.getPieces().size()) {
+				
+				Coordonnees coordAdj = gcTmp.getPieces().get(i);
+				int j = 0;
+				
+				while(j < pieces.size() ){
+					Coordonnees coordTest = pieces.get(j);
+					/* si elle sont adjacente on la recupere */
+					if(coordAdj.estAdjacent(coordTest)){
+						gcTmp.getPieces().add(coordTest);
+						pieces.remove(coordTest);
+					}else{
+						// sinon on passe a la suivante
+						j++;
+					}
+				}
+				i++;
+			}
+			
+			groupAdj.add(gcTmp);
+		}
+		
+		return groupAdj;
+	}
+	
+	
 	/**
 	 * @param coord : coordonnee de la position a tester;
 	 * @return vrai si la position est occupee par le groupe, faux sinon
