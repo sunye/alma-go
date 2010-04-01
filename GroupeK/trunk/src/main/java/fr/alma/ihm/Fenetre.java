@@ -27,7 +27,7 @@ public class Fenetre extends JFrame{
 	
 	public Fenetre(String s){
 		super(s);
-		setSize(600,600);
+		setSize(440,490);
 		
 		/**
          * Creations des différents outils permettant la mise en place de la barre de menu
@@ -66,6 +66,14 @@ public class Fenetre extends JFrame{
 	
 		this.setJMenuBar(barreMenu); 
 		
+		nouv.addActionListener(new NewGameListener(this));
+		quitter.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		/**
          * Creation du panel contenant le goban
          */
@@ -80,7 +88,6 @@ public class Fenetre extends JFrame{
          */
 		
 		add(Pan);
-	
 			
 		/**
 	     *  Arrêt de l'appli quand on clique sur la croix
@@ -88,6 +95,7 @@ public class Fenetre extends JFrame{
 		
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
+	
 	
 }
 

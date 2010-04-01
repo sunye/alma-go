@@ -5,8 +5,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import fr.alma.modele.CouleurPion;
 import fr.alma.modele.GoBan;
 
 public class GobanPanel extends JPanel{
@@ -72,6 +74,7 @@ public class GobanPanel extends JPanel{
 		goban_tab.init();
 		
 		
+		
 		addMouseListener(new MouseAdapter() {
 	        public void mouseClicked(MouseEvent e) {
 		          processMouseClicked(e);
@@ -93,6 +96,11 @@ public class GobanPanel extends JPanel{
 	    //System.out.println("gobanX:"+gobanX+"gobanY:"+gobanY);
 	    //System.out.println("drawImage- x:"+x+"y:"+y);
 	    goban_tab.ajouterPion(gobanX, gobanY);
+	    repaint();
+	    if(goban_tab.getGagnant()!= CouleurPion.EMPTY){
+	    	afficheGagnant(goban_tab.getGagnant());
+	    	goban_tab.remiseZero();
+	    }
 	    repaint();
 	}
 	
@@ -125,6 +133,12 @@ public class GobanPanel extends JPanel{
 	
 	public GoBan getGoban(){
 		return goban_tab;
+	}
+
+	public static void afficheGagnant(CouleurPion coul) {
+		
+		JOptionPane.showMessageDialog(null,"Les "+coul+"S ont gagnés!");
+		
 	}
 }
 	
