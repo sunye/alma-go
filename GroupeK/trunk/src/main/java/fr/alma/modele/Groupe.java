@@ -60,5 +60,12 @@ public class Groupe {
 		this.libertes = libertes;
 	}
 
+	public CouleurPion coulOppose(CouleurPion coul){
+		if (coul==CouleurPion.BLANC){
+			return CouleurPion.NOIR;
+		}else{
+			return CouleurPion.BLANC;
+		}
+	}
 
 }

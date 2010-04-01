@@ -3,6 +3,8 @@ package fr.alma.modele;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
+
 
 public class GoBan {
 
@@ -10,6 +12,7 @@ public class GoBan {
 	private int nbBlanc;
 	private int nbNoir;
 	private int num=0;
+	CouleurPion gagnant=CouleurPion.EMPTY;
 
 	//private int[] modifier={1,-1};
 	public static int TAILLE_GO_BAN=9;
@@ -45,9 +48,13 @@ public class GoBan {
 		this.nbNoir = nbNoir;
 	}
 	
+	public CouleurPion getGagnant() {
+		return gagnant;
+	}
+	public void setGagnant(CouleurPion gagnant) {
+		this.gagnant = gagnant;
+	}
 	
-	
-
 	public boolean ajouterPion(int position, int positiony){
 		//Si le nombre est pair alors c'est au blanc de jouer
 		if (num%2==0){
@@ -333,7 +340,6 @@ public class GoBan {
 
 		// maj des groupes ennemis (Prises)
 		majListeEnnemis(position, positiony, coul, listVoisinsEnnemis);
-
 	}
 	
 	public void apresJoueSansEnlevement(int position, int positiony, CouleurPion coul) {
@@ -382,7 +388,7 @@ public class GoBan {
 	     Groupe groupeCourant = e.nextElement();
 	     // si un groupe n'a plus de libertés alors il est pris
 	     if (groupeCourant.aucuneLibertes()) {
-
+	    	 
 	       // tous les pions du groupe pris passe donc dans la couleur EMPTY
 	       Enumeration<Pion> listePions = groupeCourant.getPions().elements();
 	       for(;listePions.hasMoreElements();) {
@@ -391,6 +397,7 @@ public class GoBan {
 	         pionCourant.setCouleur(CouleurPion.EMPTY);
 
 	       }
+	       this.gagnant=groupeCourant.coulOppose(groupeCourant.getCoul());
 	     }
 	   }
 	}
@@ -404,7 +411,20 @@ public class GoBan {
 				goban[i][k] = new Pion(CouleurPion.EMPTY, 0);
 			}
 	}
-
 	
+	public void remiseZero(){
+
+		for (int i=0; i<9; i++)
+			for (int k=0; k<9; k++) {
+				goban[i][k] = new Pion(CouleurPion.EMPTY, 0);
+				goban[i][k].setNumero(-1);
+				goban[i][k].setGroupe(null);
+				goban[i][k].setListeLibertes();
+			}
+		this.setNbNoir(0);
+		this.setNbBlanc(0);
+		this.setNum(0);
+		this.setGagnant(CouleurPion.EMPTY);
+	}
 
 }
