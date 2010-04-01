@@ -29,11 +29,15 @@ public class Main {
 		
 		Arbre a = new Arbre(g);
 		
+		long begin = System.currentTimeMillis();
 		a.remplirArbre();
+		long end = System.currentTimeMillis();
+		float time = ((float) (end-begin)) ;
+		
 		//a.ParcoursProf();
 		//a.AffichageNA();
 		
-		System.out.println("C'est bon");
+		System.out.println("Temp d'execution : "+time);
 				
 		
 					

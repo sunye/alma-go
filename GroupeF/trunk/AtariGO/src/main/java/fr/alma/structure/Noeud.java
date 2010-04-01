@@ -1,6 +1,6 @@
 package fr.alma.structure;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import fr.alma.jeu.Pion;
 
@@ -17,7 +17,7 @@ public class Noeud {
 	private int note;
 	
 	private Pion coup;
-	private LinkedList<Noeud> listeFils;
+	private ArrayList<Noeud> listeFils;
 	
 	/**
 	 * Constructeur de la classe.
@@ -27,14 +27,14 @@ public class Noeud {
 		this.pere = null;
 		this.note = -1;
 		this.coup = coup;
-		this.listeFils = new LinkedList<Noeud>();
+		this.listeFils = new ArrayList<Noeud>();
 	}
 	
 	/**
 	 * Retourne la liste des fils du noeud.
 	 * @return la liste des fils.
 	 */
-	public LinkedList<Noeud> getListeFils() {
+	public ArrayList<Noeud> getListeFils() {
 		return listeFils;
 	}
 
