@@ -41,6 +41,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	boolean running = true;
 	public boolean stop=false;
 	public boolean pause=false;
+	public int nbMove;
 	// variables pour l'ia
 	Position bestMove;
 	int pos = 0;
@@ -108,12 +109,13 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	public void newGame(){
 		//ici on reinit...
 		this.atariGo = myApplication.atarigo;
+		nbMove=0;
 		time=0;
 		while(!atariGo.currentPlayer.isHuman() && !atariGo.isOver()){
 			Tree jeu = new Tree(atariGo.goban);
 			ValuedGoban plv = new ValuedGoban(0);
 			
-			if(atariGo.totalMoves>5){
+			if(nbMove>5){
 				AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
 				plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo,new Position(0,0));
 				try {
@@ -123,11 +125,12 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 					e.printStackTrace();
 				}
 			}else{
+				System.out.println("random");
 				plv.goban_ = RandomMove.play(atariGo,atariGo.goban,atariGo.currentPlayer.color);
 			}
-			
+			nbMove++;
 			putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
-			System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes);
+			System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+" meilleur score = "+plv.evaluation_);
 			repaint();
 			//atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
 		}		
@@ -181,7 +184,8 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 					ValuedGoban plv = new ValuedGoban(0);
 					AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
 					plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo,new Position(0,0));
-					putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
+					putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());
+					nbMove++;
 					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+"  nombre de coups jous = "+atariGo.totalMoves);
 
 					repaint();

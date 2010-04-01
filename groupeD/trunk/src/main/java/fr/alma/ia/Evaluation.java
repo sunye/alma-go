@@ -16,9 +16,26 @@ public class Evaluation {
 	static ValuedGoban evaluate(Goban goban, Goban parentGoban, Stone stone, Position position){
 		ValuedGoban cmpt = new ValuedGoban(0,goban);
 		cmpt.evaluation_+=groupExtension(goban,parentGoban,stone);
+		cmpt.evaluation_+=isCaught(goban,position,stone);
+		//System.out.println("score="+cmpt.evaluation_);
 		return cmpt;
 	}
 		
+	static int isCaught(Goban goban,Position position,Stone stone){
+		Group group = goban.groupsList.getGroup(position);
+		int prises = goban.hasCaught(position, goban.groupsList).totalStones();
+		if(prises>0){
+			if(group.stone==stone){
+				System.out.println("-----> prise de "+prises+" pions par le joueur en cours");
+				return prises*VERYGOOD;
+			}else{
+				System.out.println("-----> prise de "+prises+" pions par le joueur ennemi");
+				return prises*VERYBAD;
+			}
+		}
+		return 0;
+	}
+	
 	static int groupExtension(Goban goban, Goban parentGoban, Stone stone){
 		int cmpt = 0;
 		
@@ -45,14 +62,14 @@ public class Evaluation {
 		
 		if(stone==Stone.BLACK){
 			if(black)
-				cmpt=10000;
+				cmpt=GOOD*cmptNowBlack;
 			if(white)
-				cmpt=-10000;
+				cmpt=BAD*cmptNowWhite;
 		}else{
 			if(white)
-				cmpt=10000;
+				cmpt=GOOD*cmptNowWhite;
 			if(black)
-				cmpt=-10000;
+				cmpt=BAD*cmptNowBlack;
 		}
 		
 		return cmpt;

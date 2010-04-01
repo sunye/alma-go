@@ -22,7 +22,7 @@ public class RandomMove {
 			position = new Position(x,y);
 		}
 		Goban result = new Goban(goban);
-		result.writeCell(atariGo,position,stone);
+		result.writeCell(atariGo,position,stone,false);
 		return result;
 	}
 }
