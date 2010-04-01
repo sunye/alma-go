@@ -12,6 +12,8 @@ import java.util.ListIterator;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import fr.alma.atarigo.AtariGo.Move;
+
 
 /**
  * Goban.java is a representation of the board game.
@@ -22,12 +24,14 @@ public class Goban {
   * matrice of stones
   */
  public Stone[][] matrice;
+ public GroupsList groupsList;
  
 /**
  * logic constructor
  */
  public Goban(int line, int column) {
 	this.matrice = new Stone[line][column];
+	this.groupsList=new GroupsList();
 	newGame();
  }
  
@@ -36,6 +40,8 @@ public class Goban {
 	 for(int i=0;i<p.getLines();i++)
 		 for(int j=0;j<p.getColumns();j++)
 			 matrice[i][j]=p.matrice[i][j];
+	 groupsList = new GroupsList();
+	 groupsList.gList.addAll(p.groupsList.gList);
  }
 
  /**
@@ -47,6 +53,7 @@ public class Goban {
 		matrice[i][j] = Stone.EMPTY;
 	    }
 	}
+	groupsList.gList.clear();
  }
 
 /**
@@ -73,9 +80,56 @@ public class Goban {
  /**
   * setter for squares.
   */
- public void writeCell(Position position, Stone stone) {
+ public Move writeCell(AtariGo atariGo,Position position, Stone stone) {
 	matrice[position.getLine()][position.getColumn()] = stone;
- }
+	
+	GroupsList newGL = groupsList.updateGroups(this,position,stone);
+	//test de la prise sur le nouveau groupe
+	GroupsList caughtList = this.hasCaught(position,newGL);
+	
+	if(this.isCaught(newGL.getGroup(position))){
+		if (!caughtList.isEmpty()) {
+			atariGo.totalMoves++;
+			if(stone==Stone.WHITE){
+				atariGo.caughtBlack += caughtList.totalStones();
+				if(atariGo.caughtBlack>=atariGo.captureObjective){
+					return Move.WIN;
+				}
+			}
+			else{
+				atariGo.caughtWhite += caughtList.totalStones();
+				if(atariGo.caughtWhite>=atariGo.captureObjective){
+					return Move.WIN;
+				}
+			}
+			System.out.println(stone.toString()+"has won");
+		}
+		System.out.println("is cuaght !!");
+		System.out.println("printing gList");
+		groupsList.print();
+		this.emptyCell(position);
+		return Move.INVALID;
+	}
+	groupsList = newGL;
+	caughtList = this.hasCaught(position,groupsList);
+	if (!caughtList.isEmpty()) {
+		if(stone==Stone.WHITE){
+			atariGo.caughtBlack += caughtList.totalStones();
+			if(atariGo.caughtBlack>=atariGo.captureObjective){
+				return Move.WIN;
+			}
+		}
+		else{
+			atariGo.caughtWhite += caughtList.totalStones();
+			if(atariGo.caughtWhite>=atariGo.captureObjective){
+				return Move.WIN;
+			}
+		}
+		System.out.println(stone.toString()+"has won");
+		//return Coup.GAGNANT;
+	}
+	return Move.NEUTRAL;
+}
  
  /**
   * @deprecated
@@ -244,12 +298,12 @@ public LinkedList<Position> getCells(Stone stone){
 	 return cellsList;
 }
 
-public LinkedList<Goban> computeMoves(Stone stone){
+public LinkedList<Goban> computeMoves(AtariGo atariGo,Stone stone){
 	 LinkedList<Goban> gobanList = new LinkedList<Goban>();
 	 
 	 for(Position position : getCells(Stone.EMPTY)){
 		 Goban newGoban = new Goban(this);
-		 newGoban.writeCell(position, stone);
+		 newGoban.writeCell(atariGo,position, stone);
 		 gobanList.add(newGoban);
 	 }
 	 Collections.shuffle(gobanList);

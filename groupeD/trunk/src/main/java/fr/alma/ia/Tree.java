@@ -2,6 +2,7 @@ package fr.alma.ia;
 
 import java.util.LinkedList;
 
+import fr.alma.atarigo.AtariGo;
 import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Goban;
 
@@ -76,8 +77,8 @@ public class Tree {
 	 * Generate all the possible movements from the current Goban and add them as children
 	 * @param stone the color to be played
 	 */
-	public void generateChildren(Stone stone){
-		for(Goban goban : getGoban().computeMoves(stone)){
+	public void generateChildren(AtariGo atariGo,Stone stone){
+		for(Goban goban : getGoban().computeMoves(atariGo,stone)){
 			addChild(new Tree(goban));
 		}
 	}
