@@ -1,5 +1,6 @@
 package fr.alma.ia;
 
+import fr.alma.atarigo.AtariGo;
 import fr.alma.atarigo.GroupsList;
 import fr.alma.atarigo.Position;
 import fr.alma.atarigo.Stone;
@@ -20,18 +21,18 @@ public class AlphaBeta {
 		static public int extremum;
 		static public int totalNodes;
 		static public int maxLevel;
-		static public GroupsList currentGroups;
+		static public Goban initialGoban;
 		
 	/**
 	 * Static method that initialize static properties
 	 * @param nvmax the maximum depth of the search
 	 */
-		public static void init(int nvmax,GroupsList groups){
+		public static void init(int nvmax,Goban goban){
 			bestMove=new ValuedGoban(0);
 			extremum=0;
 			totalNodes=0;
 			maxLevel=nvmax;
-			currentGroups=groups;
+			initialGoban=goban;
 		}
 
 	/**
@@ -42,32 +43,32 @@ public class AlphaBeta {
 	 * @param pion the current color to play
 	 * @return a ValuedGoban which indicates the best move
 	 */
-	public static ValuedGoban value(int level, Tree stateOfGame, int currentExtremum, Stone stone, GroupsList groups, Position position){
+	public static ValuedGoban value(int level, Tree stateOfGame, int currentExtremum, Stone stone, AtariGo atariGo, Position position){
 		if(level<maxLevel)
-			stateOfGame.generateChildren(stone);
+			stateOfGame.generateChildren(atariGo,stone);
 		
 		if(level<maxLevel && !stateOfGame.isLeaf()){
 		//appel rcursif
 			if(level%2==0 || level==0){
 				//recherche du max
-				return max(level, stateOfGame, currentExtremum, stone, groups, position);
+				return max(level, stateOfGame, currentExtremum, stone, atariGo, position);
 			}else{
 				//recherche du min
-				return min(level, stateOfGame, currentExtremum, stone, groups, position);
+				return min(level, stateOfGame, currentExtremum, stone, atariGo, position);
 			}
 		}else{
-			return Evaluation.evaluate(stateOfGame.getGoban(), currentGroups, stone, groups, position);
+			return Evaluation.evaluate(stateOfGame.getGoban(), initialGoban, stone, position);
 		}
 	}
 
-	public static ValuedGoban max(int niveau, Tree edj,int ExtremumCourant,Stone pion,GroupsList groups, Position pos){
+	public static ValuedGoban max(int niveau, Tree edj,int ExtremumCourant,Stone pion, AtariGo atariGo, Position pos){
 		//recherche du max
 		ValuedGoban max = new ValuedGoban(-100000);
 		int i = 0;
 		while(max.evaluation_<ExtremumCourant && edj.getChildren().size()>i){
 			totalNodes++;
 			Position position = edj.getGoban().getDifference(edj.getChildren().get(i).getGoban());
-			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),max.evaluation_,pion.opponent(),groups.updateGroups(edj.getGoban(),position,pion),position);
+			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),max.evaluation_,pion.opponent(),atariGo,position);
 			if(V.evaluation_>max.evaluation_){
 				max.clone(new ValuedGoban(V.evaluation_,edj.getChildren().get(i).getMove()));
 			}
@@ -76,14 +77,14 @@ public class AlphaBeta {
 		return max;		
 	}
 	
-	public static ValuedGoban min(int niveau, Tree edj,int ExtremumCourant,Stone pion,GroupsList groups,Position pos){
+	public static ValuedGoban min(int niveau, Tree edj,int ExtremumCourant,Stone pion, AtariGo atariGo, Position pos){
 		//recherche du min
 		ValuedGoban min = new ValuedGoban(100000);
 		int i = 0;
 		while(min.evaluation_>ExtremumCourant && edj.getChildren().size()>i){
 			totalNodes++;
 			Position position = edj.getGoban().getDifference(edj.getChildren().get(i).getGoban());
-			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),min.evaluation_,pion.opponent(),groups.updateGroups(edj.getGoban(),position,pion),position);
+			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),min.evaluation_,pion.opponent(),atariGo,position);
 			if(V.evaluation_<min.evaluation_){
 				min.clone(new ValuedGoban(V.evaluation_,edj.getChildren().get(i).getMove()));
 			}

@@ -114,8 +114,8 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 			ValuedGoban plv = new ValuedGoban(0);
 			
 			if(atariGo.totalMoves>5){
-				AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.groupsList);
-				plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo.groupsList,new Position(0,0));
+				AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
+				plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo,new Position(0,0));
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
@@ -123,7 +123,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 					e.printStackTrace();
 				}
 			}else{
-				plv.goban_ = RandomMove.play(atariGo.goban,atariGo.currentPlayer.color);
+				plv.goban_ = RandomMove.play(atariGo,atariGo.goban,atariGo.currentPlayer.color);
 			}
 			
 			putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
@@ -179,8 +179,8 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 				if(!atariGo.currentPlayer.isHuman()){
 					Tree jeu = new Tree(atariGo.goban);
 					ValuedGoban plv = new ValuedGoban(0);
-					AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.groupsList);
-					plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo.groupsList,new Position(0,0));
+					AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
+					plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo,new Position(0,0));
 					putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
 					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+"  nombre de coups jous = "+atariGo.totalMoves);
 

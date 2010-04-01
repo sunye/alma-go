@@ -49,7 +49,9 @@ public class AtariGo {
 	    return Move.INVALID;
 	}
 	//ecriture sur le plateau nécessaire pour tester le suicide formé par un groupe
-	goban.writeCell(position, player);
+	return goban.writeCell(this,position, player);
+	
+	/*
 	//formation d'une nouvelle liste comprenant un nouveau groupe formé
 	GroupsList newGL = groupsList.updateGroups(goban,position,player);
 	//test de la prise sur le nouveau groupe
@@ -98,6 +100,7 @@ public class AtariGo {
 		//return Coup.GAGNANT;
 	}
 	return Move.NEUTRAL;
+	*/
  }
  
  	
