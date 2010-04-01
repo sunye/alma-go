@@ -17,9 +17,9 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		new Ihm();
+		//new Ihm();
 		
-		/*ArrayList<Pion> coups = new ArrayList<Pion>();
+		ArrayList<Pion> coups = new ArrayList<Pion>();
 		
 		coups.add(new Pion(Couleur.NULL,new Point(0,1)));
 		coups.add(new Pion(Couleur.NULL,new Point(0,2)));
@@ -28,10 +28,12 @@ public class Main {
 		Grille g = new Grille();
 		
 		Arbre a = new Arbre(g);
-				
-		a.AffichageNA();
 		
-		System.out.println("C'est bon");*/
+		a.remplirArbre();
+		//a.ParcoursProf();
+		//a.AffichageNA();
+		
+		System.out.println("C'est bon");
 				
 		
 					

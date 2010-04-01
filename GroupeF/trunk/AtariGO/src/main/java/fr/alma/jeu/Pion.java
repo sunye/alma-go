@@ -21,7 +21,6 @@ public class Pion {
 	}
 
 	public boolean equal(Pion pion) {
-		// TODO Auto-generated method stub
 		return this.couleur.equals(pion.couleur)&&(this.position.x==pion.position.x)&&(this.position.y==pion.position.y);
 	}
 }
