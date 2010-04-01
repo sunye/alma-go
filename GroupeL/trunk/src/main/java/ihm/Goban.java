@@ -140,6 +140,8 @@ public class Goban extends JPanel{
 			            	// on recherche le meilleur coup
 			            	coup = AI.createTree(goban_tab,joueur);
 			            	
+			            	System.out.println("-> "+ coup.toString());
+			            	
 			            	// on joue le coup
 			            	goban_tab.ajoutPiece(coup,joueur);
 			            	repaint();
@@ -159,16 +161,7 @@ public class Goban extends JPanel{
          * fonction appeler pour completer un coup
          */
         private void coupFini() {
-        	System.out.println("-----------------------------");
-        	System.out.println("liberte des groupes blancs :");
-			for(GroupePieces g : goban_tab.getBlancs()){
-				System.out.println(g.getLiberte());
-			}
-			System.out.println("liberte des groupes noirs :");
-			for(GroupePieces g : goban_tab.getNoirs()){
-				System.out.println(g.getLiberte());
-			}
-        	
+        	       	
         	// verification de la fin de parti
         	if(goban_tab.fin(joueur)){
         		// si un joueur a gagner on termine la parti
@@ -200,15 +193,15 @@ public class Goban extends JPanel{
 	        
 	        //Affichage de tout les pions en parcourant la matrice
 	        for(int i=1; i<=9; i++){
-	                for(int j=1;j<=9; j++){
-	                		if(goban_tab.getPlateau()[i][j] != null){
-	                			if(goban_tab.getPlateau()[i][j].getCouleur() == Couleur.noir){
-	                				g.drawImage(pionN.getImage(),((i-1)*caseSize)+bordure,((j-1)*caseSize)+bordure,this);
-	                			}else{
-	                				 g.drawImage(pionB.getImage(),((i-1)*caseSize)+bordure,((j-1)*caseSize)+bordure,this);
-	                			}
-	                		}
+	            for(int j=1;j<=9; j++){
+	            	if(goban_tab.getPlateau()[i][j] != null){
+	            		if(goban_tab.getPlateau()[i][j].getCouleur() == Couleur.noir){
+	            			g.drawImage(pionN.getImage(),((i-1)*caseSize)+bordure,((j-1)*caseSize)+bordure,this);
+	              		}else{
+	            			g.drawImage(pionB.getImage(),((i-1)*caseSize)+bordure,((j-1)*caseSize)+bordure,this);
+	                	}
 	                }
+	            }
 	        }
         }
         
@@ -227,5 +220,6 @@ public class Goban extends JPanel{
 			goban_tab = new GobanStructure();
 			joueur = Couleur.blanc;
 			withAI=type;
+			repaint();
 		}
 }
