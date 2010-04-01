@@ -49,7 +49,7 @@ public class AtariGo {
 	    return Move.INVALID;
 	}
 	//ecriture sur le plateau nécessaire pour tester le suicide formé par un groupe
-	return goban.writeCell(this,position, player);
+	return goban.writeCell(this,position, player,true);
 	
 	/*
 	//formation d'une nouvelle liste comprenant un nouveau groupe formé

@@ -80,16 +80,40 @@ public class Goban {
  /**
   * setter for squares.
   */
- public Move writeCell(AtariGo atariGo,Position position, Stone stone) {
+ public Move writeCell(AtariGo atariGo,Position position, Stone stone, boolean finalWriting) {
 	matrice[position.getLine()][position.getColumn()] = stone;
 	
 	GroupsList newGL = groupsList.updateGroups(this,position,stone);
 	//test de la prise sur le nouveau groupe
 	GroupsList caughtList = this.hasCaught(position,newGL);
 	
-	if(this.isCaught(newGL.getGroup(position))){
+	if(finalWriting){
+		if(this.isCaught(newGL.getGroup(position))){
+			if (!caughtList.isEmpty()) {
+				atariGo.totalMoves++;
+				if(stone==Stone.WHITE){
+					atariGo.caughtBlack += caughtList.totalStones();
+					if(atariGo.caughtBlack>=atariGo.captureObjective){
+						return Move.WIN;
+					}
+				}
+				else{
+					atariGo.caughtWhite += caughtList.totalStones();
+					if(atariGo.caughtWhite>=atariGo.captureObjective){
+						return Move.WIN;
+					}
+				}
+				System.out.println(stone.toString()+"has won");
+			}
+			System.out.println("is cuaght !!");
+			System.out.println("printing gList");
+			groupsList.print();
+			this.emptyCell(position);
+			return Move.INVALID;
+		}
+		groupsList = newGL;
+		caughtList = this.hasCaught(position,groupsList);
 		if (!caughtList.isEmpty()) {
-			atariGo.totalMoves++;
 			if(stone==Stone.WHITE){
 				atariGo.caughtBlack += caughtList.totalStones();
 				if(atariGo.caughtBlack>=atariGo.captureObjective){
@@ -103,30 +127,11 @@ public class Goban {
 				}
 			}
 			System.out.println(stone.toString()+"has won");
+			//return Coup.GAGNANT;
 		}
-		System.out.println("is cuaght !!");
-		System.out.println("printing gList");
-		groupsList.print();
-		this.emptyCell(position);
-		return Move.INVALID;
 	}
-	groupsList = newGL;
-	caughtList = this.hasCaught(position,groupsList);
-	if (!caughtList.isEmpty()) {
-		if(stone==Stone.WHITE){
-			atariGo.caughtBlack += caughtList.totalStones();
-			if(atariGo.caughtBlack>=atariGo.captureObjective){
-				return Move.WIN;
-			}
-		}
-		else{
-			atariGo.caughtWhite += caughtList.totalStones();
-			if(atariGo.caughtWhite>=atariGo.captureObjective){
-				return Move.WIN;
-			}
-		}
-		System.out.println(stone.toString()+"has won");
-		//return Coup.GAGNANT;
+	else{
+		groupsList = newGL;
 	}
 	return Move.NEUTRAL;
 }
@@ -303,7 +308,7 @@ public LinkedList<Goban> computeMoves(AtariGo atariGo,Stone stone){
 	 
 	 for(Position position : getCells(Stone.EMPTY)){
 		 Goban newGoban = new Goban(this);
-		 newGoban.writeCell(atariGo,position, stone);
+		 newGoban.writeCell(atariGo,position, stone,false);
 		 gobanList.add(newGoban);
 	 }
 	 Collections.shuffle(gobanList);
