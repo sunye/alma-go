@@ -1,47 +1,60 @@
-package ia;
+package ihm;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Callable;
+
+import ia.AlphaBeta;
 
 import jeu.Coordonnees;
 import jeu.Couleur;
 import jeu.GobanStructure;
 import jeu.GroupePieces;
 
-public class AlphaBeta {
+public class AiThread implements Callable<Coordonnees>{
 	
+    private GobanStructure plateau;
+    private Couleur color;
+    
 	private final static int NOTE_MIN = -100000;
 	private final static int NOTE_MAX = 100000;
 	
-	private GobanStructure plateau;
-	private Couleur color; 
-
 	private boolean moveForced = false;
 	private Coordonnees bestMove;
 
 	private Integer profondeur;
-
+    
+    
+    public Coordonnees call() {
+      return createTree(plateau, color);
+    }
+    
 
 	/* Constructor */
-	public AlphaBeta(GobanStructure plateau, Couleur color, Integer prof) {
+	public AiThread(GobanStructure plateau, Couleur color, Integer prof) {
 		super();
 		this.plateau = plateau;
 		this.color = color;
 		this.profondeur = prof;
 	}
 	
-	public AlphaBeta(Integer profondeur) {
+	public AiThread(Integer profondeur) {
 		super();
 		this.plateau = new GobanStructure();
 		this.color = Couleur.none;
 		this.profondeur = profondeur;
 	}
 	
-	public AlphaBeta() {
+	public AiThread() {
 		super();
 		this.plateau = new GobanStructure();
 		this.color = Couleur.none;
 		this.profondeur = 3;
+	}
+	
+	public void majAiThread(GobanStructure plateau, Couleur color){
+		this.plateau = plateau;
+		this.color = color;
 	}
 	
 	/* Function of decision tree creation (without parameters) */
@@ -331,6 +344,11 @@ public class AlphaBeta {
 		return bestMove;
 		
 	}
-	
+    
+    
+    
+    
+
 }
+
 

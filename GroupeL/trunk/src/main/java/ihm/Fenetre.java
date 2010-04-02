@@ -73,7 +73,20 @@ public class Fenetre extends JFrame implements ActionListener {
                 JButton forceToPlay = new JButton("Forcer à jouer");
                 forceToPlay.setBounds(this.getWidth()-140,this.getHeight()-90,120,30);
                 add(forceToPlay);
-                forceToPlay.addActionListener(this); 
+                //forceToPlay.addActionListener(this); 
+                forceToPlay.addActionListener(
+                		  new ActionListener() {
+                		    public void actionPerformed(ActionEvent e) {
+                		      // création d'un Thread d'exécution
+                		      Thread t = new Thread() {
+                		        public void run() {
+                		        	Pan.forceToPlay();
+                		        }
+                		      };
+                		      t.start();
+                		    }
+                		  }
+                		);
 
        
                 this.setJMenuBar(barreMenu);
@@ -120,7 +133,7 @@ public class Fenetre extends JFrame implements ActionListener {
 				
 				/* We force the artificial intelligence to return the best already computed move. */
 			
-				//Pan.getAI().forceToPlay();
+				Pan.forceToPlay();
 				
 			}
 			
