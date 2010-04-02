@@ -3,6 +3,8 @@ package ihm;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
@@ -52,6 +54,12 @@ public class Fenetre extends JFrame implements ActionListener {
                 jeu.add(pVp);
                 jeu.add(pVc);
                 jeu.add(quitter);
+                
+                JButton forceToPlay = new JButton("Forcer à jouer");
+                forceToPlay.setBounds(this.getWidth()-140,this.getHeight()-90,120,30);
+                add(forceToPlay);
+                forceToPlay.addActionListener(this); 
+
        
                 this.setJMenuBar(barreMenu);
              
@@ -87,7 +95,15 @@ public class Fenetre extends JFrame implements ActionListener {
 	            }else if(ChoixOption.equals("Quitter")){
 	            	System.exit(ABORT);
 	            }	
+			} else if (evt.getActionCommand().equalsIgnoreCase("Forcer à jouer")) {
+				
+				/* We force the artificial intelligence to return the best already computed move. */
+			
+				Pan.getAI().forceToPlay();
+				
 			}
+			
+			
 		}
-       
+		       
 }
