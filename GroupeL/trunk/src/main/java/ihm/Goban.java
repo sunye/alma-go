@@ -27,11 +27,13 @@ public class Goban extends JPanel{
         private ImageIcon plateau;
         private ImageIcon pionB;
         private ImageIcon pionN;
+        private ImageIcon mort;
         private ImageIcon vainqueur;
         //tous les points du Goban
         private GobanStructure goban_tab;
         //largeur d'une colonne et hauteur d'une ligne
         private int caseSize;
+        
         
         //bordure de l'image 
         private int bordure;
@@ -60,7 +62,6 @@ public class Goban extends JPanel{
                             
             partiFini=false;
             premCoup=true;
-                
             /**
 	         * Creation de l'image du goban grâce à l'URL donné
 	         */
@@ -107,7 +108,12 @@ public class Goban extends JPanel{
              if (vainqueur_URL != null) {
             	 vainqueur = new ImageIcon(vainqueur_URL);
              }
-                             
+             
+             java.net.URL mort_URL = Fenetre.class.getResource("images/mort.png");
+             //vérification de l'existence de l'image
+             if (mort_URL != null) {
+            	 mort = new ImageIcon(mort_URL);
+             }  
              /**
               * Creation de la matrice de pions
               */
@@ -218,7 +224,7 @@ public class Goban extends JPanel{
 			            	
 			            	// on joue le coup
 			            	goban_tab.ajoutPiece(coup,joueur);
-			            	repaint();
+			            	
 			            	// on signifie que le coup est jouer
 			            	coupFini();
 			            }		            
@@ -255,19 +261,20 @@ public class Goban extends JPanel{
 	        super.paintComponent(g);
 	        //Affichage du goban
 	        g.drawImage(plateau.getImage(),0,0,this);
+	    
 	        
 	        //Affichage de la couleur du joueur qui doit joueur
 		    if(partiFini){
 		    	g.drawImage(vainqueur.getImage(),plateau.getIconWidth()-vainqueur.getIconWidth(),plateau.getIconHeight()-vainqueur.getIconHeight()-info,this);
 		    }
-		    
+		    	    
 		    // affichage de la couleur du joueur
 	        if(joueur == Couleur.blanc){
 	        	g.drawImage(pionB.getImage(),plateau.getIconWidth()-info,bordure*3,this);
 		    }else if(joueur == Couleur.noir){
 		        g.drawImage(pionN.getImage(),plateau.getIconWidth()-info,bordure*3,this);
 		    }
-	        
+		    	        
 	        //Affichage de tout les pions en parcourant la matrice
 	        for(int i=1; i<=goban_tab.getTaille(); i++){
 	            for(int j=1;j<=goban_tab.getTaille(); j++){
@@ -277,6 +284,10 @@ public class Goban extends JPanel{
 	              		}else{
 	            			g.drawImage(pionB.getImage(),((i-1)*caseSize)+bordure,((j-1)*caseSize)+bordure,this);
 	                	}
+	            		
+	            		if((goban_tab.getPlateau()[i][j].getLiberte() == 0) && (goban_tab.getPlateau()[i][j].getCouleur()==joueur.invCouleur())){
+	            			g.drawImage(mort.getImage(),((i-1)*caseSize)+bordure,((j-1)*caseSize)+bordure,this);
+	            		}
 	                }
 	            }
 	        }
