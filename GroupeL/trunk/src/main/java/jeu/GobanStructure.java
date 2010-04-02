@@ -55,11 +55,13 @@ public class GobanStructure {
 		
 		for(int y=1 ; y<= taille ; y++){
 			for(int x=1 ; x<=taille ; x++){
+
 				if(plateau[x][y]==null){
 					lcl.add(new Coordonnees(x, y));
 				}
 			}
 		}
+
 		
 		return lcl;
 	}
@@ -376,6 +378,7 @@ public class GobanStructure {
 		if(plateau[coord.getX()][coord.getY()] == null){
 			ok=true;
 			/* si la place tester n'a pas de liberter */
+			//System.out.print("-"+testLiberte(coord)+"-");
 			if(testLiberte(coord) == 0){
 				ok=false;
 				/* on verifie si cette place est la derniere liberte des groupes ajacent de meme couleur */

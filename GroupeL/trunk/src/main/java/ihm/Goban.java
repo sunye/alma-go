@@ -36,6 +36,8 @@ public class Goban extends JPanel{
         
         private boolean partiFini;
         
+        private boolean premCoup;
+        
         //la couleur du joueur qui joue
         Couleur joueur;
         
@@ -43,6 +45,7 @@ public class Goban extends JPanel{
         	super();
                             
             partiFini=false;
+            premCoup=true;
                 
             /**
 	         * Creation de l'image du goban grâce à l'URL donné
@@ -102,7 +105,7 @@ public class Goban extends JPanel{
             repaint();
                 
             /* on initialise le premier a blanc */
-            joueur=Couleur.blanc;
+            joueur=Couleur.noir;
             withAI=true;
             AI = new AlphaBeta();    
         }
@@ -135,12 +138,29 @@ public class Goban extends JPanel{
 			            coupFini();
 			            
 			            // si l'IA doit jouer
-			            if(withAI){
+			            if(withAI && !partiFini){
 			            	
-			            	// on recherche le meilleur coup
-			            	coup = AI.createTree(goban_tab,joueur);
-			            	
-			            	System.out.println("-> "+ coup.toString());
+			            	if(premCoup){
+			            		
+			            		if(coup.getX() < goban_tab.getTaille()/2){
+			            			if(coup.getY() < goban_tab.getTaille()/2){
+			            				coup = new Coordonnees(7, 7);
+			            			}else{
+			            				coup = new Coordonnees(7, 3);
+			            			}
+			            		}else{
+			            			if(coup.getY() < goban_tab.getTaille()/2){
+			            				coup = new Coordonnees(3, 7);
+			            			}else{
+			            				coup = new Coordonnees(7, 3);
+			            			}
+			            		}
+			            		premCoup = false;
+			            		
+			            	}else{
+			            		// on recherche le meilleur coup
+			            		coup = AI.createTree(goban_tab,joueur);
+			            	}     
 			            	
 			            	// on joue le coup
 			            	goban_tab.ajoutPiece(coup,joueur);
@@ -192,8 +212,8 @@ public class Goban extends JPanel{
 		    }
 	        
 	        //Affichage de tout les pions en parcourant la matrice
-	        for(int i=1; i<=9; i++){
-	            for(int j=1;j<=9; j++){
+	        for(int i=1; i<=goban_tab.getTaille(); i++){
+	            for(int j=1;j<=goban_tab.getTaille(); j++){
 	            	if(goban_tab.getPlateau()[i][j] != null){
 	            		if(goban_tab.getPlateau()[i][j].getCouleur() == Couleur.noir){
 	            			g.drawImage(pionN.getImage(),((i-1)*caseSize)+bordure,((j-1)*caseSize)+bordure,this);
@@ -218,8 +238,9 @@ public class Goban extends JPanel{
          */
 		public void resetGame(boolean type) {
 			goban_tab = new GobanStructure();
-			joueur = Couleur.blanc;
+			joueur = Couleur.noir;
 			withAI=type;
+			premCoup=true;
 			repaint();
 		}
 }
