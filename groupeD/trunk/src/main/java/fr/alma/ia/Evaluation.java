@@ -1,5 +1,7 @@
 package fr.alma.ia;
 
+import java.util.LinkedList;
+
 import fr.alma.atarigo.Group;
 import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Goban;
@@ -8,19 +10,42 @@ import fr.alma.atarigo.Position;
 
 public class Evaluation {
 	
-	static public int VERYGOOD = 1000;
+	static public int VERYGOOD = 750;
 	static public int GOOD = 500;
+	static public int PLUS = 250;
+	static public int MINUS = -250;
 	static public int BAD = -500;
-	static public int VERYBAD = -1000;
+	static public int VERYBAD = -750;
 
 	static ValuedGoban evaluate(Goban goban, Goban parentGoban, Stone stone, Position position){
 		ValuedGoban cmpt = new ValuedGoban(0,goban);
-		cmpt.evaluation_+=groupExtension(goban,parentGoban,stone);
+		cmpt.evaluation_+=groupCreation(goban,parentGoban,stone);
+		cmpt.evaluation_+=groupExtension(goban,stone);
 		cmpt.evaluation_+=isCaught(goban,position,stone);
+		cmpt.evaluation_+=lastLiberty(goban,stone);
 		//System.out.println("score="+cmpt.evaluation_);
 		return cmpt;
 	}
 		
+	static int lastLiberty(Goban goban, Stone stone){
+		int cmptBlack=0,cmptWhite=0;
+		
+		for(int i=0;i<goban.getLines();i++){
+			for(int j=0;j<goban.getLines();j++){
+				if(goban.surrounded(new Position(i,j),goban.matrice[i][j].opponent())==0){
+					if(goban.matrice[i][j]==Stone.BLACK)
+						cmptBlack++;
+					if(goban.matrice[i][j]==Stone.WHITE)
+						cmptWhite++;
+				}
+			}
+		}
+		if(stone==Stone.BLACK)
+			return GOOD*cmptWhite+BAD*cmptBlack;
+		else
+			return BAD*cmptWhite+GOOD*cmptBlack;
+	}
+	
 	static int isCaught(Goban goban,Position position,Stone stone){
 		Group group = goban.groupsList.getGroup(position);
 		int prises = goban.hasCaught(position, goban.groupsList).totalStones();
@@ -36,7 +61,25 @@ public class Evaluation {
 		return 0;
 	}
 	
-	static int groupExtension(Goban goban, Goban parentGoban, Stone stone){
+	static int groupExtension(Goban goban, Stone stone){
+		int maxBlack=0, maxWhite=0;
+		for(Group group : goban.groupsList.gList){
+			if(group.stone==Stone.BLACK){
+				if(group.linkedStones.size()>maxBlack)
+					maxBlack=group.linkedStones.size();
+			}
+			else{
+				if(group.linkedStones.size()>maxWhite)
+					maxWhite=group.linkedStones.size();
+			}
+		}
+		if(stone==Stone.BLACK)
+			return maxBlack*GOOD+maxWhite*BAD;
+		else
+			return maxBlack*BAD+maxWhite*GOOD;
+	}
+	
+	static int groupCreation(Goban goban, Goban parentGoban, Stone stone){
 		int cmpt = 0;
 		
 		int cmptCurrentBlack=0, cmptCurrentWhite=0, cmptNowBlack=0, cmptNowWhite =0;
@@ -62,14 +105,14 @@ public class Evaluation {
 		
 		if(stone==Stone.BLACK){
 			if(black)
-				cmpt=GOOD*cmptNowBlack;
+				cmpt=PLUS*cmptNowBlack;
 			if(white)
-				cmpt=BAD*cmptNowWhite;
+				cmpt=MINUS*cmptNowWhite;
 		}else{
 			if(white)
-				cmpt=GOOD*cmptNowWhite;
+				cmpt=PLUS*cmptNowWhite;
 			if(black)
-				cmpt=BAD*cmptNowBlack;
+				cmpt=MINUS*cmptNowBlack;
 		}
 		
 		return cmpt;
