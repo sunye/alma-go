@@ -3,9 +3,6 @@ package ihm;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import javax.swing.*;
 
 public class Fenetre extends JFrame implements ActionListener {
@@ -14,17 +11,21 @@ public class Fenetre extends JFrame implements ActionListener {
         private static final long serialVersionUID = 1L;
         private JMenuBar barreMenu;
         private JMenu jeu;
+        private JMenu diff;
         private JMenu a_propos;
         private JMenuItem pVp;
         private JMenuItem pVc;
         private JMenuItem quitter;
+        private JMenuItem nul;
+        private JMenuItem moy;
+        private JMenuItem str;
         
         //Panel représentant le goban
         private Goban Pan;
        
         public Fenetre(String s){
                 super(s);
-                setSize(710,650);
+                setSize(750,650);
                
                 /**
          * Creations des différents outils permettant la mise en place de la barre de menu
@@ -44,16 +45,30 @@ public class Fenetre extends JFrame implements ActionListener {
                 quitter=new JMenuItem("Quitter");
                 quitter.addActionListener(this);
                 
+                diff= new JMenu("Difficulté");
+                
+                nul = new JMenuItem("Nulle");
+                nul.addActionListener(this);
+                moy = new JMenuItem("Moyen");
+                moy.addActionListener(this);
+                str = new JMenuItem("Fort");
+                str.addActionListener(this);
+                
                 /**
          * Mise en place de la barre de menu
          */
                
                 barreMenu.add(jeu);
+                barreMenu.add(diff);
                 barreMenu.add(a_propos);
                
                 jeu.add(pVp);
                 jeu.add(pVc);
                 jeu.add(quitter);
+                
+                diff.add(nul);
+                diff.add(moy);
+                diff.add(str);
                 
                 JButton forceToPlay = new JButton("Forcer à jouer");
                 forceToPlay.setBounds(this.getWidth()-140,this.getHeight()-90,120,30);
@@ -94,12 +109,18 @@ public class Fenetre extends JFrame implements ActionListener {
 	            	this.repaint();
 	            }else if(ChoixOption.equals("Quitter")){
 	            	System.exit(ABORT);
-	            }	
+	            }else if(ChoixOption.equals("Nulle")){
+	            	Pan.resetIA(2);
+	            }else if(ChoixOption.equals("Moyen")){
+	            	Pan.resetIA(3);
+	            }else if(ChoixOption.equals("Fort")){
+	            	Pan.resetIA(4);
+	            }
 			} else if (evt.getActionCommand().equalsIgnoreCase("Forcer à jouer")) {
 				
 				/* We force the artificial intelligence to return the best already computed move. */
 			
-				Pan.getAI().forceToPlay();
+				//Pan.getAI().forceToPlay();
 				
 			}
 			
