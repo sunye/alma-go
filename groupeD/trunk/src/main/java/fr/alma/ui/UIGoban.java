@@ -185,14 +185,14 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 					AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
 					plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo,new Position(0,0));
 					putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());
-					nbMove++;
-					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+"  nombre de coups jous = "+atariGo.totalMoves);
+					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+"  nombre de coups joués = "+nbMove);
 
 					repaint();
 					//atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
 				}
 			}
 		}
+		nbMove++;
 	}
 	
 	public void putStone(int x,int y){
