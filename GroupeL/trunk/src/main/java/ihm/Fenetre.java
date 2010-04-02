@@ -87,8 +87,7 @@ public class Fenetre extends JFrame implements ActionListener {
                 		    }
                 		  }
                 		);
-
-       
+                    
                 this.setJMenuBar(barreMenu);
              
                 // lancement d'une parti de base

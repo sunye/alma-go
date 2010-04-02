@@ -244,8 +244,11 @@ public class AlphaBeta {
 		if (plateau.fin(color)){
 			note = NOTE_MAX;
 		}else{
-			note = note + 1000 * derniereLiberte(color);
-			note = note - 1000 * derniereLiberte(color.invCouleur());
+			note = note - 1000 * derniereLiberte(color);
+			note = note + 100 * derniereLiberte(color.invCouleur());
+						
+			note = note + 10 * plateau.getGroupes(color).size();
+			note = note - 10 * plateau.getGroupes(color.invCouleur()).size();
 			
 			note = note - nbLiberte(color.invCouleur());
 		}
