@@ -5,8 +5,14 @@ import ia.AlphaBeta;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import jeu.Coordonnees;
@@ -33,12 +39,19 @@ public class Goban extends JPanel{
         
         // jouer avec ou sans IA
         private boolean withAI;
-        private AlphaBeta AI;
+        
+        private int currentDepth;
         
         private boolean partiFini;
         
         private boolean premCoup;
         
+        private boolean moveForced;
+        private Coordonnees move;
+        
+        Future<Coordonnees> future;
+        
+       
         //la couleur du joueur qui joue
         Couleur joueur;
         
@@ -85,13 +98,16 @@ public class Goban extends JPanel{
             	 pionN = new ImageIcon(pionN_URL);
              }
                 
+             /**
+              * Creation de l'image de victoire
+              */
+             
              java.net.URL vainqueur_URL = Fenetre.class.getResource("images/Vainqueur.png");
              //vérification de l'existence de l'image
              if (vainqueur_URL != null) {
             	 vainqueur = new ImageIcon(vainqueur_URL);
              }
-             
-                
+                             
              /**
               * Creation de la matrice de pions
               */
@@ -110,7 +126,8 @@ public class Goban extends JPanel{
             withAI=true;
             
             //creation de l'IA
-            AI = new AlphaBeta(DIFF_BASE);    
+            //AI = new AlphaBeta(DIFF_BASE);
+            currentDepth = DIFF_BASE;
         }
         
         /**
@@ -119,6 +136,8 @@ public class Goban extends JPanel{
          */
         private void processMouseClicked(MouseEvent e) {
             int x, y;
+            
+            moveForced = false;
 
             if(!partiFini){
             
@@ -159,8 +178,42 @@ public class Goban extends JPanel{
 			            		premCoup = false;
 			            		
 			            	}else{
-			            		// on recherche le meilleur coup
-			            		coup = AI.createTree(goban_tab,joueur);
+			            		
+			            		//Thread t = new Thread() {
+			            			
+			            			//public void run(){
+					            		// on recherche le meilleur coup
+					            		ExecutorService pool = Executors.newCachedThreadPool();
+
+					            		Callable<Coordonnees> aiThread= new AiThread(goban_tab, joueur,currentDepth);
+					            		future = pool.submit(aiThread);
+					            		
+										while(!future.isDone()){
+											System.out.println("ah");
+											if(moveForced){
+												future.cancel(true);
+												
+											}
+										}
+					            		
+					            		try {
+					            			if ((!moveForced) && (future.isDone())){
+					            				coup = future.get();
+					            			} else {
+					            				moveForced = false;
+					            			}
+											
+										} catch (InterruptedException e1) {
+											e1.printStackTrace();
+										} catch (ExecutionException e1) {
+											e1.printStackTrace();
+										}
+			            			//}
+			            			
+								//};
+								//t.start();
+
+								
 			            	}     
 			            	
 			            	// on joue le coup
@@ -249,7 +302,18 @@ public class Goban extends JPanel{
 			repaint();
 		}
 
-		public void resetIA(Integer niv) {
-			AI = new AlphaBeta(niv);
+		public GobanStructure getGoban_tab() {
+			return goban_tab;
 		}
+
+		public void forceToPlay() {
+			if (future.isDone()){
+				moveForced = true;
+			}
+		}
+		
+		public void resetIA(Integer niv) {
+			currentDepth = niv;
+		}
+
 }
