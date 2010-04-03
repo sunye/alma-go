@@ -1,6 +1,6 @@
 package fr.alma.atarigo;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.ListIterator;
 
 /**
@@ -10,10 +10,10 @@ import java.util.ListIterator;
  */
 public class GroupsList implements Cloneable{
 
-	public LinkedList<Group> gList;
+	public ArrayList<Group> gList;
 	
 	public GroupsList(){
-		gList = new LinkedList<Group>();
+		gList = new ArrayList<Group>();
 	}
 	
 	/**
@@ -32,7 +32,7 @@ public class GroupsList implements Cloneable{
 	}
 
 	
-	public LinkedList<Group >getListe(){
+	public ArrayList<Group >getListe(){
 		return gList;
 	}
 	
@@ -99,7 +99,7 @@ public class GroupsList implements Cloneable{
 		}
 		//n'appartient à aucun groupe donc constitue un groupe à lui seul
 		if (!estAjoute){
-			LinkedList<Position> linkedList = new LinkedList<Position>();
+			ArrayList<Position> linkedList = new ArrayList<Position>();
  			linkedList.add(position);
  			Group groupe = new Group(linkedList,plateau.readCell(position));
  			nouvListeG.gList.add(groupe);
