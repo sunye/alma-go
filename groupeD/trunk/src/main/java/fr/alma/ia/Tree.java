@@ -1,5 +1,6 @@
 package fr.alma.ia;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import fr.alma.atarigo.AtariGo;
@@ -9,7 +10,7 @@ import fr.alma.atarigo.Goban;
 public class Tree {
 	private Goban goban_;
 	private Tree parent_;
-	private LinkedList<Tree> children_;
+	private ArrayList<Tree> children_;
 
 	/**
 	 * Construct a node with a Goban
@@ -18,7 +19,7 @@ public class Tree {
 	public Tree(Goban goban){
 		goban_ = goban;
 		parent_=null;
-		children_ = new LinkedList<Tree>();
+		children_ = new ArrayList<Tree>();
 	}
 	
 	/**
@@ -29,7 +30,7 @@ public class Tree {
 	public Tree(Goban goban, Tree father){
 		goban_ = goban;
 		parent_= father;
-		children_ = new LinkedList<Tree>();
+		children_ = new ArrayList<Tree>();
 	}
 	
 	/**
@@ -69,7 +70,7 @@ public class Tree {
 	 * Return the children of the node
 	 * @return a LinkedList<Tree>
 	 */
-	public LinkedList<Tree> getChildren(){
+	public ArrayList<Tree> getChildren(){
 		return children_;
 	}
 	

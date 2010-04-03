@@ -1,5 +1,6 @@
 package fr.alma.atarigo;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
 /**
@@ -8,7 +9,7 @@ import java.util.ListIterator;
  */
 public class Group implements Cloneable{
 
-	public LinkedList<Position> linkedStones;
+	public ArrayList<Position> linkedStones;
 	public Stone stone;
 	
 /**
@@ -16,7 +17,7 @@ public class Group implements Cloneable{
  * @param linkedList list of stones
  * @param color of the group
  */
-	public Group(LinkedList<Position> linkedList, Stone color) {
+	public Group(ArrayList<Position> linkedList, Stone color) {
 		// TODO Auto-generated constructor stub
 		this.linkedStones = linkedList;
 		this.stone = color;
@@ -27,7 +28,7 @@ public class Group implements Cloneable{
 	 * @return cloned group
 	 */
 	public Group clone(){
-		Group group = new Group(new LinkedList<Position>(),stone);
+		Group group = new Group(new ArrayList<Position>(),stone);
 		Position currentPosition;
 		ListIterator itr = linkedStones.listIterator();
  		while(itr.hasNext()){

@@ -16,11 +16,13 @@ public class Evaluation {
 	static public int MINUS = -250;
 	static public int BAD = -500;
 	static public int VERYBAD = -750;
+	
+	static public boolean TRACE = false;
 
 	static ValuedGoban evaluate(Goban goban, Goban parentGoban, Stone stone, Position position){
 		ValuedGoban cmpt = new ValuedGoban(0,goban);
-		
-		System.out.println();
+		if(TRACE)
+			System.out.println();
 		cmpt.evaluation_+=groupCreation(goban,parentGoban,stone);
 		cmpt.evaluation_+=groupExtension(goban,stone);
 		cmpt.evaluation_+=averageGroupSize(goban,stone);
@@ -53,12 +55,12 @@ public class Evaluation {
 		Group group = goban.groupsList.getGroup(position);
 		int prises = goban.hasCaught(position, goban.groupsList).totalStones();
 		if(prises>0){
+			if(TRACE)
 				System.out.println("---------------------------------> prise de "+prises+" pions par le joueur "+group.stone.toString()+ " alors que "+stone+" joue");
-				System.out.println(goban);
-				if(group.stone==stone)
-					return VERYBAD;
-				else
-					return VERYGOOD;
+			if(group.stone==stone)
+				return VERYBAD;
+			else
+				return VERYGOOD;
 		}
 		return 0;
 	}
@@ -85,7 +87,8 @@ public class Evaluation {
 		int scoreBlack = (maxBlack*1000)/cmptNowBlack;
 		int scoreWhite = (maxWhite*1000)/cmptNowWhite;
 		
-		System.out.println("////////////////////////// score BLACK = "+scoreBlack+" score WHITE = "+scoreWhite);
+		if(TRACE)
+			System.out.println("////////////////////////// score BLACK = "+scoreBlack+" score WHITE = "+scoreWhite);
 		
 		if(stone==Stone.BLACK)
 			return scoreBlack-scoreWhite;
@@ -105,8 +108,8 @@ public class Evaluation {
 					maxWhite=group.linkedStones.size();
 			}
 		}
-		
-		System.out.println("///// plus grand groupe --> BLACK = "+maxBlack+", WHITE = "+maxWhite);
+		if(TRACE)
+			System.out.println("///// plus grand groupe --> BLACK = "+maxBlack+", WHITE = "+maxWhite);
 		
 		if(stone==Stone.BLACK)
 			return maxBlack*GOOD;
@@ -128,7 +131,8 @@ public class Evaluation {
 				cmptNowBlack++;
 			else
 				cmptNowWhite++;
-		System.out.println("////////// BLACK = "+cmptNowBlack+" groupes, WHITE = "+cmptNowWhite+" groupes");
+		if(TRACE)
+			System.out.println("////////// BLACK = "+cmptNowBlack+" groupes, WHITE = "+cmptNowWhite+" groupes");
 		boolean black=false,white=false;
 				
 		if(cmptCurrentBlack<cmptNowBlack){

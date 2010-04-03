@@ -1,16 +1,10 @@
 package fr.alma.atarigo;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.ListIterator;
 
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.ListIterator;
 
 import fr.alma.atarigo.AtariGo.Move;
 
@@ -279,8 +273,8 @@ public void actionPerformed(ActionEvent arg0) {
 	
 }
 
-public LinkedList<Position> emptyCells(){
-	 LinkedList<Position> emptyCellsList = new LinkedList<Position>();
+public ArrayList<Position> emptyCells(){
+	 ArrayList<Position> emptyCellsList = new ArrayList<Position>();
 	 
 	 for(int i=0;i<getLines();i++){
 		 for(int j=0;j<getColumns();j++){
@@ -291,8 +285,8 @@ public LinkedList<Position> emptyCells(){
 	 return emptyCellsList;
 }
 
-public LinkedList<Position> getCells(Stone stone){
-	 LinkedList<Position> cellsList = new LinkedList<Position>();
+public ArrayList<Position> getCells(Stone stone){
+	 ArrayList<Position> cellsList = new ArrayList<Position>();
 	 
 	 for(int i=0;i<getLines();i++){
 		 for(int j=0;j<getColumns();j++){
@@ -303,8 +297,8 @@ public LinkedList<Position> getCells(Stone stone){
 	 return cellsList;
 }
 
-public LinkedList<Goban> computeMoves(AtariGo atariGo,Stone stone){
-	 LinkedList<Goban> gobanList = new LinkedList<Goban>();
+public ArrayList<Goban> computeMoves(AtariGo atariGo,Stone stone){
+	 ArrayList<Goban> gobanList = new ArrayList<Goban>();
 	 
 	 for(Position position : getCells(Stone.EMPTY)){
 		 Goban newGoban = new Goban(this);
