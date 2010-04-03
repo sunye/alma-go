@@ -19,11 +19,14 @@ public class Evaluation {
 
 	static ValuedGoban evaluate(Goban goban, Goban parentGoban, Stone stone, Position position){
 		ValuedGoban cmpt = new ValuedGoban(0,goban);
+		
+		System.out.println();
 		cmpt.evaluation_+=groupCreation(goban,parentGoban,stone);
 		cmpt.evaluation_+=groupExtension(goban,stone);
+		cmpt.evaluation_+=averageGroupSize(goban,stone);
 		cmpt.evaluation_+=isCaught(goban,position,stone);
 		cmpt.evaluation_+=lastLiberty(goban,stone);
-		//System.out.println("score="+cmpt.evaluation_);
+
 		return cmpt;
 	}
 		
@@ -50,15 +53,44 @@ public class Evaluation {
 		Group group = goban.groupsList.getGroup(position);
 		int prises = goban.hasCaught(position, goban.groupsList).totalStones();
 		if(prises>0){
-			if(group.stone==stone){
-				System.out.println("-----> prise de "+prises+" pions par le joueur en cours");
-				return prises*VERYGOOD;
-			}else{
-				System.out.println("-----> prise de "+prises+" pions par le joueur ennemi");
-				return prises*VERYBAD;
-			}
+				System.out.println("---------------------------------> prise de "+prises+" pions par le joueur "+group.stone.toString()+ " alors que "+stone+" joue");
+				System.out.println(goban);
+				if(group.stone==stone)
+					return VERYBAD;
+				else
+					return VERYGOOD;
 		}
 		return 0;
+	}
+	
+	static int averageGroupSize(Goban goban, Stone stone){
+		int maxBlack=0, maxWhite=0;
+		for(Group group : goban.groupsList.gList){
+			if(group.stone==Stone.BLACK){
+				if(group.linkedStones.size()>maxBlack)
+					maxBlack=group.linkedStones.size();
+			}
+			else{
+				if(group.linkedStones.size()>maxWhite)
+					maxWhite=group.linkedStones.size();
+			}
+		}
+		int cmptNowBlack=0, cmptNowWhite =0;
+		for(Group group : goban.groupsList.getListe()){
+			if(group.stone==Stone.BLACK)
+				cmptNowBlack++;
+			else
+				cmptNowWhite++;
+		}
+		int scoreBlack = (maxBlack*1000)/cmptNowBlack;
+		int scoreWhite = (maxWhite*1000)/cmptNowWhite;
+		
+		System.out.println("////////////////////////// score BLACK = "+scoreBlack+" score WHITE = "+scoreWhite);
+		
+		if(stone==Stone.BLACK)
+			return scoreBlack-scoreWhite;
+		else
+			return scoreWhite-scoreBlack;
 	}
 	
 	static int groupExtension(Goban goban, Stone stone){
@@ -73,10 +105,13 @@ public class Evaluation {
 					maxWhite=group.linkedStones.size();
 			}
 		}
+		
+		System.out.println("///// plus grand groupe --> BLACK = "+maxBlack+", WHITE = "+maxWhite);
+		
 		if(stone==Stone.BLACK)
-			return maxBlack*GOOD+maxWhite*BAD;
+			return maxBlack*GOOD;
 		else
-			return maxBlack*BAD+maxWhite*GOOD;
+			return maxWhite*BAD;
 	}
 	
 	static int groupCreation(Goban goban, Goban parentGoban, Stone stone){
@@ -93,7 +128,7 @@ public class Evaluation {
 				cmptNowBlack++;
 			else
 				cmptNowWhite++;
-		
+		System.out.println("////////// BLACK = "+cmptNowBlack+" groupes, WHITE = "+cmptNowWhite+" groupes");
 		boolean black=false,white=false;
 				
 		if(cmptCurrentBlack<cmptNowBlack){
