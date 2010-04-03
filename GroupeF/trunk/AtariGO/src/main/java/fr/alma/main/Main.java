@@ -17,9 +17,9 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		//new Ihm();
+		new Ihm();
 		
-		ArrayList<Pion> coups = new ArrayList<Pion>();
+		/*ArrayList<Pion> coups = new ArrayList<Pion>();
 		
 		coups.add(new Pion(Couleur.NULL,new Point(0,1)));
 		coups.add(new Pion(Couleur.NULL,new Point(0,2)));
@@ -36,8 +36,8 @@ public class Main {
 		
 		//a.ParcoursProf();
 		//a.AffichageNA();
-		
-		System.out.println("Temp d'execution : "+time);
+*/		
+		//System.out.println("Temp d'execution : "+time);
 				
 		
 					

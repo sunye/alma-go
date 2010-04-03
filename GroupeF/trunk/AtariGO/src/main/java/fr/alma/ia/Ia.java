@@ -16,7 +16,7 @@ import static fr.alma.jeu.Jeu.getLiberte;
  */
 public class Ia {
 	
-	public Point alphaBeta(Arbre a){
+	public static Point alphaBeta(Arbre a){
 		return null;
 		
 	}
@@ -37,14 +37,10 @@ public class Ia {
 	 * @param grille la grille a traité
 	 * @return Arbre construit
 	 */
-	public Arbre constuireArbre(Grille grille){
+	public static Arbre constuireArbre(Grille grille){
 		
 		Arbre a = new Arbre(grille);
-		
-		//a.AffichageNA();		
-		System.out.println("------------------------");
-		//a = noterArbre(a);
-		
+				
 		return a;
 				
 	}
@@ -122,10 +118,10 @@ public class Ia {
 			return false;
 	}
 
-	public ArrayList<Point> voisins=new ArrayList<Point>();
-	public void DeterminerVoisins(Grille g,Point p){
+	public static ArrayList<Point> voisins=new ArrayList<Point>();
+	public static void DeterminerVoisins(Grille g,Point p){
 	ArrayList<Point> v=new ArrayList<Point>();
-	if (!(this.voisins.contains(p))) 
+	if (!(voisins.contains(p))) 
 		voisins.add(p);
 	if ((existN(g,p.x,p.y,g.Contenu[p.x][p.y].couleur)))
 		DeterminerVoisins(g,new Point(p.x-1,p.y));
@@ -136,16 +132,16 @@ public class Ia {
 	if ((existE(g,p.x,p.y,g.Contenu[p.x][p.y].couleur)))
 		DeterminerVoisins(g,new Point(p.x,p.y+1));
 	
-	System.out.println(this.voisins.toString());
+	System.out.println(voisins.toString());
 	//return voisins;
 	
 	}
-	private ArrayList<Point> determinerGroupesBlanc(Grille g){
+	private static ArrayList<Point> determinerGroupesBlanc(Grille g){
 		ArrayList<Point> listeG=new ArrayList<Point>();
 		for(int i=0;i<9;i++)
 			for(int j=0;j<9;j++){
 				if(g.Contenu[i][j].couleur.equals(Pion.Couleur.BLANC)){
-					this.voisins=new ArrayList<Point>();
+					voisins=new ArrayList<Point>();
 					DeterminerVoisins(g, new Point(i,j));
 					boolean groupeExistant=false;
 					for(int k=0;k<voisins.size();k++)
@@ -162,7 +158,7 @@ public class Ia {
 				
 	}
 	
-	private ArrayList<Point> determinerGroupesNoir(Grille g){
+	private static ArrayList<Point> determinerGroupesNoir(Grille g){
 		ArrayList<Point> listeG=new ArrayList<Point>();
 		for(int i=0;i<9;i++)
 			for(int j=0;j<9;j++){
@@ -182,8 +178,8 @@ public class Ia {
 
 	}
 	
-	private int determineMin(Grille g,ArrayList<Point> listeG){
-		int min=81;
+	private static int determineMin(Grille g,ArrayList<Point> listeG){
+		int min=0;
 		for(int k=0;k<listeG.size();k++){
 			Point p=listeG.get(k);
 			int x=getLiberte(g, p, g.Contenu[p.x][p.y].couleur);
@@ -192,13 +188,13 @@ public class Ia {
 		}
 		return min;
 	}
-	public int fonctionEvaluation(Grille g){
+	public static int fonctionEvaluation(Grille g){
 		ArrayList<Point> listeGN=determinerGroupesNoir(g);
 		ArrayList<Point> listeGB=determinerGroupesBlanc(g);
 		System.out.println(listeGB.size());
 		System.out.println(listeGN.size());
-		int minB=determineMin(g, listeGB);
-		int minN=determineMin(g, listeGN);
+		int minB = determineMin(g, listeGB);
+		int minN = determineMin(g, listeGN);
 		return minN-minB;
 	}
 	
