@@ -1,4 +1,4 @@
-package fr.alma.modele.intelligence;
+	package fr.alma.modele.intelligence;
 
 
 import java.util.HashMap;
@@ -216,13 +216,11 @@ public class SunTsu {
 								return result;
 							}
 						}else{
-							if (coul==ajouer){
 								result= result==null?coupActuel:(result.getNote()>coupActuel.getNote()?result:coupActuel);
 								if ( precedentResult!=null&& precedentResult.getNote() < result.getNote()){
 									situation.retirerPion(i, j, ajouer);
 									return result;
 								}
-							}
 						}
 						//test de min max avec le temporaire
 						// qui correspond a l'évaluation actuel

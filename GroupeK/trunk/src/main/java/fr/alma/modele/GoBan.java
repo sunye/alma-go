@@ -13,6 +13,7 @@ public class GoBan {
 	private int nbNoir;
 	private int num=0;
 	CouleurPion gagnant=CouleurPion.EMPTY;
+	
 
 	//private int[] modifier={1,-1};
 	public static int TAILLE_GO_BAN=9;
@@ -57,7 +58,7 @@ public class GoBan {
 	
 	public boolean ajouterPion(int position, int positiony){
 		//Si le nombre est pair alors c'est au blanc de jouer
-		if (num%2==0){
+		if (num%2!=0){
 			//On vérifie si le coup joué est légal avant de placer le pion sur le goban
 			if (estLegal(position, positiony, CouleurPion.BLANC)){
 				goban[position][positiony].setCouleur(CouleurPion.BLANC);
