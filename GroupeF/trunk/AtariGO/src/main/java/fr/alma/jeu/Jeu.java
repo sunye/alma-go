@@ -19,7 +19,8 @@ public class Jeu {
 	
 	public static final int SUICIDE = 0; 
 	public static final int VALIDE = 1;
-	public static final int CAPTURE = 2;
+	public static final int INVALIDE=2;
+	public static final int CAPTURE = 3;
 	
 	public static ArrayList<Pion> voisins = new ArrayList<Pion>();
 	
@@ -336,7 +337,7 @@ public class Jeu {
 	
 		if (y>0)
 			if(c.equals(Pion.Couleur.BLANC))
-				return ((grille.Contenu[x][y-1]).equal(new Pion(Pion.Couleur.BLANC,new Point(x,y-1))));
+				return ((grille.Contenu[x][y-1]).equal(new Pion(Pion.Couleur.NOIR,new Point(x,y-1))));
 			else
 				return ((grille.Contenu[x][y-1]).equal(new Pion(Pion.Couleur.BLANC,new Point(x,y-1))));
 	
@@ -445,13 +446,13 @@ public class Jeu {
 					
 					setVoisins(new ArrayList<Pion>());
 					if (prise){
-						grille.Contenu[x][y]=pion;
+						//grille.Contenu[x][y]=pion;
 						System.out.println("prise");
-						return 3;
+						return CAPTURE;
 					}
 					else{
 						System.out.println("Situation de suicide interdite!!!!");
-						return 0;
+						return SUICIDE;
 					}
 					
 			}
@@ -497,7 +498,7 @@ public class Jeu {
 					System.out.println("à l'est lib="+b);
 					if((b==0)){
 						prise=true;
-						System.out.println("Prise ï¿½ l'est de ["+x+" , "+y+"]");
+						System.out.println("Prise -> l'est de ["+x+" , "+y+"]");
 					}
 				}
 								
@@ -510,20 +511,20 @@ public class Jeu {
 					System.out.println("à l'oeust lib="+b);
 					if((b==0)){
 						prise=true;
-						System.out.println("Prise ï¿½ l'ouest de ["+x+" , "+y+"]");
+						System.out.println("Prise -> l'ouest de ["+x+" , "+y+"]");
 					}
 				}
 				setVoisins(new ArrayList<Pion>());
 				if (prise){
-					grille.Contenu[x][y]=pion;
+					//grille.Contenu[x][y]=pion;
 					System.out.println("Prise");
-					return 3;
+					return CAPTURE;
 				}
 					
 				
 				else{
-					grille.Contenu[x][y]=pion;
-					return 1;
+					//grille.Contenu[x][y]=pion;
+					return VALIDE;
 					}
 				}
 						
@@ -533,7 +534,7 @@ public class Jeu {
 				System.out.println("erreur");
 				setVoisins(new ArrayList<Pion>());
 				
-				return 2;
+				return INVALIDE;
 				
 				}
 			}
