@@ -3,7 +3,7 @@ package fr.alma.modele;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
+
 
 
 public class GoBan {
@@ -12,7 +12,7 @@ public class GoBan {
 	private int nbBlanc;
 	private int nbNoir;
 	private int num=0;
-	CouleurPion gagnant=CouleurPion.EMPTY;
+	private CouleurPion gagnant=CouleurPion.EMPTY;
 	
 
 	//private int[] modifier={1,-1};

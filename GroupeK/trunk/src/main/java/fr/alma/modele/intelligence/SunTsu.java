@@ -50,16 +50,14 @@ public class SunTsu {
 	
 	public Coordonnee nextMove(GoBan actuel, CouleurPion coulp){
 		//recopie du goban actuel
-		situation.setGoban(actuel.getGoban().clone());
-		situation.setNbBlanc(actuel.getNbBlanc());
-		situation.setNbNoir(actuel.getNbNoir());
-		situation.setNum(actuel.getNum());
+		situation.setGoban(actuel.getGoban());
+	
 		
 		this.coul=coulp;
 		
 		//calcul profondeur en fonction de la difficulté
 		//modulé difficulté par le nombre de pion sur le plateau ?
-		int profondeur= diff.ordinal()+1*1;
+		int profondeur= diff.ordinal()+1*2;
 
 		return  alphaBeta(profondeur, null, coul).getPosition();
 	}
@@ -176,12 +174,12 @@ public class SunTsu {
 		int score=0;
 		if (coul==CouleurPion.BLANC){
 			scoreNoir=scoreNoir*-1;
-			score= scoreBlanc-scoreNoir+nbBorgneBlanc*100+nbBorgneNoir*-100+nbOeilBlanc*-50+nbOeilNoir*50+nbYeuxBlanc*-50+nbYeuxNoir*50;
+			score= scoreBlanc-scoreNoir;//+nbBorgneBlanc*100+nbBorgneNoir*-100+nbOeilBlanc*-50+nbOeilNoir*50+nbYeuxBlanc*-50+nbYeuxNoir*50;
 			
 			
 		}else{
 			scoreBlanc=scoreBlanc*-1;
-			score= scoreBlanc-scoreNoir+nbBorgneBlanc*-100+nbBorgneNoir*100+nbOeilBlanc*50+nbOeilNoir*-50+nbYeuxBlanc*50+nbYeuxNoir*-50;
+			score= scoreBlanc-scoreNoir;//+nbBorgneBlanc*-100+nbBorgneNoir*100+nbOeilBlanc*50+nbOeilNoir*-50+nbYeuxBlanc*50+nbYeuxNoir*-50;
 		}
 		return score;
 	}

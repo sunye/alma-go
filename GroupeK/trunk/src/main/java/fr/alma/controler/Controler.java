@@ -64,7 +64,8 @@ public class Controler {
 	}
 	
 	public void newGame(){
-		//TODO
+		gm.remiseZero();
+		jeu.repaintBoard();
 	}
 	
 	public void afficheGagnant(CouleurPion coul){
@@ -75,6 +76,10 @@ public class Controler {
 		ajouterPion(x/jeu.getColSize(), y/jeu.getRowSize())	;	
 		jeu.repaintBoard();
 		
+		
+	}
+	
+	public void forcerJouer(){
 		
 	}
 	
