@@ -39,7 +39,7 @@ public class Jeu {
 	 * @param c
 	 * @return
 	 */
-	private static int getLiberte(Grille grille, Point p,Pion.Couleur c){ 
+	public static int getLiberte(Grille grille, Point p,Pion.Couleur c){ 
 		
 		int x = p.x;
 		int y = p.y;
