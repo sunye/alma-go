@@ -71,7 +71,7 @@ public class Ihm {
 	 */
 	public enum Tour {NOIR,BLANC};
 	
-	public Tour t = Tour.NOIR;
+	public Tour t = Tour.BLANC;
 	
 	//--------------------------------
 	public static Grille grille = null;
@@ -261,10 +261,9 @@ public class Ihm {
 						 		
 								 mettrePion(position);
 								
-								 //position = jouerMachine(grille);
+								 position = jouerMachine(grille);
 								 
-								 position = new Point(5,5);
-								 
+								 								 
 								 int RMachine = SimulerJeu(grille, position, t);
 								 
 								 if(RMachine == VALIDE) mettrePion(position); 

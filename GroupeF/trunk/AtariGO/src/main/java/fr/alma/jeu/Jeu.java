@@ -446,7 +446,7 @@ public class Jeu {
 					
 					setVoisins(new ArrayList<Pion>());
 					if (prise){
-						//grille.Contenu[x][y]=pion;
+						grille.Contenu[x][y]=pion;
 						System.out.println("prise");
 						return CAPTURE;
 					}
@@ -516,14 +516,14 @@ public class Jeu {
 				}
 				setVoisins(new ArrayList<Pion>());
 				if (prise){
-					//grille.Contenu[x][y]=pion;
+					grille.Contenu[x][y]=pion;
 					System.out.println("Prise");
 					return CAPTURE;
 				}
 					
 				
 				else{
-					//grille.Contenu[x][y]=pion;
+					grille.Contenu[x][y]=pion;
 					return VALIDE;
 					}
 				}
@@ -549,14 +549,13 @@ public class Jeu {
 	 */
 	public static Point jouerMachine(Grille g) {
 		
-		Ia machineIA = new Ia();
+			
+		Arbre a = Ia.constuireArbre(g);
 		
-		Arbre a = machineIA.constuireArbre(g);
-		//a.AffichageNA();
-				
-		return new Point(3,3);//machineIA.alphaBeta(a);
+		a.remplirArbre();
+							
+		return Ia.alphaBeta(a);
 	}
-	
 	/**
 	 * Met a jour la grille aprés une capture
 	 * @param g grille a mettre à jour
