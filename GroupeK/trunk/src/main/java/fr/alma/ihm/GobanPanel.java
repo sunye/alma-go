@@ -8,8 +8,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import fr.alma.controler.Controler;
 import fr.alma.modele.CouleurPion;
+import fr.alma.modele.GameHandler;
 import fr.alma.modele.GoBan;
+import fr.alma.modele.Pion;
 
 public class GobanPanel extends JPanel{
 	
@@ -21,7 +24,7 @@ public class GobanPanel extends JPanel{
 	private ImageIcon pionB;
 	private ImageIcon pionN;
 	//tous les points du Goban
-	private GoBan goban_tab;
+	
 	//largeur d'une colonne et hauteur d'une ligne
 	private int colSize;
 	private int rowSize;
@@ -29,9 +32,13 @@ public class GobanPanel extends JPanel{
 	private int gobanX;
 	private int gobanY;
 	
-	public GobanPanel() {
+	private Controler controler;
+	
+	
+	
+	public GobanPanel(Controler contrler) {
 		super();
-		
+		controler= contrler;
 		/**
          * Creation de l'image du goban grâce à l'URL donné
          */
@@ -69,23 +76,15 @@ public class GobanPanel extends JPanel{
 		/**
          * Creation de la matrice de pions
          */
+	
 		
-		goban_tab = new GoBan();
-		goban_tab.init();
-		
-		
-		
-		addMouseListener(new MouseAdapter() {
-	        public void mouseClicked(MouseEvent e) {
-		          processMouseClicked(e);
-		        }
-		      });
+		addMouseListener(contrler.getFactory().clicBoardListener( ));
 		repaint();
 		
 		
 	}
 	
-	private void processMouseClicked(MouseEvent e) {
+	public void clicBoard(MouseEvent e) {
 	    int x, y;
 
 	    x = e.getX();
@@ -95,13 +94,9 @@ public class GobanPanel extends JPanel{
 	    gobanY=y/rowSize;
 	    //System.out.println("gobanX:"+gobanX+"gobanY:"+gobanY);
 	    //System.out.println("drawImage- x:"+x+"y:"+y);
-	    goban_tab.ajouterPion(gobanX, gobanY);
+	    controler.ajouterPion(gobanX, gobanY);
 	    repaint();
-	    if(goban_tab.getGagnant()!= CouleurPion.EMPTY){
-	    	afficheGagnant(goban_tab.getGagnant());
-	    	goban_tab.remiseZero();
-	    }
-	    repaint();
+	
 	}
 	
 	public void paintComponent(Graphics g){
@@ -109,10 +104,12 @@ public class GobanPanel extends JPanel{
         //Affichage du goban
         g.drawImage(goban.getImage(),0,0,this);
         //Affichage de tout les pions en parcourant la matrice
-        for(int i=0; i<9; i++){
-                for(int j=0;j<9; j++){
+        int tailleMatrice= controler.tailleMatrice();
+        Pion[][] matrice=controler.getMatricePlateau();
+        for(int i=0; i<tailleMatrice; i++){
+                for(int j=0;j<tailleMatrice; j++){
                 	//System.out.println(goban_tab.getGoban()[i][j].getCouleur());
-                        switch(goban_tab.getGoban()[i][j].getCouleur()){
+                        switch(matrice[i][j].getCouleur()){
                                 case NOIR:
                                         g.drawImage(pionN.getImage(),(i*colSize),(j*rowSize),this);
                                         break;
@@ -131,15 +128,27 @@ public class GobanPanel extends JPanel{
 	     paintComponent(g);
 	}
 	
-	public GoBan getGoban(){
-		return goban_tab;
-	}
+
+
+
 
 	public static void afficheGagnant(CouleurPion coul) {
 		
 		JOptionPane.showMessageDialog(null,"Les "+coul+"S ont gagnés!");
 		
 	}
+
+	public int getColSize() {
+		return colSize;
+	}
+
+	public int getRowSize() {
+		return rowSize;
+	}
+	
+	
+	
+	
 }
 	
 	

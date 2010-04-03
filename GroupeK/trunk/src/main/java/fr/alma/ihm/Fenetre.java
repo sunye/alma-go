@@ -1,17 +1,17 @@
 package fr.alma.ihm;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
-import fr.alma.modele.Coordonnee;
+import fr.alma.controler.Controler;
 import fr.alma.modele.CouleurPion;
-import fr.alma.modele.Coup;
-import fr.alma.modele.intelligence.SunTsu;
+
+
+
+
+
 
 public class Fenetre extends JFrame{
 	
@@ -24,11 +24,12 @@ public class Fenetre extends JFrame{
 	private JMenuItem quitter;
 	//Panel représentant le goban
 	private GobanPanel Pan;
+	private Controler control;
 	
-	public Fenetre(String s){
-		super(s);
+	public Fenetre(Controler control){
+		super("Le jeu de Go qu'il est bien");
 		setSize(440,490);
-		
+		this.control= control;
 		/**
          * Creations des différents outils permettant la mise en place de la barre de menu
          */
@@ -41,19 +42,10 @@ public class Fenetre extends JFrame{
 		nouv=new JMenuItem("Nouvelle partie");
 		quitter=new JMenuItem("Quitter");
 		
-		JMenuItem jouer= new JMenuItem("JOUE !");
-		jeu.add(jouer);
-		jouer.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SunTsu intel=new SunTsu();
-				Coordonnee cp= intel.nextMove(Pan.getGoban(), CouleurPion.NOIR);
-				Pan.getGoban().ajouterPion(cp.getX(), cp.getY());
-				
-			}
-		});
+		JMenuItem aienabled=new JMenuItem("Ai enableld");
 		
+		jeu.add(aienabled);
+		aienabled.addActionListener(control.getFactory().modeAi());
 		/**
          * Mise en place de la barre de menu
          */
@@ -66,19 +58,13 @@ public class Fenetre extends JFrame{
 	
 		this.setJMenuBar(barreMenu); 
 		
-		nouv.addActionListener(new NewGameListener(this));
-		quitter.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
+		nouv.addActionListener(control.getFactory().newGameListener());
+		quitter.addActionListener(control.getFactory().quitterListener());
 		/**
          * Creation du panel contenant le goban
          */
 
-		Pan=new GobanPanel();
+		Pan=new GobanPanel(control);
 		
 		Pan.setBorder(BorderFactory.createLineBorder(Color.black));
 		
@@ -97,6 +83,28 @@ public class Fenetre extends JFrame{
 	}
 	
 	
+	public void affichageVainqueur(CouleurPion coul){
+		Pan.afficheGagnant(coul);
+		
+	}
+	
+	
+	public void clicPanelGo(MouseEvent e){
+		Pan.clicBoard(e);
+	}
+	
+	
+	public int getColSize() {
+		return Pan.getColSize();
+	}
+
+	public int getRowSize() {
+		return Pan.getRowSize();
+	}
+	
+	public void repaintBoard(){
+		Pan.repaint();
+	}
 }
 
 
