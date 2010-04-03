@@ -530,6 +530,7 @@ public class Jeu {
 						
 			}	
 			
+			
 			else{
 				System.out.println("erreur");
 				setVoisins(new ArrayList<Pion>());
