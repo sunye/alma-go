@@ -32,6 +32,8 @@ public class Game {
     private PionVal currentPlayer;
     protected boolean end;
 
+    protected Set<Stone> freePlaces;
+
     public Game() {
         this.goban = new Goban();
 
@@ -40,9 +42,15 @@ public class Game {
         history.setRootElement(lastMove);
         currentPlayer = PionVal.NOIR;
         end = false;
+        freePlaces = new HashSet<Stone>(Goban.getTaille()*Goban.getTaille());
+        for(int line = 0; line < Goban.getTaille(); ++line){
+            for(int col = 0; col < Goban.getTaille(); ++col){
+                freePlaces.add(new Stone(PionVal.RIEN, line, col));
+            }
+        }
     }
 
-    public void playAt(int line, int column) {
+    public Boolean playAt(int line, int column) {
         try {
             posePion(line, column, currentPlayer);
 
@@ -54,9 +62,11 @@ public class Game {
 
         } catch (BadPlaceException ex) {
             System.out.println(ex.getMessage());
-            return;
+            return false;
         }
 
+        freePlaces.remove(new Stone(PionVal.RIEN, line, column));
+        return true;
     }
 
     /**
@@ -113,22 +123,15 @@ public class Game {
             for (Groupe gr : groupes) {
                 ++i;
 
-//                System.out.println("Current tested group ["+i+"] contains {");
-//                Iterator<Stone> it = gr.getStones().iterator();
-//                while (it.hasNext()){
-//                    Stone p = it.next();
-//                    System.out.print(p+" ");
-//                }
-//                System.out.println("}");
+
                 if (gr.getCouleur() != pionVal) {
                     // If ennemy, check if it has one liberty left
                     if (gr.getLibertes() == 1) {
-//                        System.out.println("False because ennemy group [" + i + "] liberties == 1");
+
                         return false;
                     }
                 } else if (gr.getLibertes() > 1) {
                     // If one of the surrounding groups has more than 1 liberty left, it is no suicide.
-//                    System.out.println("False because friend group [" + i + "] libertie > 1");
                     return false;
                 }
             }
@@ -408,4 +411,19 @@ public class Game {
     public int getCurrentDepth() {
         return this.lastMove.getDepth();
     }
+
+    public Set<Stone> getFreePlaces() {
+        return freePlaces;
+    }
+
+    public Tree<PlayMove> getHistory() {
+        return history;
+    }
+
+    public Node<PlayMove> getLastMove() {
+        return lastMove;
+    }
+
+    
+
 }
