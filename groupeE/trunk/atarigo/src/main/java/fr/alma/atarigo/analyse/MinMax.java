@@ -22,7 +22,7 @@ public class MinMax {
 
     public CoupAJouer calculMinMax(Tree<CoupAJouer> arbreJeu, int prof) {
         if (prof < profondeurMax) {
-        //  crŽer les fils !
+        //  creer les fils !
         }
         if (prof == profondeurMax || arbreJeu.isLeaf()) {
             //Evaluer la situation de la feuille
@@ -30,7 +30,7 @@ public class MinMax {
             coup.setEvaluation(EvalFunc.evaluateFollowing(coup.getJeu())); ////////////??????
             return coup;
         } else {
-            if (prof % 2 == 0) {//profondeur paire = ˆ l'ordinateur de jouer
+            if (prof % 2 == 0) {//profondeur paire = a l'ordinateur de jouer
                 return max(arbreJeu, prof + 1);
             } else {//profondeur impaire = au joueur de jouer
                 return min(arbreJeu, prof + 1);
