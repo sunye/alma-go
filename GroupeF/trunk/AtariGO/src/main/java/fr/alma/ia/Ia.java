@@ -179,7 +179,7 @@ public class Ia {
 	}
 	
 	private static int determineMin(Grille g,ArrayList<Point> listeG){
-		int min=0;
+		int min=getLiberte(g, listeG.get(0), g.Contenu[listeG.get(0).x][listeG.get(0).y].couleur);
 		for(int k=0;k<listeG.size();k++){
 			Point p=listeG.get(k);
 			int x=getLiberte(g, p, g.Contenu[p.x][p.y].couleur);
@@ -193,8 +193,15 @@ public class Ia {
 		ArrayList<Point> listeGB=determinerGroupesBlanc(g);
 		System.out.println(listeGB.size());
 		System.out.println(listeGN.size());
-		int minB = determineMin(g, listeGB);
-		int minN = determineMin(g, listeGN);
+		int minB,minN;
+		if (listeGB.size()==0)
+			minB=0;
+		else
+		 minB = determineMin(g, listeGB);
+		if (listeGN.size()==0)
+			minN=0;
+		else
+		 minN = determineMin(g, listeGN);
 		return minN-minB;
 	}
 	
