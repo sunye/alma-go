@@ -4,10 +4,7 @@ import fr.alma.atarigo.utils.exceptions.BadGobanStateException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class is a Set of modifications, describing the effects of a move on the goban during the game
