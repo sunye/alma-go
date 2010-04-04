@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package fr.alma.atarigo.utils.tree;
 
 import java.util.LinkedList;
@@ -18,6 +17,9 @@ public class Node<T> {
     private T data;
     private Node<T> father;
     private List<Node<T>> children;
+    private int depth;
+    private int evaluation;
+
 
     /**
      * Default ctor.
@@ -43,6 +45,22 @@ public class Node<T> {
         this.father = father;
     }
 
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
+
+    public int getEvaluation() {
+        return evaluation;
+    }
+
+    public void setEvaluation(int evaluation) {
+        this.evaluation = evaluation;
+    }
 
     /**
      * Return the children of Node<T>. The Tree<T> is represented by a single
@@ -65,6 +83,9 @@ public class Node<T> {
      */
     public void setChildren(List<Node<T>> children) {
         this.children = children;
+        for (int i = 0; i < children.size(); i++) {
+            this.children.get(i).depth = depth + 1;
+        }
     }
 
     /**
@@ -89,12 +110,11 @@ public class Node<T> {
         }
         children.add(child);
         child.setFather(this);
+        child.setDepth(depth + 1);
     }
 
-
-
-    public Node<T> getChildAt(int index){
-        if(index < children.size()){
+    public Node<T> getChildAt(int index) {
+        if (index < children.size()) {
             return children.get(index);
         } else {
             return null;

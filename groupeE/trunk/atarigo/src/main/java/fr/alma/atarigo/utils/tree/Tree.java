@@ -23,6 +23,11 @@ public class Tree<T> {
         super();
     }
 
+    public Tree(Node<T> rootElement) {
+        this.rootElement = rootElement;
+        this.rootElement.setDepth(0);
+    }
+
     /**
      * Return the root Node of the tree.
      * @return the root element.
@@ -38,6 +43,7 @@ public class Tree<T> {
     public void setRootElement(Node<T> rootElement) {
         this.rootElement = rootElement;
         rootElement.setFather(null);
+        rootElement.setDepth(0);
     }
 
     /**
@@ -73,6 +79,10 @@ public class Tree<T> {
         for (Node<T> data : element.getChildren()) {
             walk(data, list);
         }
+    }
+
+    public boolean isLeaf() {
+        return (this.getRootElement().getChildren().isEmpty());
     }
 }
 
