@@ -153,4 +153,8 @@ public class Node<T> {
         sb.append("]").append("}");
         return sb.toString();
     }
+
+    public boolean isLeaf(){
+        return this.children.isEmpty();
+    }
 }

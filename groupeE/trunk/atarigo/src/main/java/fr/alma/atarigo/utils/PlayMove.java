@@ -15,6 +15,15 @@ public class PlayMove {
     private Set<Modif> diff;
     private Modif putStone;
     private ArrayList<Groupe> groups;
+    private int eval;
+
+    public int getEval() {
+        return eval;
+    }
+
+    public void setEval(int eval) {
+        this.eval = eval;
+    }
 
     /**
      * Retourne le premier (normalement le seul) groupe de pierres contenant la pierre passée en paramètre.
@@ -81,7 +90,7 @@ public class PlayMove {
         }
     }
 
-    void setGroupes(ArrayList<Groupe> groupes) {
+    public void setGroupes(ArrayList<Groupe> groupes) {
         groups = groupes;
     }
 
