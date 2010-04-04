@@ -8,8 +8,8 @@ import fr.alma.atarigo.utils.Game;
 import fr.alma.atarigo.utils.PionVal;
 import fr.alma.atarigo.utils.PlayMove;
 import fr.alma.atarigo.utils.Stone;
+import fr.alma.atarigo.utils.exceptions.BadPlaceException;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 /**
@@ -21,14 +21,16 @@ public class AlphaBeta {
     private int profondeurMax;
     private final static int INFINI = Integer.MAX_VALUE;
     private final static int BEGINLIMIT = 6;
+    private PionVal couleur;
 
     public PlayMove init(Game jeu) {
         FakeGame tests = new FakeGame(jeu);
         return alphaBeta(tests, 0, -INFINI, +INFINI);
     }
 
-    public AlphaBeta(int profondeurMax) {
+    public AlphaBeta(int profondeurMax, PionVal couleur) {
         this.profondeurMax = profondeurMax;
+        this.couleur = couleur;
     }
 
     public PlayMove alphaBeta(FakeGame tests, int prof, int alpha, int beta) {
@@ -36,13 +38,8 @@ public class AlphaBeta {
             this.generateMoves(tests);
         }
         if (prof == profondeurMax || tests.isInLeaf()) {
-            if (tests.getDepth() <= BEGINLIMIT) {
-                tests.getCurrentMove().setEval(EvalFunc.evaluateBeginning(tests));
+                tests.getCurrentMove().setEval(EvalFunc.evaluate(tests, couleur, tests.getDepth() <= BEGINLIMIT));
                 return tests.getCurrentMove();
-            } else {
-                tests.getCurrentMove().setEval(EvalFunc.evaluateFollowing(tests));
-                return tests.getCurrentMove();
-            }
         } else {
             if (prof % 2 == 0) {//profondeur paire = a l'ordinateur de jouer
                 return max(tests, prof + 1, alpha, beta);
@@ -98,7 +95,11 @@ public class AlphaBeta {
             freeToTry.retainAll(generateFreePlaces(2, 2, 6, 6));
         }
         for (Stone stone : freeToTry) {
-            tests.fakePosePion(stone.getLine(), stone.getColumn(), tests.getCurrentPlayer());
+            try {
+                tests.fakePosePion(stone.getLine(), stone.getColumn(), tests.getCurrentPlayer());
+            } catch (BadPlaceException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
 
     }

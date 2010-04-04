@@ -236,4 +236,8 @@ public class EvalFunc {
 
         return keimas;
     }
+
+    static int evaluate(FakeGame tests, PionVal pionVal, boolean couleur) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }
