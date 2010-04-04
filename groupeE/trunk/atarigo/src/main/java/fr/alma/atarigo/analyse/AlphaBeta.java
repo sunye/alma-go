@@ -5,8 +5,12 @@
 package fr.alma.atarigo.analyse;
 
 import fr.alma.atarigo.utils.Game;
+import fr.alma.atarigo.utils.PionVal;
 import fr.alma.atarigo.utils.PlayMove;
+import fr.alma.atarigo.utils.Stone;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  *
@@ -89,18 +93,23 @@ public class AlphaBeta {
     }
 
     private void generateMoves(FakeGame tests) {
+        Set<Stone> freeToTry = tests.getFreePlaces();
         if (tests.getDepth() <= BEGINLIMIT) {
-            
+            freeToTry.retainAll(generateFreePlaces(2, 2, 6, 6));
         }
-        if (tests.getDepth() <= BEGINLIMIT) {
-            Random r = new Random();
-            r.setSeed(System.currentTimeMillis());
-            int line = r.nextInt(5)+2;
-            int column = r.nextInt(5)+2;
-            
+        for (Stone stone : freeToTry) {
+            tests.fakePosePion(stone.getLine(), stone.getColumn(), tests.getCurrentPlayer());
         }
+
     }
 
-
-
+    private Set<Stone> generateFreePlaces(int linBeg, int colBeg, int linEnd, int colEnd) {
+        Set<Stone> retour = new HashSet<Stone>();
+        for (int l = linBeg; l <= linEnd; ++l) {
+            for (int c = colBeg; c <= colEnd; ++c) {
+                retour.add(new Stone(PionVal.RIEN, l, c));
+            }
+        }
+        return retour;
+    }
 }

@@ -424,6 +424,9 @@ public class Game {
         return lastMove;
     }
 
+    public boolean isFree(int line, int column){
+        return freePlaces.contains(new Stone(PionVal.RIEN, line, column));
+    }
     
 
 }
