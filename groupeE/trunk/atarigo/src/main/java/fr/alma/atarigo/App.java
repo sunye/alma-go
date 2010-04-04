@@ -10,7 +10,7 @@ public class App
 {
     public static void main( String[] args )
     {
-        Fenetre fenetre = new Fenetre("Titre");
+        Fenetre fenetre = new Fenetre("Atari go");
         fenetre.setVisible(true);
     }
 }

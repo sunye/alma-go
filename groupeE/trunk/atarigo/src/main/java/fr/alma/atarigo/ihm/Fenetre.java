@@ -28,8 +28,10 @@ public class Fenetre extends JFrame implements ActionListener {
     private JMenu a_propos;
     private JMenuItem nouv;
     private JMenuItem quitter;
+    private OptionWindow options;
     //Panel représentant le goban
     private GobanPanel pan;
+    private boolean sendData;
 
     public Fenetre(String s) {
         super(s);
@@ -77,9 +79,21 @@ public class Fenetre extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (nouv.equals(e.getSource())) {
+            // TODO: Ask for the game needs.
+            displayGameOptions();
+
             startGo();
         } else if(quitter.equals(e.getSource())){
             System.exit(0);
+        }
+    }
+
+    private void displayGameOptions() {
+        sendData = false;
+        options = new OptionWindow(this);
+
+        if(sendData){
+            
         }
     }
 }
