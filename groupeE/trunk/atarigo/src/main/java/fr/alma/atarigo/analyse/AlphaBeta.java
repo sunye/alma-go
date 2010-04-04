@@ -5,8 +5,8 @@
 package fr.alma.atarigo.analyse;
 
 import fr.alma.atarigo.utils.Game;
-import fr.alma.atarigo.utils.tree.Node;
-import fr.alma.atarigo.utils.tree.Tree;
+import fr.alma.atarigo.utils.PlayMove;
+import java.util.Random;
 
 /**
  *
@@ -14,64 +14,93 @@ import fr.alma.atarigo.utils.tree.Tree;
  */
 public class AlphaBeta {
 
-    private final static int profondeurMax = 6;
-    private final static int INFINI = 10000;
+    private int profondeurMax;
+    private final static int INFINI = Integer.MAX_VALUE;
+    private final static int BEGINLIMIT = 6;
 
-    public CoupAJouer init(Game jeu) {
-        Tree<CoupAJouer> arbreJeu = new Tree(new Node(new CoupAJouer(jeu)));
-        return alphaBeta(arbreJeu, 0, -INFINI, +INFINI);
+    public PlayMove init(Game jeu) {
+        FakeGame tests = new FakeGame(jeu);
+        return alphaBeta(tests, 0, -INFINI, +INFINI);
     }
 
-    public CoupAJouer alphaBeta(Tree<CoupAJouer> arbreJeu, int prof, int alpha, int beta) {
+    public AlphaBeta(int profondeurMax) {
+        this.profondeurMax = profondeurMax;
+    }
+
+    public PlayMove alphaBeta(FakeGame tests, int prof, int alpha, int beta) {
         if (prof < profondeurMax) {
-            //Construire fils !
+            this.generateMoves(tests);
         }
-        if (prof == profondeurMax || arbreJeu.isLeaf()) {
-            CoupAJouer coup = arbreJeu.getRootElement().getData();
-            coup.setEvaluation(EvalFunc.evaluateFollowing(coup.getJeu())); ////////////??????
-            return coup;
+        if (prof == profondeurMax || tests.isInLeaf()) {
+            if (tests.getDepth() <= BEGINLIMIT) {
+                tests.getCurrentMove().setEval(EvalFunc.evaluateBeginning(tests));
+                return tests.getCurrentMove();
+            } else {
+                tests.getCurrentMove().setEval(EvalFunc.evaluateFollowing(tests));
+                return tests.getCurrentMove();
+            }
         } else {
             if (prof % 2 == 0) {//profondeur paire = a l'ordinateur de jouer
-                return max(arbreJeu, prof + 1, alpha, beta);
+                return max(tests, prof + 1, alpha, beta);
             } else {//profondeur impaire = au joueur de jouer
-                return min(arbreJeu, prof + 1, alpha, beta);
+                return min(tests, prof + 1, alpha, beta);
             }
         }
     }
 
-    private CoupAJouer max(Tree<CoupAJouer> arbreJeu, int prof, int alpha, int beta) {
-        CoupAJouer coupMax = new CoupAJouer(-INFINI);
-        CoupAJouer valFils;
-        for (int i = 0; i < arbreJeu.getRootElement().getChildren().size(); i++) {
-            valFils = alphaBeta(new Tree(arbreJeu.getRootElement().getChildAt(i)), prof + 1, alpha, beta); // new Tree(ayant pour racine le fils courant)
-            if (valFils.getEvaluation() > coupMax.getEvaluation()) {
+    private PlayMove max(FakeGame tests, int prof, int alpha, int beta) {
+        PlayMove coupMax = new PlayMove();
+        coupMax.setEval(-INFINI);
+        for (int i = 0; i < tests.getChildrenMove().size(); ++i) {
+            tests.apply(i);
+            PlayMove valFils = alphaBeta(tests, prof + 1, alpha, beta);
+            tests.revert();
+            if (valFils.getEval() > coupMax.getEval()) {
                 coupMax = valFils;
             }
-            if (beta < coupMax.getEvaluation()) {
+            if (beta < coupMax.getEval()) {
                 return coupMax; // coupure beta
             }
-            if (alpha < coupMax.getEvaluation()) {
-                alpha = coupMax.getEvaluation();
+            if (alpha < coupMax.getEval()) {
+                alpha = coupMax.getEval();
             }
         }
         return coupMax;
     }
 
-    private CoupAJouer min(Tree<CoupAJouer> arbreJeu, int prof, int alpha, int beta) {
-        CoupAJouer coupMin = new CoupAJouer(INFINI);
-        CoupAJouer valFils;
-        for (int i = 0; i < arbreJeu.getRootElement().getChildren().size(); i++) {
-            valFils = alphaBeta(new Tree(arbreJeu.getRootElement().getChildAt(i)), prof + 1, alpha, beta); // new Tree(ayant pour racine le fils courant)
-            if (valFils.getEvaluation() < coupMin.getEvaluation()) {
+    private PlayMove min(FakeGame tests, int prof, int alpha, int beta) {
+        PlayMove coupMin = new PlayMove();
+        coupMin.setEval(INFINI);
+        for (int i = 0; i < tests.getChildrenMove().size(); ++i) {
+            tests.apply(i);
+            PlayMove valFils = alphaBeta(tests, prof + 1, alpha, beta);
+            tests.revert();
+            if (valFils.getEval() < coupMin.getEval()) {
                 coupMin = valFils;
             }
-            if (alpha > coupMin.getEvaluation()) {
+            if (alpha < coupMin.getEval()) {
                 return coupMin; // coupure alpha
             }
-            if (beta > coupMin.getEvaluation()) {
-                beta = coupMin.getEvaluation();
+            if (beta > coupMin.getEval()) {
+                beta = coupMin.getEval();
             }
         }
         return coupMin;
     }
+
+    private void generateMoves(FakeGame tests) {
+        if (tests.getDepth() <= BEGINLIMIT) {
+            
+        }
+        if (tests.getDepth() <= BEGINLIMIT) {
+            Random r = new Random();
+            r.setSeed(System.currentTimeMillis());
+            int line = r.nextInt(5)+2;
+            int column = r.nextInt(5)+2;
+            
+        }
+    }
+
+
+
 }

@@ -24,13 +24,13 @@ import java.util.logging.Logger;
  */
 public class Game {
 
-    Goban goban;
+    protected Goban goban;
     // History of the game : contains all the moves since the beginning.
-    private Tree<PlayMove> history;
+    protected Tree<PlayMove> history;
     // Last move played (faster backtracking).
-    private Node<PlayMove> lastMove;
+    protected Node<PlayMove> lastMove;
     private PionVal currentPlayer;
-    private boolean end;
+    protected boolean end;
 
     public Game() {
         this.goban = new Goban();
@@ -170,7 +170,7 @@ public class Game {
      * KISS, but useful, and a little faster than re-calculate the groups.
      * @param last The last stone played
      */
-    private Set<Groupe> calculateGroups(Stone last) {
+    protected Set<Groupe> calculateGroups(Stone last) {
         Groupe lastAdded = new Groupe(last.getCouleur());
         try {
             lastAdded.addStone(last);
@@ -199,7 +199,7 @@ public class Game {
      * @param groupe
      * @return
      */
-    private Set<Stone> getGroupLiberties(Groupe groupe) {
+    protected Set<Stone> getGroupLiberties(Groupe groupe) {
         //TODO:Create Set of the free places surrounding the group.
 
         HashSet<Stone> libertes = new HashSet<Stone>(groupe.size() * 2 + 2);
@@ -265,7 +265,7 @@ public class Game {
      * Calculates and Updates the liberties of each group of the Set.
      * @param ennemies
      */
-    private void updateLiberties(Set<Groupe> ennemies) {
+    protected void updateLiberties(Set<Groupe> ennemies) {
         for (Groupe groupe : ennemies) {
             groupe.setLibertes(getGroupLiberties(groupe).size());
         }
@@ -307,9 +307,9 @@ public class Game {
         }
     }
 
-    public Boolean apply(int numChild){
+    public Boolean apply(int numChild) {
         Node child = lastMove.getChildAt(numChild);
-        if(child != null) {
+        if (child != null) {
             lastMove = child;
             PlayMove newPM = getCurrentMove();
             try {
@@ -370,21 +370,20 @@ public class Game {
         }
     }
 
-
-    public List<Groupe> getEmptySpotSurroundingGroups(Groupe emptiesGroup){
+    public List<Groupe> getEmptySpotSurroundingGroups(Groupe emptiesGroup) {
         HashSet<Groupe> surrounders = new HashSet<Groupe>();
-        for(Stone spot:emptiesGroup.getStones()){
+        for (Stone spot : emptiesGroup.getStones()) {
             surrounders.addAll(getSurroundingGroups(spot));
         }
         return new ArrayList<Groupe>(surrounders);
     }
 
-    public List<Groupe> getGroupSurroundingGroups(Groupe groupe){
+    public List<Groupe> getGroupSurroundingGroups(Groupe groupe) {
         HashSet<Groupe> surrounding = new HashSet<Groupe>();
-        for(Stone stone:groupe.getStones()){
+        for (Stone stone : groupe.getStones()) {
             List<Stone> neighbours = goban.getVoisins(stone);
-            for(Stone neighbour:neighbours){
-                if(neighbour.getCouleur() == stone.getCouleur()){
+            for (Stone neighbour : neighbours) {
+                if (neighbour.getCouleur() == stone.getCouleur()) {
                     neighbours.remove(neighbour);
                 }
             }
@@ -396,5 +395,17 @@ public class Game {
 
     public boolean bonnesCoords(int line, int column) {
         return goban.bonneCoords(line, column);
+    }
+
+    public Goban getGoban() {
+        return this.goban;
+    }
+
+    public List<Node<PlayMove>> getChildrenMove() {
+        return lastMove.getChildren();
+    }
+
+    public int getCurrentDepth() {
+        return this.lastMove.getDepth();
     }
 }

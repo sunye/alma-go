@@ -139,4 +139,11 @@ public class Goban {
     public PionVal[][] getGoban(){
         return goban;
     }
+
+    @Override
+    public Goban clone(){
+        Goban autre = new Goban();
+        autre.goban = this.goban.clone();
+        return autre;
+    }
 }
