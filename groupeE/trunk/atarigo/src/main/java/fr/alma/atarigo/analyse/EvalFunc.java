@@ -237,7 +237,19 @@ public class EvalFunc {
         return keimas;
     }
 
-    static int evaluate(FakeGame tests, PionVal pionVal, boolean couleur) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    static int evaluate(FakeGame tests, PionVal pionVal, boolean beginning) {
+        if(beginning){
+            if(tests.getCurrentMove().getPutStone().getAfter() == pionVal){
+                return evaluateBeginning(tests);
+            } else {
+                return -evaluateBeginning(tests);
+            }
+        } else {
+            if(tests.getCurrentMove().getPutStone().getAfter() == pionVal){
+                return evaluateFollowing(tests);
+            } else {
+                return -evaluateFollowing(tests);
+            }
+        }
     }
 }
