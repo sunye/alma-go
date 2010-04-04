@@ -3,6 +3,7 @@
  */
 package fr.alma.atarigo.ihm;
 
+import fr.alma.atarigo.GameManager;
 import fr.alma.atarigo.utils.Game;
 import fr.alma.atarigo.utils.exceptions.BadPlaceException;
 import java.awt.Graphics;
@@ -18,7 +19,7 @@ import javax.swing.JPanel;
  * We start and play the game threw it.
  * @author judu
  */
-class GobanPanel extends JPanel {
+public class GobanPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private ImageIcon goban;
@@ -35,6 +36,7 @@ class GobanPanel extends JPanel {
     private final int coteCase = 67;
     private final int precision = 4;
     private MouseAdapter mouseL;
+    private GameManager controleur;
 
     public GobanPanel() {
         super();
@@ -68,6 +70,14 @@ class GobanPanel extends JPanel {
 
         cotePion = pionB.getIconWidth();
         //repaint();
+
+        mouseL = new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                processMouseClicked(e);
+            }
+        };
     }
 
     private void processMouseClicked(MouseEvent evt) {
@@ -91,7 +101,7 @@ class GobanPanel extends JPanel {
             return;
         }
 
-        game.playAt(lin, col);
+        controleur.appliqueCoup(lin, col);
 
         repaint();
         /**
@@ -144,17 +154,19 @@ class GobanPanel extends JPanel {
         paintComponent(g);
     }
 
-    public void startGame() {
-        game = new Game();
+    public void activateMouse(){
+        addMouseListener(mouseL);
+    }
 
-        addMouseListener(mouseL = new MouseAdapter() {
+    public void desactivateMouse(){
+        removeMouseListener(mouseL);
+    }
 
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                processMouseClicked(e);
-            }
-        });
-
+    public void startGame(GameManager gm) {
+        activateMouse();
+        this.controleur = gm;
         repaint();
     }
+
+
 }
