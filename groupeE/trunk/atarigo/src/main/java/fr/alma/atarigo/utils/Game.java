@@ -31,7 +31,6 @@ public class Game {
     protected Node<PlayMove> lastMove;
     private PionVal currentPlayer;
     protected boolean end;
-
     protected Set<Stone> freePlaces;
 
     public Game() {
@@ -42,9 +41,9 @@ public class Game {
         history.setRootElement(lastMove);
         currentPlayer = PionVal.NOIR;
         end = false;
-        freePlaces = new HashSet<Stone>(Goban.getTaille()*Goban.getTaille());
-        for(int line = 0; line < Goban.getTaille(); ++line){
-            for(int col = 0; col < Goban.getTaille(); ++col){
+        freePlaces = new HashSet<Stone>(Goban.getTaille() * Goban.getTaille());
+        for (int line = 0; line < Goban.getTaille(); ++line) {
+            for (int col = 0; col < Goban.getTaille(); ++col) {
                 freePlaces.add(new Stone(PionVal.RIEN, line, col));
             }
         }
@@ -54,11 +53,7 @@ public class Game {
         try {
             posePion(line, column, currentPlayer);
 
-            if (currentPlayer == PionVal.NOIR) {
-                currentPlayer = PionVal.BLANC;
-            } else {
-                currentPlayer = PionVal.NOIR;
-            }
+            changeCurrentPlayer();
 
         } catch (BadPlaceException ex) {
             System.out.println(ex.getMessage());
@@ -311,8 +306,11 @@ public class Game {
     }
 
     public Boolean apply(int numChild) {
-        Node child = lastMove.getChildAt(numChild);
+        Node<PlayMove> child = lastMove.getChildAt(numChild);
         if (child != null) {
+            if(child.getData().getPutStone().getAfter() != currentPlayer){
+                return false;
+            }
             lastMove = child;
             PlayMove newPM = getCurrentMove();
             try {
@@ -321,6 +319,7 @@ public class Game {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
             }
+            this.changeCurrentPlayer();
             return true;
         } else {
             return false;
@@ -428,7 +427,15 @@ public class Game {
         return currentPlayer;
     }
 
-    public boolean isFree(int line, int column){
+    public boolean isFree(int line, int column) {
         return freePlaces.contains(new Stone(PionVal.RIEN, line, column));
+    }
+
+    private void changeCurrentPlayer() {
+        if (currentPlayer == PionVal.NOIR) {
+            currentPlayer = PionVal.BLANC;
+        } else {
+            currentPlayer = PionVal.NOIR;
+        }
     }
 }
