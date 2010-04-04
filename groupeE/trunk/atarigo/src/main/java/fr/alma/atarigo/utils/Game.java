@@ -307,6 +307,23 @@ public class Game {
         }
     }
 
+    public Boolean apply(int numChild){
+        Node child = lastMove.getChildAt(numChild);
+        if(child != null) {
+            lastMove = child;
+            PlayMove newPM = getCurrentMove();
+            try {
+                newPM.apply(goban.getGoban());
+            } catch (BadGobanStateException ex) {
+                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Wrapper for Goban <em>libertesPion</em> method.
      * @param pion
