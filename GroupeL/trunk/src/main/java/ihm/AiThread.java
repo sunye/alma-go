@@ -4,34 +4,34 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import game.Coordinates;
+import game.Color;
+import game.GobanStructure;
+import game.GroupPawns;
 import ia.AlphaBeta;
 
-import jeu.Coordonnees;
-import jeu.Couleur;
-import jeu.GobanStructure;
-import jeu.GroupePieces;
 
-public class AiThread implements Callable<Coordonnees>{
+public class AiThread implements Callable<Coordinates>{
 	
     private GobanStructure plateau;
-    private Couleur color;
+    private Color color;
     
 	private final static int NOTE_MIN = -100000;
 	private final static int NOTE_MAX = 100000;
 	
 	private boolean moveForced = false;
-	private Coordonnees bestMove;
+	private Coordinates bestMove;
 
 	private Integer profondeur;
     
     
-    public Coordonnees call() {
+    public Coordinates call() {
       return createTree(plateau, color);
     }
     
 
 	/* Constructor */
-	public AiThread(GobanStructure plateau, Couleur color, Integer prof) {
+	public AiThread(GobanStructure plateau, Color color, Integer prof) {
 		super();
 		this.plateau = plateau;
 		this.color = color;
@@ -41,36 +41,36 @@ public class AiThread implements Callable<Coordonnees>{
 	public AiThread(Integer profondeur) {
 		super();
 		this.plateau = new GobanStructure();
-		this.color = Couleur.none;
+		this.color = Color.NONE;
 		this.profondeur = profondeur;
 	}
 	
 	public AiThread() {
 		super();
 		this.plateau = new GobanStructure();
-		this.color = Couleur.none;
+		this.color = Color.NONE;
 		this.profondeur = 3;
 	}
 	
-	public void majAiThread(GobanStructure plateau, Couleur color){
+	public void majAiThread(GobanStructure plateau, Color color){
 		this.plateau = plateau;
 		this.color = color;
 	}
 	
 	/* Function of decision tree creation (without parameters) */
-	public Coordonnees createTree()
+	public Coordinates createTree()
 	{
-		Coordonnees toPlay = new Coordonnees();
+		Coordinates toPlay = new Coordinates();
 		int bestNote = NOTE_MIN;
 		moveForced = false;
 		
 		/* We run the recursive function on every free square of the plateau */	
-		List<Coordonnees> emptySquares = plateau.getCoordLibre();
+		List<Coordinates> emptySquares = plateau.getFreeCoord();
 		int note = NOTE_MIN;
 		
-		for(Coordonnees coordTmp : emptySquares){
+		for(Coordinates coordTmp : emptySquares){
 			
-			if(plateau.coupValide(coordTmp, color)){
+			if(plateau.moveValid(coordTmp, color)){
 			
 				note = createNode(coordTmp, 1, NOTE_MIN, NOTE_MAX);
 				
@@ -89,22 +89,22 @@ public class AiThread implements Callable<Coordonnees>{
 	}
 	
 	/* Function of decision tree creation (with parameters) */
-	public Coordonnees createTree(GobanStructure plateau, Couleur color)
+	public Coordinates createTree(GobanStructure plateau, Color color)
 	{
 		this.plateau = plateau;
 		this.color = color;
 		moveForced = false;
 		
-		Coordonnees toPlay = new Coordonnees();
+		Coordinates toPlay = new Coordinates();
 		int bestNote = NOTE_MIN;
 		
 		/* We run the recursive function on every free square of the plateau */	
-		List<Coordonnees> emptySquares = plateau.getCoordLibre();
+		List<Coordinates> emptySquares = plateau.getFreeCoord();
 		int note = NOTE_MIN;
 		
-		for(Coordonnees coordTmp : emptySquares){
+		for(Coordinates coordTmp : emptySquares){
 			
-			if(plateau.coupValide(coordTmp, color)){
+			if(plateau.moveValid(coordTmp, color)){
 			
 				note = createNode(coordTmp, 1, NOTE_MIN, NOTE_MAX);
 				
@@ -152,7 +152,7 @@ public class AiThread implements Callable<Coordonnees>{
 	 * 
 	 */
 	
-	private Integer createNode(Coordonnees coord, Integer depth, Integer alpha, Integer beta)
+	private Integer createNode(Coordinates coord, Integer depth, Integer alpha, Integer beta)
 	{
 		int note = 0;
 					
@@ -169,14 +169,14 @@ public class AiThread implements Callable<Coordonnees>{
 		{
 			/* We are in a leaf */
 			note = evaluation(depth);
-			plateau.retirePiece(coord);
+			plateau.removePawn(coord);
 			
 			return note;
 			
 		} else {
 
 				/* We try to trunk the tree */
-				List<Coordonnees> emptySquares = plateau.getCoordLibre();
+				List<Coordinates> emptySquares = plateau.getFreeCoord();
 				note = evaluation(depth);
 				
 				if ((depth % 2) != 0)
@@ -186,16 +186,16 @@ public class AiThread implements Callable<Coordonnees>{
 					/* The depth is pair : we search for the minimal note value of all its sons. */
 					/* Here, we create its sons when we encounter an empty square */
 					
-					for(Coordonnees coordTmp : emptySquares){
+					for(Coordinates coordTmp : emptySquares){
 						
-						if(plateau.coupValide(coordTmp, color.invCouleur())){
+						if(plateau.moveValid(coordTmp, color.invColor())){
 							
 							note = Math.min(note, createNode(coordTmp, depth+1, alpha, beta));
 						
 							if (alpha >= note)
 							{
 								/* We don't need to go further, so we stop here */
-								plateau.retirePiece(coord);
+								plateau.removePawn(coord);
 								return note;							
 							}	
 							
@@ -210,16 +210,16 @@ public class AiThread implements Callable<Coordonnees>{
 					/* The depth is not pair : we search for the maximal note value of all its sons. */
 					/* Here, we create its sons when we encounter an empty square */
 					
-					for(Coordonnees coordTmp : emptySquares){
+					for(Coordinates coordTmp : emptySquares){
 
-						if(plateau.coupValide(coordTmp, color)){
+						if(plateau.moveValid(coordTmp, color)){
 							
 							note = Math.max(note, createNode(coordTmp, depth+1, alpha, beta));
 									
 							if (beta <= note)
 							{
 								/* We don't need to go further, so we stop here */
-								plateau.retirePiece(coord);
+								plateau.removePawn(coord);
 								return note;							
 							}
 									
@@ -230,17 +230,17 @@ public class AiThread implements Callable<Coordonnees>{
 					
 				}		
 		}
-		plateau.retirePiece(coord);
+		plateau.removePawn(coord);
 		return note;
 	}
 	
-	private void hitSimul(Coordonnees coord, int depth){
+	private void hitSimul(Coordinates coord, int depth){
 		
 		if ((depth % 2) == 0)
 		{					
-			plateau.ajoutPiece(coord, color);
+			plateau.addPawn(coord, color);
 		} else {
-			plateau.ajoutPiece(coord, color.invCouleur());
+			plateau.addPawn(coord, color.invColor());
 								
 		}		
 	}
@@ -254,23 +254,23 @@ public class AiThread implements Callable<Coordonnees>{
 	{
 		Integer note=0;
 				
-		if (plateau.fin(color)){
+		if (plateau.isWinner(color)){
 			note = NOTE_MAX;
 		}else{
 			note = note + 1000 * derniereLiberte(color);
-			note = note - 1000 * derniereLiberte(color.invCouleur());
+			note = note - 1000 * derniereLiberte(color.invColor());
 			
-			note = note - nbLiberte(color.invCouleur());
+			note = note - nbLiberte(color.invColor());
 		}
 		
 		return note;
 	}
 	
-	private Integer nbLiberte(Couleur couleur){
+	private Integer nbLiberte(Color couleur){
 		Integer note=0;
 		
-		for(GroupePieces g : plateau.getGroupes(couleur)){
-			note = note - g.getLiberte();
+		for(GroupPawns g : plateau.getGroups(couleur)){
+			note = note - g.getFreedoms();
 		}			
 		return note;
 	}
@@ -326,12 +326,12 @@ public class AiThread implements Callable<Coordonnees>{
 	 * @param couleur
 	 * @return
 	 */
-	private Integer derniereLiberte(Couleur couleur){
+	private Integer derniereLiberte(Color couleur){
 		
 		Integer cpt=0;
 		
-		for(GroupePieces g : plateau.getGroupes(couleur)){
-			if(g.getLiberte() == 1){
+		for(GroupPawns g : plateau.getGroups(couleur)){
+			if(g.getFreedoms() == 1){
 				cpt++;
 			}
 		}	
@@ -339,7 +339,7 @@ public class AiThread implements Callable<Coordonnees>{
 		return cpt;
 	}
 
-	public Coordonnees forceToPlay() {
+	public Coordinates forceToPlay() {
 		moveForced = true;
 		return bestMove;
 		

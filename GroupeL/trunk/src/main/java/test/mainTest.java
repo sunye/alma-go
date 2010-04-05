@@ -1,11 +1,12 @@
 package test;
 
+import game.Coordinates;
+import game.Color;
+import game.GobanStructure;
+import game.GroupPawns;
+
 import java.util.Scanner;
 
-import jeu.Coordonnees;
-import jeu.Couleur;
-import jeu.GobanStructure;
-import jeu.GroupePieces;
 
 public class mainTest {
 
@@ -16,28 +17,28 @@ public class mainTest {
 		
 		Scanner scInt = new Scanner(System.in);
 		 
-		Couleur joueur = Couleur.noir;
+		Color joueur = Color.BLACK;
 		boolean ok = true;
 		
 		/* placage de pion pour les test */
 		
 		/* on fait un oeil */
-		gb.ajoutPiece(new Coordonnees(6, 6), Couleur.noir);
-		gb.retirePiece(new Coordonnees(6, 6));
+		gb.addPawn(new Coordinates(6, 6), Color.BLACK);
+		gb.removePawn(new Coordinates(6, 6));
 		
 		/* ----------------------------- */
 		
 		do{
-			joueur = joueur.invCouleur();
+			joueur = joueur.invColor();
 
 			affGB(gb);
-			if(joueur == Couleur.blanc){
+			if(joueur == Color.WHITE){
 				System.out.println("c'est au blanc de joueur : ");
 			}else{
 				System.out.println("c'est au noir de joueur : ");
 			}
 			
-			Coordonnees coup;
+			Coordinates coup;
 						
 			do{
 				ok = true;
@@ -46,31 +47,31 @@ public class mainTest {
 				scInt.hasNext();
 				int y = scInt.nextInt();
 				
-				coup = new Coordonnees(x, y);
+				coup = new Coordinates(x, y);
 				
-				if(!gb.coupValide(coup, joueur)){
+				if(!gb.moveValid(coup, joueur)){
 					System.out.println("coup invalide");
 					ok = false;
 				}
 				
 			}while(!ok);
 				
-			gb.ajoutPiece(coup, joueur);
+			gb.addPawn(coup, joueur);
 			
 			System.out.println("liberte des groupes blancs :");
-			for(GroupePieces g : gb.getBlancs()){
-				System.out.println(g.getLiberte());
+			for(GroupPawns g : gb.getWhites()){
+				System.out.println(g.getFreedoms());
 			}
 			System.out.println("liberte des groupes noirs :");
-			for(GroupePieces g : gb.getNoirs()){
-				System.out.println(g.getLiberte());
+			for(GroupPawns g : gb.getBlacks()){
+				System.out.println(g.getFreedoms());
 			}			
 			
-		}while(!gb.fin(joueur));
+		}while(!gb.isWinner(joueur));
 		
 		affGB(gb);
 		
-		if(joueur==Couleur.blanc){
+		if(joueur==Color.WHITE){
 			System.out.println("les blancs ont gagner");
 		}else{
 			System.out.println("les noirs ont gagner");
@@ -80,20 +81,20 @@ public class mainTest {
 	public static void affGB(GobanStructure gb){
 				
 		System.out.print(" ");
-		for( int t=1 ; t<=gb.getTaille() ; t++){
+		for( int t=1 ; t<=gb.getSize() ; t++){
 			System.out.print(t);
 		}	
 		System.out.println();
 		
-		for( int y=1 ; y<=gb.getTaille() ;  y++){
+		for( int y=1 ; y<=gb.getSize() ;  y++){
 			System.out.print(y);
-			for( int x =1 ; x<=gb.getTaille() ; x++){
+			for( int x =1 ; x<=gb.getSize() ; x++){
 							
-				if(gb.getPlateau()[x][y] == null){
+				if(gb.getGoban()[x][y] == null){
 					System.out.print(" ");
-				}else if(gb.getPlateau()[x][y].getCouleur() == Couleur.noir){
+				}else if(gb.getGoban()[x][y].getColor() == Color.BLACK){
 					System.out.print("X");
-				}else if(gb.getPlateau()[x][y].getCouleur() == Couleur.blanc){
+				}else if(gb.getGoban()[x][y].getColor() == Color.WHITE){
 					System.out.print("O");
 				}else{
 					System.out.print("8");
@@ -103,7 +104,7 @@ public class mainTest {
 		}
 		
 		System.out.print(" ");
-		for( int t=1 ; t<=gb.getTaille() ; t++){
+		for( int t=1 ; t<=gb.getSize() ; t++){
 			System.out.print(t);
 		}	
 		System.out.println();

@@ -24,80 +24,80 @@ public class Fenetre extends JFrame implements ActionListener {
         private Goban Pan;
        
         public Fenetre(String s){
-                super(s);
-                setSize(750,650);
-               
-                /**
-         * Creations des différents outils permettant la mise en place de la barre de menu
-         */
-               
-                barreMenu=new JMenuBar();
-               
-                jeu=new JMenu("Nouvelle partie");
-                a_propos=new JMenu("A Propos");
-               
-                pVp=new JMenuItem("2 joueurs");
-                pVp.addActionListener(this);
+        	super(s);
+            setSize(750,650);
+           
+            /**
+	         * Creations des différents outils permettant la mise en place de la barre de menu
+	         */
+           
+            barreMenu=new JMenuBar();
+           
+            jeu=new JMenu("Nouvelle partie");
+            a_propos=new JMenu("A Propos");
+           
+            pVp=new JMenuItem("2 joueurs");
+            pVp.addActionListener(this);
+            
+            pVc=new JMenuItem("contre IA");
+            pVc.addActionListener(this);
+            
+            quitter=new JMenuItem("Quitter");
+            quitter.addActionListener(this);
+            
+            diff= new JMenu("Difficulté");
+            
+            nul = new JMenuItem("Nulle");
+            nul.addActionListener(this);
+            moy = new JMenuItem("Moyen");
+            moy.addActionListener(this);
+            str = new JMenuItem("Fort");
+            str.addActionListener(this);
+            
+            /**
+            * Mise en place de la barre de menu
+     		*/
+           
+            barreMenu.add(jeu);
+            barreMenu.add(diff);
+            barreMenu.add(a_propos);
+           
+            jeu.add(pVp);
+            jeu.add(pVc);
+            jeu.add(quitter);
+            
+            diff.add(nul);
+            diff.add(moy);
+            diff.add(str);
+            
+            JButton forceToPlay = new JButton("Forcer à jouer");
+            forceToPlay.setBounds(this.getWidth()-140,this.getHeight()-90,120,30);
+            add(forceToPlay);
+            //forceToPlay.addActionListener(this); 
+            forceToPlay.addActionListener(
+            		  new ActionListener() {
+            		    public void actionPerformed(ActionEvent e) {
+            		      // création d'un Thread d'exécution
+            		      Thread t = new Thread() {
+            		        public void run() {
+            		        	Pan.forceToPlay();
+            		        }
+            		      };
+            		      t.start();
+            		    }
+            		  }
+            		);
                 
-                pVc=new JMenuItem("contre IA");
-                pVc.addActionListener(this);
-                
-                quitter=new JMenuItem("Quitter");
-                quitter.addActionListener(this);
-                
-                diff= new JMenu("Difficulté");
-                
-                nul = new JMenuItem("Nulle");
-                nul.addActionListener(this);
-                moy = new JMenuItem("Moyen");
-                moy.addActionListener(this);
-                str = new JMenuItem("Fort");
-                str.addActionListener(this);
-                
-                /**
-         * Mise en place de la barre de menu
-         */
-               
-                barreMenu.add(jeu);
-                barreMenu.add(diff);
-                barreMenu.add(a_propos);
-               
-                jeu.add(pVp);
-                jeu.add(pVc);
-                jeu.add(quitter);
-                
-                diff.add(nul);
-                diff.add(moy);
-                diff.add(str);
-                
-                JButton forceToPlay = new JButton("Forcer à jouer");
-                forceToPlay.setBounds(this.getWidth()-140,this.getHeight()-90,120,30);
-                add(forceToPlay);
-                //forceToPlay.addActionListener(this); 
-                forceToPlay.addActionListener(
-                		  new ActionListener() {
-                		    public void actionPerformed(ActionEvent e) {
-                		      // création d'un Thread d'exécution
-                		      Thread t = new Thread() {
-                		        public void run() {
-                		        	Pan.forceToPlay();
-                		        }
-                		      };
-                		      t.start();
-                		    }
-                		  }
-                		);
-                    
-                this.setJMenuBar(barreMenu);
-             
-                // lancement d'une parti de base
-                start();      
-                       
-                /**
+            this.setJMenuBar(barreMenu);
+         
+            // lancement d'une parti de base
+            start();      
+                   
+            /**
              *  Arrêt de l'appli quand on clique sur la croix
              */
-               
-                setDefaultCloseOperation(EXIT_ON_CLOSE);
+           
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
         }
 
 		private void start() {
