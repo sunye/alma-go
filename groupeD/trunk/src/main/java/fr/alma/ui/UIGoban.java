@@ -4,8 +4,8 @@ import fr.alma.atarigo.AtariGo;
 import fr.alma.atarigo.Goban;
 import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Position;
+import fr.alma.atarigo.AtariGo.Move;
 import fr.alma.ia.AlphaBeta;
-import fr.alma.ia.Evaluation;
 import fr.alma.ia.RandomMove;
 import fr.alma.ia.Tree;
 import fr.alma.ia.MinMax;
@@ -113,6 +113,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 		nbMove=0;
 		time=0;
 		while(!atariGo.currentPlayer.isHuman() && !atariGo.isOver()){
+			//System.out.println(atariGo.goban.toString());
 			Tree jeu = new Tree(atariGo.goban);
 			ValuedGoban plv = new ValuedGoban(0);
 			
@@ -176,32 +177,38 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 				x=(x)/40;
 				y=(y)/40;
 				putStone(x,y);
-				nbMove++;
 				//TODO ajouter une actualisation du panneau info...
 				repaint();
-				
 				if(!atariGo.currentPlayer.isHuman()){
-					Tree jeu = new Tree(atariGo.goban);
-					ValuedGoban plv = new ValuedGoban(0);
-					
-					if(nbMove>5){
-						AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
-						plv = AlphaBeta.value(0, jeu,Evaluation.VERYGOOD,atariGo.currentPlayer.color,atariGo,new Position(0,0));
-					}else{
-						System.out.println("random");
-						plv.goban_ = RandomMove.play(atariGo,atariGo.goban,atariGo.currentPlayer.color);
-					}
-					nbMove++;
-					putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
-					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+" meilleur score = "+plv.evaluation_);
-					repaint();
+						//removeMouseListener(this);
+						Tree jeu = new Tree(atariGo.goban);
+						ValuedGoban plv = new ValuedGoban(0);
+						if(nbMove>5){
+							AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
+							plv = AlphaBeta.value(0, jeu, Evaluation.VERYGOOD,atariGo.currentPlayer.color,atariGo,new Position(0,0));
+						}else{
+							System.out.println("random");
+							plv.goban_ = RandomMove.play(atariGo,atariGo.goban,atariGo.currentPlayer.color);
+						}
+						nbMove++;
+						
+						
+						if(putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn())==Move.INVALID){
+							System.out.println(atariGo.goban.getDifference(plv.goban_).toString());
+							atariGo.shutDown();
+						    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" abandonne !", "Information", JOptionPane.INFORMATION_MESSAGE);			
+						}
+						
+						
+						System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+" meilleur score = "+plv.evaluation_);
+						addMouseListener(this);
+						repaint();
 				}
 			}
 		}
-		nbMove++;
 	}
 	
-	public void putStone(int x,int y){
+	public Move putStone(int x,int y){
 		//System.out.println("clic sur la case"+"["+x+","+y+"]");
 		//ici on joue le coup  et on test avant pr savoir etat du jeu en cours...
 		switch (atariGo.playMove(atariGo.currentPlayer.color, new Position(x,y))) {
@@ -209,22 +216,25 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 		myApplication.panInfos.setBlackLife(atariGo.captureObjective-atariGo.caughtBlack);
 		myApplication.panInfos.setWhiteLife(atariGo.captureObjective-atariGo.caughtWhite);
 		repaint();
+		nbMove++;
 	    atariGo.shutDown();
 	    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" a gagné !", "Information", JOptionPane.INFORMATION_MESSAGE);
 		//sortie.println(plateau.toString());
 		//sortie.println("=> Vous avez gagne"); 
 		//scanner.close();
-		break;
+	    return Move.WIN;
 	    case NEUTRAL:
 		//nombreCoups --;
 	    atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
 	    myApplication.panInfos.setBlackLife(atariGo.captureObjective-atariGo.caughtBlack);
 	    myApplication.panInfos.setWhiteLife(atariGo.captureObjective-atariGo.caughtWhite);
 		System.out.println("onpasse au joueur"+atariGo.currentPlayer.toString());
-	    break;
+		nbMove++;
+		return Move.NEUTRAL;
 	    default:
-		//sortie.println("=> Erreur : position invalide");
-		break;
+	    	
+	    //sortie.println("=> Erreur : position invalide");
+		return Move.INVALID;
 	    }
 	}
 

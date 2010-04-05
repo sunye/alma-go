@@ -84,26 +84,38 @@ public class Goban {
 	if(finalWriting){
 		if(this.isCaught(newGL.getGroup(position))){
 			if (!caughtList.isEmpty()) {
+				System.out.println("COUCOU");
 				atariGo.totalMoves++;
 				if(stone==Stone.WHITE){
 					atariGo.caughtBlack += caughtList.totalStones();
+					atariGo.caughtWhite += newGL.getGroup(position).linkedStones.size();
 					if(atariGo.caughtBlack>=atariGo.captureObjective){
 						return Move.WIN;
+					}
+					else{
+						// on doit aussi compter le nombre de pions pris dans le suicide
+						
+						return Move.NEUTRAL;
 					}
 				}
 				else{
 					atariGo.caughtWhite += caughtList.totalStones();
+					atariGo.caughtBlack += newGL.getGroup(position).linkedStones.size();
 					if(atariGo.caughtWhite>=atariGo.captureObjective){
 						return Move.WIN;
 					}
+					else{
+						return Move.NEUTRAL;
+					}
 				}
-				System.out.println(stone.toString()+"has won");
 			}
-			System.out.println("is cuaght !!");
-			System.out.println("printing gList");
-			groupsList.print();
-			this.emptyCell(position);
-			return Move.INVALID;
+			else{
+				System.out.println("is caught !!");
+				System.out.println("printing gList");
+				groupsList.print();
+				this.emptyCell(position);
+				return Move.INVALID;
+			}
 		}
 		groupsList = newGL;
 		caughtList = this.hasCaught(position,groupsList);
@@ -249,7 +261,7 @@ public class Goban {
 	final int LINES = getLines();
 	final int COLUMNS = getColumns();
 	String goban = "";
-	for (int i = LINES - 1; i > -1; i --) {
+	for (int i = 0; i < LINES; i ++) {
 	    goban += i + " |\t";
 	    for (int j = 0; j < COLUMNS; j ++) {
 		goban += matrice[i][j].toString() + '\t';
