@@ -5,6 +5,7 @@ import fr.alma.atarigo.Goban;
 import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Position;
 import fr.alma.ia.AlphaBeta;
+import fr.alma.ia.Evaluation;
 import fr.alma.ia.RandomMove;
 import fr.alma.ia.Tree;
 import fr.alma.ia.MinMax;
@@ -117,7 +118,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 			
 			if(nbMove>5){
 				AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
-				plv = AlphaBeta.value(0, jeu, 500,atariGo.currentPlayer.color,atariGo,new Position(0,0));
+				plv = AlphaBeta.value(0, jeu, Evaluation.VERYGOOD,atariGo.currentPlayer.color,atariGo,new Position(0,0));
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
@@ -185,7 +186,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 					
 					if(nbMove>5){
 						AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
-						plv = AlphaBeta.value(0, jeu, 500,atariGo.currentPlayer.color,atariGo,new Position(0,0));
+						plv = AlphaBeta.value(0, jeu,Evaluation.VERYGOOD,atariGo.currentPlayer.color,atariGo,new Position(0,0));
 					}else{
 						System.out.println("random");
 						plv.goban_ = RandomMove.play(atariGo,atariGo.goban,atariGo.currentPlayer.color);

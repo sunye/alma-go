@@ -327,29 +327,14 @@ public int liberty(Position pos){
 	 return cmpt;	 
 }
 
-public int surrounded(Position pos,Stone opponentStone){
+public int contact(Position pos,Stone opponentStone){
 	 int cmpt=0;
-	 if(isValid(pos.neighbor(Direction.NORTH))){
-		 if(readCell(pos.neighbor(Direction.NORTH)).equals(opponentStone))
-			 cmpt++;
-	 }else{
-		 cmpt++;}
-	 if(isValid(pos.neighbor(Direction.SOUTH))){
-		 if(readCell(pos.neighbor(Direction.SOUTH)).equals(opponentStone))
-			 cmpt++;
-	 }else{
-		 cmpt++;}
-	 if(isValid(pos.neighbor(Direction.EAST))){
-		 if(readCell(pos.neighbor(Direction.EAST)).equals(opponentStone))
-			 cmpt++;
-	 }else{
-		 cmpt++;}
-	 if(isValid(pos.neighbor(Direction.WEST))){
-		 if(readCell(pos.neighbor(Direction.WEST)).equals(opponentStone))
-			 cmpt++;
-	 }else{
-		 cmpt++;}
-			 
+	 
+	 for(int i=0;i<2;i++)
+		 for(int j=0;j<2;j++)
+			 if(isValid(new Position(pos.getLine()+i,pos.getColumn()+j)) && (matrice[pos.getLine()+i][pos.getColumn()+j])==opponentStone)
+				 cmpt++;
+	 
 	 return cmpt;	 
 }
 
