@@ -1,21 +1,18 @@
 package fr.alma.ui;
 
 import fr.alma.atarigo.AtariGo;
-import fr.alma.atarigo.Goban;
-import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Position;
 import fr.alma.atarigo.AtariGo.Move;
 import fr.alma.ia.AlphaBeta;
+import fr.alma.ia.Evaluation;
 import fr.alma.ia.RandomMove;
 import fr.alma.ia.Tree;
-import fr.alma.ia.MinMax;
 import fr.alma.ia.ValuedGoban;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
