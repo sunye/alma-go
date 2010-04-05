@@ -22,12 +22,13 @@ public class Evaluation {
 	static ValuedGoban evaluate(Goban goban, Goban parentGoban, Stone stone, Position position){
 		ValuedGoban cmpt = new ValuedGoban(0,goban);
 		if(TRACE)
-			System.out.println();
-		cmpt.evaluation_+=groupCreation(goban,parentGoban,stone);
-		cmpt.evaluation_+=groupExtension(goban,stone);
-		cmpt.evaluation_+=averageGroupSize(goban,stone);
+			System.out.println(stone+" joue");
+		//cmpt.evaluation_+=groupCreation(goban,parentGoban,stone);
+		//cmpt.evaluation_+=groupExtension(goban,stone);
+		//cmpt.evaluation_+=averageGroupSize(goban,stone);
 		cmpt.evaluation_+=isCaught(goban,position,stone);
-		cmpt.evaluation_+=lastLiberty(goban,stone);
+		cmpt.evaluation_+=underNGroups(goban,stone,6);
+		//cmpt.evaluation_+=lastLiberty(goban,stone);
 
 		return cmpt;
 	}
@@ -45,24 +46,30 @@ public class Evaluation {
 				}
 			}
 		}
-		if(stone==Stone.BLACK)
-			return GOOD*cmptWhite+BAD*cmptBlack;
-		else
-			return BAD*cmptWhite+GOOD*cmptBlack;
+		if(stone==Stone.BLACK){
+			if(cmptBlack<2){
+				return GOOD;
+			}else{
+				return VERYBAD;
+			}
+		}else{
+			if(cmptWhite<2){
+				return GOOD;
+			}else{
+				return VERYBAD;
+			}		
+		}
 	}
 	
 	static int isCaught(Goban goban,Position position,Stone stone){
 		Group group = goban.groupsList.getGroup(position);
 		int prises = goban.hasCaught(position, goban.groupsList).totalStones();
 		if(prises>0){
-			if(TRACE)
+			//if(TRACE)
 				System.out.println("---------------------------------> prise de "+prises+" pions par le joueur "+group.stone.toString()+ " alors que "+stone+" joue");
-			if(group.stone==stone)
-				return VERYBAD;
-			else
-				return VERYGOOD;
+			return prises*VERYGOOD;
 		}
-		return 0;
+		return MINUS;
 	}
 	
 	static int averageGroupSize(Goban goban, Stone stone){
@@ -155,5 +162,33 @@ public class Evaluation {
 		}
 		
 		return cmpt;
+	}
+	
+	public static int underNGroups(Goban goban, Stone stone, int n){
+		int cmptBlack=0,cmptWhite=0;
+		
+		for(Group group : goban.groupsList.gList){
+			if(group.stone==Stone.BLACK)
+				cmptBlack++;
+			else
+				cmptWhite++;
+		}
+		
+		if(TRACE)
+			System.out.println("joueur en cours = "+stone+" BLACK "+cmptBlack+" WHITE"+cmptWhite);
+		
+		if(stone==Stone.BLACK){
+			if(cmptBlack<n){
+				return GOOD;
+			}else{
+				return MINUS;
+			}
+		}else{
+			if(cmptWhite<n){
+				return GOOD;
+			}else{
+				return MINUS;
+			}		
+		}
 	}
 }

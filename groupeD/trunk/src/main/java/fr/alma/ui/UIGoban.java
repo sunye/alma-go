@@ -117,7 +117,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 			
 			if(nbMove>5){
 				AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
-				plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo,new Position(0,0));
+				plv = AlphaBeta.value(0, jeu, 500,atariGo.currentPlayer.color,atariGo,new Position(0,0));
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
@@ -132,7 +132,6 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 			putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
 			System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+" meilleur score = "+plv.evaluation_);
 			repaint();
-			//atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
 		}		
 		repaint();
 	}
@@ -176,19 +175,25 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 				x=(x)/40;
 				y=(y)/40;
 				putStone(x,y);
+				nbMove++;
 				//TODO ajouter une actualisation du panneau info...
 				repaint();
 				
 				if(!atariGo.currentPlayer.isHuman()){
 					Tree jeu = new Tree(atariGo.goban);
 					ValuedGoban plv = new ValuedGoban(0);
-					AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
-					plv = AlphaBeta.value(0, jeu, 0,atariGo.currentPlayer.color,atariGo,new Position(0,0));
-					putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());
-					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+"  nombre de coups jouŽs = "+nbMove);
-
+					
+					if(nbMove>5){
+						AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
+						plv = AlphaBeta.value(0, jeu, 500,atariGo.currentPlayer.color,atariGo,new Position(0,0));
+					}else{
+						System.out.println("random");
+						plv.goban_ = RandomMove.play(atariGo,atariGo.goban,atariGo.currentPlayer.color);
+					}
+					nbMove++;
+					putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
+					System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+" meilleur score = "+plv.evaluation_);
 					repaint();
-					//atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
 				}
 			}
 		}

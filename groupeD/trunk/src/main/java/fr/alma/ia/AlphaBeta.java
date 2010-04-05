@@ -29,7 +29,6 @@ public class AlphaBeta {
 	 */
 		public static void init(int nvmax,Goban goban){
 			bestMove=new ValuedGoban(0);
-			extremum=0;
 			totalNodes=0;
 			maxLevel=nvmax;
 			initialGoban=goban;
@@ -44,8 +43,12 @@ public class AlphaBeta {
 	 * @return a ValuedGoban which indicates the best move
 	 */
 	public static ValuedGoban value(int level, Tree stateOfGame, int currentExtremum, Stone stone, AtariGo atariGo, Position position){
-		if(level<maxLevel)
-			stateOfGame.generateChildren(atariGo,stone);
+		if(level<maxLevel){
+			if(level%2==0 || level==0)
+				stateOfGame.generateChildren(atariGo,stone);
+			else
+				stateOfGame.generateChildren(atariGo,stone.opponent());
+		}
 		
 		if(level<maxLevel && !stateOfGame.isLeaf()){
 		//appel rcursif
@@ -65,10 +68,11 @@ public class AlphaBeta {
 		//recherche du max
 		ValuedGoban max = new ValuedGoban(-100000);
 		int i = 0;
+		//On ignore l'extremum : 		while(max.evaluation_<ExtremumCourant && edj.getChildren().size()>i){
 		while(max.evaluation_<ExtremumCourant && edj.getChildren().size()>i){
 			totalNodes++;
 			Position position = edj.getGoban().getDifference(edj.getChildren().get(i).getGoban());
-			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),max.evaluation_,pion.opponent(),atariGo,position);
+			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),max.evaluation_,pion,atariGo,position);
 			if(V.evaluation_>max.evaluation_){
 				max.clone(new ValuedGoban(V.evaluation_,edj.getChildren().get(i).getMove()));
 			}
@@ -84,7 +88,7 @@ public class AlphaBeta {
 		while(min.evaluation_>ExtremumCourant && edj.getChildren().size()>i){
 			totalNodes++;
 			Position position = edj.getGoban().getDifference(edj.getChildren().get(i).getGoban());
-			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),min.evaluation_,pion.opponent(),atariGo,position);
+			ValuedGoban V = value(niveau+1,edj.getChildren().get(i),min.evaluation_,pion,atariGo,position);
 			if(V.evaluation_<min.evaluation_){
 				min.clone(new ValuedGoban(V.evaluation_,edj.getChildren().get(i).getMove()));
 			}
