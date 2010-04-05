@@ -5,9 +5,9 @@
  * 
  */
 
-package jeu;
+package game;
 
-public class Coordonnees {
+public class Coordinates {
 	private Integer x;
 	private Integer y;
 	
@@ -26,33 +26,31 @@ public class Coordonnees {
 	}
 	
 	/* Constructors */
-	public Coordonnees(Integer x, Integer y) {
+	public Coordinates(Integer x, Integer y) {
 		super();
 		this.x = x;
 		this.y = y;
 	}
 	
-	public Coordonnees() {
+	public Coordinates() {
 		super();
 		this.x = 0;
 		this.y = 0;
 	}
 	
 	/* function */
-	
 	/**
-	 * @param coord : coordonnee a tester;
-	 * @return true si les coordonnees sont identiques
+	 * @param coord : Coordinates to test;
+	 * @return true if the Coordinates are the same
 	 */
-	public boolean estEgal(Coordonnees coord) {
+	public boolean equals(Coordinates coord) {
 		return ((coord.getX()==this.x) && (coord.getY()==this.y));
 	}
-	
 	/**
-	 * @param coord : coordonnee a tester;
-	 * @return true si les coordonnees sont adjacente
+	 * @param coord : Coordinates to test;
+	 * @return true if the Coordinates are adjacent
 	 */
-	public boolean estAdjacent(Coordonnees coord) {
+	public boolean isAdjacent(Coordinates coord) {
 		return ( ((coord.getX()+1 == this.x)||(coord.getX()-1 == this.x)) && (coord.getY() == this.y) ) || ( ((coord.getY()+1 == this.y)||(coord.getY()-1 == this.y)) && (coord.getX() == this.x) ) ;
 	}
 	

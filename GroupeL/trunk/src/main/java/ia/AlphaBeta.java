@@ -1,63 +1,64 @@
 package ia;
 
+import game.Coordinates;
+import game.Color;
+import game.GobanStructure;
+import game.GroupPawns;
+
 import java.util.LinkedList;
 import java.util.List;
 
-import jeu.Coordonnees;
-import jeu.Couleur;
-import jeu.GobanStructure;
-import jeu.GroupePieces;
 
 public class AlphaBeta {
 	
 	private final static int NOTE_MIN = -100000;
 	private final static int NOTE_MAX = 100000;
 	
-	private GobanStructure plateau;
-	private Couleur color; 
+	private GobanStructure goban;
+	private Color color; 
 
 	private boolean moveForced = false;
-	private Coordonnees bestMove;
+	private Coordinates bestMove;
 
-	private Integer profondeur;
+	private Integer depthMax;
 
 
 	/* Constructor */
-	public AlphaBeta(GobanStructure plateau, Couleur color, Integer prof) {
+	public AlphaBeta(GobanStructure plateau, Color color, Integer prof) {
 		super();
-		this.plateau = plateau;
+		this.goban = plateau;
 		this.color = color;
-		this.profondeur = prof;
+		this.depthMax = prof;
 	}
 	
 	public AlphaBeta(Integer profondeur) {
 		super();
-		this.plateau = new GobanStructure();
-		this.color = Couleur.none;
-		this.profondeur = profondeur;
+		this.goban = new GobanStructure();
+		this.color = Color.NONE;
+		this.depthMax = profondeur;
 	}
 	
 	public AlphaBeta() {
 		super();
-		this.plateau = new GobanStructure();
-		this.color = Couleur.none;
-		this.profondeur = 3;
+		this.goban = new GobanStructure();
+		this.color = Color.NONE;
+		this.depthMax = 3;
 	}
 	
 	/* Function of decision tree creation (without parameters) */
-	public Coordonnees createTree()
+	public Coordinates createTree()
 	{
-		Coordonnees toPlay = new Coordonnees();
+		Coordinates toPlay = new Coordinates();
 		int bestNote = NOTE_MIN;
 		moveForced = false;
 		
 		/* We run the recursive function on every free square of the plateau */	
-		List<Coordonnees> emptySquares = plateau.getCoordLibre();
+		List<Coordinates> emptySquares = goban.getFreeCoord();
 		int note = NOTE_MIN;
 		
-		for(Coordonnees coordTmp : emptySquares){
+		for(Coordinates coordTmp : emptySquares){
 			
-			if(plateau.coupValide(coordTmp, color)){
+			if(goban.moveValid(coordTmp, color)){
 			
 				note = createNode(coordTmp, 1, NOTE_MIN, NOTE_MAX);
 				
@@ -76,22 +77,22 @@ public class AlphaBeta {
 	}
 	
 	/* Function of decision tree creation (with parameters) */
-	public Coordonnees createTree(GobanStructure plateau, Couleur color)
+	public Coordinates createTree(GobanStructure plateau, Color color)
 	{
-		this.plateau = plateau;
+		this.goban = plateau;
 		this.color = color;
 		moveForced = false;
 		
-		Coordonnees toPlay = new Coordonnees();
+		Coordinates toPlay = new Coordinates();
 		int bestNote = NOTE_MIN;
 		
 		/* We run the recursive function on every free square of the plateau */	
-		List<Coordonnees> emptySquares = plateau.getCoordLibre();
+		List<Coordinates> emptySquares = plateau.getFreeCoord();
 		int note = NOTE_MIN;
 		
-		for(Coordonnees coordTmp : emptySquares){
+		for(Coordinates coordTmp : emptySquares){
 			
-			if(plateau.coupValide(coordTmp, color)){
+			if(plateau.moveValid(coordTmp, color)){
 			
 				note = createNode(coordTmp, 1, NOTE_MIN, NOTE_MAX);
 				
@@ -139,7 +140,7 @@ public class AlphaBeta {
 	 * 
 	 */
 	
-	private Integer createNode(Coordonnees coord, Integer depth, Integer alpha, Integer beta)
+	private Integer createNode(Coordinates coord, Integer depth, Integer alpha, Integer beta)
 	{
 		int note = 0;
 					
@@ -151,19 +152,19 @@ public class AlphaBeta {
 			System.out.println("coup forcé");
 		}
 		
-		if ((depth == profondeur) && (!moveForced))
+		if ((depth == depthMax) && (!moveForced))
 
 		{
 			/* We are in a leaf */
 			note = evaluation(depth);
-			plateau.retirePiece(coord);
+			goban.removePawn(coord);
 			
 			return note;
 			
 		} else {
 
 				/* We try to trunk the tree */
-				List<Coordonnees> emptySquares = plateau.getCoordLibre();
+				List<Coordinates> emptySquares = goban.getFreeCoord();
 				note = evaluation(depth);
 				
 				if ((depth % 2) != 0)
@@ -173,16 +174,16 @@ public class AlphaBeta {
 					/* The depth is pair : we search for the minimal note value of all its sons. */
 					/* Here, we create its sons when we encounter an empty square */
 					
-					for(Coordonnees coordTmp : emptySquares){
+					for(Coordinates coordTmp : emptySquares){
 						
-						if(plateau.coupValide(coordTmp, color.invCouleur())){
+						if(goban.moveValid(coordTmp, color.invColor())){
 							
 							note = Math.min(note, createNode(coordTmp, depth+1, alpha, beta));
 						
 							if (alpha >= note)
 							{
 								/* We don't need to go further, so we stop here */
-								plateau.retirePiece(coord);
+								goban.removePawn(coord);
 								return note;							
 							}	
 							
@@ -197,16 +198,16 @@ public class AlphaBeta {
 					/* The depth is not pair : we search for the maximal note value of all its sons. */
 					/* Here, we create its sons when we encounter an empty square */
 					
-					for(Coordonnees coordTmp : emptySquares){
+					for(Coordinates coordTmp : emptySquares){
 
-						if(plateau.coupValide(coordTmp, color)){
+						if(goban.moveValid(coordTmp, color)){
 							
 							note = Math.max(note, createNode(coordTmp, depth+1, alpha, beta));
 									
 							if (beta <= note)
 							{
 								/* We don't need to go further, so we stop here */
-								plateau.retirePiece(coord);
+								goban.removePawn(coord);
 								return note;							
 							}
 									
@@ -217,17 +218,17 @@ public class AlphaBeta {
 					
 				}		
 		}
-		plateau.retirePiece(coord);
+		goban.removePawn(coord);
 		return note;
 	}
 	
-	private void hitSimul(Coordonnees coord, int depth){
+	private void hitSimul(Coordinates coord, int depth){
 		
 		if ((depth % 2) == 0)
 		{					
-			plateau.ajoutPiece(coord, color);
+			goban.addPawn(coord, color);
 		} else {
-			plateau.ajoutPiece(coord, color.invCouleur());
+			goban.addPawn(coord, color.invColor());
 								
 		}		
 	}
@@ -241,26 +242,26 @@ public class AlphaBeta {
 	{
 		Integer note=0;
 				
-		if (plateau.fin(color)){
+		if (goban.isWinner(color)){
 			note = NOTE_MAX;
 		}else{
 			note = note - 1000 * derniereLiberte(color);
-			note = note + 100 * derniereLiberte(color.invCouleur());
+			note = note + 100 * derniereLiberte(color.invColor());
 						
-			note = note + 10 * plateau.getGroupes(color).size();
-			note = note - 10 * plateau.getGroupes(color.invCouleur()).size();
+			note = note + 10 * goban.getGroups(color).size();
+			note = note - 10 * goban.getGroups(color.invColor()).size();
 			
-			note = note - nbLiberte(color.invCouleur());
+			note = note - nbLiberte(color.invColor());
 		}
 		
 		return note;
 	}
 	
-	private Integer nbLiberte(Couleur couleur){
+	private Integer nbLiberte(Color couleur){
 		Integer note=0;
 		
-		for(GroupePieces g : plateau.getGroupes(couleur)){
-			note = note - g.getLiberte();
+		for(GroupPawns g : goban.getGroups(couleur)){
+			note = note - g.getFreedoms();
 		}			
 		return note;
 	}
@@ -316,12 +317,12 @@ public class AlphaBeta {
 	 * @param couleur
 	 * @return
 	 */
-	private Integer derniereLiberte(Couleur couleur){
+	private Integer derniereLiberte(Color couleur){
 		
 		Integer cpt=0;
 		
-		for(GroupePieces g : plateau.getGroupes(couleur)){
-			if(g.getLiberte() == 1){
+		for(GroupPawns g : goban.getGroups(couleur)){
+			if(g.getFreedoms() == 1){
 				cpt++;
 			}
 		}	
@@ -329,7 +330,7 @@ public class AlphaBeta {
 		return cpt;
 	}
 
-	public Coordonnees forceToPlay() {
+	public Coordinates forceToPlay() {
 		moveForced = true;
 		return bestMove;
 		
