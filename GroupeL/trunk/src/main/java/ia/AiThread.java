@@ -1,4 +1,4 @@
-package ihm;
+package ia;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,7 +8,6 @@ import game.Coordinates;
 import game.Color;
 import game.GobanStructure;
 import game.GroupPawns;
-import ia.AlphaBeta;
 
 
 public class AiThread implements Callable<Coordinates>{
@@ -168,7 +167,7 @@ public class AiThread implements Callable<Coordinates>{
 
 		{
 			/* We are in a leaf */
-			note = evaluation(depth);
+			note = evaluation();
 			plateau.removePawn(coord);
 			
 			return note;
@@ -177,7 +176,7 @@ public class AiThread implements Callable<Coordinates>{
 
 				/* We try to trunk the tree */
 				List<Coordinates> emptySquares = plateau.getFreeCoord();
-				note = evaluation(depth);
+				note = evaluation();
 				
 				if ((depth % 2) != 0)
 				{
@@ -250,20 +249,50 @@ public class AiThread implements Callable<Coordinates>{
 	 * @param depth
 	 * @return
 	 */
-	private Integer evaluation(Integer depth)
+	private Integer evaluation()
 	{
 		Integer note=0;
-				
 		if (plateau.isWinner(color)){
 			note = NOTE_MAX;
+		}else if (nbCoup() < 5 && pieceHorsCentre(color)){
+			note = NOTE_MIN;
 		}else{
-			note = note + 1000 * derniereLiberte(color);
-			note = note - 1000 * derniereLiberte(color.invColor());
+			note = note - 1000 * derniereLiberte(color);
+			note = note + 100 * derniereLiberte(color.invColor());
 			
-			note = note - nbLiberte(color.invColor());
+			note = note + 20 * tailleGroupe(color);
+			note = note - 20 * tailleGroupe(color.invColor());
+			
+			note = note + 1 * plateau.getGroups(color).size();
+			note = note - 1 * plateau.getGroups(color.invColor()).size();
+			
+			note = note + 10 * nbLiberte(color);
 		}
 		
 		return note;
+	}
+	
+	private Integer nbCoup() {
+		return plateau.getSize() * plateau.getSize() - plateau.getFreeCoord().size();
+	}
+
+	private boolean pieceHorsCentre(Color couleur) {
+		for(int y =1 ; y<=3 ; y++){
+			for(int x =1 ; x<=3 ; x++){
+				if(plateau.getGoban()[x][y].getColor()==couleur){
+					return true;
+				}
+			}
+		}
+		for(int y = plateau.getSize() ; y<= plateau.getSize()-3 ; y--){
+			for(int x = plateau.getSize() ; x<= plateau.getSize()-3 ; x--){
+				if(plateau.getGoban()[x][y].getColor()==couleur){
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	private Integer nbLiberte(Color couleur){
@@ -275,6 +304,17 @@ public class AiThread implements Callable<Coordinates>{
 		return note;
 	}
 
+	private Integer tailleGroupe(Color couleur) {
+		
+		Integer note = 0;
+		
+		for(GroupPawns g : plateau.getGroups(couleur)){
+			note = note - g.getPawns().size();
+		}
+		
+		return note;
+	}
+	
 	
 	/**
 	 * This function return the number of true eyes and false eyes.
