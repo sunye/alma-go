@@ -3,6 +3,7 @@ package ihm;
 import game.Coordinates;
 import game.Color;
 import game.GobanStructure;
+import ia.AiThread;
 import ia.AlphaBeta;
 
 import java.awt.Graphics;
@@ -195,7 +196,6 @@ public class Goban extends JPanel{
 					            		future = pool.submit(aiThread);
 					            		
 										while(!future.isDone()){
-											System.out.println("ah");
 											if(moveForced){
 												future.cancel(true);
 												
@@ -218,6 +218,8 @@ public class Goban extends JPanel{
 			            			
 								//};
 								//t.start();
+			            		
+			            		
 
 								
 			            	}     
@@ -241,7 +243,7 @@ public class Goban extends JPanel{
          * fonction appeler pour completer un coup
          */
         private void coupFini() {
-        	       	
+        	
         	// verification de la fin de parti
         	if(goban_tab.isWinner(joueur)){
         		// si un joueur a gagner on termine la parti

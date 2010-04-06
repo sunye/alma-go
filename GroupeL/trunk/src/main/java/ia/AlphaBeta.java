@@ -147,25 +147,17 @@ public class AlphaBeta {
 		/* We simulate that we put a token of the right color at coord */
 		hitSimul(coord, depth);
 		
-
-		if (moveForced){
-			System.out.println("coup forcé");
-		}
-		
-		if ((depth == depthMax) && (!moveForced))
-
+		if ((depth == depthMax))
 		{
 			/* We are in a leaf */
-			note = evaluation(depth);
+			note = evaluation();
 			goban.removePawn(coord);
-			
 			return note;
 			
 		} else {
-
 				/* We try to trunk the tree */
 				List<Coordinates> emptySquares = goban.getFreeCoord();
-				note = evaluation(depth);
+				note = evaluation();
 				
 				if ((depth % 2) != 0)
 				{
@@ -238,25 +230,65 @@ public class AlphaBeta {
 	 * @param depth
 	 * @return
 	 */
-	private Integer evaluation(Integer depth)
+	private Integer evaluation()
 	{
+		System.out.println("toto");
 		Integer note=0;
-				
 		if (goban.isWinner(color)){
 			note = NOTE_MAX;
+		}else if (nbCoup() < 5 && pieceHorsCentre(color)){
+			note = NOTE_MIN;
 		}else{
 			note = note - 1000 * derniereLiberte(color);
 			note = note + 100 * derniereLiberte(color.invColor());
-						
-			note = note + 10 * goban.getGroups(color).size();
-			note = note - 10 * goban.getGroups(color.invColor()).size();
 			
-			note = note - nbLiberte(color.invColor());
+			note = note + 20 * tailleGroupe(color);
+			note = note - 20 * tailleGroupe(color.invColor());
+			
+			note = note + 1 * goban.getGroups(color).size();
+			note = note - 1 * goban.getGroups(color.invColor()).size();
+			
+			note = note + 10 * nbLiberte(color);
 		}
 		
 		return note;
 	}
 	
+	private Integer nbCoup() {
+		System.out.println(goban.getSize() * goban.getSize() - goban.getFreeCoord().size());
+		return goban.getSize() * goban.getSize() - goban.getFreeCoord().size();
+	}
+
+	private boolean pieceHorsCentre(Color couleur) {
+		for(int y =1 ; y<=3 ; y++){
+			for(int x =1 ; x<=3 ; x++){
+				if(goban.getGoban()[x][y].getColor()==couleur){
+					return true;
+				}
+			}
+		}
+		for(int y = goban.getSize() ; y<= goban.getSize()-3 ; y--){
+			for(int x = goban.getSize() ; x<= goban.getSize()-3 ; x--){
+				if(goban.getGoban()[x][y].getColor()==couleur){
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	private Integer tailleGroupe(Color couleur) {
+		
+		Integer note = 0;
+		
+		for(GroupPawns g : goban.getGroups(couleur)){
+			note = note - g.getPawns().size();
+		}
+		
+		return note;
+	}
+
 	private Integer nbLiberte(Color couleur){
 		Integer note=0;
 		
