@@ -23,7 +23,10 @@ import javax.swing.JPanel;
 public class Goban extends JPanel{
         
 		private static final int DIFF_BASE = 3;
-	
+		private static final int BORDURE = 25;
+		private static final int CASE_SIZE = 60;
+		private static final int INFO = 150;
+		
 		private static final long serialVersionUID = 1L;
         private ImageIcon plateau;
         private ImageIcon pionB;
@@ -32,13 +35,7 @@ public class Goban extends JPanel{
         private ImageIcon vainqueur;
         //tous les points du Goban
         private GobanStructure goban_tab;
-        //largeur d'une colonne et hauteur d'une ligne
-        private int caseSize;
-        
-        
-        //bordure de l'image 
-        private int bordure;
-        private int info;
+
         
         // jouer avec ou sans IA
         private boolean withAI;
@@ -72,13 +69,7 @@ public class Goban extends JPanel{
              if (gobanURL != null) {
             	 plateau = new ImageIcon(gobanURL);
              }
-                
-             /* parametre fixer a partir de l'image */
-             bordure = 25;
-             caseSize = 60;
-             info = 100;
-             /*-------------------------------------*/
-                
+                                
              /**
               * Creation de l'image du pion blanc
               */
@@ -152,10 +143,10 @@ public class Goban extends JPanel{
 	            y = e.getY();
 	            
 	            /* le clic est t'il sur la grille de jeux */
-	            if(x>bordure && x< plateau.getIconWidth()-bordure && y>bordure && y< plateau.getIconWidth()-bordure){      
+	            if(x>BORDURE && x< plateau.getIconWidth()-BORDURE-INFO && y>BORDURE && y< plateau.getIconWidth()-BORDURE){      
 		            
 		            // creation des coordonnées du coup par rapport a la position du clic
-		            Coordinates coup = new Coordinates(((x-bordure)/caseSize)+1, ((y-bordure)/caseSize)+1);
+		            Coordinates coup = new Coordinates(((x-BORDURE)/CASE_SIZE)+1, ((y-BORDURE)/CASE_SIZE)+1);
 		            
 		            // verification de validité du coup
 		            if(goban_tab.moveValid(coup, joueur)){
@@ -267,14 +258,14 @@ public class Goban extends JPanel{
 	        
 	        //Affichage de la couleur du joueur qui doit joueur
 		    if(partiFini){
-		    	g.drawImage(vainqueur.getImage(),plateau.getIconWidth()-vainqueur.getIconWidth(),plateau.getIconHeight()-vainqueur.getIconHeight()-info,this);
+		    	g.drawImage(vainqueur.getImage(),plateau.getIconWidth()-vainqueur.getIconWidth(),plateau.getIconHeight()-vainqueur.getIconHeight()-INFO,this);
 		    }
 		    	    
 		    // affichage de la couleur du joueur
 	        if(joueur == Color.WHITE){
-	        	g.drawImage(pionB.getImage(),plateau.getIconWidth()-info,bordure*3,this);
+	        	g.drawImage(pionB.getImage(),plateau.getIconWidth()-CASE_SIZE-BORDURE,BORDURE*3,this);
 		    }else if(joueur == Color.BLACK){
-		        g.drawImage(pionN.getImage(),plateau.getIconWidth()-info,bordure*3,this);
+		        g.drawImage(pionN.getImage(),plateau.getIconWidth()-CASE_SIZE-BORDURE,BORDURE*3,this);
 		    }
 		    	        
 	        //Affichage de tout les pions en parcourant la matrice
@@ -282,13 +273,13 @@ public class Goban extends JPanel{
 	            for(int j=1;j<=goban_tab.getSize(); j++){
 	            	if(goban_tab.getGoban()[i][j] != null){
 	            		if(goban_tab.getGoban()[i][j].getColor() == Color.BLACK){
-	            			g.drawImage(pionN.getImage(),((i-1)*caseSize)+bordure,((j-1)*caseSize)+bordure,this);
+	            			g.drawImage(pionN.getImage(),((i-1)*CASE_SIZE)+BORDURE,((j-1)*CASE_SIZE)+BORDURE,this);
 	              		}else{
-	            			g.drawImage(pionB.getImage(),((i-1)*caseSize)+bordure,((j-1)*caseSize)+bordure,this);
+	            			g.drawImage(pionB.getImage(),((i-1)*CASE_SIZE)+BORDURE,((j-1)*CASE_SIZE)+BORDURE,this);
 	                	}
 	            		
 	            		if((goban_tab.getGoban()[i][j].getFreedoms() == 0) && (goban_tab.getGoban()[i][j].getColor()==joueur.invColor())){
-	            			g.drawImage(mort.getImage(),((i-1)*caseSize)+bordure,((j-1)*caseSize)+bordure,this);
+	            			g.drawImage(mort.getImage(),((i-1)*CASE_SIZE)+BORDURE,((j-1)*CASE_SIZE)+BORDURE,this);
 	            		}
 	                }
 	            }
