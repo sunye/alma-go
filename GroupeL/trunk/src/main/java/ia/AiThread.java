@@ -181,24 +181,28 @@ public class AiThread implements Callable<Coordinates>{
 				if ((depth % 2) != 0)
 				{
 					//note = NOTE_MAX;
-
 					/* The depth is pair : we search for the minimal note value of all its sons. */
 					/* Here, we create its sons when we encounter an empty square */
+					if(note == NOTE_MAX){
+						System.out.println(depth);
+						return note;
+					}else{
 					
-					for(Coordinates coordTmp : emptySquares){
+						for(Coordinates coordTmp : emptySquares){
 						
-						if(plateau.moveValid(coordTmp, color.invColor())){
+							if(plateau.moveValid(coordTmp, color.invColor())){
+								
+								note = Math.min(note, createNode(coordTmp, depth+1, alpha, beta));
 							
-							note = Math.min(note, createNode(coordTmp, depth+1, alpha, beta));
-						
-							if (alpha >= note)
-							{
-								/* We don't need to go further, so we stop here */
-								plateau.removePawn(coord);
-								return note;							
-							}	
-							
-							beta = Math.min(beta, note);
+								if (alpha >= note)
+								{
+									/* We don't need to go further, so we stop here */
+									plateau.removePawn(coord);
+									return note;							
+								}	
+								
+								beta = Math.min(beta, note);
+							}
 						}
 					}
 	
@@ -254,17 +258,17 @@ public class AiThread implements Callable<Coordinates>{
 		Integer note=0;
 		if (plateau.isWinner(color)){
 			note = NOTE_MAX;
-		}else if (nbCoup() < 5 && pieceHorsCentre(color)){
+		}else if (nbCoup() < 3 && pieceHorsCentre(color)){
 			note = NOTE_MIN;
 		}else{
 			note = note - 1000 * derniereLiberte(color);
 			note = note + 100 * derniereLiberte(color.invColor());
 			
-			note = note + 20 * tailleGroupe(color);
-			note = note - 20 * tailleGroupe(color.invColor());
+			note = note + 10 * tailleGroupe(color);
+			note = note - 10 * tailleGroupe(color.invColor());
 			
-			note = note + 1 * plateau.getGroups(color).size();
-			note = note - 1 * plateau.getGroups(color.invColor()).size();
+			note = note + 10 * plateau.getGroups(color).size();
+			note = note - 10 * plateau.getGroups(color.invColor()).size();
 			
 			note = note + 10 * nbLiberte(color);
 		}
