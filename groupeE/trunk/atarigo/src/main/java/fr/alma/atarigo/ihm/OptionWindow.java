@@ -4,8 +4,12 @@
  */
 package fr.alma.atarigo.ihm;
 
+import fr.alma.atarigo.GameManager;
+
+import fr.alma.atarigo.utils.PionVal;
 import java.awt.Frame;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,17 +17,44 @@ import javax.swing.JDialog;
  */
 public class OptionWindow extends JDialog {
 
-    public OptionWindow(Frame owner) {
-        super(owner);
-        this.setTitle("Options");
+    /**
+     * Constructor
+     * @param owner
+     * @param title
+     * @param modal
+     */
+    public OptionWindow(Frame owner, String title, boolean modal, GameManager gaman) {
+        super(owner, title, modal);
         this.setSize(200, 80);
-        
-        
-        //La position
         this.setLocationRelativeTo(null);
-        //La boîte ne devra pas être redimensionnable
         this.setResizable(false);
-        //Enfin on l'affiche
-        this.setVisible(true);
+        this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        this.choixCouleur(gaman);
     }
+
+
+    /**
+     * Initialise le contenu de la bo�te
+     */
+    private void choixCouleur(GameManager gaman) {
+        String[] pion = {"Noir", "Blanc"};
+        JOptionPane jop = new JOptionPane();
+        int choix = jop.showOptionDialog(null,
+                "Quelle couleur voulez-vous jouer ?",
+                "Choix pion",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                pion,
+                pion[2]);
+        if (pion[choix].equals("Noir")) {
+            gaman.onePlayer(PionVal.NOIR);
+        } else {
+            gaman.onePlayer(PionVal.BLANC);
+        }
+
+
+    }
+
+
 }
