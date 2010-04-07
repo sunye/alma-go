@@ -24,7 +24,7 @@ public class GameManager {
     }
 
     //Lance une partie :
-    public void init() {
+    private void init() {
         game = new Game();
 
     }
