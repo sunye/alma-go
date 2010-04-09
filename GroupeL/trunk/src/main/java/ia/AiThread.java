@@ -22,6 +22,8 @@ public class AiThread implements Callable<Coordinates>{
 	private Coordinates bestMove;
 
 	private Integer profondeur;
+	
+	private Integer meilleur;
     
     
     public Coordinates call() {
@@ -56,26 +58,25 @@ public class AiThread implements Callable<Coordinates>{
 		this.color = color;
 	}
 	
-	/* Function of decision tree creation (without parameters) */
+	/* Function of decision tree creation (without parameters) 
 	public Coordinates createTree()
 	{
 		Coordinates toPlay = new Coordinates();
-		int bestNote = NOTE_MIN;
+		int bestNote = NOTE_MIN-1;
 		moveForced = false;
 		
-		/* We run the recursive function on every free square of the plateau */	
+
 		List<Coordinates> emptySquares = plateau.getFreeCoord();
 		int note = NOTE_MIN;
 		
 		for(Coordinates coordTmp : emptySquares){
-			
 			if(plateau.moveValid(coordTmp, color)){
 			
 				note = createNode(coordTmp, 1, NOTE_MIN, NOTE_MAX);
 				
 				if (note>bestNote)
 				{
-					/* We have the best move and we store it */
+
 					bestNote = note;
 					toPlay = coordTmp;
 					bestMove = toPlay;
@@ -83,9 +84,8 @@ public class AiThread implements Callable<Coordinates>{
 				
 			}
 		}
-		
 		return toPlay; 
-	}
+	}*/
 	
 	/* Function of decision tree creation (with parameters) */
 	public Coordinates createTree(GobanStructure plateau, Color color)
@@ -94,8 +94,10 @@ public class AiThread implements Callable<Coordinates>{
 		this.color = color;
 		moveForced = false;
 		
+		meilleur = NOTE_MIN-1;
+		
 		Coordinates toPlay = new Coordinates();
-		int bestNote = NOTE_MIN;
+		int bestNote = NOTE_MIN-1;
 		
 		/* We run the recursive function on every free square of the plateau */	
 		List<Coordinates> emptySquares = plateau.getFreeCoord();
@@ -117,7 +119,9 @@ public class AiThread implements Callable<Coordinates>{
 			}
 		}
 		
-		
+		System.out.println("Meilleure : "+bestNote);
+		System.out.println("Vraie meilleure : "+meilleur);
+
 		return toPlay; 
 	}	
 	/*
@@ -161,12 +165,17 @@ public class AiThread implements Callable<Coordinates>{
 		if (moveForced){
 			System.out.println("coup forcé");
 		}
-		
-		if ((depth == profondeur) && (!moveForced))
 
-		{
+		Integer eval = evaluation();
+		
+		if ((depth == profondeur) && (!moveForced)){
 			/* We are in a leaf */
-			note = evaluation();
+			note = eval;
+			
+			if(note>meilleur){
+				meilleur = note;
+			}
+			
 			plateau.removePawn(coord);
 			
 			return note;
@@ -175,63 +184,59 @@ public class AiThread implements Callable<Coordinates>{
 
 				/* We try to trunk the tree */
 				List<Coordinates> emptySquares = plateau.getFreeCoord();
-				note = evaluation();
 				
 				if ((depth % 2) != 0)
 				{
-					//note = NOTE_MAX;
-					/* The depth is pair : we search for the minimal note value of all its sons. */
+					note = NOTE_MAX;
+					
+					/* The depth is not pair : we search for the minimum note value of all its sons. */
 					/* Here, we create its sons when we encounter an empty square */
 					
-					
-					for(Coordinates coordTmp : emptySquares){
-					
-						if(plateau.moveValid(coordTmp, color.invColor())){
-							
-							note = Math.min(note, createNode(coordTmp, depth+1, alpha, beta));
-						
-							if (alpha >= note)
-							{
-								/* We don't need to go further, so we stop here */
-								plateau.removePawn(coord);
-								return note;							
-							}	
-							
-							beta = Math.min(beta, note);
-						}
-					
-					}
-	
-				} else {
-					
-					//note = NOTE_MIN;
-					
-					/* The depth is not pair : we search for the maximal note value of all its sons. */
-					/* Here, we create its sons when we encounter an empty square */
-					if(note == NOTE_MAX){
-						System.out.println(depth);
+					if(eval == NOTE_MAX || eval == NOTE_MIN){
 						plateau.removePawn(coord);
-						return note;
+						return eval;
 					}else{
 						for(Coordinates coordTmp : emptySquares){
-	
-							if(plateau.moveValid(coordTmp, color)){
+						
+							if(plateau.moveValid(coordTmp, color.invColor())){
 								
-								note = Math.max(note, createNode(coordTmp, depth+1, alpha, beta));
-										
-								if (beta <= note)
+								note = Math.min(note, createNode(coordTmp, depth+1, alpha, beta));
+							
+								if (alpha >= note)
 								{
 									/* We don't need to go further, so we stop here */
 									plateau.removePawn(coord);
 									return note;							
-								}
-										
-								alpha = Math.max(alpha, note);
+								}	
+								
+								beta = Math.min(beta, note);
 							}
-				
 						}
 					}
+	
+				} else {
 					
+					note = NOTE_MIN;
+					/* The depth is pair : we search for the maximum note value of all its sons. */
+					/* Here, we create its sons when we encounter an empty square */
+
+					for(Coordinates coordTmp : emptySquares){
+
+						if(plateau.moveValid(coordTmp, color)){
+							
+							note = Math.max(note, createNode(coordTmp, depth+1, alpha, beta));
+									
+							if (beta <= note)
+							{
+								/* We don't need to go further, so we stop here */
+								plateau.removePawn(coord);
+								return note;							
+							}
+									
+							alpha = Math.max(alpha, note);
+						}
+			
+					}					
 				}		
 		}
 		plateau.removePawn(coord);
@@ -244,8 +249,7 @@ public class AiThread implements Callable<Coordinates>{
 		{					
 			plateau.addPawn(coord, color);
 		} else {
-			plateau.addPawn(coord, color.invColor());
-								
+			plateau.addPawn(coord, color.invColor());						
 		}		
 	}
 	
@@ -259,19 +263,23 @@ public class AiThread implements Callable<Coordinates>{
 		Integer note=0;
 		if (plateau.isWinner(color)){
 			note = NOTE_MAX;
-		}else if (nbCoup() < 3 && pieceHorsCentre(color)){
+		}else if (derniereLiberte(color)!=0){
 			note = NOTE_MIN;
 		}else{
-			note = note - 1000 * derniereLiberte(color);
-			note = note + 100 * derniereLiberte(color.invColor());
+			note = note + 1000 * derniereLiberte(color.invColor());
 			
-			note = note + 20 * tailleGroupe(color);
-			note = note - 10 * tailleGroupe(color.invColor());
+			note = note + 200 * tailleGroupe(color);
+			note = note - 100 * tailleGroupe(color.invColor());
 			
-			note = note + 20 * plateau.getGroups(color).size();
-			note = note - 10 * plateau.getGroups(color.invColor()).size();
+			note = note + 200 * plateau.getGroups(color).size();
+			note = note - 100 * plateau.getGroups(color.invColor()).size();
 			
-			note = note + 10 * nbLiberte(color);
+			note = note + 200 * nbLiberte(color);
+			note = note - 200 * nbLiberte(color.invColor());
+			
+			// add a little random value
+			Double rand = Math.random()*10;
+			note = note + rand.intValue();
 		}
 		
 		return note;
@@ -304,7 +312,7 @@ public class AiThread implements Callable<Coordinates>{
 		Integer note=0;
 		
 		for(GroupPawns g : plateau.getGroups(couleur)){
-			note = note - g.getFreedoms();
+			note = note + g.getFreedoms();
 		}			
 		return note;
 	}
@@ -314,7 +322,7 @@ public class AiThread implements Callable<Coordinates>{
 		Integer note = 0;
 		
 		for(GroupPawns g : plateau.getGroups(couleur)){
-			note = note - g.getPawns().size();
+			note = note + g.getPawns().size();
 		}
 		
 		return note;
