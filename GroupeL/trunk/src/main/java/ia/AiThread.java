@@ -118,9 +118,6 @@ public class AiThread implements Callable<Coordinates>{
 				}
 			}
 		}
-		
-		System.out.println("Meilleure : "+bestNote);
-		System.out.println("Vraie meilleure : "+meilleur);
 
 		return toPlay; 
 	}	
@@ -192,7 +189,7 @@ public class AiThread implements Callable<Coordinates>{
 					/* The depth is not pair : we search for the minimum note value of all its sons. */
 					/* Here, we create its sons when we encounter an empty square */
 					
-					if(eval == NOTE_MAX || eval == NOTE_MIN){
+					if(eval == NOTE_MAX){
 						plateau.removePawn(coord);
 						return eval;
 					}else{
@@ -286,7 +283,7 @@ public class AiThread implements Callable<Coordinates>{
 	}
 	
 	private Integer nbCoup() {
-		return plateau.getSize() * plateau.getSize() - plateau.getFreeCoord().size();
+		return (plateau.getSize() * plateau.getSize() - plateau.getFreeCoord().size())/2;
 	}
 
 	private boolean pieceHorsCentre(Color couleur) {

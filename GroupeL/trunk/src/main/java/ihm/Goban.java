@@ -35,31 +35,32 @@ public class Goban extends JPanel{
         private ImageIcon vainqueur;
         //tous les points du Goban
         private GobanStructure goban_tab;
-
         
         // jouer avec ou sans IA
+        
         private boolean withAI;
         
         private int currentDepth;
         
         private boolean partiFini;
-        
-        private boolean premCoup;
-        
+               
         private boolean moveForced;
-        private Coordinates move;
+        private Coordinates lastMove;
         
         Future<Coordinates> future;
         
+        // fenetre dans lequel sera afficher la partie
+        private Fenetre window;
        
         //la couleur du joueur qui joue
-        Color joueur;
+        private Color joueur;
         
-        public Goban() {
+        public Goban(Fenetre f) {
         	super();
-                            
+        	
+        	window = f;
+        	
             partiFini=false;
-            premCoup=true;
             /**
 	         * Creation de l'image du goban grâce à l'URL donné
 	         */
@@ -117,14 +118,12 @@ public class Goban extends JPanel{
             		 processMouseClicked(e);
             	 }
              });
-            repaint();
+            window.repaint();
                 
             /* on initialise le premier a blanc */
             joueur=Color.BLACK;
             withAI=true;
             
-            //creation de l'IA
-            //AI = new AlphaBeta(DIFF_BASE);
             currentDepth = DIFF_BASE;
         }
         
@@ -133,16 +132,17 @@ public class Goban extends JPanel{
          * @param e
          */
         private void processMouseClicked(MouseEvent e) {
-            int x, y;
-            
+        	
+        	int x, y;
+	            
             moveForced = false;
-
+            
             if(!partiFini){
             
 	            x = e.getX();
 	            y = e.getY();
 	            
-	            /* le clic est t'il sur la grille de jeux */
+	            // le clic est t'il sur la grille de jeux 
 	            if(x>BORDURE && x< plateau.getIconWidth()-BORDURE-INFO && y>BORDURE && y< plateau.getIconWidth()-BORDURE){      
 		            
 		            // creation des coordonnées du coup par rapport a la position du clic
@@ -152,76 +152,16 @@ public class Goban extends JPanel{
 		            if(goban_tab.moveValid(coup, joueur)){
 			            // on ajoute la piece
 		            	goban_tab.addPawn(coup, joueur);
-		            	
+		            	lastMove = coup;
 			            // on signifie que le coup est joueur
 			            coupFini();
 			            
+			            
 			            // si l'IA doit jouer
 			            if(withAI && !partiFini){
-			            	
-			            	if(premCoup){
-			            		if(coup.getX() <= goban_tab.getSize()/2){
-			            			if(coup.getY() <= goban_tab.getSize()/2){
-			            				coup = new Coordinates(7, 7);
-			            			}else{
-			            				coup = new Coordinates(7, 3);
-			            			}
-			            		}else{
-			            			if(coup.getY() <= goban_tab.getSize()/2){
-			            				coup = new Coordinates(3, 7);
-			            			}else{
-			            				coup = new Coordinates(3, 3);
-			            			}
-			            		}
-			            		premCoup = false;
-			            		
-			            	}else{
-			            		
-			            		//Thread t = new Thread() {
-			            			
-			            			//public void run(){
-					            		// on recherche le meilleur coup
-					            		ExecutorService pool = Executors.newCachedThreadPool();
-
-					            		Callable<Coordinates> aiThread= new AiThread(goban_tab, joueur,currentDepth);
-					            		future = pool.submit(aiThread);
-					            		
-										while(!future.isDone()){
-											if(moveForced){
-												future.cancel(true);
-												
-											}
-										}
-					            		
-					            		try {
-					            			if ((!moveForced) && (future.isDone())){
-					            				coup = future.get();
-					            			} else {
-					            				moveForced = false;
-					            			}
-											
-										} catch (InterruptedException e1) {
-											e1.printStackTrace();
-										} catch (ExecutionException e1) {
-											e1.printStackTrace();
-										}
-			            			//}
-			            			
-								//};
-								//t.start();
-			            		
-			            		
-
-								
-			            	}     
-			            	
-			            	// on joue le coup
-			            	goban_tab.addPawn(coup,joueur);
-			            	
-			            	// on signifie que le coup est jouer
+			            	playAI();
 			            	coupFini();
-			            }		            
-			            
+			            }		              
 		            }
 	            }
             }else{
@@ -229,6 +169,60 @@ public class Goban extends JPanel{
            		resetGame(withAI);
             }
         }
+        
+        private void playAI(){
+        	
+        	Coordinates coup = new Coordinates();
+        	
+        	if(goban_tab.getGroups(joueur).isEmpty()){
+        		if(lastMove.getX() <= goban_tab.getSize()/2){
+        			if(lastMove.getY() <= goban_tab.getSize()/2){
+        				coup = new Coordinates(6, 6);
+        			}else{
+        				coup = new Coordinates(6, 4);
+        			}
+        		}else{
+        			if(lastMove.getY() <= goban_tab.getSize()/2){
+        				coup = new Coordinates(4, 6);
+        			}else{
+        				coup = new Coordinates(4, 4);
+        			}
+        		}		            		
+        	}else{			            		
+        		//Thread t = new Thread() {
+            			//public void run(){
+	            		// on recherche le meilleur coup
+	            		ExecutorService pool = Executors.newCachedThreadPool();
+
+	            		Callable<Coordinates> aiThread= new AiThread(goban_tab, joueur,currentDepth);
+	            		future = pool.submit(aiThread);
+	            		
+						while(!future.isDone()){
+							if(moveForced){
+								future.cancel(true);		
+							}
+						}
+	            		
+	            		try {
+	            			if ((!moveForced) && (future.isDone())){
+	            				coup = future.get();
+	            			} else {
+	            				moveForced = false;
+	            			}	
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						} catch (ExecutionException e1) {
+							e1.printStackTrace();
+						}
+        			//}	
+				//};
+				//t.start();	
+        	}     
+         	// on joue le coup
+        	goban_tab.addPawn(coup,joueur);
+        }
+        
+        
         
         /**
          * fonction appeler pour completer un coup
@@ -240,11 +234,12 @@ public class Goban extends JPanel{
         		// si un joueur a gagner on termine la parti
         		partiFini = true;
             }else{   
-            	// sinon on changhe de joueur
+            	// sinon on change de joueur
             	joueur=joueur.invColor();
             }
         	// onredessine le plateau
-        	repaint();
+        	window.repaint();        
+        	
 		}
 
         /**
@@ -252,15 +247,16 @@ public class Goban extends JPanel{
          */
 		public void paintComponent(Graphics g){
 	        super.paintComponent(g);
+	    	        
 	        //Affichage du goban
 	        g.drawImage(plateau.getImage(),0,0,this);
 	    
 	        
 	        //Affichage de la couleur du joueur qui doit joueur
 		    if(partiFini){
-		    	g.drawImage(vainqueur.getImage(),plateau.getIconWidth()-vainqueur.getIconWidth(),plateau.getIconHeight()-vainqueur.getIconHeight()-INFO,this);
+		    	g.drawImage(vainqueur.getImage(),plateau.getIconWidth()-vainqueur.getIconWidth(),plateau.getIconHeight()-vainqueur.getIconHeight()-BORDURE*3,this);
 		    }
-		    	    
+
 		    // affichage de la couleur du joueur
 	        if(joueur == Color.WHITE){
 	        	g.drawImage(pionB.getImage(),plateau.getIconWidth()-CASE_SIZE-BORDURE,BORDURE*3,this);
@@ -283,8 +279,8 @@ public class Goban extends JPanel{
 	            		}
 	                }
 	            }
-	        }
-        }
+	        }	     	        
+		}
         
 		/**
 		 * 
@@ -301,9 +297,8 @@ public class Goban extends JPanel{
 			goban_tab = new GobanStructure();
 			joueur = Color.BLACK;
 			withAI=type;
-			premCoup=true;
 			partiFini = false;
-			repaint();
+			window.repaint();
 		}
 
 		public GobanStructure getGoban_tab() {
@@ -319,5 +314,4 @@ public class Goban extends JPanel{
 		public void resetIA(Integer niv) {
 			currentDepth = niv;
 		}
-
 }
