@@ -12,7 +12,7 @@ import fr.alma.structure.Arbre;
 public class Main {
 
 	/**
-	 * https://ia-alma.googlecode.com/svn/trunk/
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
