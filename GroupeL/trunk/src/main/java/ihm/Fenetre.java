@@ -39,9 +39,9 @@ public class Fenetre extends JFrame implements ActionListener {
             pVp=new JMenuItem("2 joueurs");
             pVp.addActionListener(this);
             
-            pVc=new JMenuItem("contre IA");
+            pVc=new JMenuItem("joueur contre IA");
             pVc.addActionListener(this);
-            
+                        
             quitter=new JMenuItem("Quitter");
             quitter.addActionListener(this);
             
@@ -102,7 +102,7 @@ public class Fenetre extends JFrame implements ActionListener {
 
 		private void start() {
 			// Creation du panel contenant le goban
-	    	Pan=new Goban();
+	    	Pan=new Goban(this);
             Pan.setBorder(BorderFactory.createLineBorder(Color.black));
             // On ajoute le GobanPanel dans la fenetre principale
             this.add(Pan);
@@ -116,7 +116,7 @@ public class Fenetre extends JFrame implements ActionListener {
 	            if (ChoixOption.equals("2 joueurs")){
 	            	Pan.resetGame(false);
 	            	this.repaint();
-	            }else if(ChoixOption.equals("contre IA")){
+	            }else if(ChoixOption.equals("joueur contre IA")){
 	            	Pan.resetGame(true);
 	            	this.repaint();
 	            }else if(ChoixOption.equals("Quitter")){
