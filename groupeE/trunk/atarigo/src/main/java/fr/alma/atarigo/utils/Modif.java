@@ -40,19 +40,19 @@ public class Modif {
         return new Modif(line, column, after, before);
     }
 
-    public void revert(PionVal[][] goban) throws BadGobanStateException{
-        if(goban[line][column] != this.after){
+    public void revert(Goban goban) throws BadGobanStateException{
+        if(goban.getCase(line, column) != this.after){
             throw new BadGobanStateException("Cannot apply this modification to the goban, since the after state is not right.");
         } else {
-            goban[line][column] = this.before;
+            goban.setCase(line, column, before);
         }
     }
     
-    public void apply(PionVal[][] goban) throws BadGobanStateException{
-        if(goban[line][column] != this.before){
+    public void apply(Goban goban) throws BadGobanStateException{
+        if(goban.getCase(line, column) != this.before){
             throw new BadGobanStateException("Cannot apply this modification to the goban, since the before state is not right.");
         } else {
-            goban[line][column] = this.after;
+            goban.setCase(line, column, after);
         }
     }
 

@@ -79,6 +79,8 @@ public class Game {
                 if (!isSuicide(line, column, color)) {
                     Stone current = new Stone(color, line, column);
 
+                     Logger.getAnonymousLogger().log(Level.INFO, "playing "+current);
+
                     Modif modif = new Modif(line, column, goban.getCase(line, column), color);
                     PlayMove currentMove = new PlayMove();
                     currentMove.addModif(modif);
@@ -149,7 +151,8 @@ public class Game {
     public HashSet<Groupe> getGroupsFromPions(List<Stone> pions) {
         HashSet<Groupe> groups = new HashSet<Groupe>(4);
         for (Stone pi : pions) {
-            groups.add(getCurrentMove().getGroupeContaining(pi));
+            Groupe containing = getCurrentMove().getGroupeContaining(pi);
+            groups.add(containing);
         }
         return groups;
     }
@@ -157,6 +160,8 @@ public class Game {
     public HashSet<Groupe> getSurroundingGroups(Stone pion) {
         // Get the (<= 4) neighbours groups of the current stone.
         List<Stone> pions = goban.getVoisins(pion);
+
+        Logger.getAnonymousLogger().log(Level.INFO, pions.toString());
 
         return getGroupsFromPions(pions);
     }
@@ -294,13 +299,15 @@ public class Game {
     /**
      * Reverts the game to the last Move (the father of the currentMove).
      */
-    public void revert() {
+    public Boolean revert() {
         PlayMove lastPm = getCurrentMove();
         try {
-            lastPm.revert(this.goban.getGoban());
+            lastPm.revert(this.goban);
             lastMove = lastMove.getFather();
+            return Boolean.TRUE;
         } catch (BadGobanStateException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            return Boolean.FALSE;
         }
     }
 
@@ -313,7 +320,7 @@ public class Game {
             lastMove = child;
             PlayMove newPM = getCurrentMove();
             try {
-                newPM.apply(goban.getGoban());
+                newPM.apply(goban);
             } catch (BadGobanStateException ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
                 return false;

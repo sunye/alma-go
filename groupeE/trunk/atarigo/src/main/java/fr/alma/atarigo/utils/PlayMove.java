@@ -52,7 +52,7 @@ public class PlayMove {
         diff.add(modif);
     }
 
-    public void apply(PionVal[][] goban) throws BadGobanStateException {
+    public void apply(Goban goban) throws BadGobanStateException {
         Iterator<Modif> iterator = diff.iterator();
         ArrayList<Modif> done = new ArrayList<Modif>(diff.size());
         try {
@@ -71,7 +71,7 @@ public class PlayMove {
         }
     }
 
-    public void revert(PionVal[][] goban) throws BadGobanStateException {
+    public void revert(Goban goban) throws BadGobanStateException {
         Iterator<Modif> iterator = diff.iterator();
         ArrayList<Modif> done = new ArrayList<Modif>(diff.size());
         try {
