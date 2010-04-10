@@ -132,7 +132,6 @@ public class Game {
             }
             return true;
         } else {
-            System.out.println("False because liberties > 0");
             return false;
         }
     }

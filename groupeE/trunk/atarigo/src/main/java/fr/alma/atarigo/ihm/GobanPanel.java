@@ -26,7 +26,6 @@ public final class GobanPanel extends JPanel {
     private ImageIcon pionB;
     private ImageIcon pionN;
     //The game engine
-    private Game game;
     //coordonnées propres au Goban
     private int gobanX;
     private int gobanY;
@@ -72,6 +71,7 @@ public final class GobanPanel extends JPanel {
         //repaint();
 
         mouseL = new MouseAdapter() {
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 processMouseClicked(e);
@@ -106,8 +106,7 @@ public final class GobanPanel extends JPanel {
         /**
          * At a certain point, the game will end. At this point, we need to stop the listener.
          */
-
-        if (game.isEnd()) {
+        if (controleur.isEnd()) {
             // TODO: display the winner.
             removeMouseListener(mouseL);
         }
@@ -118,30 +117,33 @@ public final class GobanPanel extends JPanel {
         super.paintComponent(g);
         //Affichage du goban
         g.drawImage(goban.getImage(), 0, 0, this);
-        if (game != null) {
-            //Affichage de tout les pions en parcourant la matrice
-            for (int i = 0; i < 9; ++i) {
-                for (int j = 0; j < 9; ++j) {
-                    try {
-                        //System.out.println(goban_tab.getGoban()[i][j].getCouleur());
-                    /* Ok, now, let's calculate the coordinates of the image */
-                        int xPion;
-                        int yPion;
-                        xPion = i * coteCase + debutX - (cotePion / 2);
-                        yPion = j * coteCase + debutY - (cotePion / 2);
+        if (controleur != null) {
+            final Game game2 = controleur.getGame();
+            if (game2 != null) {
+                //Affichage de tout les pions en parcourant la matrice
+                for (int i = 0; i < 9; ++i) {
+                    for (int j = 0; j < 9; ++j) {
+                        try {
+                            //System.out.println(goban_tab.getGoban()[i][j].getCouleur());
+                            /* Ok, now, let's calculate the coordinates of the image */
+                            int xPion;
+                            int yPion;
+                            xPion = i * coteCase + debutX - (cotePion / 2);
+                            yPion = j * coteCase + debutY - (cotePion / 2);
 
-                        switch (game.getStone(j, i).getCouleur()) {
-                            case NOIR:
-                                g.drawImage(pionN.getImage(), xPion, yPion, this);
-                                break;
-                            case BLANC:
-                                g.drawImage(pionB.getImage(), xPion, yPion, this);
-                                break;
-                            case RIEN:
-                                break;
+                            switch (game2.getStone(j, i).getCouleur()) {
+                                case NOIR:
+                                    g.drawImage(pionN.getImage(), xPion, yPion, this);
+                                    break;
+                                case BLANC:
+                                    g.drawImage(pionB.getImage(), xPion, yPion, this);
+                                    break;
+                                case RIEN:
+                                    break;
+                            }
+                        } catch (BadPlaceException ex) {
+                            Logger.getLogger(GobanPanel.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    } catch (BadPlaceException ex) {
-                        Logger.getLogger(GobanPanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -153,8 +155,9 @@ public final class GobanPanel extends JPanel {
         paintComponent(g);
     }
 
-    public void activateMouse(){
+    public void activateMouse() {
         addMouseListener(mouseL = new MouseAdapter() {
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 processMouseClicked(e);
@@ -162,16 +165,13 @@ public final class GobanPanel extends JPanel {
         });
     }
 
-    public void desactivateMouse(){
+    public void desactivateMouse() {
         removeMouseListener(mouseL);
     }
 
     public void startGame(final GameManager gm, final Game curGame) {
         activateMouse();
         this.controleur = gm;
-        this.game = curGame;
         repaint();
     }
-
-
 }

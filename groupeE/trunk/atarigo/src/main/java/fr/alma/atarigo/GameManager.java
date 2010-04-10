@@ -65,5 +65,13 @@ public class GameManager {
         }
     }
 
+    public boolean isEnd(){
+        return game.isEnd();
+    }
+
+    final public Game getGame() {
+        return game;
+    }
+
 
 }
