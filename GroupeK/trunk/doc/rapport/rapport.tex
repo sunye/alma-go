@@ -60,11 +60,15 @@ programmation Java.
 \section{Spécifications}
 	\subsection{Architecture}
 	Pour ce projet, nous avons choisi d'utiliser une architecture du type
-	Modèle-Vue-Contrôleur(Figure \ref{modeleMVC}).
+	Modèle-Vue-Contrôleur(Figure \ref{modeleMVC}). Nous l'avons spécialisé dans le
+	but d'améliorer nos performances. Dans notre projet, le contrôleur gère le
+	modèle et la vue et les intéractions entre les deux.
 	
 	\begin{figure}[!ht]
-	\includegraphics{ModeleMVC.png}
-	\caption{Le modèle MVC}
+    	\begin{center}
+			\includegraphics{ModeleMVC.png}
+		\end{center}
+	\caption{Notre adaptation du modèle MVC}
 	\label{modeleMVC}
 	\end{figure}
 
@@ -73,6 +77,7 @@ programmation Java.
 	Cette requête est envoyée depuis la vue puis analysée par le contrôleur.
 	Ensuite, le contrôleur demande au modèle d'effectuer les traitements
 	nécessaire. Enfin, le contrôleur renvoie la vue adaptée.
+	
 
 	\subsection{Les règles mises en place}
 		\label{regles}
@@ -80,7 +85,7 @@ programmation Java.
 	Les différentes règles mises en place sont :
 	
 	\begin{itemize}
-		\item Contrairement au Go le but premier est de faire une prise et la
+		\item Contrairement au Go, le but premier est de faire une prise et la
 		possesion de territoires~;
 		\item Le suicide est interdit sauf s'il permet une prise~;
 		\item Un pion ou un groupe de pions est pris lorsque celui-ci n'a plus de
@@ -137,6 +142,18 @@ section \ref{choix_alpha_beta}.
 \subsection{L'algorithme alpha-bêta}
 
 \subsection{L'heuristique}
+Pour obtenir une bonne heuristique, nous avons pris en compte de nombreux
+aspects du jeu. 
+
+Tout d'abord, nous avons observé que la situation de jeu
+appellé "oeil" est importante.
+%Peut-être mettre une capture d'écran pour montrer un oeil
+Nous avons donc utilisé les "yeux" ainsi que des notions de jeu telles que la
+perte de libertés, les groupes, \dots{} pour faire une bonne heuristique.
+
+La difficulté de notre intelligence est basée sur la profondeur de notre arbre
+de calcul. Plus l'arbre est profond, plus l'intelligence artificielle est bonne.
+
 \clearpage
 \section{Difficultés rencontrées}
 
