@@ -136,6 +136,9 @@ public class FakeGame extends Game {
         Set<Groupe> groups = getSurroundingGroups(last);
         Set<Groupe> others = new HashSet<Groupe>(4);
         for (Groupe groupe : groups) {
+Logger.getAnonymousLogger().log(Level.SEVERE, "Couleur groupe : " + groupe.getCouleur());
+System.out.println("Couleur last : " + last.getCouleur());
+
             if (groupe.getCouleur() == last.getCouleur()) {
                 lastAdded.addAll(groupe);
                 groupes.remove(groupe);
