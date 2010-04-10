@@ -4,6 +4,12 @@ public enum CouleurPion {
 
 	NOIR,
 	BLANC,
-	EMPTY
+	EMPTY;
+	
+	public static CouleurPion oppose(CouleurPion coul){
+		return coul==EMPTY?EMPTY:coul==NOIR?BLANC:NOIR;
+	}
 	
 }
+ 
+

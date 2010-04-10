@@ -45,13 +45,7 @@ public class Pion {
 		this.listeLibertes = new Vector<Pion>();
 	}
 
-	public CouleurPion coulOppose(CouleurPion coul){
-		if (coul==CouleurPion.BLANC){
-			return CouleurPion.NOIR;
-		}else{
-			return CouleurPion.BLANC;
-		}
-	}
+
 
 	public Pion(CouleurPion couleur, int numero) {
 		this.couleur = couleur;

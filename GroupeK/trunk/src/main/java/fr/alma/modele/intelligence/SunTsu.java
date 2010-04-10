@@ -203,13 +203,7 @@ public class SunTsu {
 		return score;
 	}
 
-	public CouleurPion reverseColor(CouleurPion col){
-		if (col.equals(CouleurPion.BLANC)){
-			return CouleurPion.NOIR;
-		}else{
-			return CouleurPion.BLANC;
-		}
-	}
+
 	
 	
 	
@@ -258,7 +252,7 @@ public class SunTsu {
 					//si
 						
 						//FIXME change here
-					temporaire=alphaBeta(profondeurmarx,profondeur-1, result, reverseColor(ajouer));
+					temporaire=alphaBeta(profondeurmarx,profondeur-1, result, CouleurPion.oppose(ajouer));
 					coupActuel.setNote(temporaire.getNote());
 					if (coul==ajouer){
 						result=result==null?coupActuel:result.getNote()<coupActuel.getNote()?result:coupActuel;
