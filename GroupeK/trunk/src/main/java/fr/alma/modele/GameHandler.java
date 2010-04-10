@@ -14,6 +14,7 @@ public class GameHandler {
 	private GoBan plateau;
 	private CouleurPion coulAi;
 	private Controler control;
+	private Thread thinkspace;
 	
 	public GameHandler(Controler con){
 		this.mode= ModeJeu.HumanVsHuman;
@@ -35,7 +36,17 @@ public class GameHandler {
 		
 		
 		if (result==true && mode==ModeJeu.AiVsHuman){
-			Coordonnee nextAiMove=ai.nextMove(plateau, coulAi);
+			thinkspace= new Thread() {
+				
+			public void run(){
+				control.afficheLoader(true);
+				ai.prepareNextMove(plateau, coulAi);
+			}
+			};
+			thinkspace.start();
+		
+			Coordonnee nextAiMove=ai.getPlay();
+			control.afficheLoader(false);
 			plateau.ajouterPion(nextAiMove.getX(), nextAiMove.getY());
 			if (plateau.getGagnant()!=CouleurPion.EMPTY){
 				control.afficheGagnant(plateau.getGagnant());
@@ -71,5 +82,10 @@ public class GameHandler {
 	
 	public void setModeHumanVsHuman(){
 		this.mode= ModeJeu.HumanVsHuman;
+	}
+	
+	public void forcerCoup(){
+		this.thinkspace.interrupt();
+		
 	}
 }
