@@ -34,7 +34,7 @@ public class OptionWindow extends JDialog {
 
 
     /**
-     * Initialise le contenu de la bo”te
+     * Initialise le contenu de la boite
      */
     private void choixCouleur(GameManager gaman) {
         String[] pion = {"Noir", "Blanc"};

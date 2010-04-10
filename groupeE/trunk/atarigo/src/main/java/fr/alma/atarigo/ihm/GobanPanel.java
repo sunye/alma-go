@@ -19,7 +19,7 @@ import javax.swing.JPanel;
  * We start and play the game threw it.
  * @author judu
  */
-public class GobanPanel extends JPanel {
+public final class GobanPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private ImageIcon goban;
@@ -72,7 +72,6 @@ public class GobanPanel extends JPanel {
         //repaint();
 
         mouseL = new MouseAdapter() {
-
             @Override
             public void mouseClicked(MouseEvent e) {
                 processMouseClicked(e);
@@ -155,16 +154,22 @@ public class GobanPanel extends JPanel {
     }
 
     public void activateMouse(){
-        addMouseListener(mouseL);
+        addMouseListener(mouseL = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                processMouseClicked(e);
+            }
+        });
     }
 
     public void desactivateMouse(){
         removeMouseListener(mouseL);
     }
 
-    public void startGame(GameManager gm) {
+    public void startGame(final GameManager gm, final Game curGame) {
         activateMouse();
         this.controleur = gm;
+        this.game = curGame;
         repaint();
     }
 
