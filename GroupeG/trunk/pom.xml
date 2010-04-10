@@ -21,18 +21,17 @@
             </manifest>
             <manifestEntries>
               <mode>development</mode>
-              <url>${pom.url}</url>
+              <url>${project.url}</url>
             </manifestEntries>
           </archive>
         </configuration>
     </plugin>
-	<plugin>
+	<!-- plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <version>2.4.2</version>
         <executions>
           <execution>
             <id>copy-resources</id>
-            <!-- here the phase you need -->
             <phase>compile</phase>
             <goals>
               <goal>copy-resources</goal>
@@ -43,12 +42,15 @@
                 <resource>
                   <directory>${basedir}/src/main/java</directory>
                   <filtering>true</filtering>
+				  <excludes>
+          			<exclude>**/*.java</exclude>
+        		  </excludes>
                 </resource>
               </resources>              
             </configuration>            
           </execution>
         </executions>
-      </plugin>    
+      </plugin-->    
 	  <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -65,6 +67,20 @@
       <artifactId>junit</artifactId>
       <version>3.8.2</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.swinglabs</groupId>
+    	<artifactId>swingx</artifactId>
+    	<version>1.6</version>
+    	<type>jar</type>
+    	<scope>runtime</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.swinglabs</groupId>
+    	<artifactId>swingx</artifactId>
+    	<version>1.6</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
     </dependency>
   </dependencies>
   <reporting>
