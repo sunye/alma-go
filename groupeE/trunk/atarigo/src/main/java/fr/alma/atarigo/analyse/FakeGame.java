@@ -12,6 +12,7 @@ import fr.alma.atarigo.utils.PionVal;
 import fr.alma.atarigo.utils.PlayMove;
 import fr.alma.atarigo.utils.Stone;
 import fr.alma.atarigo.utils.exceptions.BadCouleurException;
+import fr.alma.atarigo.utils.exceptions.BadGobanStateException;
 import fr.alma.atarigo.utils.exceptions.BadPlaceException;
 import fr.alma.atarigo.utils.tree.Node;
 import fr.alma.atarigo.utils.tree.Tree;
@@ -26,20 +27,17 @@ import java.util.logging.Logger;
  *
  * @author clotildemassot
  */
-public class FakeGame extends Game {
+public final class FakeGame extends Game {
 
     private Node<PlayMove> fakeLastMove;
     private int depth;
 
-
-
     public FakeGame(Game game) {
-            this.goban = (Goban) game.getGoban().clone();
-            this.history = new Tree<PlayMove>(new Node<PlayMove>(game.getCurrentMove()));
-            this.depth = game.getCurrentDepth();
+        this.goban = (Goban) game.getGoban().clone();
+        this.history = new Tree<PlayMove>(new Node<PlayMove>(game.getCurrentMove()));
+        this.lastMove = history.getRootElement();
+        this.depth = game.getCurrentDepth();
     }
-
-
 
     public int getDepth() {
         return depth;
@@ -53,7 +51,10 @@ public class FakeGame extends Game {
         if (goban.bonneCoords(line, column)) {
             if (goban.getCase(line, column) == PionVal.RIEN) {
                 if (!isSuicide(line, column, color)) {
+
                     Stone current = new Stone(color, line, column);
+
+                    Logger.getAnonymousLogger().log(Level.INFO, "playing "+current);
 
                     Modif modif = new Modif(line, column, goban.getCase(line, column), color);
                     PlayMove currentMove = new PlayMove();
@@ -110,9 +111,14 @@ public class FakeGame extends Game {
 
     private void fakeRemoveGroupe(Groupe groupe) {
 
+        PlayMove fakePM = new PlayMove();
+
         for (Stone pion : groupe.getStones()) {
             // Don't forget to register the modification.
-            getFakeCurrentMove().addModif(new Modif(pion.getLine(), pion.getColumn(), pion.getCouleur(), PionVal.RIEN));
+            Modif mod = new Modif(pion.getLine(), pion.getColumn(), pion.getCouleur(), PionVal.RIEN);
+            getFakeCurrentMove().addModif(mod);
+            fakePM.addModif(mod);
+            goban.setCase(pion.getLine(), pion.getColumn(), PionVal.RIEN);
         }
 
         Set<Groupe> surroundings = new HashSet<Groupe>();
@@ -122,9 +128,35 @@ public class FakeGame extends Game {
         updateLiberties(surroundings);
 
         getFakeCurrentMove().getGroupes().remove(groupe);
+        try {
+            fakePM.revert(goban);
+        } catch (BadGobanStateException ex) {
+            Logger.getLogger(FakeGame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public HashSet<Groupe> fakeGetGroupsFromPions(List<Stone> pions) {
+        HashSet<Groupe> groups = new HashSet<Groupe>(4);
+        for (Stone pi : pions) {
+            Groupe containing = getFakeCurrentMove().getGroupeContaining(pi);
+            if (containing == null) {
+                Logger.getAnonymousLogger().log(Level.WARNING, "containing null, pion : "+pi);
+            } else {
+                groups.add(containing);
+            }
+        }
+        return groups;
+    }
+
+    public HashSet<Groupe> fakeGetSurroundingGroups(Stone pion) {
+        // Get the (<= 4) neighbours groups of the current stone.
+        List<Stone> pions = goban.getVoisins(pion);
+//        Logger.getAnonymousLogger().log(Level.INFO, pions.toString());
+        return fakeGetGroupsFromPions(pions);
     }
 
     protected Set<Groupe> fakeCalculateGroups(Stone last) {
+
         Groupe lastAdded = new Groupe(last.getCouleur());
         try {
             lastAdded.addStone(last);
@@ -133,12 +165,10 @@ public class FakeGame extends Game {
 
         List<Groupe> groupes = getFakeCurrentMove().getGroupes();
 
-        Set<Groupe> groups = getSurroundingGroups(last);
+        Set<Groupe> groups = fakeGetSurroundingGroups(last);
         Set<Groupe> others = new HashSet<Groupe>(4);
-        for (Groupe groupe : groups) {
-Logger.getAnonymousLogger().log(Level.SEVERE, "Couleur groupe : " + groupe.getCouleur());
-System.out.println("Couleur last : " + last.getCouleur());
 
+        for (Groupe groupe : groups) {
             if (groupe.getCouleur() == last.getCouleur()) {
                 lastAdded.addAll(groupe);
                 groupes.remove(groupe);
@@ -147,7 +177,9 @@ System.out.println("Couleur last : " + last.getCouleur());
             }
         }
         groupes.add(lastAdded);
-        lastAdded.setLibertes(getGroupLiberties(lastAdded).size());
+        int lib = getGroupLiberties(lastAdded).size();
+        //Logger.getAnonymousLogger().log(Level.INFO, "libertés groupe : "+lib);
+        lastAdded.setLibertes(lib);
         return others;
     }
 
@@ -155,21 +187,25 @@ System.out.println("Couleur last : " + last.getCouleur());
         return this.fakeLastMove.getData();
     }
 
-
-    public boolean isInLeaf(){
+    public boolean isInLeaf() {
         return this.lastMove.isLeaf();
     }
 
     @Override
-    public Boolean apply(int numChild){
+    public Boolean apply(int numChild) {
         Boolean ok = super.apply(numChild);
-        ++depth;
+        if (ok) {
+            ++depth;
+        }
         return ok;
     }
 
-
-
-
-
-
+    @Override
+    public Boolean revert() {
+        Boolean ok = super.revert();
+        if (ok) {
+            --depth;
+        }
+        return ok;
+    }
 }
