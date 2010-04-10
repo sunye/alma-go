@@ -115,7 +115,7 @@ public class FreedomDegrees {
 	/**
 	 * @param coordinator
 	 * @param e is the location chosen by the current player
-	 * @return true if the player capturing opponent stones
+	 * @return 0 if the player capturing opponent stones
 	 */
 	public static int hasCapturedWithThisEmplacement(IStateGame stateGame, ILocation e, IPlayer currentPlayer) {
 		int hasFreedom = 999;
