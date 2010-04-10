@@ -165,7 +165,7 @@ public class FreedomDegrees {
 		// if the opponentEmplacement have been already tested
 		if (!((opponentEmplacement).isIn(locationsAlreadyVisited))) {
 			locationsAlreadyVisited.add(opponentEmplacement);
-			//if opponentEmplacement is a free Emplacement
+			//if opponentEmplacement is not a free Emplacement
 			if (!stateGame.isFree(opponentEmplacement.getCol(), opponentEmplacement.getRow())) {
 				// if opponentEmplacement is the opponent player
 				if (stateGame.getIntersection(opponentEmplacement.getCol(), opponentEmplacement.getRow()).equals(otherIPlayer)) {
