@@ -35,16 +35,35 @@ public class Arbre {
 	}
 	
 	
-	public void remplirArbre(){
+	public Point  remplirArbre(){
 		
 		getCoupsNonJouer();
-		ajouterTousLesfils(racine, cnj);
-		System.out.println("Nombre de noeuds total : "+compteur);
+		//System.out.println("Nombre de noeuds total : "+compteur);
+		return ajouterTousLesfils(racine, cnj);
+		
+	}
+	
+	public int max ,parit=1; 
+	public Noeud remValA(int nparite ,Noeud nC,Noeud nF){
+		if(nparite%2==0)
+			if(nC.getNote()> nF.getNote())
+				return nC;
+			else
+				return nF;
+		else
+			if(nC.getNote()> nF.getNote())
+				return nF;
+			else
+				return nC;
+			
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void ajouterTousLesfils(Noeud noeud, ArrayList<Pion> coups) {
+	private Point ajouterTousLesfils(Noeud noeud, ArrayList<Pion> coups) {
 		ArrayList<Pion> temp;
+		//--------
+		Noeud nc = new Noeud(new Pion(null));
+			
 		int longeur = coups.size();
 		
 		temp = (ArrayList<Pion>) coups.clone();
@@ -57,19 +76,34 @@ public class Arbre {
 			cj.add(coups.get(i));
 			noeud.AjouterFils(n);compteur++;
 			temp.remove(coups.get(i));
-			
+			parit++;
 			if(temp.size()>80){
 				ajouterTousLesfils(n,temp);
+				//------------------------------------
+				if (i==0)
+					nc.setNote(n.getNote());
+				else
+					nc=remValA(parit,nc, n);
+				
+				noeud.setNote(nc.getNote());
 				
 			}else {
 				int value = Ia.fonctionEvaluation(getGrilleFromList(cj));
 				n.setNote(value);
 				System.out.println("Valeur de fonction = "+value);
 				temp = (ArrayList<Pion>) coups.clone();
+				//-------------------------------------
+				if(i==0)
+					nc.setNote(value);
+				else
+					nc=remValA(parit,nc, n);
 			}
+			
 			cj.remove(coups.get(i));
+			
 		}
 		
+		return nc.getCoup().position;
 	}
 
 	
