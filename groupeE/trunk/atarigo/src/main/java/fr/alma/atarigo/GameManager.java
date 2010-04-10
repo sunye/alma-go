@@ -16,8 +16,9 @@ import fr.alma.atarigo.utils.PlayMove;
  */
 public class GameManager {
 
-    Game game;
-    GobanPanel gobanPanel;
+    private Game game;
+    private GobanPanel gobanPanel;
+    private Boolean onePlayerGame;
 
     public GameManager(GobanPanel gobPan) {
         this.gobanPanel = gobPan;
@@ -29,16 +30,18 @@ public class GameManager {
 
     }
 
-    //Commencer une partie ˆ deux joueurs :
+    //Begin a two players game :
     public void twoPlayers() {
         init();
-        gobanPanel.startGame(this);
+        this.onePlayerGame = Boolean.FALSE;
+        gobanPanel.startGame(this, this.game);
     }
 
-    //Commencer une partie ˆ un joueur :
+    //Begin a onePlayerGame
     public void onePlayer(PionVal couleur) {
         init();
-        gobanPanel.startGame(this);
+        this.onePlayerGame = Boolean.TRUE;
+        gobanPanel.startGame(this, this.game);
         if (couleur == PionVal.NOIR) {
             coupIA();
         }
@@ -56,8 +59,9 @@ public class GameManager {
 
     public void appliqueCoup(int lin, int col) {
         if (game.playAt(lin, col)){
-            game.playAt(lin, col);
-            coupIA();
+            if(this.onePlayerGame){
+                coupIA();
+            }
         }
     }
 

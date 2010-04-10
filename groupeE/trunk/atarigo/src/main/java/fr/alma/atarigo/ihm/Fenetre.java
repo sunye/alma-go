@@ -74,7 +74,7 @@ public class Fenetre extends JFrame {
         });
         this.nouv.add(item2);
         this.jeu.add(this.nouv);
-        //Ajout d'un séparateur
+        //Ajout d'un separateur
         this.jeu.addSeparator();
 
         //Quitter :
@@ -94,7 +94,7 @@ public class Fenetre extends JFrame {
 
             public void actionPerformed(ActionEvent arg0) {
                 JOptionPane jop = new JOptionPane();
-                jop.showMessageDialog(null, "Bla bla bla...", "À propos", JOptionPane.INFORMATION_MESSAGE);
+                jop.showMessageDialog(null, "Bla bla bla...", "√† propos", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         this.a_propos.add(propos);
