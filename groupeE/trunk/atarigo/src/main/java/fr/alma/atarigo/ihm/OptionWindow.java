@@ -38,23 +38,19 @@ public class OptionWindow extends JDialog {
      */
     private void choixCouleur(GameManager gaman) {
         String[] pion = {"Noir", "Blanc"};
-        JOptionPane jop = new JOptionPane();
-        int choix = jop.showOptionDialog(null,
+        //JOptionPane jop = new JOptionPane();
+        int choix = JOptionPane.showOptionDialog(null,
                 "Quelle couleur voulez-vous jouer ?",
                 "Choix pion",
                 JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 pion,
-                pion[2]);
+                pion[1]);
         if (pion[choix].equals("Noir")) {
             gaman.onePlayer(PionVal.NOIR);
         } else {
             gaman.onePlayer(PionVal.BLANC);
         }
-
-
     }
-
-
 }

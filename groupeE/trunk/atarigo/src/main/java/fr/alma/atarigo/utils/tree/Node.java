@@ -155,6 +155,10 @@ public class Node<T> {
     }
 
     public boolean isLeaf(){
-        return this.children.isEmpty();
+        if(children == null){
+            return true;
+        } else{
+            return this.children.isEmpty();
+        }
     }
 }
