@@ -1,6 +1,7 @@
 package fr.alma.controler;
 
 import fr.alma.ihm.Fenetre;
+import fr.alma.ihm.Loadeur;
 import fr.alma.modele.CouleurPion;
 import fr.alma.modele.GameHandler;
 import fr.alma.modele.Pion;
@@ -11,11 +12,14 @@ public class Controler {
 	private GameHandler gm;
 	private ActionListenerFactory factory;
 	private Fenetre jeu;
+	private Loadeur chargement;
+	private Thread affichageLoader;
 	
 	public Controler(){
 		this.gm= new GameHandler(this);
 		this.factory= new ActionListenerFactory(this);
 		this.jeu= new Fenetre(this);
+		this.chargement= new Loadeur(jeu, this);
 
 	}
 
@@ -80,8 +84,23 @@ public class Controler {
 	}
 	
 	public void forcerJouer(){
+		gm.forcerCoup();
+		afficheLoader(false);
 		
 	}
 	
+	public void afficheLoader(boolean affiche){
+		if (affiche) {
+			affichageLoader = new Thread() {
+				public void run() {
+					chargement.setVisible(true);
+				}
+			};
+			affichageLoader.start();
+		} else {
+			affichageLoader.interrupt();
+			chargement.setVisible(false);
+		}
+	}
 	
 }

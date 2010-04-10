@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import fr.alma.modele.Coordonnee;
+import fr.alma.modele.CoordonneeIA;
 import fr.alma.modele.CouleurPion;
 import fr.alma.modele.Coup;
 import fr.alma.modele.GoBan;
@@ -28,6 +29,8 @@ public class SunTsu {
 	private Difficulte diff;
 	private GoBan situation;
 	private static int[] modifier={1,-1};
+	private CoordonneeIA play;
+	
 	
 	
 	
@@ -36,6 +39,8 @@ public class SunTsu {
 	public SunTsu(){
 		this.situation=new GoBan();
 		this.diff=Difficulte.Debutant;
+		
+		play= new CoordonneeIA(0, 0);
 	}
 	
 	public Difficulte getDiff() {
@@ -48,8 +53,10 @@ public class SunTsu {
 	
 	
 	
-	public Coordonnee nextMove(GoBan actuel, CouleurPion coulp){
+	public void prepareNextMove(GoBan actuel, CouleurPion coulp){
 		//recopie du goban actuel
+				
+		
 		situation.setGoban(actuel.getGoban());
 	
 		
@@ -57,9 +64,21 @@ public class SunTsu {
 		
 		//calcul profondeur en fonction de la difficulté
 		//modulé difficulté par le nombre de pion sur le plateau ?
-		int profondeur= diff.ordinal()+1*2;
+		int profondeur= diff.ordinal()+1*3;
 
-		return  alphaBeta(profondeur, null, coul).getPosition();
+		synchronized (play) {
+			play.setCoordinate(alphaBeta(profondeur,profondeur, null, coul).getPosition());
+		}
+		
+		
+		play.setTermine(true);
+			
+	
+		
+		synchronized (play) {
+			play.notify();
+		} 
+		
 	}
 	
 	private Integer goBanEvaluation(){
@@ -195,7 +214,7 @@ public class SunTsu {
 	
 	
 	
-	private Coup alphaBeta(int profondeur, Coup precedentResult, CouleurPion ajouer){
+	private Coup alphaBeta(int profondeurmarx, int profondeur, Coup precedentResult, CouleurPion ajouer){
 		Coup temporaire=null;
 		Coup result=null;
 		for (int i=0; i<GoBan.TAILLE_GO_BAN; i++){
@@ -237,14 +256,18 @@ public class SunTsu {
 					//on regarde si il est mieux que celui d'avant
 					//si oui on change le coup et la note
 					//si
-					temporaire=alphaBeta(profondeur-1, result, reverseColor(ajouer));
+						
+						//FIXME change here
+					temporaire=alphaBeta(profondeurmarx,profondeur-1, result, reverseColor(ajouer));
 					coupActuel.setNote(temporaire.getNote());
 					if (coul==ajouer){
 						result=result==null?coupActuel:result.getNote()<coupActuel.getNote()?result:coupActuel;
 					}else{
 						result=result==null?coupActuel:result.getNote()>coupActuel.getNote()?result:coupActuel;
 					}
-					
+					if( profondeur== profondeurmarx){
+						this.play.setCoordinate(result.getPosition());
+					}
 					
 					//min max temporaire
 					//et on colle dans result
@@ -307,7 +330,38 @@ public class SunTsu {
 		
 		return groupVide;
 	}
+
+	public Coordonnee getPlay() {
+		synchronized (play) {
+			
+			if (!play.isTermine()) {
+				try {
+					play.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+			}
+		
+			Coordonnee result= new Coordonnee(play.getX(), play.getY());
+			play.setTermine(false);
+			return result;
+		
+		}
+	}
 	
+	public void terminerTraitement(){
+		
+		play.setTermine(true);
+			
+	
+		
+		synchronized (play) {
+			play.notify();
+		} 
+		play.setTermine(false);
+		
+	}
 	
 	
 }

@@ -55,4 +55,16 @@ public class ActionListenerFactory {
 		};
 	}
 	
+	public ActionListener forcerCoup(){
+		
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controler.forcerJouer();
+				
+			}
+		};
+	}
+	
 }
