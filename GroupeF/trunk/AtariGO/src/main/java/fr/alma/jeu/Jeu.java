@@ -19,7 +19,7 @@ public class Jeu {
 	
 	public static final int SUICIDE = 0; 
 	public static final int VALIDE = 1;
-	public static final int INVALIDE=2;
+	public static final int INVALIDE = 2;
 	public static final int CAPTURE = 3;
 	
 	public static ArrayList<Pion> voisins = new ArrayList<Pion>();
@@ -47,7 +47,7 @@ public class Jeu {
 				
 		int N=0,S=0,E=0,O=0;
 		voisins.add(grille.Contenu[x][y]);
-		System.out.println(" dans getliberte");
+		//System.out.println(" dans getliberte");
 		
 		if(x==0)
 			if(y==0){
@@ -446,7 +446,7 @@ public class Jeu {
 					
 					setVoisins(new ArrayList<Pion>());
 					if (prise){
-						grille.Contenu[x][y]=pion;
+						//grille.Contenu[x][y]=pion;
 						System.out.println("prise");
 						return CAPTURE;
 					}
@@ -516,14 +516,14 @@ public class Jeu {
 				}
 				setVoisins(new ArrayList<Pion>());
 				if (prise){
-					grille.Contenu[x][y]=pion;
+					//grille.Contenu[x][y]=pion;
 					System.out.println("Prise");
 					return CAPTURE;
 				}
 					
 				
 				else{
-					grille.Contenu[x][y]=pion;
+					//grille.Contenu[x][y]=pion;
 					return VALIDE;
 					}
 				}
@@ -551,10 +551,8 @@ public class Jeu {
 		
 			
 		Arbre a = Ia.constuireArbre(g);
-		
-		a.remplirArbre();
-							
-		return Ia.alphaBeta(a);
+									
+		return a.remplirArbre();
 	}
 	/**
 	 * Met a jour la grille aprés une capture
