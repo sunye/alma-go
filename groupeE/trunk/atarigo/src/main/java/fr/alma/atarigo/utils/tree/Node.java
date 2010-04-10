@@ -4,6 +4,8 @@
  */
 package fr.alma.atarigo.utils.tree;
 
+import fr.alma.atarigo.utils.PlayMove;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +21,6 @@ public class Node<T> {
     private List<Node<T>> children;
     private int depth;
     private int evaluation;
-
 
     /**
      * Default ctor.
@@ -52,7 +53,6 @@ public class Node<T> {
     public void setDepth(int depth) {
         this.depth = depth;
     }
-
 
     public int getEvaluation() {
         return evaluation;
@@ -154,11 +154,32 @@ public class Node<T> {
         return sb.toString();
     }
 
-    public boolean isLeaf(){
-        if(children == null){
+    public boolean isLeaf() {
+        if (children == null) {
             return true;
-        } else{
+        } else {
             return this.children.isEmpty();
+        }
+    }
+
+    public void keepChild(Node<PlayMove> lastMove) {
+        if (lastMove != null) {
+            //Before lastMove
+            ArrayList<Node<PlayMove>> thisOne = new ArrayList<Node<PlayMove>>(1);
+            thisOne.add(lastMove);
+            children.retainAll(thisOne);
+        }
+    }
+
+    /**
+     * Removes all children exept the one at index i.
+     * @param i
+     */
+    public void keepChildAt(int i) {
+        if(i < children.size()){
+            ArrayList<Node<PlayMove>> thisOne = new ArrayList<Node<PlayMove>>(1);
+            thisOne.add((Node<PlayMove>) children.get(i));
+            children.retainAll(thisOne);
         }
     }
 }
