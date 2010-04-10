@@ -54,7 +54,7 @@ public final class FakeGame extends Game {
 
                     Stone current = new Stone(color, line, column);
 
-                    Logger.getAnonymousLogger().log(Level.INFO, "playing "+current);
+                    Logger.getAnonymousLogger().log(Level.INFO, "playing " + current);
 
                     Modif modif = new Modif(line, column, goban.getCase(line, column), color);
                     PlayMove currentMove = new PlayMove();
@@ -140,7 +140,7 @@ public final class FakeGame extends Game {
         for (Stone pi : pions) {
             Groupe containing = getFakeCurrentMove().getGroupeContaining(pi);
             if (containing == null) {
-                Logger.getAnonymousLogger().log(Level.WARNING, "containing null, pion : "+pi);
+                Logger.getAnonymousLogger().log(Level.WARNING, "containing null, pion : " + pi);
             } else {
                 groups.add(containing);
             }
@@ -207,5 +207,15 @@ public final class FakeGame extends Game {
             --depth;
         }
         return ok;
+    }
+
+    public void keepThisBranch() {
+        if (lastMove.getFather() != null) {
+            lastMove.getFather().keepChild(lastMove);
+        }
+    }
+
+    void keepChildAt(int i) {
+        lastMove.keepChildAt(i);
     }
 }
