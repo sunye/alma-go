@@ -89,8 +89,13 @@ programmation Java.
 	\end{itemize}
 
 	\subsection{Choix de l'algorithme d'I.A}
-	Pour ce jeu, nous avons choisi d'implémenter l'algorithme alpha-bêta.
-	%TODO Expliquer le choix de l'algorithme alpha-bêta
+		\label{choix_alpha_beta}
+	Pour ce jeu, nous avons choisi d'implémenter l'algorithme alpha-bêta. En
+	effet, celui-ci est plus performant que l'algorithme min-max. Il donne les
+	mêmes résultats au niveau de la stratégie mais est plus performant quant à la
+	rapidité. Le gain produit par cette méthode est très important alors que les
+	modifications à apporter à l'algorithme min-max sont simples.
+	
 \clearpage		
 \section{Interface Homme-Machine}
 L'IHM n'est pas le plus important de ce projet, cependant une IHM
@@ -123,7 +128,15 @@ section \ref{regles} soit lancées. Une fois ceci assuré, la vue est
 actualisée afin que le pion apparraissent sur le plateau de jeu.
 \clearpage
 \section{Intelligence Artificielle}
+L'intelligence artificielle est la partie la plus importante de ce projet car
+c'est celle-ci qui constitue le lien entre ce programme et le module.
+Pour réaliser cette intelligence, nous nous sommes basés sur l'algorithme
+alpha-bêta vu en cours. Les raisons de ce choix ont été annoncés dans la
+section \ref{choix_alpha_beta}.
 
+\subsection{L'algorithme alpha-bêta}
+
+\subsection{L'heuristique}
 \clearpage
 \section{Difficultés rencontrées}
 
