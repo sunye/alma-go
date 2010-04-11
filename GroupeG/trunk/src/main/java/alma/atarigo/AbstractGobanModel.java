@@ -23,32 +23,45 @@ import alma.atarigo.model.TerritoryImpl;
 public abstract class AbstractGobanModel implements GobanModel {
     
 
-    private int kuroCount = 0;
-    private int shiroCount = 0;    
-
+	/**
+	 * Obtenir le contenu d'une cellule
+	 * @param position La position souhaitée
+	 * @return Le CellContent de la cellule
+	 * @see alma.atarigo.GobanModel#getCellContent(CellPosition)
+	 */
     public CellContent getCellContent(CellPosition position){
         return getCellContent(position.getRow(),position.getColumn());
     }
 
+    /**
+     * Modifier le contenu d'une cellule.
+     * Invoke la méthode <code> setCellContent(int,int,CellContent)</code>
+     * qui est implémentée plus bas dans la hiérarchie.
+     * @param position La position à mettre à jour
+     * @param content Le nouveau contenu de la cellule
+     * @see alma.atarigo.GobanModel#setCellContent(CellPosition, CellContent)
+     */
     public void setCellContent(CellPosition position, CellContent content) {
-        if(content.equals(CellContent.Kuro)){
-            kuroCount++;
-        }else if(content.equals(CellContent.Shiro)){
-            shiroCount++;
-        }
         setCellContent(position.getRow(),position.getColumn(),content);
     }
     
+    /**
+     * Obtenir la liste de tous les térritoires du goban.
+     * @return La <code>List</code> contenant le résultat
+     */
     public List<Territory> getTerritories(){
-
         List<Territory> kuro = getTerritories(CellContent.Kuro);
         List<Territory> shiro = getTerritories(CellContent.Shiro);
         kuro.addAll(shiro);
         return kuro;
     }
     
+    /**
+     * Obtenir la liste des territoires pour une couleur particulières.
+     * @param content La couleur souhaitée
+     * @return La liste des téritoires occupés par content
+     */
     public List<Territory> getTerritories(CellContent content){
-
         List<Territory> result = new ArrayList<Territory>();
 
         if(content!=null){
@@ -64,6 +77,12 @@ public abstract class AbstractGobanModel implements GobanModel {
         return result;
     }
 
+    /**
+     * Rechercher si une position appartient à un groupe de territoire
+     * @param list La liste des territoire concernée
+     * @param position La position recherchée
+     * @return L'index du térritoire dans la liste des térritoires qui contient la position, -1 si non trouvé
+     */
     public static int findPosition(List<Territory> list, CellPosition position){
         for(int i=0 ; i<list.size() ; ++i){
             if(list.get(i).contains(position)){
@@ -73,17 +92,9 @@ public abstract class AbstractGobanModel implements GobanModel {
         return -1;
     }
 
-//    public void addTerritory(Territory territory){
-//        for(int i=0 ; i<territories.size() ; ++i){
-//            Territory ter = territories.get(i);
-//            if(ter.isStrictlyIncludedIn(territory)){
-//                territories.remove(ter);
-//                --i;
-//            }
-//        }
-//        territories.add(territory);
-//    }
-
+    /**
+     * @see alma.atarigo.GobanModel#getLiberties(CellPosition)
+     */
     public List<CellPosition> getLiberties(CellPosition position){
         List<CellPosition> liberties = new ArrayList<CellPosition>();
         for(CellPosition pos
@@ -97,8 +108,6 @@ public abstract class AbstractGobanModel implements GobanModel {
                 CellContent content = getCellContent(position);
                 CellContent cont = getCellContent(pos);
                 if(cont!=null && (cont.isEmpty()
-//                		|| cont.equals(CellContent.KuroWins)
-//                		|| cont.equals(CellContent.ShiroWins)
                         || (content.isKuro() && cont.isShiroSuicide())
                         || (content.isShiro() && cont.isKuroSuicide())))
                 {
@@ -109,10 +118,17 @@ public abstract class AbstractGobanModel implements GobanModel {
         return liberties;
     }
 
+    /**
+     * Obtenir la liste des libertés d'un territoire
+     * @see alma.atarigo.GobanModel#getLibertiesFor(Territory)
+     */
     public List<CellPosition> getLibertiesFor(Territory territory){
         return getLibertiesFor(territory,null);
     }
 
+    /**
+     * @see alma.atarigo.GobanModel#getLibertiesFor(Territory, CellPosition)
+     */
     public List<CellPosition> getLibertiesFor(Territory territory,CellPosition position){
 
         Set<CellPosition> liberties = new HashSet<CellPosition>();
@@ -127,6 +143,9 @@ public abstract class AbstractGobanModel implements GobanModel {
         return result;
     }
     
+    /**
+     * @see alma.atarigo.GobanModel#getLibertiesFor(CellPosition, List)
+     */
     public List<CellPosition> getLibertiesFor(CellPosition position,List<Territory> territories){
         Set<CellPosition> liberties = new HashSet<CellPosition>();
     	for(Territory territory : territories){
@@ -137,10 +156,17 @@ public abstract class AbstractGobanModel implements GobanModel {
     	return result;
     }
 
+    /**
+     * @see alma.atarigo.GobanModel#getLibertiesFor(List)
+     */
     public List<CellPosition> getLibertiesFor(List<Territory> territories){
     	return getLibertiesFor(null,territories);
     }
     
+    /**
+     * Construire le territoire à  partir d'une position
+     * @see alma.atarigo.GobanModel#buildTerritory(CellPosition)
+     */
     public Territory buildTerritory(CellPosition position) {
         CellContent content = getCellContent(position);
         if(content.isEmpty()){
@@ -149,6 +175,9 @@ public abstract class AbstractGobanModel implements GobanModel {
         return buildTerritory(position,content);
     }
 
+    /**
+     * @see alma.atarigo.GobanModel#buildTerritory(CellPosition, CellContent)
+     */
     public Territory buildTerritory(CellPosition position, CellContent content) {
         Territory territory = new TerritoryImpl(content);
         territory.addCellPosition(position);
@@ -194,6 +223,9 @@ public abstract class AbstractGobanModel implements GobanModel {
         return makePosition(position.getRow()+1,position.getColumn());
     }
 
+    /* (non-Javadoc)
+     * @see alma.atarigo.GobanModel#getEasternCell(alma.atarigo.CellPosition)
+     */
     public CellPosition getEasternCell(final CellPosition position){
         if(position.getColumn()==getSize()){
             return null;
@@ -201,6 +233,9 @@ public abstract class AbstractGobanModel implements GobanModel {
         return makePosition(position.getRow(),position.getColumn()+1);
     }
 
+    /* (non-Javadoc)
+     * @see alma.atarigo.GobanModel#getWesternCell(alma.atarigo.CellPosition)
+     */
     public CellPosition getWesternCell(final CellPosition position){
         if(position.getColumn()==1){
             return null;
@@ -208,6 +243,9 @@ public abstract class AbstractGobanModel implements GobanModel {
         return makePosition(position.getRow(),position.getColumn()-1);
     }
 
+    /**
+     * Mettre toutes les cellules à <code>Empty</code>
+     */
     protected void initializeBoard() {
         int length = getSize();
         for(int i=1 ; i<=length ; ++i){
@@ -217,10 +255,16 @@ public abstract class AbstractGobanModel implements GobanModel {
         }
     }
 
+    /* (non-Javadoc)
+     * @see alma.atarigo.GobanModel#getEmptyCells()
+     */
     public List<CellPosition> getEmptyCells(){
     	return getPositionsFor(CellContent.Empty);
     }
 
+    /* (non-Javadoc)
+     * @see alma.atarigo.GobanModel#getPositionsFor(alma.atarigo.CellContent[])
+     */
     public List<CellPosition> getPositionsFor(CellContent ... target){
     	List<CellContent> targets = Arrays.asList(target);
         List<CellPosition> contents = new ArrayList<CellPosition>();
@@ -236,10 +280,16 @@ public abstract class AbstractGobanModel implements GobanModel {
         return contents;
     }
     
+    /* (non-Javadoc)
+     * @see alma.atarigo.GobanModel#getEnemies(alma.atarigo.CellPosition)
+     */
     public List<CellPosition> getEnemies(CellPosition position) {
         return getEnemies(position,getCellContent(position));
     }
 
+    /* (non-Javadoc)
+     * @see alma.atarigo.GobanModel#getEnemies(alma.atarigo.CellPosition, alma.atarigo.CellContent)
+     */
     public List<CellPosition> getEnemies(CellPosition position,CellContent content){
         List<CellPosition> result = new ArrayList<CellPosition>();
         for(CellPosition neighbour
@@ -256,6 +306,9 @@ public abstract class AbstractGobanModel implements GobanModel {
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see alma.atarigo.GobanModel#getEnemiesFor(alma.atarigo.Territory, alma.atarigo.CellContent, alma.atarigo.CellPosition)
+     */
     public List<CellPosition> getEnemiesFor(Territory territory,CellContent content,CellPosition position) {
         Set<CellPosition> enemies = new HashSet<CellPosition>();
         for(CellPosition pos : territory.getPositions()){
@@ -269,10 +322,19 @@ public abstract class AbstractGobanModel implements GobanModel {
         return result;
     }
 
+    /**
+     * Construire une <code>CellPosition</code>
+     * @param row La ligne 
+     * @param column La colonne
+     * @return La nouvelle position
+     */
     public static CellPosition makePosition(final int row,final int column){
         return new CellPositionImpl(row,column);
     }
 
+    /* (non-Javadoc)
+     * @see alma.atarigo.GobanModel#getContentCount(alma.atarigo.CellContent)
+     */
     public int getContentCount(CellContent content) {
         int res = 0;
         int length = getSize();
@@ -286,10 +348,16 @@ public abstract class AbstractGobanModel implements GobanModel {
         return res;
     }
     
+    /* (non-Javadoc)
+     * @see alma.atarigo.GobanModel#isAtari(alma.atarigo.Territory)
+     */
     public boolean isAtari(Territory territory){
     	return getLibertiesFor(territory).size()==1;
     }
 
+    /* (non-Javadoc)
+     * @see alma.atarigo.GobanModel#getKuroCount()
+     */
     public int getKuroCount(){
     	int count = 0;
     	for(Cell cell : this){
@@ -299,6 +367,9 @@ public abstract class AbstractGobanModel implements GobanModel {
 //        return kuroCount;
     }
 
+    /* (non-Javadoc)
+     * @see alma.atarigo.GobanModel#getShiroCount()
+     */
     public int getShiroCount(){
     	int count = 0;
     	for(Cell cell : this){
@@ -308,16 +379,25 @@ public abstract class AbstractGobanModel implements GobanModel {
 //        return shiroCount;
     }
 
+    /* (non-Javadoc)
+     * @see alma.atarigo.GobanModel#getActualPlayer()
+     */
     public CellContent getActualPlayer(){
-    	int kCount = getKuroCount();
+    	int kCount = getKuroCount() + getKuroPrisoners().size();
         return (kCount%2==0)?CellContent.Shiro:CellContent.Kuro;
     }
     
+    /* (non-Javadoc)
+     * @see alma.atarigo.GobanModel#getNextPlayer()
+     */
     public CellContent getNextPlayer(){
-    	int kCount = getKuroCount();
+    	int kCount = getKuroCount() + getKuroPrisoners().size();
         return (kCount%2==0)?CellContent.Kuro:CellContent.Shiro;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Iterable#iterator()
+     */
     public Iterator<Cell> iterator(){
         
         return new Iterator<Cell>() {
@@ -346,10 +426,20 @@ public abstract class AbstractGobanModel implements GobanModel {
         };
     }
 
+    /**
+     * Construire une nouvelle <code>Cell</code>
+     * @param row La ligne
+     * @param column La colonne
+     * @param content Le contenue de la cellule
+     * @return La nouvelle instance
+     */
     public static Cell makeCell(final int row, final int column, final CellContent content){
     	return new CellImpl(row,column,content);
     }
     
+    /* (non-Javadoc)
+     * @see alma.atarigo.GobanModel#getBorderCellsFor(alma.atarigo.CellContent[])
+     */
     public List<CellPosition> getBorderCellsFor(CellContent ... contents){
     	List<CellPosition> result = getPositionsFor(contents);
     	for(int i=0 ; i<result.size() ; ++i){
@@ -362,20 +452,16 @@ public abstract class AbstractGobanModel implements GobanModel {
     	return result;
     }
     
-    public boolean isBorderCell(CellPosition position){
-    	boolean result = false;
-    	for(CellPosition neighbour
-                : Arrays.asList(
-                         getNorthernCell(position)
-                        ,getSouthernCell(position)
-                        ,getEasternCell(position)
-                        ,getWesternCell(position)))
-        {
-            if(neighbour==null){
-            	result = true;
-            }
-        }
-    	return result;
+    /**
+     * Verifie que la cellule est une cellule du bord
+     * @param position La position
+     * @return true si position est au bord du goban
+     */
+    public boolean isBorderCell(CellPosition position){    	
+    	int size = getSize();
+    	int row = position.getRow();
+    	int col = position.getColumn();
+    	return  row==1 || row==size || col==1 || col==size;
     }
 
     

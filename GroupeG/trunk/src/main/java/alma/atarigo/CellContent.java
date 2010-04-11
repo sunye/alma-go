@@ -6,7 +6,7 @@
 package alma.atarigo;
 
 /**
- *
+ *Le contenu d'une case du goban
  * @author steg
  */
 public enum CellContent {
@@ -53,59 +53,86 @@ public enum CellContent {
         this.id = id;
     }
 
-    public boolean isEqualsTo(Object object){
-        if(object!=null && object instanceof CellContent){
-            return id == ((CellContent)object).id;
-        }
-        return false;
+    /**
+     * Tester l'egalité de 2 contenus
+     * @param object L'autre contenu
+     * @return true Si les contenues ont les memes identifiants
+     */
+    public boolean sameId(CellContent object){
+    	return id == ((CellContent)object).id;
     }
 
+    /**
+     * 
+     * @return true s'il s'agit de <code>CellContent.Empty</code>
+     */
     public boolean isEmpty(){
-        return id==1;
+        return id==CellContent.Empty.id;
     }
 
+    /**
+     * 
+     * @return true s'il s'agit de <code>CellContent.Kuro</code>
+     */
     public boolean isKuro(){
-        return id==3;
+        return id==CellContent.Kuro.id;
     }
 
+    /**
+     * 
+     * @return true s'il s'agit de <code>CellContent.Shiro</code>
+     */
     public boolean isShiro(){
-        return id==2;
+        return id==CellContent.Shiro.id;
     }
     
+    /**
+     * 
+     * @return true s'il s'agit de <code>CellContent.ShiroSuicide</code>
+     */
     public boolean isShiroSuicide(){
-    	return id==4;
+    	return id==CellContent.ShiroSuicide.id;
     }
 
+    /**
+     * 
+     * @return true s'il s'agit de <code>CellContent.KuroSuice</code>
+     */
     public boolean isKuroSuicide(){
-    	return id==5;
+    	return id==CellContent.KuroSuicide.id;
     }
-    
-    public void setShiroSuicide(){
-    	id = 4;
-    }
-
-    public void setKuroSuicide(){
-    	id = 5;
-    }
-    
-    public void setShiroWins(){
-    	id = 6;
-    }
-
-    public void setKuroWins(){
-    	id = 7;
-    }
-    
+       
+    /**
+     * Test si le content est de la couleur opposée
+     * @param content Le contenu à tester
+     * @return true si <code> (isKuro() && content.isShiro()) || (isShiro() && content.isKuro())</code>
+     */
     public boolean isEnemy(CellContent content){
-        return !isEmpty() && content!=null && !content.isEmpty() && !content.id.equals(id);
+        return (isKuro() && content.isShiro()) 
+        		|| (isShiro() && content.isKuro());
     }
 
+    /**
+     * Test si le content est de la même couleur
+     * @param content Le contenu à tester
+     * @return true si <code> this.sameId(content) </code>
+     */
     public boolean isFriend(CellContent content){
-        return !isEmpty() && content!=null && content.id.equals(id);
+        return sameId(content);
     }
 
+    /**
+     * Obtenir le contenu de couleur opposée
+     * @return Kuro si <code> isShiro() </code>, Shiro si <code> isKuro </code>, null sinon
+     */
     public CellContent getEnemy(){
-        return (id==2)?CellContent.Kuro:CellContent.Shiro;
+    	if(isShiro()){
+    		return Kuro;
+    	}
+    	else if(isKuro()){
+    		return Shiro;
+    	}
+    	return null;
     }
 
 }

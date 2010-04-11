@@ -6,7 +6,7 @@
 package alma.atarigo;
 
 /**
- *
+ *Une cellule du jeu
  * @author steg
  */
 public interface Cell extends CellPosition{

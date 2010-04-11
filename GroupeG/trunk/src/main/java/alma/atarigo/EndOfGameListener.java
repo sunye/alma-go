@@ -6,7 +6,7 @@
 package alma.atarigo;
 
 /**
- *
+ * Ecouteur sur les évènements de fin de jeu
  * @author steg
  */
 public interface EndOfGameListener {
