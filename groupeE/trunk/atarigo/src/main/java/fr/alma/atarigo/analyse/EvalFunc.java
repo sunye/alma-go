@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 public class EvalFunc {
 
     static public final int GAGNE = 1000;
+    static public final int PERDU = -GAGNE;
     static public final int TRESIMPORTANT = 20;
     static public final int IMPORTANT = 10;
     static public final int MOYEN = 5;
@@ -92,14 +93,31 @@ public class EvalFunc {
             }
         }
 
+        int myLibs;
+        int otherLibs;
+
+        if(minLibMySide == null){
+            myLibs = 0;
+            Logger.getAnonymousLogger().log(Level.WARNING, "groupe null "+game.getCurrentMove().getGroupes().toString());
+        } else {
+            myLibs = minLibMySide.getLibertes();
+        }
+
+        if(minLibOtherSide == null){
+            otherLibs = 0;
+            Logger.getAnonymousLogger().log(Level.WARNING, "groupe null "+game.getCurrentMove().getGroupes().toString());
+        } else {
+            otherLibs = minLibOtherSide.getLibertes();
+        }
+
         // Compare minimum of group liberties.
-        if (minLibMySide.getLibertes() > minLibOtherSide.getLibertes() + 3) {
+        if (myLibs > otherLibs + 3) {
             score += importance;
-        } else if (minLibMySide.getLibertes() > minLibOtherSide.getLibertes()) {
+        } else if (myLibs > otherLibs) {
             score += importance / 2;
-        } else if (minLibMySide.getLibertes() < minLibOtherSide.getLibertes() - 3) {
+        } else if (myLibs < otherLibs - 3) {
             score -= importance;
-        } else if (minLibMySide.getLibertes() < minLibOtherSide.getLibertes()) {
+        } else if (myLibs < otherLibs) {
             score -= importance / 2;
         }
         return score;
@@ -144,7 +162,7 @@ public class EvalFunc {
                         if (eye.size() == 1) {
                             if (groupe.getLibertes() == 1) {
                                 // If it's the last liberty, we lose much than him, because, he just has to play.
-                                score -= (GAGNE+GAGNE);
+                                score += (PERDU+PERDU);
                             } else if (groupe.getLibertes() > groupe.size()) {
                                 // If we still have some liberties, it's better.
                                 score -= MOYEN;
@@ -240,7 +258,12 @@ public class EvalFunc {
 
     static int evaluate(FakeGame tests, PionVal pionVal, boolean beginning) {
         if(tests.isEnd()){
-            return GAGNE;
+            if(tests.getCurrentMove().getPutStone().getAfter() == pionVal){
+                return GAGNE+GAGNE;
+            } else {
+                return PERDU+PERDU;
+            }
+            
         }
 
         if(beginning){

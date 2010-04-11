@@ -52,14 +52,14 @@ public class Game {
             posePion(line, column, currentPlayer);
 
             changeCurrentPlayer();
-
+            freePlaces.remove(new Stone(PionVal.RIEN, line, column));
+            return true;
         } catch (BadPlaceException ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, ex.getMessage());
             return false;
         }
 
-        freePlaces.remove(new Stone(PionVal.RIEN, line, column));
-        return true;
+
     }
 
     /**
@@ -86,6 +86,7 @@ public class Game {
 
                     //Let's modify the goban !
                     goban.setCase(line, column, color);
+//                    freePlaces.remove(new Stone(PionVal.RIEN, line, column));
 
                     //Calculates the new groups
                     Set<Groupe> ennemies = calculateGroups(current);
@@ -107,6 +108,15 @@ public class Game {
         }
     }
 
+    /**
+     * Checks if the place is considered as a suicide.
+     * If the played Stone fills the last liberty of a group, it is,
+     * unless we kill another group.
+     * @param line
+     * @param column
+     * @param pionVal
+     * @return whether or not it is a suicide
+     */
     public boolean isSuicide(int line, int column, PionVal pionVal) {
         //TODO : correct this function
         if (goban.libertesPion(new Stone(pionVal, line, column)) == 0) {
@@ -115,16 +125,13 @@ public class Game {
             int i = 0;
             for (Groupe gr : groupes) {
                 ++i;
-
-
                 if (gr.getCouleur() != pionVal) {
                     // If ennemy, check if it has one liberty left
                     if (gr.getLibertes() == 1) {
-
                         return false;
                     }
                 } else if (gr.getLibertes() > 1) {
-                    // If one of the surrounding groups has more than 1 liberty left, it is no suicide.
+                    // If allie and more than 1 liberty, it is not a suicide.
                     return false;
                 }
             }
@@ -232,6 +239,7 @@ public class Game {
             // Don't forget to register the modification.
             getCurrentMove().addModif(new Modif(pion.getLine(), pion.getColumn(), pion.getCouleur(), PionVal.RIEN));
             goban.setCase(pion.getLine(), pion.getColumn(), PionVal.RIEN);
+            freePlaces.add(new Stone(PionVal.RIEN, pion.getLine(), pion.getColumn()));
         }
 
         Set<Groupe> surroundings = new HashSet<Groupe>();
@@ -298,11 +306,11 @@ public class Game {
         try {
             lastPm.revert(this.goban);
 
-            for(Modif mod :lastPm.getDiff()){
-                if(mod.getBefore() == PionVal.RIEN){
-                    this.freePlaces.add(new Stone(PionVal.RIEN,mod.getLine(),mod.getColumn()));
+            for (Modif mod : lastPm.getDiff()) {
+                if (mod.getBefore() == PionVal.RIEN) {
+                    this.freePlaces.add(new Stone(PionVal.RIEN, mod.getLine(), mod.getColumn()));
                 } else {
-                    this.freePlaces.remove(new Stone(PionVal.RIEN,mod.getLine(),mod.getColumn()));
+                    this.freePlaces.remove(new Stone(PionVal.RIEN, mod.getLine(), mod.getColumn()));
                 }
             }
 
@@ -331,11 +339,11 @@ public class Game {
             }
 
             // Update the freeplaces
-            for(Modif mod : newPM.getDiff()){
-                if(mod.getAfter() == PionVal.RIEN){
-                    this.freePlaces.add(new Stone(PionVal.RIEN,mod.getLine(),mod.getColumn()));
+            for (Modif mod : newPM.getDiff()) {
+                if (mod.getAfter() == PionVal.RIEN) {
+                    this.freePlaces.add(new Stone(PionVal.RIEN, mod.getLine(), mod.getColumn()));
                 } else {
-                    this.freePlaces.remove(new Stone(PionVal.RIEN,mod.getLine(),mod.getColumn()));
+                    this.freePlaces.remove(new Stone(PionVal.RIEN, mod.getLine(), mod.getColumn()));
                 }
             }
 

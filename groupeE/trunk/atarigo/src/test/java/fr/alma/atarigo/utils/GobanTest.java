@@ -6,6 +6,7 @@ package fr.alma.atarigo.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import junit.framework.Test;
 import junit.framework.TestCase;
 
 /**
@@ -31,12 +32,12 @@ public class GobanTest extends TestCase {
     /**
      * Test of getTaille method, of class Goban.
      */
-    public void testGetTaille() {
-        System.out.println("getTaille");
-        int expResult = 9;
-        int result = Goban.getTaille();
-        assertEquals(expResult, result);
-    }
+//    public void testGetTaille() {
+//        System.out.println("getTaille");
+//        int expResult = 9;
+//        int result = Goban.getTaille();
+//        assertEquals(expResult, result);
+//    }
 
     /**
      * Test of bonneCoords method, of class Goban.

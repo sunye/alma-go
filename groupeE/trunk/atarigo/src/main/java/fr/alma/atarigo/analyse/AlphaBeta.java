@@ -5,6 +5,7 @@
 package fr.alma.atarigo.analyse;
 
 import fr.alma.atarigo.utils.Game;
+import fr.alma.atarigo.utils.Goban;
 import fr.alma.atarigo.utils.PionVal;
 import fr.alma.atarigo.utils.PlayMove;
 import fr.alma.atarigo.utils.Stone;
@@ -20,6 +21,7 @@ import java.util.logging.Logger;
  */
 public class AlphaBeta {
 
+    private static int MILIEU = 2;
     private int profondeurMax;
     private final static int INFINI = Integer.MAX_VALUE;
     private final static int BEGINLIMIT = 6;
@@ -28,7 +30,7 @@ public class AlphaBeta {
     public PlayMove init(Game jeu) {
         FakeGame tests = new FakeGame(jeu);
         PlayMove aJouer = alphaBeta(tests, 0, -INFINI, +INFINI);
-        Logger.getAnonymousLogger().log(Level.INFO, "Fini ! coup renvoyé : "+aJouer);
+        Logger.getAnonymousLogger().log(Level.INFO, "Fini ! coup renvoyé : " + aJouer);
         return aJouer;
     }
 
@@ -48,16 +50,16 @@ public class AlphaBeta {
             if (prof % 2 == 0) {//profondeur paire = a l'ordinateur de jouer
                 PlayMove maxPM = max(tests, prof + 1, alpha, beta);
                 tests.getCurrentMove().setEval(maxPM.getEval());
-                if(prof == 0){
+                if (prof == 0) {
                     return maxPM;
                 } else {
                     return tests.getCurrentMove();
                 }
-                
+
             } else {//profondeur impaire = au joueur de jouer
                 PlayMove minPM = min(tests, prof + 1, alpha, beta);
                 tests.getCurrentMove().setEval(minPM.getEval());
-                if(prof == 0){
+                if (prof == 0) {
                     return minPM;
                 } else {
                     return tests.getCurrentMove();
@@ -78,7 +80,7 @@ public class AlphaBeta {
                 alphadep = valFils;
                 indexMax = i;
             }
-            if (alphadep.getEval() >= beta)  {
+            if (alphadep.getEval() >= beta) {
                 tests.keepChildAt(i);
                 return alphadep; // coupure beta
             }
@@ -111,13 +113,39 @@ public class AlphaBeta {
     private void generateMoves(FakeGame tests) {
         Set<Stone> freeToTry = new HashSet<Stone>(tests.getFreePlaces());
         if (tests.getDepth() <= BEGINLIMIT) {
-            freeToTry.retainAll(generateFreePlaces(2, 2, 6, 6));
+            freeToTry.retainAll(generateFreePlaces(MILIEU, MILIEU, Goban.getTaille() - MILIEU, Goban.getTaille() - MILIEU));
+        } else {
+            // Here we calculate the rectangle where it is better to play
+            // find the firs and last line, and same for the column.
+            int firstLine = Goban.getTaille() - 1;
+            int firstCol = firstLine;
+            int lastLine = 0;
+            int lastCol = 0;
+            for (int i = 0; i < Goban.getTaille(); ++i) {
+                for (int j = 0; j < Goban.getTaille(); ++j) {
+                    try {
+                        if (tests.getStone(i, j).getCouleur() != PionVal.RIEN) {
+                            firstLine = Math.min(firstLine, i);
+                            firstCol = Math.min(firstCol, j);
+                            lastLine = Math.max(lastLine, i);
+                            lastCol = Math.max(lastCol, j);
+                        }
+                    } catch (BadPlaceException ex) {
+                    }
+                }
+            }
+
+            //The rectangle is from (firstLine-2,firstCol-2), to (lastLine+2,lastCol+2)
+            freeToTry.retainAll(generateFreePlaces(firstLine, firstCol, lastLine, lastCol));
         }
+//        Logger.getAnonymousLogger().log(Level.INFO, new StringBuilder("Dispos : ").append(freeToTry.toString()).toString());
+
         for (Stone stone : freeToTry) {
             try {
                 tests.fakePosePion(stone.getLine(), stone.getColumn(), tests.getCurrentPlayer());
             } catch (BadPlaceException ex) {
                 Logger.getAnonymousLogger().log(Level.SEVERE, ex.getMessage());
+                Logger.getAnonymousLogger().log(Level.INFO, tests.getGoban().toString());
             }
         }
     }
