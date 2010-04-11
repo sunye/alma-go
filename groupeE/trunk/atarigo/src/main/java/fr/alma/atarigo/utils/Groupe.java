@@ -108,6 +108,17 @@ public class Groupe {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder toStr = new StringBuilder();
+        toStr.append("{ ").append("color : ").append(this.couleur).append(", ");
+        toStr.append("Stones : ").append(stones.toString()).append(", ");
+        toStr.append("Eyes : ").append(eyes).append(" }");
+        return toStr.toString();
+    }
+
+
+
     public void addEye(Groupe group) {
         eyes.add(group);
     }

@@ -27,7 +27,9 @@ public class AlphaBeta {
 
     public PlayMove init(Game jeu) {
         FakeGame tests = new FakeGame(jeu);
-        return alphaBeta(tests, 0, -INFINI, +INFINI);
+        PlayMove aJouer = alphaBeta(tests, 0, -INFINI, +INFINI);
+        Logger.getAnonymousLogger().log(Level.INFO, "Fini ! coup renvoyé : "+aJouer);
+        return aJouer;
     }
 
     public AlphaBeta(int profondeurMax, PionVal couleur) {
@@ -36,73 +38,78 @@ public class AlphaBeta {
     }
 
     public PlayMove alphaBeta(FakeGame tests, int prof, int alpha, int beta) {
-        Logger.getAnonymousLogger().log(Level.INFO, "Profondeur = "+prof);
-        if (prof < profondeurMax) {
+        if (prof < profondeurMax && !tests.isEnd()) {
             this.generateMoves(tests);
         }
-        if (prof >= profondeurMax || tests.isInLeaf()) {
-                tests.getCurrentMove().setEval(EvalFunc.evaluate(tests, couleur, tests.getDepth() <= BEGINLIMIT));
-                return tests.getCurrentMove();
+        if (prof == profondeurMax || tests.isInLeaf()) {
+            tests.getCurrentMove().setEval(EvalFunc.evaluate(tests, couleur, tests.getDepth() <= BEGINLIMIT));
+            return tests.getCurrentMove();
         } else {
             if (prof % 2 == 0) {//profondeur paire = a l'ordinateur de jouer
-                return max(tests, prof + 1, alpha, beta);
+                PlayMove maxPM = max(tests, prof + 1, alpha, beta);
+                tests.getCurrentMove().setEval(maxPM.getEval());
+                if(prof == 0){
+                    return maxPM;
+                } else {
+                    return tests.getCurrentMove();
+                }
+                
             } else {//profondeur impaire = au joueur de jouer
-                return min(tests, prof + 1, alpha, beta);
+                PlayMove minPM = min(tests, prof + 1, alpha, beta);
+                tests.getCurrentMove().setEval(minPM.getEval());
+                if(prof == 0){
+                    return minPM;
+                } else {
+                    return tests.getCurrentMove();
+                }
             }
         }
     }
 
     private PlayMove max(FakeGame tests, int prof, int alpha, int beta) {
-        PlayMove coupMax = new PlayMove();
+        PlayMove alphadep = new PlayMove();
         int indexMax = 0;
-        coupMax.setEval(-INFINI);
+        alphadep.setEval(-INFINI); // équivaut à Alpha(p)
         for (int i = 0; i < tests.getChildrenMove().size(); ++i) {
             tests.apply(i);
-            PlayMove valFils = alphaBeta(tests, prof + 1, alpha, beta);
+            PlayMove valFils = alphaBeta(tests, prof, Math.max(alpha, alphadep.getEval()), beta);
             tests.revert();
-            if (valFils.getEval() > coupMax.getEval()) {
-                coupMax = valFils;
+            if (valFils.getEval() > alphadep.getEval()) {
+                alphadep = valFils;
                 indexMax = i;
             }
-            if (beta <= coupMax.getEval()) {
-                // TODO : garder coupMax.
+            if (alphadep.getEval() >= beta)  {
                 tests.keepChildAt(i);
-                return coupMax; // coupure beta
-            }
-            if (alpha < coupMax.getEval()) {
-                alpha = coupMax.getEval();
+                return alphadep; // coupure beta
             }
         }
         tests.keepChildAt(indexMax);
-        return coupMax;
+        return alphadep;
     }
 
     private PlayMove min(FakeGame tests, int prof, int alpha, int beta) {
-        PlayMove coupMin = new PlayMove();
+        PlayMove betadep = new PlayMove();
         int indexMin = 0;
-        coupMin.setEval(INFINI);
+        betadep.setEval(INFINI); // équivaut à Beta(p)
         for (int i = 0; i < tests.getChildrenMove().size(); ++i) {
             tests.apply(i);
-            PlayMove valFils = alphaBeta(tests, prof + 1, alpha, beta);
+            PlayMove valFils = alphaBeta(tests, prof, alpha, Math.min(beta, betadep.getEval()));
             tests.revert();
-            if (valFils.getEval() < coupMin.getEval()) {
-                coupMin = valFils;
+            if (valFils.getEval() < betadep.getEval()) {
+                betadep = valFils;
                 indexMin = i;
             }
-            if (alpha <= coupMin.getEval()) {
+            if (alpha >= betadep.getEval()) {
                 tests.keepChildAt(i);
-                return coupMin; // coupure alpha
-            }
-            if (beta > coupMin.getEval()) {
-                beta = coupMin.getEval();
+                return betadep; // coupure alpha
             }
         }
         tests.keepChildAt(indexMin);
-        return coupMin;
+        return betadep;
     }
 
     private void generateMoves(FakeGame tests) {
-        Set<Stone> freeToTry = tests.getFreePlaces();
+        Set<Stone> freeToTry = new HashSet<Stone>(tests.getFreePlaces());
         if (tests.getDepth() <= BEGINLIMIT) {
             freeToTry.retainAll(generateFreePlaces(2, 2, 6, 6));
         }
@@ -110,10 +117,9 @@ public class AlphaBeta {
             try {
                 tests.fakePosePion(stone.getLine(), stone.getColumn(), tests.getCurrentPlayer());
             } catch (BadPlaceException ex) {
-                System.out.println(ex.getMessage());
+                Logger.getAnonymousLogger().log(Level.SEVERE, ex.getMessage());
             }
         }
-
     }
 
     private Set<Stone> generateFreePlaces(int linBeg, int colBeg, int linEnd, int colEnd) {

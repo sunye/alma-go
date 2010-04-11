@@ -64,4 +64,17 @@ public class Modif {
         return new Stone(getAfter(), line, column);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder strb = new StringBuilder();
+        return strb.append("{ ").append("line : ").append(line)
+                .append(", column : ").append(column)
+                .append(", before : ").append(before)
+                .append(", after : ").append(after)
+                .append(" }").toString();
+    }
+
+
+
+
 }

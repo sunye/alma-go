@@ -30,7 +30,6 @@ public class Game {
     // Last move played (faster backtracking).
     protected Node<PlayMove> lastMove;
     private PionVal currentPlayer;
-    protected boolean end;
     protected Set<Stone> freePlaces;
 
     public Game() {
@@ -40,7 +39,6 @@ public class Game {
         lastMove = new Node<PlayMove>(new PlayMove());
         history.setRootElement(lastMove);
         currentPlayer = PionVal.NOIR;
-        end = false;
         freePlaces = new HashSet<Stone>(Goban.getTaille() * Goban.getTaille());
         for (int line = 0; line < Goban.getTaille(); ++line) {
             for (int col = 0; col < Goban.getTaille(); ++col) {
@@ -56,7 +54,7 @@ public class Game {
             changeCurrentPlayer();
 
         } catch (BadPlaceException ex) {
-            System.out.println(ex.getMessage());
+            Logger.getAnonymousLogger().log(Level.WARNING, ex.getMessage());
             return false;
         }
 
@@ -78,8 +76,6 @@ public class Game {
             if (goban.getCase(line, column) == PionVal.RIEN) {
                 if (!isSuicide(line, column, color)) {
                     Stone current = new Stone(color, line, column);
-
-                     Logger.getAnonymousLogger().log(Level.INFO, "playing "+current);
 
                     Modif modif = new Modif(line, column, goban.getCase(line, column), color);
                     PlayMove currentMove = new PlayMove();
@@ -161,8 +157,6 @@ public class Game {
         // Get the (<= 4) neighbours groups of the current stone.
         List<Stone> pions = goban.getVoisins(pion);
 
-        Logger.getAnonymousLogger().log(Level.INFO, pions.toString());
-
         return getGroupsFromPions(pions);
     }
 
@@ -202,8 +196,6 @@ public class Game {
      * @return
      */
     protected Set<Stone> getGroupLiberties(Groupe groupe) {
-        //TODO:Create Set of the free places surrounding the group.
-
         HashSet<Stone> libertes = new HashSet<Stone>(groupe.size() * 2 + 2);
 
         for (Stone pion : groupe.getStones()) {
@@ -223,7 +215,8 @@ public class Game {
                 // Dans ce cas là, on a bouché la dernière libertée,
                 //il faut donc supprimer les pierres du goban, et le groupe du pm.
                 removeGroupe(groupe);
-                this.end = true;
+                getCurrentMove().setEnd(true);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fin du jeu !");
             }
         }
     }
@@ -300,10 +293,21 @@ public class Game {
      * Reverts the game to the last Move (the father of the currentMove).
      */
     public Boolean revert() {
+
         PlayMove lastPm = getCurrentMove();
         try {
             lastPm.revert(this.goban);
+
+            for(Modif mod :lastPm.getDiff()){
+                if(mod.getBefore() == PionVal.RIEN){
+                    this.freePlaces.add(new Stone(PionVal.RIEN,mod.getLine(),mod.getColumn()));
+                } else {
+                    this.freePlaces.remove(new Stone(PionVal.RIEN,mod.getLine(),mod.getColumn()));
+                }
+            }
+
             lastMove = lastMove.getFather();
+            this.changeCurrentPlayer();
             return Boolean.TRUE;
         } catch (BadGobanStateException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
@@ -314,20 +318,32 @@ public class Game {
     public Boolean apply(int numChild) {
         Node<PlayMove> child = lastMove.getChildAt(numChild);
         if (child != null) {
-            if(child.getData().getPutStone().getAfter() != currentPlayer){
+            if (child.getData().getPutStone().getAfter() != currentPlayer) {
                 return false;
             }
-            lastMove = child;
-            PlayMove newPM = getCurrentMove();
+
+            PlayMove newPM = child.getData();
             try {
                 newPM.apply(goban);
             } catch (BadGobanStateException ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
             }
+
+            // Update the freeplaces
+            for(Modif mod : newPM.getDiff()){
+                if(mod.getAfter() == PionVal.RIEN){
+                    this.freePlaces.add(new Stone(PionVal.RIEN,mod.getLine(),mod.getColumn()));
+                } else {
+                    this.freePlaces.remove(new Stone(PionVal.RIEN,mod.getLine(),mod.getColumn()));
+                }
+            }
+
+            lastMove = child;
             this.changeCurrentPlayer();
             return true;
         } else {
+            Logger.getAnonymousLogger().log(Level.WARNING, "NOT applied, null child");
             return false;
         }
     }
@@ -342,7 +358,7 @@ public class Game {
     }
 
     public boolean isEnd() {
-        return end;
+        return getCurrentMove().isEnd();
     }
 
     /**

@@ -16,6 +16,7 @@ public class PlayMove {
     private Modif putStone;
     private ArrayList<Groupe> groups;
     private int eval;
+    private boolean end;
 
     public int getEval() {
         return eval;
@@ -46,6 +47,8 @@ public class PlayMove {
     public PlayMove() {
         diff = new HashSet<Modif>();
         groups = new ArrayList<Groupe>();
+        end = false;
+        eval = Integer.MIN_VALUE;
     }
 
     public void addModif(Modif modif) {
@@ -101,6 +104,34 @@ public class PlayMove {
     public void setPutStone(Modif putPion) {
         this.putStone = putPion;
     }
+
+    public Set<Modif> getDiff() {
+        return diff;
+    }
+
+    public boolean isEnd() {
+        return end;
+    }
+
+    public void setEnd(boolean end) {
+        this.end = end;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder strb = new StringBuilder();
+        strb.append("{ ").append("putStone : ").append(putStone)
+                .append(", diff : ").append(diff)
+                .append(", eval : ").append(eval)
+                .append(", groupes : ").append(groups)
+                .append(" }");
+
+        return strb.toString();
+    }
+
+
+
+    
 
     
 }
