@@ -142,25 +142,7 @@ public class Coordinator implements ICoordinator {
 
 
 	private void playInThread() {
-		//thread = new Thread(getRunnable());
-		//thread.start();
 		getCurrentPlayer().play();
-	}
-
-
-	public Runnable getRunnable() {
-		runnable = new Runnable() {
-			@Override
-			public void run() {
-				/**
-				 * Boucle infinie ---tester gameOver() !
-				 */
-				while (true) {
-
-				}
-			}
-		};
-		return runnable;
 	}
 
 
