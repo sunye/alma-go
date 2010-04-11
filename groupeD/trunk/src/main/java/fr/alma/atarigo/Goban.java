@@ -20,12 +20,17 @@ public class Goban {
  public Stone[][] matrice;
  public GroupsList groupsList;
  
+ public int caughtBlack;
+ public int caughtWhite;
+ 
 /**
  * logic constructor
  */
  public Goban(int line, int column) {
 	this.matrice = new Stone[line][column];
 	this.groupsList=new GroupsList();
+	caughtWhite=0;
+	caughtBlack=0;
 	newGame();
  }
  
@@ -36,6 +41,8 @@ public class Goban {
 			 matrice[i][j]=p.matrice[i][j];
 	 groupsList = new GroupsList();
 	 groupsList.gList.addAll(p.groupsList.gList);
+	 caughtBlack=p.caughtBlack;
+	 caughtWhite=p.caughtWhite;
  }
 
  /**
@@ -116,6 +123,7 @@ public class Goban {
 				return Move.INVALID;
 			}
 		}
+		
 		groupsList = newGL;
 		caughtList = this.hasCaught(position,groupsList);
 		if (!caughtList.isEmpty()) {
@@ -131,7 +139,7 @@ public class Goban {
 					return Move.WIN;
 				}
 			}
-			System.out.println(stone.toString()+"has won");
+			System.out.println(stone.toString()+" has won");
 			//return Coup.GAGNANT;
 		}
 	}

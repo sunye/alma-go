@@ -24,18 +24,18 @@ public class Evaluation {
 		if(TRACE)
 			System.out.println(stone+" joue");
 
-		if(isCaught(goban,position,stone))
-			cmpt.evaluation_=VERYGOOD;
-		else{
-			if(underNGroups(goban,stone,6)){
-				if(commonBorder(goban,position,stone))
-					cmpt.evaluation_=GOOD;
-				else
-					cmpt.evaluation_=PLUS;
+		int hasCaught=hasCaught(goban,position,stone);
+		if(hasCaught==0){
+			int underNGroups = underNGroups(goban,stone,6);
+			if(underNGroups==0){
+				cmpt.evaluation_=PLUS*commonBorder(goban,position,stone);
 			}else{
-				cmpt.evaluation_=MINUS;
+				cmpt.evaluation_=GOOD*underNGroups;
 			}
+		}else{
+			cmpt.evaluation_=VERYGOOD*hasCaught;
 		}
+				
 		
 				
 		//cmpt.evaluation_+=lastLiberty(goban,stone);
@@ -54,27 +54,36 @@ public class Evaluation {
 		
 	}*/
 		
-	static boolean commonBorder(Goban goban, Position position, Stone stone){
+	static int commonBorder(Goban goban, Position position, Stone stone){
 		int cmpt = goban.contact(position,stone.opponent());
-		if(goban.readCell(position)==stone){
-			return cmpt>0 && cmpt<4;
+		if(cmpt>0 && cmpt<4){
+			if(goban.readCell(position)==stone)
+				return 1;
+			else 
+				return -1;
 		}else{
-			return cmpt==0;
+			if(goban.readCell(position)==stone)
+				return -1;
+			else 
+				return 1;
 		}
 	}
 	
-	static boolean isCaught(Goban goban,Position position,Stone stone){
+	static int hasCaught(Goban goban,Position position,Stone stone){
 		Group group = goban.groupsList.getGroup(position);
 		int prises = goban.hasCaught(position, goban.groupsList).totalStones();
 		if(prises>0){
 			if(TRACE)
 				System.out.println("---------------------------------> prise de "+prises+" pions par le joueur "+group.stone.toString()+ " alors que "+stone+" joue");
-			return true;
+			if(goban.readCell(position)==stone)
+				return 1;
+			else
+				return -1;
 		}
-		return false;
+		return 0;
 	}
 	
-	public static boolean underNGroups(Goban goban, Stone stone, int n){
+	static int underNGroups(Goban goban, Stone stone, int n){
 		int cmptBlack=0,cmptWhite=0;
 		
 		for(Group group : goban.groupsList.gList){
@@ -89,16 +98,22 @@ public class Evaluation {
 		
 		if(stone==Stone.BLACK){
 			if(cmptBlack<n){
-				return true;
-			}else{
-				return false;
-			}
+				if(cmptWhite>n)
+					return 1;
+				else
+					return 0;
+			}else
+				return -1;
 		}else{
 			if(cmptWhite<n){
-				return true;
-			}else{
-				return false;
-			}		
+				if(cmptBlack>n)
+					return 1;
+				else
+					return 0;
+			}else
+				return -1;
 		}
+				
+		
 	}
 }
