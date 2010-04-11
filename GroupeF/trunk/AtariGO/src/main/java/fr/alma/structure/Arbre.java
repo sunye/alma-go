@@ -38,13 +38,22 @@ public class Arbre {
 	
 	public Point  remplirArbre(){
 		
+		Point p = null;
 		getCoupsNonJouer();
-		//System.out.println("Nombre de noeuds total : "+compteur);
-		return ajouterTousLesfils(racine, cnj);
+		int prof = getProfMax(cnj);
+		p = ajouterTousLesfils(racine, cnj, prof);
+		System.out.println("Nombre de noeuds total : "+compteur);
 		
+		return p;
 	}
 	
-	
+	/**
+	 * 
+	 * @param nparite
+	 * @param nC
+	 * @param nF
+	 * @return
+	 */
 	public Noeud remValA(int nparite ,Noeud nC,Noeud nF){
 		if(nparite%2==0)
 			if(nC.getNote()>= nF.getNote())
@@ -58,13 +67,19 @@ public class Arbre {
 				return nC;
 			
 	}
-	 
+	private int getProfMax(ArrayList<Pion> liste){
+		
+		return liste.size()-3;
+		
+	}
 	@SuppressWarnings("unchecked")
 	/**
 	 * Méthode qui permet de contruire l'arbe et d'atribué les notes
 	 */
-	private Point ajouterTousLesfils(Noeud noeud, ArrayList<Pion> coups) {
+	private Point ajouterTousLesfils(Noeud noeud, ArrayList<Pion> coups, int prof) {
 		ArrayList<Pion> temp;
+		
+		
 		//--------
 		Noeud nc = new Noeud(new Pion(null));
 			
@@ -81,8 +96,8 @@ public class Arbre {
 			noeud.AjouterFils(n);compteur++;
 			temp.remove(coups.get(i));
 			parit++;
-			if(temp.size()>78){
-				ajouterTousLesfils(n,temp);
+			if(temp.size()>prof){
+				ajouterTousLesfils(n,temp, prof);
 				//------------------------------------
 				if (i==0){
 					nc=n;
@@ -94,7 +109,7 @@ public class Arbre {
 				noeud.setNote(nc.getNote());
 				
 			}else {
-				int value = Ia.fonctionEvaluation(getGrilleFromList(cj));
+				int value = 0;//Ia.fonctionEvaluation(getGrilleFromList(cj));
 				n.setNote(value);
 				//System.out.println("Valeur de fonction = "+value);
 				temp = (ArrayList<Pion>) coups.clone();

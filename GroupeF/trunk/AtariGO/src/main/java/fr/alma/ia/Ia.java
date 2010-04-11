@@ -17,21 +17,6 @@ public class Ia {
 	
 	public static ArrayList<Point> voisins=new ArrayList<Point>();
 	
-	public static Point alphaBeta(Arbre a){
-		return new Point();
-		
-	}
-	/**
-	 * Evalue l'arbre en appliquant la fonction d'evaluation a chaque noeud
-	 * @param a Arbre a évalué
-	 * @return L'arbre noté
-	 */
-	/*private Arbre noterArbre(Arbre a){
-		
-		a.racine.setNote(fonctionDevaluation(a.racine));
-		return a;
-		
-	}*/
 	
 	/**
 	 * Construit l'arbre a partir d'une grille
