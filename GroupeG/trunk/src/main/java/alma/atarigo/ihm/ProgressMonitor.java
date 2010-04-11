@@ -1,6 +1,7 @@
 package alma.atarigo.ihm;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collections;
@@ -12,13 +13,14 @@ import java.util.TimerTask;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JToolBar;
 
 import alma.atarigo.IProgressMonitor;
 
 
-public class ProgressMonitor extends JToolBar implements ActionListener,IProgressMonitor {
+public class ProgressMonitor extends JPanel implements ActionListener,IProgressMonitor {
 
 	private static Map<ProgressMonitor,Boolean> cancelStates 
 	= Collections.synchronizedMap(new HashMap<ProgressMonitor, Boolean>());
@@ -40,14 +42,13 @@ public class ProgressMonitor extends JToolBar implements ActionListener,IProgres
 	private long cur = 0;
 
 	public ProgressMonitor(){
-		setVisible(false);
+		//setVisible(false);
 
 		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
-		setRollover(true);
-		setFloatable(false);
+//		setRollover(true);
+//		setFloatable(false);
 
 
-//		progressBar.setMaximumSize(new Dimension(100,40));		
 		progressBar.setStringPainted(true);
 		add(progressBar);
 
@@ -56,23 +57,13 @@ public class ProgressMonitor extends JToolBar implements ActionListener,IProgres
 		abortButton.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		add(abortButton);
 
-//		JPanel mPanel = new JPanel();
-//		mPanel.setLayout(new BoxLayout(mPanel,BoxLayout.X_AXIS));
-//
-//		mPanel.add(progressBar);
-//
-//		abortButton.setBorderPainted(false);
-//		mPanel.add(abortButton);
-//
-//		add(mPanel);
-
 		clear();
 	}
 
 	@Override
 	public void close() {
 		cancelStates.put(this, true);
-		setVisible(false);
+		//setVisible(false);
 	}
 
 	public void clear(){
@@ -111,7 +102,7 @@ public class ProgressMonitor extends JToolBar implements ActionListener,IProgres
 		boolean first = firstStates.get(this);
 		if(first){
 			firstStates.put(this, false);
-			armTimer();
+			//armTimer();
 		}
 
 		int percent = (int)(((double)(100*value))/(max - min));
@@ -137,7 +128,7 @@ public class ProgressMonitor extends JToolBar implements ActionListener,IProgres
 		}
 	}
 
-	private void armTimer(){
+	private void createTimer(){
 		timer.schedule(new TimerTask() {
 
 			@Override

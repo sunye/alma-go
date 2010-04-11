@@ -5,7 +5,7 @@
 
 package alma.atarigo.ia;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +16,6 @@ import alma.atarigo.CellEvent;
 import alma.atarigo.CellPosition;
 import alma.atarigo.GobanModel;
 import alma.atarigo.IProgressMonitor;
-import alma.atarigo.RuleViolationException;
 import alma.atarigo.rule.Capture;
 
 /**
@@ -31,9 +30,7 @@ public class AlphaBeta extends AbstractAlgorithm{
     }
 
     public AlphaBeta(GobanModel goban, CellContent content, int height){
-        this.goban = goban;
-        this.content = content;
-        this.height = height;
+    	setAll(goban, content, height);
     }
 
     /* (non-Javadoc)
@@ -60,11 +57,6 @@ public class AlphaBeta extends AbstractAlgorithm{
 
     class AlgoTask extends AlgorithmWorker{
     	IProgressMonitor monitor;
-    	long alpha = Long.MIN_VALUE;
-    	long beta = Long.MAX_VALUE;
-    	
-    	static final long INF = Long.MAX_VALUE - 10;
-    	static final long _INF = Long.MIN_VALUE + 10;
     	
     	private boolean couldContinue(){
     		return !monitor.isCancelled() && !isCancelled();
@@ -73,171 +65,119 @@ public class AlphaBeta extends AbstractAlgorithm{
         @Override
         protected List<CellPosition> doInBackground(IProgressMonitor monitor){
         	this.monitor = monitor;
-        	//Le resultat
-        	List<CellPosition> result = new ArrayList<CellPosition>();
-        	
-        	//La liste des possibilites
-        	List<CellPosition> choices = getChildrenFor(goban, content);
-
-            //Le moniteur de progress
-        	monitor.setMinimum(1);        	
-        	monitor.setMaximum(akira(choices.size(),height));
-
-        	Long best = INF;
-        	
-        	int size = choices.size();
-            for(int i=0; i<size; ++i){
-                CellPosition position = choices.get(i);
-                long value = _INF;
-                boolean forbidden = false;
-
-                try{
-                    //on test si on gagne directement
-                	Capture.RULE.check(goban,makeEvent(position,content));
-                	//on teste la defense immédiate
-                	Capture.RULE.check(goban,makeEvent(position,content.getEnemy()));                	
-                    GobanModel newState = makeArtificialGoban(goban,position,content);
-                    value = alphabeta(newState,1);
-                }catch(CaptureException e){
-                	value = Long.MAX_VALUE;
-                }catch(RuleViolationException e){
-                	forbidden = true;
-                	value = Long.MIN_VALUE;
-                }
-                
-                
-                if(result.isEmpty()){
-                	best = value;
-                }
-                
-                if(!forbidden && value>best){
-                	best = value;
-                	result.clear();
-                }
-                
-                if(!forbidden && value==best){
-                	result.add(position);
-                }
-                
-                /**
-                 * Coupure alpha             
-                 */
-                alpha = Math.max(alpha, best);
-                
-                monitor.nextValue();
-            }
-        	
-        	return result;
+        	return Collections.singletonList(launch(goban));
         }
 
-        public long alphabeta(GobanModel goban, int depth){
-        	if(depth<height && couldContinue()){
-        		if(depth%2 == 0){
-        			return max(goban,depth);
-        		}else{
-        			return min(goban,depth);
+        static final int MAX_TYPE = 1;
+        static final int MIN_TYPE = 2;
+        
+        public CellPosition launch(GobanModel state){
+        	CellPosition result = null;
+        	long alpha = Long.MIN_VALUE;
+        	long beta = Long.MAX_VALUE;
+        	long val = Long.MIN_VALUE;
+        	
+        	List<CellPosition> children = getChildrenFor(state, content);
+        	
+        	monitor.setMinimum(0);
+        	monitor.setMaximum(akira(children.size(),height));
+        	
+    		for(CellPosition pos : children){    			
+    			if(immediateAction(state,pos,content)){
+    				return pos;
+    			}
+    			
+    			GobanModel childState = makeArtificialGoban(state, pos, content);
+    			long note = alphabeta(childState,alpha,beta,MIN_TYPE,1);
+    			
+    			if(val<=note){
+    				val = note;
+    				result = pos;
+    			}
+    			
+    			/* coupure beta */
+    			if(val>=beta && result!=null){
+    				return result;
+    			}
+    			alpha = Math.max(val, alpha);
+    		}
+        	return result;
+        }
+        
+        public Long alphabeta(GobanModel state,long alpha,long beta,int nodetype,int depth){
+        	Long val = null;
+        	
+        	if(monitor!=null){
+        		monitor.nextValue();
+        	}
+        	
+        	if(depth>=height || !couldContinue()){    		
+        		val = valuation.run(state);
+        	}
+        	else {
+        		switch(nodetype){
+        		case MAX_TYPE:{
+        			val = Long.MIN_VALUE;
+        			for(CellPosition pos : getChildrenFor(state, content)){
+        				if(immediateAction(state,pos,content)){
+        					val = Long.MAX_VALUE;
+        				}
+        				else{
+        					GobanModel childState = makeArtificialGoban(state, pos, content);
+        					val = Math.max(val, alphabeta(childState,alpha,beta,MIN_TYPE,depth+1));
+        				}
+        				/* coupure beta */
+        				if(val>=beta){
+        					return val;
+        				}
+        				alpha = Math.max(val, alpha);
+        			}
+        		}break;
+        		case MIN_TYPE:{
+        			val = Long.MAX_VALUE;
+        			for(CellPosition pos : getChildrenFor(state, content.getEnemy())){
+        				if(immediateAction(state,pos,content.getEnemy())){
+        					val = Long.MIN_VALUE;
+        				}
+        				else{
+            				GobanModel childState = makeArtificialGoban(state, pos, content.getEnemy());
+            				val = Math.min(val, alphabeta(childState,alpha,beta,MAX_TYPE,depth+1));
+        				}
+        				/* coupure alpha */
+        				if(val<=alpha){
+        					return val;
+        				}        				
+        				beta = Math.min(val, beta);
+        			}
+        		}break;
         		}
         	}
         	
-        	monitor.nextValue();
-        	return valuation.run(goban);
+        	return val;
         }
 
-        public long max(GobanModel state, int depth){
-
-        	//La liste des possibilites
-        	long result = _INF;
-        	List<CellPosition> choices = getChildrenFor(state, content);
-        	int size = choices.size();
-        	
-            for(int i=0; i<size; ++i){
-                long value = _INF;
-                boolean forbidden = false;
-
-                CellPosition position = choices.get(i);
-                CellEvent evWin = makeEvent(position,content);
-                CellEvent evLoose = makeEvent(position,content.getEnemy());
-                try{
-                    //on test si on gagne directement
-                	Capture.RULE.check(goban,evWin);
-                	//on teste la defense immédiate
-                	Capture.RULE.check(goban,evLoose);                	
-                    GobanModel newState = makeArtificialGoban(goban,position,content);
-                    value = alphabeta(newState,depth+1);
-                }catch(CaptureException e){
-                	value = Long.MAX_VALUE;
-                }catch(RuleViolationException e){
-                	forbidden = true;
-                	value = Long.MIN_VALUE;
-                }
-
-                if(!forbidden){
-                	result = Math.max(result, value);
-                }
-                
-                /**
-                 * Coupure beta
-                 */
-                if(result>=beta){
-                	return result;
-                }
-                
-                alpha = Math.max(alpha, result);
-                
-                monitor.nextValue();
-            }
-
-            return result;
+        public boolean immediateAction(GobanModel state,CellPosition p,CellContent c){
+			//on teste la attaque immediate ou la defense immediate
+			boolean imAttack = false,imDefense = false;
+			
+			CellEvent evt = makeEvent(p,content);
+			try{
+				Capture.RULE.check(state,evt);
+			}catch(CaptureException ex){
+				imAttack = true;
+			}catch(Throwable ex){    				
+			}
+			
+			evt = makeEvent(p,content.getEnemy());
+			try{
+				Capture.RULE.check(state,evt);
+			}catch(CaptureException ex){
+				imDefense = true;
+			}catch(Throwable ex){    				
+			}
+			
+			return imAttack || imDefense;
         }
-
-        public long min(GobanModel state, int depth){
-
-        	//La liste des possibilites
-        	long result = INF;
-        	List<CellPosition> choices = getChildrenFor(state, content.getEnemy());
-        	int size = choices.size();
-        	
-            for(int i=0; i<size; ++i){
-                long value = INF;
-                boolean forbidden = false;
-
-                CellPosition position = choices.get(i);
-
-                CellEvent evWin = makeEvent(position,content.getEnemy());
-                CellEvent evLoose = makeEvent(position,content);
-                try{
-                    //on test si on gagne directement
-                	Capture.RULE.check(goban,evWin);
-                	//on teste la defense immédiate
-                	Capture.RULE.check(goban,evLoose);                	
-                    GobanModel newState = makeArtificialGoban(goban,position,content.getEnemy());
-                    value = alphabeta(newState,depth+1);
-                }catch(CaptureException e){
-                	value = Long.MAX_VALUE;
-                }catch(RuleViolationException e){
-                	forbidden = true;
-                	value = Long.MAX_VALUE;
-                }
-
-                if(!forbidden){
-                	result = Math.min(result, value);
-                }
-
-                /**
-                 * Coupure alpha
-                 */
-                if(result<=alpha){
-                	return result;
-                }
-                
-                beta = Math.min(beta, result);
-                
-                monitor.nextValue();
-            }
-
-            return result;
-        }
-
         
     }
 
@@ -259,7 +199,8 @@ public class AlphaBeta extends AbstractAlgorithm{
     }
     
     public void kill(){
-    	if(finder!=null){
+    	if(finder!=null){        					
+
     		finder.kill();
     	}
     }
