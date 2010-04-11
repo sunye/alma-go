@@ -1,10 +1,8 @@
 package fr.alma.modele;
 
-import java.util.Enumeration;
-import java.util.Vector;
-
-
-
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 public class GoBan {
 
@@ -13,16 +11,18 @@ public class GoBan {
 	private int nbNoir;
 	private int num=0;
 	private CouleurPion gagnant=CouleurPion.EMPTY;
-	
-
-	//private int[] modifier={1,-1};
+	private HashSet<Groupe> group;
+	private Groupe groupeVide;
+	private static int[] modifier={1,-1};
 	public static int TAILLE_GO_BAN=9;
 
 	public GoBan() {
 		this.goban = new Pion[9][9];
-		this.nbBlanc =0;
-		this.nbNoir = 0;
+		this.group= new HashSet<Groupe>();
+		this.groupeVide=new Groupe(CouleurPion.EMPTY);
+		this.remiseZero();
 	}
+	
 	public Pion[][] getGoban() {
 		return goban;
 	}
@@ -56,373 +56,250 @@ public class GoBan {
 		this.gagnant = gagnant;
 	}
 	
-	public boolean ajouterPion(int position, int positiony){
-		//Si le nombre est pair alors c'est au blanc de jouer
-		if (num%2!=0){
-			//On vérifie si le coup joué est légal avant de placer le pion sur le goban
-			if (estLegal(position, positiony, CouleurPion.BLANC)){
-				goban[position][positiony].setCouleur(CouleurPion.BLANC);
-				goban[position][positiony].setNumero(num);
-				goban[position][positiony].setListeLibertes();
-				apresJoue(position, positiony, CouleurPion.BLANC);
-				nbBlanc++;
-				num++;
-			}
-
-		}else{
-			//On vérifie si le coup joué est légal avant de placer le pion sur le goban
-			if (estLegal(position, positiony, CouleurPion.NOIR)){
-				goban[position][positiony].setCouleur(CouleurPion.NOIR);
-				goban[position][positiony].setNumero(num);
-				goban[position][positiony].setListeLibertes();
-				apresJoue(position, positiony, CouleurPion.NOIR);
-				nbNoir++;
-				num++;
-			}
+	public boolean addPion(int position, int positiony){
+		
+		
+		//FIXME gestion de la prise et du vainqueur
+		CouleurPion coul=num%2!=0?CouleurPion.BLANC:CouleurPion.NOIR;
+		Coordonnee temp=new Coordonnee(position, positiony);
+		if (estLegal(temp, coul)!=TypeCoup.NONVALID){
+			this.ajouterPionleretour(temp, coul);
+			
 		}
+		
+		
 		return true;
 	}
-
 	
-	public boolean ajouterPion(int position, int positiony, CouleurPion coul){
-		boolean result;
-		if(result=estLegal(position, positiony, coul)){
-			goban[position][positiony].setCouleur(coul);
-			goban[position][positiony].setNumero(num);
-			goban[position][positiony].setListeLibertes();
-			apresJoueSansEnlevement(position, positiony, coul);
-			num++;
-			if( coul.equals(CouleurPion.NOIR)){
-			nbNoir++;
-			}else{
-			nbBlanc++;
-			}
-		}
-		return result;
+	public boolean addPion(int position, int positiony, CouleurPion cc){
+		
+		
+		
+		this.ajouterPionleretour(new Coordonnee(position, positiony), cc);
+		return true;
 	}
 	
 	
 	public boolean retirerPion(int position, int positiony, CouleurPion coul){
-		//liste de groupes amis et ennemis
-		Vector<Groupe> listVoisinsAmis = new Vector<Groupe>();
-		Vector<Groupe> listVoisinsEnnemis = new Vector<Groupe>();
-
-		visitVoisinsPion(position, positiony, coul, listVoisinsAmis, listVoisinsEnnemis);
-		//ajouter ce pion en liberté des groupes ennemis
-		Enumeration<Groupe> e = listVoisinsEnnemis.elements();
-		   for(;e.hasMoreElements();) {
-			   Groupe groupeCourant = e.nextElement();
-			   groupeCourant.getLibertes().addElement(goban[position][positiony]);
-		   }
-		//ajouter ce pion en liberté du groupe ami
-		   goban[position][positiony].getGroupe().getLibertes().addElement(goban[position][positiony]);
-		   goban[position][positiony].getGroupe().getPions().removeElement(goban[position][positiony]);
-		//supprimer ce pion
-		   goban[position][positiony].setCouleur(CouleurPion.EMPTY);
-		   goban[position][positiony].setGroupe(null);
-		   goban[position][positiony].setListeLibertes();
+		
+		removePion(goban[position][positiony]);
+		
+		
 		return true;
 	}
 
 
-
-	public boolean estLegal(int position, int positiony, CouleurPion coul) {
-
-		//Vérifie si un pion n'est pas déjà présent à cet endroit
-		if (goban[position][positiony].getCouleur() != CouleurPion.EMPTY){
-			return false;
+	public TypeCoup estLegal(Coordonnee cood, CouleurPion coul) {
+				
+		if( !cood.isValid(GoBan.TAILLE_GO_BAN)){
+			return TypeCoup.NONVALID;
 		}
-
-		// vérifie qu'il reste au moins une liberté au pion joué
-		if (countLiberties(position, positiony) > 0){
-			return true;
-		}
-
-		Vector<Groupe> listVoisinsAmis = new Vector<Groupe>();
-		Vector<Groupe> listVoisinsEnnemis = new Vector<Groupe>();
-
-		// on remplit les 2 vecteurs avec les voisins amis et ennemis
-		
-		visitVoisinsPion(position, positiony, coul, listVoisinsAmis, listVoisinsEnnemis);
-
-
-		/*// vérification de capture
-		System.out.println("Vérif capture");
-		Enumeration<Groupe> ennemis = listVoisinsEnnemis.elements();
-		for (;ennemis.hasMoreElements();) {
-			if (ennemis.nextElement().getLibertes().size() <= 1)
-				System.out.println("Capture!");
-				return true;
-		}*/
-
-
-		// vérification du suicide
-		
-		int libertesGroupe = 0;
-		Enumeration<Groupe> amis = listVoisinsAmis.elements();
-		for (;amis.hasMoreElements();) {
-				libertesGroupe += amis.nextElement().getLibertes().size();
-				libertesGroupe -= 1;
-		}
-
-		if (libertesGroupe > 0){
 			
-			return true;
+		Pion pi=goban[cood.getX()][cood.getY()];
+		
+		if (pi.getCouleur()!=CouleurPion.EMPTY){
+			return TypeCoup.NONVALID;
+		}
+		
+		List<Pion> voisin= getVoisin(pi);
+
+		for (Pion v:voisin){
+			if( v.getCouleur()==CouleurPion.oppose(coul)){
+				if (v.getGroupe().liberty()==1){
+					return TypeCoup.PRISE;
+				}
+			} else if (v.getCouleur()==coul){
+				if( v.getGroupe().liberty()!=1){
+					return TypeCoup.VALID;
+				}
+			}else if (v.getCouleur()==CouleurPion.EMPTY){
+				return TypeCoup.VALID;
+			} 
+		}
+		return TypeCoup.NONVALID;
+	}
+	
+	public void ajouterPionleretour(Coordonnee coord, CouleurPion coul){
+	
+		Pion pi=goban[coord.getX()][coord.getY()];
+		groupeVide.removePion(pi);
+		
+		pi.setCouleur(coul);
+		pi.setGroupe(new Groupe(coul));
+			
+		List<Pion> voisin= getVoisin(pi);
+		
+		
+		
+		for (Pion v:voisin){
+			if( v.getCouleur()== CouleurPion.oppose(pi.getCouleur())){
+				v.getGroupe().removeLiberty(pi.getPosition());
+			}else if(v.getCouleur()== pi.getCouleur()){
+				pi.getGroupe().fusionGroup(v.getGroupe());
+				group.remove(v.getGroupe());
+			}else{
+				pi.getGroupe().addLiberty(v.getPosition());
+			}
+		}
+		
+	
+		
+		group.add(pi.getGroupe());
+		num++;
+	}
+	
+
+	public void removePion(Pion pi){
+		int x=pi.getPosition().getX();
+		int y=pi.getPosition().getY();
+		
+		Pion temp=goban[x][y];
+		
+		goban[x][y] = new Pion(x,y,CouleurPion.EMPTY, 0);
+		goban[x][y].setNumero(-1);
+		goban[x][y].setGroupe(groupeVide);
+		groupeVide.addPion(goban[x][y]);
+		
+		
+		List<Pion> voisin= getVoisin(pi);
+		for (Pion v:voisin){
+			if( v.getCouleur()== CouleurPion.oppose(pi.getCouleur())){
+				v.getGroupe().addLiberty(pi.getPosition());
+			}else if(v.getCouleur()== pi.getCouleur()){
+				Groupe newGroup= new Groupe(v.getCouleur());
+				group.add(newGroup);
+				reformeGroup(newGroup, v);
+			}else{
+				
+			}
+		}
+		
+	
+		
+		if (temp.getGroupe().nbPions()==1){
+			//finaliser ?
 		}else{
-			
-			return false;
+			temp.getGroupe().removePion(temp);
 		}
-	}
-
-	public int countLiberties(int x, int y) {
-		int count = 0;
-
-		if (x > 0){
-			if (goban[x-1][y].getCouleur() == CouleurPion.EMPTY){
-				count++;
-			}
-		}
-
-		if (x < TAILLE_GO_BAN - 1){
-			if (goban[x+1][y].getCouleur() == CouleurPion.EMPTY){
-				count++;
-			}
-		}
-
-		if (y > 0){
-			if (goban[x][y-1].getCouleur()== CouleurPion.EMPTY){
-				count++;
-			}
-		}
-
-		if (y < TAILLE_GO_BAN - 1){
-			if (goban[x][y+1].getCouleur() == CouleurPion.EMPTY){
-				count++;
-			}
-		}
-
-		return count;
-	}
-
-	public void visitVoisinsPion(int position, int positiony, CouleurPion coul, Vector<Groupe> listVoisinsAmis, Vector<Groupe> listVoisinsEnnemis){
-
-		if (position > 0) {
-			int currentX = position - 1;
-			int currentY = positiony;
-			
-			analyseVoisins(position, positiony, coul, currentX, currentY, listVoisinsAmis, listVoisinsEnnemis);
-		}
-
-		if (positiony > 0) {
-			int currentX = position;
-			int currentY = positiony - 1;
-		
-			analyseVoisins(position, positiony, coul, currentX, currentY, listVoisinsAmis, listVoisinsEnnemis);
-		}
-
-		if (position < TAILLE_GO_BAN - 1) {
-			int currentX = position + 1;
-			int currentY = positiony;
-			
-			analyseVoisins(position, positiony, coul, currentX, currentY, listVoisinsAmis, listVoisinsEnnemis);
-		}
-
-		if (positiony < TAILLE_GO_BAN - 1) {
-			int currentX = position;
-			int currentY = positiony + 1;
-			
-			analyseVoisins(position, positiony, coul, currentX, currentY, listVoisinsAmis, listVoisinsEnnemis);
-		}
-	}
-
-	public void analyseVoisins(int position, int positiony, CouleurPion coul, int currentX, int currentY, Vector<Groupe> listVoisinsAmis, Vector<Groupe> listVoisinsEnnemis){
-
-		// si le voisin est libre alors on l'ajoute à la liste des libertés du pion joué
-		// et on enleve le pion joué des libertés du voisins
-		
-		if (goban[currentX][currentY].getCouleur() == CouleurPion.EMPTY){
-			
-			goban[position][positiony].getListeLibertes().addElement(goban[currentX][currentY]);
-			goban[currentX][currentY].getListeLibertes().removeElement(goban[position][positiony]);
-		}
-
-		// si le voisin est un ami, on l'ajoute à la liste d'amis
-		else if (goban[currentX][currentY].getCouleur() == coul){
-			
-			listVoisinsAmis.addElement(goban[currentX][currentY].getGroupe());
-		}
-		// si le voisin est un ennemi, on l'ajoute à la liste d'ennemis
-		else{
-			
-			listVoisinsEnnemis.addElement(goban[currentX][currentY].getGroupe());
-		}
-	}
-
-	// mise à jour des groupes d'amis
-	public void majListeAmis(int position, int positiony, CouleurPion coul, Vector<Groupe> listVoisinsAmis){
-
-		// si aucun ami autour -> création d'un nouveau groupe
-		if (listVoisinsAmis.size() == 0){
-			
-			Groupe nouveauGroupe = new Groupe(goban[position][positiony]);
-			goban[position][positiony].setGroupe(nouveauGroupe);
-		}
-
-		//ajout du pion joué à un groupe
-		else if (listVoisinsAmis.size() == 1){
-			
-			listVoisinsAmis.firstElement().getPions().addElement(goban[position][positiony]);
-			// définition du groupe du pion
-			goban[position][positiony].setGroupe(listVoisinsAmis.firstElement());
-			//les libertés du pions sont ajoutées à celles du groupe
-			listVoisinsAmis.firstElement().getLibertes().addAll(goban[position][positiony].getListeLibertes());
-		}
-		//le pion joué relie plusieurs groupes
-		else{
-			
-			connexionGroupes(position, positiony, coul, listVoisinsAmis);
-		}
-	}
-
-
-	// Connexion entre plusieurs groupes grâce au pion joué
-	public void connexionGroupes(int position, int positiony, CouleurPion coul, Vector<Groupe> listVoisinsAmis){
-
-		// premier groupe
-		Groupe premierGroupe = listVoisinsAmis.firstElement();
-
-		// ajout des autres groupes au premier
-		Enumeration<Groupe> e = listVoisinsAmis.elements();
-		//saute le premier groupe
-		e.nextElement();
-		for (;e.hasMoreElements();){
-
-			Groupe unAutreGroupe = e.nextElement();
-
-			// changement de groupe pour ts les pions de unAutreGroupe
-			Enumeration<Pion> enu = unAutreGroupe.getPions().elements();
-			for (;enu.hasMoreElements();){
-				enu.nextElement().setGroupe(premierGroupe);
-			}
-
-			// ajout des pions et des libertés dans le premier groupe
-			premierGroupe.getLibertes().addAll(unAutreGroupe.getLibertes());
-			premierGroupe.getPions().addAll(unAutreGroupe.getPions());
-
-		}
-
-		// ajout du pion joué à ce premier groupe
-
-		premierGroupe.getPions().addElement(goban[position][positiony]);
-		// définition du groupe du pion
-		goban[position][positiony].setGroupe(premierGroupe);
-		//les libertés du pions sont ajoutées à celles du groupe
-		premierGroupe.getLibertes().addAll(goban[position][positiony].getListeLibertes());
-	}
-
-	// actions une fois le pion joué sur le goban
-	public void apresJoue(int position, int positiony, CouleurPion coul) {
-		
-		// on fait les listes d'amis et d'ennemis
-		Vector<Groupe> listVoisinsAmis = new Vector<Groupe>();
-		Vector<Groupe> listVoisinsEnnemis = new Vector<Groupe>();
-
-
-		visitVoisinsPion(position, positiony, coul, listVoisinsAmis, listVoisinsEnnemis);
-
-		// une fois le pion joué, on le supprime des libertés des groupes voisins
-		enleveLibertesVoisins(position, positiony, coul, listVoisinsAmis, listVoisinsEnnemis);
-
-		// maj des groupes amis
-		majListeAmis(position, positiony, coul, listVoisinsAmis);
-
-		// maj des groupes ennemis (Prises)
-		majListeEnnemis(position, positiony, coul, listVoisinsEnnemis);
+			temp.setGroupe(null);
 	}
 	
-	public void apresJoueSansEnlevement(int position, int positiony, CouleurPion coul) {
+	public List<Coordonnee> calculPionLiberte(Pion pi){
+		LinkedList<Coordonnee> result= new LinkedList<Coordonnee>();
+				
+		List<Pion> voisin= getVoisin(pi);
 		
-		// on fait les listes d'amis et d'ennemis
-		Vector<Groupe> listVoisinsAmis = new Vector<Groupe>();
-		Vector<Groupe> listVoisinsEnnemis = new Vector<Groupe>();
-
-
-		visitVoisinsPion(position, positiony, coul, listVoisinsAmis, listVoisinsEnnemis);
-
-		// une fois le pion joué, on le supprime des libertés des groupes voisins
-		enleveLibertesVoisins(position, positiony, coul, listVoisinsAmis, listVoisinsEnnemis);
-
-		// maj des groupes amis
-		majListeAmis(position, positiony, coul, listVoisinsAmis);
-
-	}
-	
-
-	public void enleveLibertesVoisins(int position, int positiony, CouleurPion coul, Vector<Groupe> listVoisinsAmis, Vector<Groupe> listVoisinsEnnemis) {
-
-		// Pour les amis
-		Enumeration<Groupe> e = listVoisinsAmis.elements();
-		for (;e.hasMoreElements();) {
-			Groupe groupeCourant = e.nextElement();
-			
-			groupeCourant.getLibertes().removeElement(goban[position][positiony]);
-		}
-
-		// Pour les ennemis
-		e = listVoisinsEnnemis.elements();
-		
-		for (;e.hasMoreElements();) {
-			Groupe groupeCourant = e.nextElement();
-			
-			groupeCourant.getLibertes().removeElement(goban[position][positiony]);
-		}
-	}
-
-	// mise à jour des groupes d'ennemis
-	public void majListeEnnemis(int position, int positiony, CouleurPion coul, Vector<Groupe> listVoisinsEnnemis) {
-
-	   Enumeration<Groupe> e = listVoisinsEnnemis.elements();
-	   for(;e.hasMoreElements();) {
-	     Groupe groupeCourant = e.nextElement();
-	     // si un groupe n'a plus de libertés alors il est pris
-	     if (groupeCourant.aucuneLibertes()) {
-	    	 
-	       // tous les pions du groupe pris passe donc dans la couleur EMPTY
-	       Enumeration<Pion> listePions = groupeCourant.getPions().elements();
-	       for(;listePions.hasMoreElements();) {
-	         Pion pionCourant = listePions.nextElement();
-
-	         pionCourant.setCouleur(CouleurPion.EMPTY);
-
-	       }
-	       this.gagnant=groupeCourant.coulOppose(groupeCourant.getCoul());
-	     }
-	   }
-	}
-
-
-
-	public void init(){
-
-		for (int i=0; i<9; i++)
-			for (int k=0; k<9; k++) {
-				goban[i][k] = new Pion(CouleurPion.EMPTY, 0);
+		for (Pion v:voisin){
+			if( v.getCouleur()==CouleurPion.EMPTY){
+				result.add(v.getPosition());
 			}
+		}
+
+		return result;
+	}
+
+	
+	public List<Pion> getVoisin(Pion pi){
+		LinkedList<Pion> listVoisin= new LinkedList<Pion>();
+		int x=pi.getPosition().getX();
+		int y=pi.getPosition().getY();
+				
+		for (int i=0; i<modifier.length;i++){
+			Coordonnee coordtemp=new Coordonnee(x+modifier[i], y);
+			if (coordtemp.isValid(GoBan.TAILLE_GO_BAN)){
+			listVoisin.add(goban[coordtemp.getX()][coordtemp.getY()]);
+			}
+		}
+		for (int i=0; i<modifier.length;i++){
+			Coordonnee coordtemp=new Coordonnee(x, y+modifier[i]);
+			if (coordtemp.isValid(GoBan.TAILLE_GO_BAN)){
+				listVoisin.add(goban[coordtemp.getX()][coordtemp.getY()]);
+			}
+		}
+		
+		return listVoisin;
+		
 	}
 	
+	
+
 	public void remiseZero(){
-
-		for (int i=0; i<9; i++)
+		this.group.clear();
+		groupeVide= new Groupe(CouleurPion.EMPTY);
+		for (int i=0; i<9; i++){
 			for (int k=0; k<9; k++) {
-				goban[i][k] = new Pion(CouleurPion.EMPTY, 0);
+				goban[i][k] = new Pion(i,k,CouleurPion.EMPTY, 0);
 				goban[i][k].setNumero(-1);
-				goban[i][k].setGroupe(null);
-				goban[i][k].setListeLibertes();
+				goban[i][k].setGroupe(groupeVide);
 			}
+		}
 		this.setNbNoir(0);
 		this.setNbBlanc(0);
 		this.setNum(0);
 		this.setGagnant(CouleurPion.EMPTY);
 	}
 
+	
+	private void reformeGroup(Groupe grop, Pion pi){
+		if( pi.getCouleur()==grop.getCoul()){
+			pi.setGroupe(grop);
+			grop.addPion(pi);
+			grop.addLibertys(calculPionLiberte(pi));
+			
+			int x=pi.getPosition().getX();
+			int y=pi.getPosition().getY();
+			Pion avisiter=null;
+			
+			for (int i=0; i<modifier.length;i++){
+					Coordonnee coordtemp=new Coordonnee(x+modifier[i], y);
+					if (coordtemp.isValid(GoBan.TAILLE_GO_BAN)){
+						avisiter=goban[coordtemp.getX()][coordtemp.getY()];
+						reformationGroup(grop, avisiter, modifier[i]*-1, 0);
+					}
+				
+			}
+			for (int i=0; i<modifier.length;i++){
+				Coordonnee coordtemp=new Coordonnee(x, y+modifier[i]);
+				if (coordtemp.isValid(GoBan.TAILLE_GO_BAN)){
+					avisiter=goban[coordtemp.getX()][coordtemp.getY()];
+					reformationGroup(grop, avisiter, 0, modifier[i]*-1);
+				}
+			}
+		}
+	}
+		
+	
+	
+	
+	
+	private void reformationGroup(Groupe grop, Pion pi, int intmodifierx, int intmodifiery){
+		
+		if( pi.getCouleur()==grop.getCoul()){
+			grop.addPion(pi);
+			grop.addLibertys(calculPionLiberte(pi));
+			
+			int x=pi.getPosition().getX();
+			int y=pi.getPosition().getY();
+			Pion avisiter=null;
+			
+			for (int i=0; i<modifier.length;i++){
+				if(intmodifierx!= modifier[i]){
+					Coordonnee coordtemp=new Coordonnee(x+modifier[i], y);
+					if (coordtemp.isValid(GoBan.TAILLE_GO_BAN)){
+						avisiter=goban[coordtemp.getX()][coordtemp.getY()];
+						reformationGroup(grop, avisiter, modifier[i]*-1, 0);
+					}
+				}
+			}
+			for (int i=0; i<modifier.length;i++){
+				if(intmodifiery!= modifier[i]){
+					Coordonnee coordtemp=new Coordonnee(x, y+modifier[i]);
+					if (coordtemp.isValid(GoBan.TAILLE_GO_BAN)){
+						avisiter=goban[coordtemp.getX()][coordtemp.getY()];
+						reformationGroup(grop, avisiter, 0, modifier[i]*-1);
+					}
+				}
+			}
+		}
+	}
 }

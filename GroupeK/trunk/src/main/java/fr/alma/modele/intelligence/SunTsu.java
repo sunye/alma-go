@@ -13,6 +13,7 @@ import fr.alma.modele.Coup;
 import fr.alma.modele.GoBan;
 import fr.alma.modele.Groupe;
 import fr.alma.modele.Pion;
+import fr.alma.modele.TypeCoup;
 import fr.alma.modele.Vide;
 
 
@@ -64,7 +65,7 @@ public class SunTsu {
 		
 		//calcul profondeur en fonction de la difficulté
 		//modulé difficulté par le nombre de pion sur le plateau ?
-		int profondeur= diff.ordinal()+1*3;
+		int profondeur= diff.ordinal()+1*2;
 
 		synchronized (play) {
 			play.setCoordinate(alphaBeta(profondeur,profondeur, null, coul).getPosition());
@@ -86,7 +87,8 @@ public class SunTsu {
 		HashSet<Coordonnee> caseVide=new HashSet<Coordonnee>();
 		HashSet<Groupe> groupeNoir= new HashSet<Groupe>();
 		HashSet<Groupe> groupeBlanc= new HashSet<Groupe>();
-		
+		int scoreBlanc=0;
+		int scoreNoir=0;
 		//on récupère toutes les cases vides
 		//et tous les groupes de pions
 		for(int i=0;i<GoBan.TAILLE_GO_BAN;i++){
@@ -108,7 +110,7 @@ public class SunTsu {
 		 */
 		Iterator<Coordonnee> ite= caseVide.iterator();
 		LinkedList<Vide> groupsVide= new LinkedList<Vide>();
-		
+		/*
 		while (ite.hasNext()){
 			Coordonnee temp= ite.next();
 			if(!matrice[temp.getX()][temp.getY()].isMarque()){
@@ -173,22 +175,23 @@ public class SunTsu {
 		int scoreBlanc=0;
 		int scoreNoir=0;
 		for (Groupe gblanc: groupeBlanc){
-			if( gblanc.nbLibertes()==0){
+			if( gblanc.liberty()==0){
 				scoreBlanc+=-100;
 			}else{
-				scoreBlanc+=-gblanc.nbLibertes()*10;
+				scoreBlanc+=-gblanc.liberty()*10;
 			}
 		}
 		
 		
 		for (Groupe gNoir: groupeNoir){
-			if( gNoir.nbLibertes()==0){
+			if( gNoir.liberty()==0){
 				scoreNoir+=-100;
 			}else{
-				scoreNoir+=-gNoir.nbLibertes()*10;
+				scoreNoir+=-gNoir.liberty()*10;
 			}
 		}
-		
+		*
+		*/
 		 
 		int score=0;
 		if (coul==CouleurPion.BLANC){
@@ -213,8 +216,9 @@ public class SunTsu {
 		Coup result=null;
 		for (int i=0; i<GoBan.TAILLE_GO_BAN; i++){
 			for (int j=0;j<GoBan.TAILLE_GO_BAN;j++){
-				if(situation.estLegal(i, j, ajouer)){
-					situation.ajouterPion(i, j, ajouer);
+				TypeCoup typ=situation.estLegal(new Coordonnee(i, j), ajouer);
+				if(typ==TypeCoup.PRISE||typ==TypeCoup.VALID){
+					situation.addPion(i, j, ajouer);
 					Coup coupActuel= new Coup(i, j,ajouer);
 					if ( profondeur ==1){
 										

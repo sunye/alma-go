@@ -29,7 +29,7 @@ public class Fenetre extends JFrame{
 	public Fenetre(Controler control){
 		super("Le jeu de Go qu'il est bien");
 		setSize(440,490);
-		this.control= control;
+		this.setControl(control);
 		/**
          * Creations des différents outils permettant la mise en place de la barre de menu
          */
@@ -104,6 +104,16 @@ public class Fenetre extends JFrame{
 	
 	public void repaintBoard(){
 		Pan.repaint();
+	}
+
+
+	public void setControl(Controler control) {
+		this.control = control;
+	}
+
+
+	public Controler getControl() {
+		return control;
 	}
 }
 

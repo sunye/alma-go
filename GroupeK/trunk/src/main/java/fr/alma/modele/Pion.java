@@ -1,16 +1,23 @@
 package fr.alma.modele;
 
-import java.util.Vector;
+
 
 public class Pion {
 
 	private CouleurPion couleur;
 	private int numero;
-	private Vector<Pion> listeLibertes;
+	private Coordonnee position;	
 	//Groupe auquel il appartient
 	private Groupe groupe;
 	private boolean marque;
 
+	public Pion(Integer x, Integer y, CouleurPion couleur, int numero) {
+		this.position= new Coordonnee(x, y);
+		this.couleur = couleur;
+		this.numero = numero;
+	
+	}	
+	
 	public boolean isMarque() {
 		return marque;
 	}
@@ -30,9 +37,6 @@ public class Pion {
 		this.numero = numero;
 	}
 
-	public Vector<Pion> getListeLibertes() {
-		return listeLibertes;
-	}
 
 	public Groupe getGroupe() {
 		return this.groupe;
@@ -41,18 +45,19 @@ public class Pion {
 		this.groupe = groupe;
 	}
 
-	public void setListeLibertes() {
-		this.listeLibertes = new Vector<Pion>();
+	public int nbLiberte(){
+		return this.groupe.liberty();
 	}
 
 
-
-	public Pion(CouleurPion couleur, int numero) {
-		this.couleur = couleur;
-		this.numero = numero;
-		this.listeLibertes = new Vector<Pion>();
+	public Coordonnee getPosition() {
+		return position;
+	}
+	public void setPosition(Coordonnee position) {
+		this.position = position;
 	}
 
+	
 
 	
 	

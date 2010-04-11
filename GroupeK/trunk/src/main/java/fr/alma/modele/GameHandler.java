@@ -20,7 +20,6 @@ public class GameHandler {
 		this.mode= ModeJeu.HumanVsHuman;
 		this.ai= new SunTsu();
 		plateau = new GoBan();
-		plateau.init();
 		coulAi=CouleurPion.BLANC;
 		this.control=con;
 	}
@@ -29,25 +28,40 @@ public class GameHandler {
 
 	public boolean ajouterPion(int gobanX, int gobanY){
 			
-		boolean result= plateau.ajouterPion(gobanX,gobanY);
+		boolean result= plateau.addPion(gobanX,gobanY);
 		if (plateau.getGagnant()!=CouleurPion.EMPTY){
 			control.afficheGagnant(plateau.getGagnant());
 		}
 		
 		
 		if (result==true && mode==ModeJeu.AiVsHuman){
-			thinkspace= new Thread() {
-				
-			public void run(){
+		
+			new Thread (){
+				public void run(){
 				control.afficheLoader(true);
+				}
+			}.start();
+			
+			thinkspace= new Thread() {
+			
+			
+			public void run(){
+				
 				ai.prepareNextMove(plateau, coulAi);
+				try {
+					sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			};
 			thinkspace.start();
 		
 			Coordonnee nextAiMove=ai.getPlay();
+			
 			control.afficheLoader(false);
-			plateau.ajouterPion(nextAiMove.getX(), nextAiMove.getY());
+			plateau.addPion(nextAiMove.getX(), nextAiMove.getY());
 			if (plateau.getGagnant()!=CouleurPion.EMPTY){
 				control.afficheGagnant(plateau.getGagnant());
 			}

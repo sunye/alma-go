@@ -20,8 +20,6 @@ public class CoordonneeIA extends Coordonnee {
 	public void setCoordinate(Coordonnee coord){
 		this.setX(coord.getX());
 		this.setY(coord.getY());
-		
-		
 	}
 	
 	
