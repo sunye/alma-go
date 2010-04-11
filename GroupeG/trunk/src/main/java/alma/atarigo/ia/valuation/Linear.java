@@ -103,14 +103,11 @@ public class Linear extends AbstractValuation implements Valuation {
     	coefs.add(0.40);
 
     	valuations.add(new LibertyVal(content));
-    	coefs.add(0.45);
+    	coefs.add(0.15);
 
     	valuations.add(new TerritoryVal(content));
-    	coefs.add(0.10);
+    	coefs.add(0.45);
 
-    	valuations.add(new Random(-2000, 2000));
-    	coefs.add(0.05);
-    
     }
 
     

@@ -84,21 +84,21 @@ public final class PlayerPanel extends JXPanel implements CellMouseListener,Chan
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 //		setOrientation(JToolBar.VERTICAL); 		
 		setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createEmptyBorder(5, 2, 5, 2)
+				BorderFactory.createEmptyBorder(2, 2, 2, 2)
 				,BorderFactory.createLineBorder(Color.red)));
 		//setBackground(view.getBanColor());
-		setMinimumSize(new Dimension(150,100));
-		setMaximumSize(new Dimension(150,480));
+		setMinimumSize(new Dimension(150,400));
+		setMaximumSize(new Dimension(150,400));
 		//setPreferredSize(new Dimension(200,400));
 
 		Icon ic = !isComputer?HUMAN_ICON:IA_ICON;
 		if(ic!=null){
 			identity.setIcon(ic);
 		}
-		identity.setBorder(
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createLoweredBevelBorder(), 
-						BorderFactory.createRaisedBevelBorder()));
+		identity.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+//				BorderFactory.createCompoundBorder(
+//						BorderFactory.createLoweredBevelBorder(), 
+//						BorderFactory.createRaisedBevelBorder()));
 		identity.setVerticalTextPosition(JLabel.BOTTOM);
 		identity.setHorizontalTextPosition(JLabel.CENTER);
 		add(identity);
@@ -163,11 +163,17 @@ public final class PlayerPanel extends JXPanel implements CellMouseListener,Chan
 			level.setSelectedItem(player.getIA().getLevel());
 		}finally{			
 		}
+
+		//Le progress Monitor
+		monitor.setCancelButtonEnabled(false);
+		monitor.setMaximumSize(new Dimension(100,20));
+		add(monitor,BorderLayout.SOUTH);
+		monitor.setAlignmentX(CENTER_ALIGNMENT);
+		monitor.setAlignmentY(BOTTOM_ALIGNMENT);
 		
 		actions.setOrientation(JToolBar.VERTICAL);
 		actions.setFloatable(false);
-		actions.setRollover(true);
-				
+		actions.setRollover(true);				
 		if(!isComputer){			
 			JButton helpButton =GKit.doButton(null, "AIDE", "Aider moi a jouer", this);
 			helpButton.setActionCommand(HELP_COMMAND);
@@ -178,14 +184,9 @@ public final class PlayerPanel extends JXPanel implements CellMouseListener,Chan
 			forceButton.setActionCommand(FORCE_COMMAND);
 			actions.add(forceButton);
 			forceButton.setAlignmentX(CENTER_ALIGNMENT);
-		}
-		
+		}		
 		add(actions,BorderLayout.CENTER);
 		
-		monitor.setCancelButtonEnabled(false);
-		add(monitor,BorderLayout.PAGE_END);
-		monitor.setAlignmentX(CENTER_ALIGNMENT);
-		monitor.setAlignmentY(BOTTOM_ALIGNMENT);
 		
 		view.addCellListener(this);
 	}

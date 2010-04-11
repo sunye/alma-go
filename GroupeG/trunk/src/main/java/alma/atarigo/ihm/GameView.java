@@ -73,7 +73,8 @@ public class GameView extends JXPanel implements CellListener,RuleViolationListe
         
 
         //======= La fenetre
-        setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
+        setLayout(new BorderLayout());
+        //setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
         setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         
         //======= On configure la toolBar
@@ -88,9 +89,9 @@ public class GameView extends JXPanel implements CellListener,RuleViolationListe
         kuroPanel = new PlayerPanel(banPanel,game.getKuro(),"Kuro");
         shiroPanel = new PlayerPanel(banPanel,game.getShiro(),"Shiro");
         
-        add(kuroPanel);
-        add(banPanel);
-        add(shiroPanel);
+        add(kuroPanel,BorderLayout.WEST);
+        add(banPanel,BorderLayout.CENTER);
+        add(shiroPanel,BorderLayout.EAST);
         
         chrono.setStringPainted(true);
         chrono.setString(" GO ");

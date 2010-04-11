@@ -9,6 +9,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Rectangle;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.font.FontRenderContext;
@@ -32,7 +34,7 @@ import alma.atarigo.model.CellImpl;
 import alma.atarigo.model.CellPositionImpl;
 
 
-public class BanPanel extends JXPanel {
+public class BanPanel extends JXPanel implements ComponentListener{
     /**
 	 * 
 	 */
@@ -202,6 +204,8 @@ public class BanPanel extends JXPanel {
      * Le goban a afficher
      */
     GobanModel model;
+    
+    int lwidth=-1,lheight=-1;
 
 	public BanPanel(GobanModel model){
 		this.model = model;
@@ -220,6 +224,9 @@ public class BanPanel extends JXPanel {
         setupBanPainter();
         setupKuroPaint();
         setupShiroPaint();
+        
+        addComponentListener(this);
+        invalidateBan();
 	}
 
 	@Override
@@ -932,5 +939,21 @@ public class BanPanel extends JXPanel {
         }
 
     }
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+	}
     
 }
