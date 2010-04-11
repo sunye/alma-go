@@ -78,8 +78,8 @@ public class Tree {
 	 * Generate all the possible movements from the current Goban and add them as children
 	 * @param stone the color to be played
 	 */
-	public void generateChildren(AtariGo atariGo,Stone stone){
-		for(Goban goban : getGoban().computeMoves(atariGo,stone)){
+	public void generateChildren(AtariGo atariGo,Stone stone,Stone currentPlayer){
+		for(Goban goban : getGoban().computeMoves(atariGo,stone,currentPlayer)){
 			addChild(new Tree(goban));
 		}
 	}
