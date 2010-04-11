@@ -36,9 +36,7 @@ public class NouvellePartieDialog extends JDialog {
 	public NouvellePartieDialog(Fenetre owner, Controler ctrl) {
 		super(owner, "Le choix des options", true);
 
-		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		this.setSize(200,300);
-		this.setResizable(false);
+		
 		
 		cancel = new JButton("Annuler");
 		okButton = new JButton("Ok/Valider");
@@ -72,7 +70,7 @@ public class NouvellePartieDialog extends JDialog {
 		
 		JLabel choixJeu= new JLabel("Choix du mode");
 		JLabel choixObjectif= new JLabel("Choix Objectif de Capture");
-		JLabel choixDifficulteAi= new JLabel("Choix de la difficulté");
+		JLabel choixDifficulteAi= new JLabel("Choix de la difficulté de L'ia");
 		
 		
 		
@@ -105,7 +103,9 @@ public class NouvellePartieDialog extends JDialog {
 		
 		this.cancel.addActionListener(ctrl.getFactory().desAfficheDiagNewGame());
 		this.okButton.addActionListener(ctrl.getFactory().newGameListener());
-		
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		this.setSize(190,295);
+		this.setResizable(false);
 		this.reset();
 	}
 

@@ -34,12 +34,13 @@ public class SunTsu {
 	private GoBan situation;
 	private static int[] modifier={1,-1};
 	private CoordonneeIA play;
+	private HashSet<Coup> coupJouer;
 	
 	
 	public SunTsu(GoBan goier){
 		this.situation=goier;
 		this.diff=Difficulte.Debutant;
-		
+		this.coupJouer= new HashSet<Coup>();
 		play= new CoordonneeIA(0, 0);
 	}
 	
@@ -55,15 +56,15 @@ public class SunTsu {
 	
 	public void prepareNextMove(CouleurPion coulp){
 		this.coul=coulp;
-		
+		coupJouer.clear();
 		//calcul profondeur en fonction de la difficulté
 		//modulé difficulté par le nombre de pion sur le plateau ?
 		int profondeur= diff.ordinal()+1*2;
 
-	
-			play.setCoordinate(alphaBeta(profondeur,profondeur, null, coul).getPosition());
+		
+		play.setCoordinate(alphaBeta(profondeur,profondeur, null, coul).getPosition());
 		//	synchronized (play) {	}
-				
+	
 		play.setTermine(true);
 
 		synchronized (play) {
@@ -90,6 +91,11 @@ public class SunTsu {
 	
 	public void terminerTraitement(){
 		
+		for (Coup cp: coupJouer){
+			situation.retirerPion(cp.getPosition(), cp.getCoulp());
+		}
+		
+		
 		play.setTermine(true);
 		synchronized (play) {
 			play.notify();
@@ -103,10 +109,15 @@ public class SunTsu {
 		for (int i=0; i<GoBan.TAILLE_GO_BAN; i++){
 			for (int j=0;j<GoBan.TAILLE_GO_BAN;j++){
 				Coordonnee coodCoup=new Coordonnee(i, j);
+				Coup coupActuel= new Coup(i, j,ajouer);
 				TypeCoup typ=situation.isMoveAllowed(coodCoup, ajouer);
+				if(typ==TypeCoup.PRISE&&ajouer==this.coul){
+					coupActuel.setNote(-50000);
+					return coupActuel;
+				}
 				if(typ!=TypeCoup.NONVALID){
 					situation.addPion(coodCoup, ajouer);
-					Coup coupActuel= new Coup(i, j,ajouer);
+					coupJouer.add(coupActuel);
 					if ( profondeur ==1){
 										
 						coupActuel.setNote(this.goBanEvaluation());
@@ -115,12 +126,14 @@ public class SunTsu {
 							result= result==null?coupActuel:(result.getNote()<coupActuel.getNote()?result:coupActuel);
 							if ( precedentResult!=null&& precedentResult.getNote() > result.getNote()){
 								situation.retirerPion(coodCoup, ajouer);
+								coupJouer.remove(coupActuel);
 								return result;
 							}
 						}else{
 								result= result==null?coupActuel:(result.getNote()>coupActuel.getNote()?result:coupActuel);
 								if ( precedentResult!=null&& precedentResult.getNote() < result.getNote()){
 									situation.retirerPion(coodCoup, ajouer);
+									coupJouer.remove(coupActuel);
 									return result;
 								}
 						}
@@ -161,6 +174,7 @@ public class SunTsu {
 						
 					}
 					situation.retirerPion(coodCoup, ajouer);
+					coupJouer.remove(coupActuel);
 				}
 			}
 		}
@@ -223,18 +237,26 @@ public class SunTsu {
 		int scoreNoir=0;
 		//on récupère toutes les cases vides
 		//et tous les groupes de pions
-		for(int i=0;i<GoBan.TAILLE_GO_BAN;i++){
-			for(int j=0; j<GoBan.TAILLE_GO_BAN;j++){
-				if( matrice[i][j].getCouleur()==CouleurPion.EMPTY){
-					matrice[i][j].setMarque(false);
-					caseVide.add(new Coordonnee(i, j));
-				}else if(matrice[i][j].getCouleur()==CouleurPion.BLANC){
-					groupeBlanc.add(matrice[i][j].getGroupe());					
-				} else{
-					groupeNoir.add(matrice[i][j].getGroupe());
-				}
-			}
+		
+		
+		for (Pion vide :situation.getGroupeVide().getPions()){
+			vide.setMarque(false);
+			caseVide.add(vide.getPosition());
+			
 		}
+			
+		
+		for (Groupe g: situation.getGroup()){
+			if( g.getCouleur()==CouleurPion.BLANC){
+				groupeBlanc.add(g);
+			}else{
+				groupeNoir.add(g);
+			}
+			
+		}
+		
+		
+		
 		
 		/*
 		 * Parcours du set contenant les cases vides pour constitué des groupes de cases vides
@@ -326,12 +348,12 @@ public class SunTsu {
 		int score=0;
 		if (coul==CouleurPion.BLANC){
 			scoreNoir=scoreNoir*-1;
-			score= scoreBlanc-scoreNoir;//+nbBorgneBlanc*100+nbBorgneNoir*-100+nbOeilBlanc*-50+nbOeilNoir*50+nbYeuxBlanc*-50+nbYeuxNoir*50;
+			score= scoreBlanc-scoreNoir+nbBorgneBlanc*100+nbBorgneNoir*-100+nbOeilBlanc*-50+nbOeilNoir*50+nbYeuxBlanc*-50+nbYeuxNoir*50;
 			
 			
 		}else{
 			scoreBlanc=scoreBlanc*-1;
-			score= scoreBlanc-scoreNoir;//+nbBorgneBlanc*-100+nbBorgneNoir*100+nbOeilBlanc*50+nbOeilNoir*-50+nbYeuxBlanc*50+nbYeuxNoir*-50;
+			score= scoreBlanc-scoreNoir+nbBorgneBlanc*-100+nbBorgneNoir*100+nbOeilBlanc*50+nbOeilNoir*-50+nbYeuxBlanc*50+nbYeuxNoir*-50;
 		}
 		return score;
 	}
