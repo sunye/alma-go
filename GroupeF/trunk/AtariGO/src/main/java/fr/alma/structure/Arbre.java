@@ -25,12 +25,16 @@ public class Arbre {
 	private ArrayList<Pion> cnj;
 	
 	int compteur = 0;
+	
+	//--------------------------
+	private int max ,parit = 1; 
+	//--------------------------
 			
 	public Arbre(Grille grille){
 		this.racine = new Noeud(new Pion(null,new Point(-1,-1)));
 		this.grille = grille;
 		getCoupsJouer();
-		System.out.println("Taille coup jouer : "+cj.size());
+		//System.out.println("Taille coup jouer : "+cj.size());
 		
 	}
 	
@@ -43,7 +47,7 @@ public class Arbre {
 		
 	}
 	
-	public int max ,parit=1; 
+	
 	public Noeud remValA(int nparite ,Noeud nC,Noeud nF){
 		if(nparite%2==0)
 			if(nC.getNote()>= nF.getNote())
@@ -57,7 +61,7 @@ public class Arbre {
 				return nC;
 			
 	}
-	
+	 
 	@SuppressWarnings("unchecked")
 	private Point ajouterTousLesfils(Noeud noeud, ArrayList<Pion> coups) {
 		ArrayList<Pion> temp;
@@ -84,7 +88,7 @@ public class Arbre {
 					nc=n;
 					}
 				else{
-					nc=remValA(parit,nc, n);
+					nc = remValA(parit,nc, n);
 				}
 				
 				noeud.setNote(nc.getNote());
@@ -92,13 +96,13 @@ public class Arbre {
 			}else {
 				int value = Ia.fonctionEvaluation(getGrilleFromList(cj));
 				n.setNote(value);
-				System.out.println("Valeur de fonction = "+value);
+				//System.out.println("Valeur de fonction = "+value);
 				temp = (ArrayList<Pion>) coups.clone();
 				//-------------------------------------
 				if(i==0)
 					nc.setNote(value);
 				else
-					nc=remValA(parit,nc, n);
+					nc = remValA(parit,nc, n);
 			}
 			
 			cj.remove(coups.get(i));
@@ -137,12 +141,13 @@ public class Arbre {
 	 * 
 	 */
 	public void getCoupsJouer(){
-		System.out.println("Appelé");
+		//System.out.println("Appelé");
 		cj = new ArrayList<Pion>();
 		for(int i=0;i<9;i++) 
        	 for(int j=0;j<9;j++) {
        		if(grille.Contenu[i][j].couleur != Couleur.NULL) {cj.add(grille.Contenu[i][j]); 
-       		System.out.println("Coup jouer : "+grille.Contenu[i][j].position);}
+       		//System.out.println("Coup jouer : "+grille.Contenu[i][j].position);
+       		}
        	 }
                 
 		 

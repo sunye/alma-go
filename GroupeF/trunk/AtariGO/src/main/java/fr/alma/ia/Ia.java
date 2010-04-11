@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import fr.alma.jeu.Grille;
 import fr.alma.jeu.Pion;
 import fr.alma.structure.Arbre;
-import fr.alma.structure.Noeud;
 import static fr.alma.jeu.Jeu.getLiberte; 
  
 /**
@@ -15,6 +14,8 @@ import static fr.alma.jeu.Jeu.getLiberte;
  *
  */
 public class Ia {
+	
+	public static ArrayList<Point> voisins=new ArrayList<Point>();
 	
 	public static Point alphaBeta(Arbre a){
 		return new Point();
@@ -38,7 +39,7 @@ public class Ia {
 	 * @return Arbre construit
 	 */
 	
-	public static ArrayList<Point> voisins=new ArrayList<Point>();
+	
 	public static Arbre constuireArbre(Grille grille){
 		
 		Arbre a = new Arbre(grille);
@@ -122,8 +123,6 @@ public class Ia {
 
 	
 	public static void DeterminerVoisins(Grille g,Point p){
-	ArrayList<Point> v=new ArrayList<Point>();
-	
 	if(g.Contenu[p.x][p.y].equal(new Pion(p)))
 		return;
 	else{
@@ -142,7 +141,7 @@ public class Ia {
 	if ((existE(g,p.x,p.y,g.Contenu[p.x][p.y].couleur)))
 		DeterminerVoisins(g,new Point(p.x,p.y+1));
 	}
-	System.out.println(voisins.toString());
+	//System.out.println(voisins.toString());
 	//return voisins;
 	
 	}
@@ -201,8 +200,8 @@ public class Ia {
 	public static int fonctionEvaluation(Grille g){
 		ArrayList<Point> listeGN=determinerGroupesNoir(g);
 		ArrayList<Point> listeGB=determinerGroupesBlanc(g);
-		System.out.println(listeGB.size());
-		System.out.println(listeGN.size());
+		//System.out.println(listeGB.size());
+		//System.out.println(listeGN.size());
 		int minB,minN;
 		if (listeGB.size()==0)
 			minB=0;
@@ -213,9 +212,5 @@ public class Ia {
 		else
 		 minN = determineMin(g, listeGN);
 		return minN-minB;
-	}
-	
-	private void attribuerNote(Noeud n){
-		// déterminer la grille correspondant au noeud n, l'évaluer et mettre dans le noeud la note retournée 
 	}
 }
