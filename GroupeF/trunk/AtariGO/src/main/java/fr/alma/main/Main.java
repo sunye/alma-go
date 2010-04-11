@@ -29,6 +29,8 @@ public class Main {
 		
 		Arbre a = new Arbre(g);
 		
+		
+		
 		long begin = System.currentTimeMillis();
 		a.remplirArbre();
 		long end = System.currentTimeMillis();

@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import fr.alma.ia.Ia;
 import fr.alma.ihm.Ihm.Tour;
 import fr.alma.structure.Arbre;
+import fr.alma.structure.Noeud;
 
 
 /**
@@ -446,7 +447,7 @@ public class Jeu {
 					
 					setVoisins(new ArrayList<Pion>());
 					if (prise){
-						//grille.Contenu[x][y]=pion;
+						grille.Contenu[x][y]=pion;
 						System.out.println("prise");
 						return CAPTURE;
 					}
@@ -516,14 +517,14 @@ public class Jeu {
 				}
 				setVoisins(new ArrayList<Pion>());
 				if (prise){
-					//grille.Contenu[x][y]=pion;
+					grille.Contenu[x][y]=pion;
 					System.out.println("Prise");
 					return CAPTURE;
 				}
 					
 				
 				else{
-					//grille.Contenu[x][y]=pion;
+					grille.Contenu[x][y]=pion;
 					return VALIDE;
 					}
 				}
@@ -551,9 +552,25 @@ public class Jeu {
 		
 			
 		Arbre a = Ia.constuireArbre(g);
-									
-		return a.remplirArbre();
+		Point p=a.remplirArbre();
+		ArrayList<Noeud> listeF=a.racine.listeFils;
+		a.getCoupsJouer();
+		
+		for(Noeud n:listeF){
+			for(Pion pion:a.cj){
+				if((EstVoisin(n.getCoup(),pion))&& (n.getNote()==a.racine.getNote()))
+						p=n.getCoup().position;
+				
+			}
+		}
+		return p;
 	}
+	private static boolean EstVoisin(Pion coup, Pion pion) {
+		// TODO Auto-generated method stub
+		return ((coup.position.x+1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x-1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y+1==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y-1==pion.position.y));
+	}
+
+
 	/**
 	 * Met a jour la grille aprés une capture
 	 * @param g grille a mettre à jour
