@@ -1,7 +1,6 @@
 package fr.alma.runner;
 
 import fr.alma.controler.Controler;
-import fr.alma.ihm.Fenetre;
 
 public class GoierRunner {
 

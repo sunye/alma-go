@@ -4,11 +4,9 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import fr.alma.controler.Controler;
-import fr.alma.modele.CouleurPion;
 import fr.alma.modele.Pion;
 
 public class GobanPanel extends JPanel{
@@ -129,11 +127,7 @@ public class GobanPanel extends JPanel{
 
 
 
-	public void afficheGagnant(CouleurPion coul) {
-		
-		JOptionPane.showMessageDialog(null,"Les "+coul+"S ont gagnés!");
-		
-	}
+
 
 	public int getColSize() {
 		return colSize;

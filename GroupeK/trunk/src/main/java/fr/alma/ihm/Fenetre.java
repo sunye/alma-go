@@ -26,6 +26,7 @@ public class Fenetre extends JFrame{
 	private GobanPanel Pan;
 	private Controler control;
 	
+	
 	public Fenetre(Controler control){
 		super("Le jeu de Go qu'il est bien");
 		setSize(440,490);
@@ -42,10 +43,12 @@ public class Fenetre extends JFrame{
 		nouv=new JMenuItem("Nouvelle partie");
 		quitter=new JMenuItem("Quitter");
 		
-		JMenuItem aienabled=new JMenuItem("Ai enableld");
 		
-		jeu.add(aienabled);
-		aienabled.addActionListener(control.getFactory().modeAi());
+		
+		JMenuItem quikafait= new JMenuItem("QuiKaFait ?");
+		
+		quikafait.addActionListener(control.getFactory().AfficheAPropos());
+		
 		/**
          * Mise en place de la barre de menu
          */
@@ -53,12 +56,15 @@ public class Fenetre extends JFrame{
 		barreMenu.add(jeu);
 		barreMenu.add(a_propos);
 		
+		a_propos.add(quikafait);
+		
+				
 		jeu.add(nouv);
 		jeu.add(quitter);
 	
 		this.setJMenuBar(barreMenu); 
 		
-		nouv.addActionListener(control.getFactory().newGameListener());
+		nouv.addActionListener(control.getFactory().afficheDiagNewGame());
 		quitter.addActionListener(control.getFactory().quitterListener());
 		/**
          * Creation du panel contenant le goban
@@ -84,10 +90,20 @@ public class Fenetre extends JFrame{
 	}
 	
 	
-	public void affichageVainqueur(CouleurPion coul){
-		Pan.afficheGagnant(coul);
+	public void affichageVainqueur(CouleurPion coul) {
+		
+		JOptionPane.showMessageDialog(this,"Les "+coul+"S ont gagnés!");
 		
 	}
+	
+
+	public void affichageMessage(String tttt) {
+		
+		JOptionPane.showMessageDialog(this,tttt);
+		
+	}
+	
+	
 	
 	
 	public void clicPanelGo(MouseEvent e){

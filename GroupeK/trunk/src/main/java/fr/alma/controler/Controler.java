@@ -2,6 +2,7 @@ package fr.alma.controler;
 
 import fr.alma.ihm.Fenetre;
 import fr.alma.ihm.Loadeur;
+import fr.alma.ihm.NouvellePartieDialog;
 import fr.alma.modele.CouleurPion;
 import fr.alma.modele.GameHandler;
 import fr.alma.modele.Pion;
@@ -14,13 +15,14 @@ public class Controler {
 	private Fenetre jeu;
 	private Loadeur chargement;
 	private Thread affichageLoader;
+	private NouvellePartieDialog fenetreNewGame;
 	
 	public Controler(){
 		this.gm= new GameHandler(this);
 		this.factory= new ActionListenerFactory(this);
 		this.jeu= new Fenetre(this);
 		this.chargement= new Loadeur(jeu, this);
-
+		this.fenetreNewGame= new NouvellePartieDialog(jeu, this); 
 	}
 
 	public GameHandler getGm() {
@@ -67,6 +69,18 @@ public class Controler {
 	public void newGame(){
 		gm.remiseZero();
 		jeu.repaintBoard();
+		
+		fenetreNewGame.setVisible(false);
+		if(fenetreNewGame.isAiVsHuman()){		
+			gm.setModeAiVsHuman();
+		}else{
+			gm.setModeHumanVsHuman();
+		}
+		
+		gm.setObjectif(fenetreNewGame.getNbObjectifSelected());
+		gm.setDifficulte(fenetreNewGame.getDifficulte());
+		
+		
 	}
 	
 	public void afficheGagnant(CouleurPion coul){
@@ -101,6 +115,19 @@ public class Controler {
 	
 	public void repaintBoard(){
 		jeu.repaintBoard();
+	}
+
+	public void afficheMessage(String string) {
+		jeu.affichageMessage(string);
+		
+	}
+	
+	public void enableAiChoice(boolean b){
+		this.fenetreNewGame.enableChoiceDifficulte(b);
+	}
+	
+	public void afficheNouvellePartie(boolean b){
+		this.fenetreNewGame.setVisible(b);
 	}
 	
 	
