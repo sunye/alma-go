@@ -13,6 +13,10 @@ package fr.alma;
 
 import static org.junit.Assert.*;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,22 +45,31 @@ public class TestCapture {
 	IPlayer computer = null;
 	IPlayer player = null;
 	Context context;
-	
-	
+
+
 	@Before
 	public void setUp() throws Exception {
-		
-		context = new Context();
-		// Configuration.BLACK, 0
-		ParamGame param = new ParamGame();
-		param.setSizeGoban(9);
-		
-		stateGame = Factory.getStateGame(context);
+		JFrame jf = new JFrame();
+
+		jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		jf.setBounds(100, 100, 300, 360);
+
+
+		Context context = new Context();
+		context.setMainFrame(jf);
+
+		context.setStatusBar(Factory.getStatutBarre());
+
+		jf.setJMenuBar(Factory.getMenuBar(context));
+		jf.add(context.getStatusBar(), BorderLayout.SOUTH);
+
 		GameLoader gl = new GameLoader();
-		gl.load("TestEvaluation-1.txt", context);
+		gl.load("TestEvaluation.txt", context);
+		stateGame = context.getStateGame();
+
 		computer = new Computer("computer", context);
 		player = new Player("adversaire", Configuration.WHITE, null, stateGame);
-		
+
 		//evaluation = new Evaluation(computer, player);
 		ruleManager = Factory.getRuleManager(context);	
 	}
@@ -64,9 +77,10 @@ public class TestCapture {
 	@Test
 	public void testCapture() {
 		FreedomDegrees.showGobanOnConsole(stateGame);
-		emplacement = new Location((short)0, (short)1);
-		StatusCheck status = ruleManager.checkAfter(stateGame, emplacement, computer);
-		assertFalse(status.isGameOver());
+		emplacement = new Location(1, 0);
+		StatusCheck status = ruleManager.checkAfter(stateGame, emplacement, player);
+		//System.out.println(status.isGameOver());
+		assertTrue(status.isGameOver());
 	}
 
 }

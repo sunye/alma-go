@@ -21,8 +21,8 @@ public class StateGame implements IStateGame {
 
 	private Boolean[][] intersection = null;
 	private Context context = null;
-	//private int countLimitComputer = 0;
-	//private int countLimitPlayer = 0;
+	//private int countLimitComputer = 0;   To implement additional option
+	//private int countLimitPlayer = 0;		To implement additional option
 	private int level = 0;
 	
 	
@@ -125,12 +125,12 @@ public class StateGame implements IStateGame {
 		intersection = new Boolean[context.getSizeGoban()][context.getSizeGoban()];
 	}
 
-	/*@Override
+	/*@Override  To implement additional option
 	public int countLimitComputer() {
 		return countLimitComputer;
 	}
 
-	@Override
+	@Override   To implement additional option
 	public int countLimitPlayer() {
 		return countLimitPlayer;
 	}*/

@@ -104,7 +104,6 @@ public class TestAlphaBeta {
 	
 	
 	/**
-	 * @author bruno
 	 * Evaluation function for current test only
 	 */
 	class TestEvaluation implements IEvaluation {

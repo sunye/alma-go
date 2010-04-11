@@ -113,6 +113,7 @@ public class GameLoader {
 
 
 			context.setGoban(Factory.getGoban(context));
+			
 			context.getMainFrame().setContentPane(context.getGoban());
 
 			context.getGoban().revalidate();
