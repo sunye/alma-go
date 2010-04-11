@@ -19,8 +19,7 @@ public class Attack extends AbstractValuation implements Valuation{
 
 
     public Attack(CellContent content){
-        this.content = content;
-        this.name="Attack";
+    	super("Attack",content);
     }
 
     public long run(GobanModel goban) {

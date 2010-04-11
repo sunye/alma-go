@@ -23,9 +23,9 @@ public class Random extends AbstractValuation implements Valuation {
     }
     
     public Random(int lower, int upper){
+    	super("Random",null);
         this.lower = lower;
         this.upper = upper;
-        this.name="Random";
     }
 
     public long run(GobanModel goban) {
@@ -37,11 +37,6 @@ public class Random extends AbstractValuation implements Valuation {
             return lower;
         }
         return (int) (lower-1 + Math.random() * (upper - lower + 1));
-    }
-
-    public String toString(){
-    	String[] yep = getClass().getName().split("\\.");
-    	return yep[yep.length - 1];
     }
 
 }

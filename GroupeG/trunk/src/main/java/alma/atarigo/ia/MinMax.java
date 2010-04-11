@@ -5,17 +5,19 @@
 
 package alma.atarigo.ia;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import alma.atarigo.CellContent;
-import alma.atarigo.CellPosition;
 import alma.atarigo.CaptureException;
+import alma.atarigo.CellContent;
+import alma.atarigo.CellEvent;
+import alma.atarigo.CellPosition;
 import alma.atarigo.GobanModel;
 import alma.atarigo.IProgressMonitor;
 import alma.atarigo.RuleViolationException;
+import alma.atarigo.rule.Capture;
 
 /**
  *
@@ -24,7 +26,6 @@ import alma.atarigo.RuleViolationException;
 public class MinMax extends AbstractAlgorithm{
 
     private AlgoTask finder = null;
-    private int cancelLimit = 10;
 
     public MinMax(){
     }
@@ -35,6 +36,9 @@ public class MinMax extends AbstractAlgorithm{
         this.height = height;
     }
 
+    /* (non-Javadoc)
+     * @see alma.atarigo.ia.Algorithm#run(alma.atarigo.IProgressMonitor)
+     */
     public List<CellPosition> run(IProgressMonitor monitor) {
     	try{
 //            System.out.println("//================================================");
@@ -57,114 +61,157 @@ public class MinMax extends AbstractAlgorithm{
     }
 
     class AlgoTask extends AlgorithmWorker{
-    	int progress;
+    	IProgressMonitor monitor;
+    	
+    	private boolean couldContinue(){
+    		return !monitor.isCancelled() && !isCancelled();
+    	}
     	
         @Override
         protected List<CellPosition> doInBackground(IProgressMonitor monitor){
-
+        	this.monitor = monitor;
+        	//Le resultat
+        	List<CellPosition> result = new ArrayList<CellPosition>();
+        	
         	//La liste des possibilites
-        	List<CellPosition> empties = goban.getEmptyCells();
-            Collections.shuffle(empties);
+        	List<CellPosition> choices = getChildrenFor(goban, content);
 
             //Le moniteur de progress
-        	monitor.setMinimum(0);
+        	monitor.setMinimum(1);        	
+        	monitor.setMaximum(akira(choices.size(),height));
+
+        	Long best = Long.MIN_VALUE;
         	
-//        	double num = factorielle(empties.size());
-//        	double denom = factorielle(empties.size() - height);
-//        	monitor.setMaximum((long)(num/denom));
-        	
-        	monitor.setMaximum(akira(empties.size(),height));
-            
-            return Collections.singletonList(minMax(goban,0,empties,monitor).getSecond());
-        }
-
-        public Pair<Long,CellPosition> minMax(GobanModel goban, int depth,List<CellPosition> empties,IProgressMonitor progressMonitor){
-            if(depth < height){
-                if(depth % 2 == 0){
-//                    if(((ArtificialGoban)goban).getValue() < UP_LIMIT)
-                        return max(goban,depth,empties,progressMonitor);
-                }else{
-//                    if(((ArtificialGoban)goban).getValue() > DOWN_LIMIT){
-                        return min(goban,depth,empties,progressMonitor);
-                    }
-                }
-            return makePair(valuation.run(goban), null);
-        }
-
-        public Pair<Long,CellPosition> min(GobanModel goban, int depth,List<CellPosition> empties,IProgressMonitor progressMonitor){
-            int size = empties.size();
-
-            Pair<Long,CellPosition> pair = null;
-            
-            for(int i=0 ; i<size  && (!progressMonitor.isCancelled() || size-i<=cancelLimit); ++i){
-
-                long value = Long.MAX_VALUE;
-
-                CellPosition position = empties.get(i);
-                GobanModel childGoban = makeArtificialGoban(goban,position,content.getEnemy());
-
-                try{
-                	checkRules(childGoban);
-                	if(progressMonitor.isCancelled()){
-                            value = valuation.run(childGoban);
-                	}else{
-                		value = minMax(childGoban,depth+1,new PartialList<CellPosition>(empties,i),progressMonitor).getFirst();
-                	}
-                }catch(RuleViolationException e){
-                    value = Long.MAX_VALUE;
-                }catch(CaptureException e){
-                    value = valuation.run(childGoban);
-                }
-
-                if(pair==null){
-                    pair = makePair(value,position);
-                }else if(value < pair.getFirst()){
-                    pair.setFirst(value);
-                    pair.setSecond(position);
-                }
-
-                progressMonitor.setProgress(progress++);
-            }
-
-            return pair;
-        }
-
-        public Pair<Long,CellPosition> max(GobanModel goban, int depth,List<CellPosition> empties,IProgressMonitor progressMonitor){
-            int size = empties.size();
-            
-            Pair<Long,CellPosition> pair = null;
-            
-            for(int i=0 ; i<size && (!progressMonitor.isCancelled() || size-i<cancelLimit); ++i){
-
+        	int size = choices.size();
+            for(int i=0; i<size; ++i){
+                CellPosition position = choices.get(i);
                 long value = Long.MIN_VALUE;
+                boolean forbidden = false;
 
-                CellPosition position = empties.get(i);
-                GobanModel childGoban = makeArtificialGoban(goban,position,content.getEnemy());
-
+                CellEvent evWin = makeEvent(position,content);
+                CellEvent evLoose = makeEvent(position,content.getEnemy());
                 try{
-                	checkRules(childGoban);
-                	if(progressMonitor.isCancelled()){
-                            value = valuation.run(childGoban);
-                	}else{
-                		value = minMax(childGoban,depth+1,new PartialList<CellPosition>(empties,i),progressMonitor).getFirst();
-                	}
-                }catch(RuleViolationException e){
-                    value = Long.MIN_VALUE;
+                    //on test si on gagne directement
+                	Capture.RULE.check(goban,evWin);
+                	//on teste la defense immédiate
+                	Capture.RULE.check(goban,evLoose);                	
+                    GobanModel newState = makeArtificialGoban(goban,position,content);
+                    value = value(newState,1);
                 }catch(CaptureException e){
-                    value = valuation.run(childGoban);
-                }
-
-                if(pair==null){
-                    pair = makePair(value,position);
-                }else if(value > pair.getFirst()){
-                    pair.setFirst(value);
-                    pair.setSecond(position);
+                	value = Long.MAX_VALUE;
+                }catch(RuleViolationException e){
+                	forbidden = true;
+                	value = Long.MIN_VALUE;
                 }
                 
-                progressMonitor.setProgress(progress++);
+                
+                if(result.isEmpty()){
+                	best = value;
+                }
+                
+                if(!forbidden && value>best){
+                	best = value;
+                	result.clear();
+                }
+                
+                if(!forbidden && value==best){
+                	result.add(position);
+                }
+                
+                monitor.nextValue();
+            }
+        	
+        	return result;
+        }
+
+        public long value(GobanModel goban, int depth){
+        	if(depth<height && couldContinue()){
+        		if(depth % 2 == 0){
+        			return max(goban,depth);
+        		}else{
+        			return min(goban,depth);
+        		}
+        	}
+        	
+        	monitor.nextValue();
+        	return valuation.run(goban);
+        }
+
+        public long max(GobanModel state, int depth){
+
+        	//La liste des possibilites
+        	long result = Long.MIN_VALUE;
+        	List<CellPosition> choices = getChildrenFor(state, content);
+        	int size = choices.size();
+        	
+            for(int i=0; i<size; ++i){
+                long value = Long.MIN_VALUE;
+                boolean forbidden = false;
+
+                CellPosition position = choices.get(i);
+                CellEvent evWin = makeEvent(position,content);
+                CellEvent evLoose = makeEvent(position,content.getEnemy());
+                try{
+                    //on test si on gagne directement
+                	Capture.RULE.check(goban,evWin);
+                	//on teste la defense immédiate
+                	Capture.RULE.check(goban,evLoose);                	
+                    GobanModel newState = makeArtificialGoban(goban,position,content);
+                    value = value(newState,depth+1);
+                }catch(CaptureException e){
+                	value = Long.MAX_VALUE;
+                }catch(RuleViolationException e){
+                	forbidden = true;
+                	value = Long.MIN_VALUE;
+                }
+
+                if(!forbidden){
+                	result = Math.max(result, value);
+                }
+                
+                monitor.nextValue();
             }
 
-            return pair;
+            return result;
+        }
+
+        public long min(GobanModel state, int depth){
+
+        	//La liste des possibilites
+        	long result = Long.MAX_VALUE;
+        	List<CellPosition> choices = getChildrenFor(state, content.getEnemy());
+        	int size = choices.size();
+        	
+            for(int i=0; i<size; ++i){
+                long value = Long.MAX_VALUE;
+                boolean forbidden = false;
+
+                CellPosition position = choices.get(i);
+
+                CellEvent evWin = makeEvent(position,content.getEnemy());
+                CellEvent evLoose = makeEvent(position,content);
+                try{
+                    //on test si on gagne directement
+                	Capture.RULE.check(goban,evWin);
+                	//on teste la defense immédiate
+                	Capture.RULE.check(goban,evLoose);                	
+                    GobanModel newState = makeArtificialGoban(goban,position,content.getEnemy());
+                    value = value(newState,depth+1);
+                }catch(CaptureException e){
+                	value = Long.MAX_VALUE;
+                }catch(RuleViolationException e){
+                	forbidden = true;
+                	value = Long.MAX_VALUE;
+                }
+
+                if(!forbidden){
+                	result = Math.min(result, value);
+                }
+                
+                monitor.nextValue();
+            }
+
+            return result;
         }
 
         

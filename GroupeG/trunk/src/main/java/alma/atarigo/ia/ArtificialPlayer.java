@@ -13,7 +13,7 @@ import alma.atarigo.Player;
 import alma.atarigo.ihm.Game;
 
 /**
- *
+ * Joueur représentant la machine
  * @author gass-mouy
  */
 public class ArtificialPlayer extends AbstractPlayer implements Player {
@@ -31,8 +31,7 @@ public class ArtificialPlayer extends AbstractPlayer implements Player {
     	}
         try{
         	((Game)owner).getView().enhancePlayerVisibility();
-        	CellPosition p = brain.run(progressMonitor);
-        	return p;
+        	return brain.run(progressMonitor);
         }finally{
         }
     }

@@ -7,8 +7,6 @@ package alma.atarigo.ia.valuation;
 
 import alma.atarigo.CellContent;
 import alma.atarigo.GobanModel;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Valuation principale utilisant une valuation interne cachee
@@ -26,18 +24,12 @@ public class Intelligent extends AbstractValuation implements Valuation {
      * @param content Le content de l'IA
      */
     public Intelligent(CellContent content){
+    	super("Intelligent",content);
         linear = new Linear(content);
-        this.name="Intelligent";
     }    
 
     public long run(GobanModel goban){
-
     	return linear.run(goban);
-    }
-    
-    public String toString(){
-    	String[] yep = getClass().getName().split("\\.");
-    	return yep[yep.length - 1];
     }
     
 }

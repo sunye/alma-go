@@ -36,9 +36,9 @@ public class CellPositionImpl implements CellPosition{
             if(desc.matches(".[1-9]")){
                 this.row = desc.charAt(1) - '1' + 1;
             }else if(desc.matches(".[A-Z]")){
-                this.row = desc.charAt(1) - 'A' +1;
+                this.row = desc.charAt(1) - 'A' + 1;
             }else{
-                this.row = desc.charAt(1) - 'a' +1;
+                this.row = desc.charAt(1) - 'a' + 1;
             }
         }
     }
@@ -56,7 +56,7 @@ public class CellPositionImpl implements CellPosition{
         if(row<=0 || column<=0){
             return "#NAN#";
         }
-        return String.format("%c%d", 'A'+column-1,row);
+        return String.format("%c%c", 'A'+column-1,'9' - row +1);
     }
 
     /**

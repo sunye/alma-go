@@ -22,8 +22,6 @@ public abstract class AbstractRule implements Rule {
 
 
     public void check(GobanModel goban) throws RuleViolationException, CaptureException {
-        
-        
         for(final Cell cell : goban){
             CellEvent event = new CellEvent(){
                 public CellPosition getPosition() { return cell;}
@@ -31,7 +29,6 @@ public abstract class AbstractRule implements Rule {
             };
 
             check(goban, event);
-
         }
     }
 

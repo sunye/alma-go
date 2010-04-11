@@ -12,6 +12,10 @@ import alma.atarigo.GobanModel;
  *
  * @author gass-mouy
  */
+/**
+ * @author steg
+ *
+ */
 public abstract class AbstractValuation implements Valuation {
 
     protected CellContent content;
@@ -27,28 +31,48 @@ public abstract class AbstractValuation implements Valuation {
 	 * Recuperation de la situation de jeu selon un mini algebre:
 	 * Diviser la taille du goban par le nombre de pions joues
 	 */
-	protected static Status GAME_STATUS;
+	private Status gameStatus;
 	
-	protected Status setGameStatus(GobanModel goban){
+	protected AbstractValuation(String name,CellContent content){
+		this.name = name;
+		this.content = content;
+	}
+	
+	protected void updateGameStatus(GobanModel goban){
 		float status =
 			(float)
 				(Math.pow(goban.getSize(),2.) 
 					/ goban.getPositionsFor(content,content.getEnemy()).size());
 		
 		if(status > 3){
-			return Status.Start;
+			gameStatus = Status.Start;
 		}
 		if(status > 1.5 && status <=3){
-			return Status.Middle;
+			gameStatus = Status.Middle;
 		}
 		if(status <= 1.5){
-			return Status.End;
+			gameStatus = Status.End;
 		}
-		return null;
+		
 	}
 	
+	/**
+	 * 
+	 * @return Le status du jeu
+	 */
+	public Status getGameStatus(){
+		return gameStatus;
+	}
+	
+	/* (non-Javadoc)
+	 * @see alma.atarigo.ia.valuation.Valuation#getName()
+	 */
 	public String getName(){
 		return name;
 	}
 
+	public String toString(){
+		return name;
+	}
 }
+

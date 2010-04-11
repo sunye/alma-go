@@ -11,7 +11,7 @@ import alma.atarigo.*;
 
 
 /**
- *
+ * Etat intermédiaire de jeu, pour l'arbre de recherche
  * @author gass-mouy
  */
 public class ArtificialGoban extends AbstractGobanModel implements GobanModel {
@@ -19,7 +19,6 @@ public class ArtificialGoban extends AbstractGobanModel implements GobanModel {
     private GobanModel parent = null;
     private CellPosition position = null;
     private CellContent content;
-//    private int value = 0;
 
     public ArtificialGoban(GobanModel parent, CellPosition position, CellContent content){
         this.parent = parent;
@@ -27,26 +26,6 @@ public class ArtificialGoban extends AbstractGobanModel implements GobanModel {
         this.content = content;
     }
 
-//    public void setValue(int value){
-//        this.value = value;
-//    }
-//
-//    public int getValue(){
-//        return value;
-//    }
-
-//    public CellPosition getCellPosition(){
-//        return position;
-//    }
-
-//    public CellContent getCellContent(){
-//        return content;
-//    }
-
-//    public GobanModel getParent(){
-//        return parent;
-//    }
-    
     @Override
     public void setCellContent(int row, int column, CellContent content) {
         if(row==position.getRow() && column==position.getColumn()){

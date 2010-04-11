@@ -163,7 +163,7 @@ public class ProgressMonitor extends JToolBar implements ActionListener,IProgres
 	}
 
 	@Override
-	public void setNextValue() {
+	public void nextValue() {
 		setProgress(++cur);
 	}
 }

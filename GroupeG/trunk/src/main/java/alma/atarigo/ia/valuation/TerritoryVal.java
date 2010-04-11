@@ -31,16 +31,16 @@ public class TerritoryVal extends AbstractValuation implements Valuation {
      * @param content Le content de l'IA
      */
     public TerritoryVal(CellContent content){
-        this.content = content;
-        this.name="TerritoryVal";
+    	super("TerritoryVal",content);
     }
     
     public TerritoryVal(){
-        this.name="TerritoryVal";
+    	super("TerritoryVal",null);
     }
 
     public long run(GobanModel goban) {
-
+    	updateGameStatus(goban);
+    	
     	//recuperation des territoires
         List<Territory> ia = goban.getTerritories(content)
         				,enemy = goban.getTerritories(content.getEnemy());
@@ -65,7 +65,7 @@ public class TerritoryVal extends AbstractValuation implements Valuation {
    			//si l'enemi a deja tous ses territoires
    			if(enemyHasMax){
    				//et qu'en plus on est au debut de jeu
-   				if(GAME_STATUS.isStart()){
+   				if(getGameStatus().isStart()){
    					//tres mauvaise note
    					return DOWN_LIMIT*sizeEnemy*2;
    				}
@@ -80,7 +80,7 @@ public class TerritoryVal extends AbstractValuation implements Valuation {
    		if(iaHasMax){
    			if(!enemyHasMax){
    				//MAX pour l'IA, pas pour l'enemi et debut de jeu
-   	   			if(GAME_STATUS.isStart()){
+   	   			if(getGameStatus().isStart()){
    	   				//tres bonnee note
    	   				return UP_LIMIT*sizeIA*2;
    	   			}
@@ -101,11 +101,6 @@ public class TerritoryVal extends AbstractValuation implements Valuation {
    	   	return algebre(sizeIA,sizeEnemy);
     }
     
-    public String toString(){
-    	String[] yep = getClass().getName().split("\\.");
-    	return yep[yep.length - 1];
-    }
-
     /**
 	 * Algebre pour definir une note via les tailles des territoires de chaque joueur
      * @param sizeIA Le nombre de territoires de l'IA

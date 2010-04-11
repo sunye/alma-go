@@ -177,7 +177,7 @@ public class GameView extends JXPanel implements CellListener,RuleViolationListe
      * @param e  Evenement de fin de jeu
      */
     public void gameOver(final EndOfGameEvent e) {
-        final String gameOverMsg = "Game Over: "+(game.isKuroTurn()?"Kuro Wins":"Shiro Wins");
+        final String gameOverMsg = "Game Over: "+(e.getWinner()==game.getKuro()?"Kuro Wins":"Shiro Wins");
 
         GobanModel model = game.getGoban();
         
