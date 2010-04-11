@@ -54,8 +54,6 @@ public final class FakeGame extends Game {
 
                     Stone current = new Stone(color, line, column);
 
-                    Logger.getAnonymousLogger().log(Level.INFO, "playing " + current);
-
                     Modif modif = new Modif(line, column, goban.getCase(line, column), color);
                     PlayMove currentMove = new PlayMove();
                     currentMove.addModif(modif);
@@ -81,7 +79,7 @@ public final class FakeGame extends Game {
                     throw new BadPlaceException("This move is a suicide, I cannot let you do that !");
                 }
             } else {
-                throw new BadPlaceException("Already a stone here");
+                throw new BadPlaceException("Already a stone here ("+line+","+column+","+color.toString()+")");
             }
         } else {
             throw new BadPlaceException("It is actually better to play on the board");
@@ -104,7 +102,8 @@ public final class FakeGame extends Game {
                 // Dans ce cas là, on a bouché la dernière libertée,
                 //il faut donc supprimer les pierres du goban, et le groupe du pm.
                 fakeRemoveGroupe(groupe);
-                this.end = true;
+                getFakeCurrentMove().setEnd(true);
+                Logger.getLogger(FakeGame.class.getName()).log(Level.INFO, "Fin du jeu détectée − coup joué : "+getFakeCurrentMove().getPutStone().toString());
             }
         }
     }
@@ -113,6 +112,7 @@ public final class FakeGame extends Game {
 
         PlayMove fakePM = new PlayMove();
 
+        // Removing eah Stone
         for (Stone pion : groupe.getStones()) {
             // Don't forget to register the modification.
             Modif mod = new Modif(pion.getLine(), pion.getColumn(), pion.getCouleur(), PionVal.RIEN);
@@ -121,6 +121,7 @@ public final class FakeGame extends Game {
             goban.setCase(pion.getLine(), pion.getColumn(), PionVal.RIEN);
         }
 
+        // Calculating the liberties of surrounding groups
         Set<Groupe> surroundings = new HashSet<Groupe>();
         for (Stone pion : groupe.getStones()) {
             surroundings.addAll(getSurroundingGroups(pion));
@@ -128,7 +129,9 @@ public final class FakeGame extends Game {
         updateLiberties(surroundings);
 
         getFakeCurrentMove().getGroupes().remove(groupe);
+
         try {
+            // Now, let's revert the removal, to keep the same goban.
             fakePM.revert(goban);
         } catch (BadGobanStateException ex) {
             Logger.getLogger(FakeGame.class.getName()).log(Level.SEVERE, null, ex);
@@ -139,11 +142,11 @@ public final class FakeGame extends Game {
         HashSet<Groupe> groups = new HashSet<Groupe>(4);
         for (Stone pi : pions) {
             Groupe containing = getFakeCurrentMove().getGroupeContaining(pi);
-            if (containing == null) {
-                Logger.getAnonymousLogger().log(Level.WARNING, "containing null, pion : " + pi);
-            } else {
+//            if (containing == null) {
+//                Logger.getAnonymousLogger().log(Level.WARNING, "containing null, pion : " + pi);
+//            } else {
                 groups.add(containing);
-            }
+//            }
         }
         return groups;
     }
@@ -151,7 +154,6 @@ public final class FakeGame extends Game {
     public HashSet<Groupe> fakeGetSurroundingGroups(Stone pion) {
         // Get the (<= 4) neighbours groups of the current stone.
         List<Stone> pions = goban.getVoisins(pion);
-//        Logger.getAnonymousLogger().log(Level.INFO, pions.toString());
         return fakeGetGroupsFromPions(pions);
     }
 
@@ -165,10 +167,10 @@ public final class FakeGame extends Game {
 
         List<Groupe> groupes = getFakeCurrentMove().getGroupes();
 
-        Set<Groupe> groups = fakeGetSurroundingGroups(last);
+        Set<Groupe> surroundingGroups = fakeGetSurroundingGroups(last);
         Set<Groupe> others = new HashSet<Groupe>(4);
 
-        for (Groupe groupe : groups) {
+        for (Groupe groupe : surroundingGroups) {
             if (groupe.getCouleur() == last.getCouleur()) {
                 lastAdded.addAll(groupe);
                 groupes.remove(groupe);
@@ -178,7 +180,6 @@ public final class FakeGame extends Game {
         }
         groupes.add(lastAdded);
         int lib = getGroupLiberties(lastAdded).size();
-        //Logger.getAnonymousLogger().log(Level.INFO, "libertés groupe : "+lib);
         lastAdded.setLibertes(lib);
         return others;
     }

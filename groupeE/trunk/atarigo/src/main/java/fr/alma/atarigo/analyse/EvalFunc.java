@@ -70,6 +70,7 @@ public class EvalFunc {
     }
 
     private static int evaluateGroupsLiberties(Game game, int importance) {
+
         int score = 0;
 
         Groupe minLibMySide = null;
@@ -238,6 +239,10 @@ public class EvalFunc {
     }
 
     static int evaluate(FakeGame tests, PionVal pionVal, boolean beginning) {
+        if(tests.isEnd()){
+            return GAGNE;
+        }
+
         if(beginning){
             if(tests.getCurrentMove().getPutStone().getAfter() == pionVal){
                 return evaluateBeginning(tests);

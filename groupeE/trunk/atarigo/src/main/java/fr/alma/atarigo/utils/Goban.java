@@ -16,7 +16,6 @@ public class Goban {
     private final static int taille = 9;
     // 0 = rien, noir = 1, blanc = 2
     PionVal goban[][];
-    
 
     public static int getTaille() {
         return taille;
@@ -43,8 +42,6 @@ public class Goban {
         return ((ligne < Goban.getTaille()) && (ligne >= 0) && (colonne >= 0) && (colonne < Goban.getTaille()));
     }
 
-    
-
     /**
      * Cette méthode permet de définir la valeur d'un pion. Elle est publique pour le cas où on doit ajouter rapidement des pions dans le goban.
      * Attention toutefois, si on tente de modifier une case en dehors du plateau, rien n'est fait, mais on ne récupère aucune exception.
@@ -53,11 +50,11 @@ public class Goban {
      * @param pion
      */
     public void setCase(int ligne, int colonne, PionVal pion) {
-            goban[ligne][colonne] = pion;
+        goban[ligne][colonne] = pion;
     }
 
     public PionVal getCase(int ligne, int colonne) {
-            return goban[ligne][colonne];
+        return goban[ligne][colonne];
     }
 
     public List<Stone> getVoisins(Stone pion) {
@@ -82,8 +79,7 @@ public class Goban {
         return pions;
     }
 
-
-    public List<Stone> getLibertes(Stone pion){
+    public List<Stone> getLibertes(Stone pion) {
         ArrayList<Stone> pions = new ArrayList<Stone>(4);
 
         if (bonneCoords(pion.getLine() + 1, pion.getColumn()) && (goban[pion.getLine() + 1][pion.getColumn()] == PionVal.RIEN)) {
@@ -110,19 +106,19 @@ public class Goban {
         int col = pion.getColumn();
 
         int libertes = 4;
-        if (!bonneCoords(ligne + 1, col)){
+        if (!bonneCoords(ligne + 1, col)) {
             --libertes;
-        } else if(goban[ligne + 1][col] != PionVal.RIEN) {
+        } else if (goban[ligne + 1][col] != PionVal.RIEN) {
             --libertes;
         }
 
-        if (!bonneCoords(ligne - 1, col))  {
+        if (!bonneCoords(ligne - 1, col)) {
             --libertes;
         } else if ((goban[ligne - 1][col] != PionVal.RIEN)) {
             --libertes;
         }
 
-        if (!bonneCoords(ligne, col + 1))  {
+        if (!bonneCoords(ligne, col + 1)) {
             --libertes;
         } else if (goban[ligne][col + 1] != PionVal.RIEN) {
             --libertes;
@@ -136,14 +132,40 @@ public class Goban {
         return libertes;
     }
 
-    public PionVal[][] getGoban(){
+    public PionVal[][] getGoban() {
         return goban;
     }
 
     @Override
-    public Goban clone(){
+    public Goban clone() {
         Goban autre = new Goban();
         autre.goban = this.goban.clone();
         return autre;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sortie = new StringBuilder();
+        //Affichage du plateau :
+        for (int lin = 0; lin < taille; ++lin) {
+            for (int col = 0; col < taille; ++col) {
+                switch (this.getCase(lin, col)) {
+                    case NOIR:
+                        sortie.append('N');
+                        break;
+                    case BLANC:
+                        sortie.append('B');
+                        break;
+                    case RIEN:
+                        sortie.append('+');
+                        break;
+                    default:
+                        sortie.append('+');
+                }
+            }
+            sortie.append('\n');
+        }
+
+        return sortie.toString();
     }
 }
