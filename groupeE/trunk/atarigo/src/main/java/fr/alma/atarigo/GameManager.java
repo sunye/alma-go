@@ -42,7 +42,7 @@ public class GameManager {
         init();
         this.onePlayerGame = Boolean.TRUE;
         gobanPanel.startGame(this, this.game);
-        if (couleur == PionVal.NOIR) {
+        if (couleur == PionVal.BLANC) {
             coupIA();
         }
     }
@@ -59,8 +59,8 @@ public class GameManager {
 
     public void appliqueCoup(int lin, int col) {
         if (game.playAt(lin, col)){
+            gobanPanel.repaint();
             if(this.onePlayerGame){
-                repaint();
                 coupIA();
             }
         }
