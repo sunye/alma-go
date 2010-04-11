@@ -40,10 +40,7 @@ public class Controler {
 		gm.remiseZero();
 	}
 	
-	public CouleurPion getGagnant(){
-		return gm.getGagnant();
-	}
-	
+
 	
 	public int tailleMatrice(){
 		return gm.tailleMatrice();
@@ -78,7 +75,6 @@ public class Controler {
 
 	public void clicBoard(int x, int y) {
 		ajouterPion(x/jeu.getColSize(), y/jeu.getRowSize())	;	
-		jeu.repaintBoard();
 		
 		
 	}
@@ -102,5 +98,10 @@ public class Controler {
 			chargement.setVisible(false);
 		}
 	}
+	
+	public void repaintBoard(){
+		jeu.repaintBoard();
+	}
+	
 	
 }

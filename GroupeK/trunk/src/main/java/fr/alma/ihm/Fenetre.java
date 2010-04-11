@@ -80,6 +80,7 @@ public class Fenetre extends JFrame{
 	     */
 		
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
+	    this.setResizable(false);    
 	}
 	
 	

@@ -23,6 +23,11 @@ public class Coordonnee {
 	public boolean isValid(int max){
 		return x>=0&&y>=0&&x<max&&y<max;
 	}
+	@Override
+	public String toString() {
+		
+		return "x:"+x+" y:"+y;
+	}
 	
 	
 	

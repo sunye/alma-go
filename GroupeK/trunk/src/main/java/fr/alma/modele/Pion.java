@@ -16,49 +16,47 @@ public class Pion {
 		this.couleur = couleur;
 		this.numero = numero;
 	
-	}	
-	
-	public boolean isMarque() {
-		return marque;
 	}
-	public void setMarque(boolean marque) {
-		this.marque = marque;
-	}
+
 	public CouleurPion getCouleur() {
 		return couleur;
 	}
+
 	public void setCouleur(CouleurPion couleur) {
 		this.couleur = couleur;
 	}
+
 	public int getNumero() {
 		return numero;
 	}
+
 	public void setNumero(int numero) {
 		this.numero = numero;
 	}
 
-
-	public Groupe getGroupe() {
-		return this.groupe;
-	}
-	public void setGroupe(Groupe groupe) {
-		this.groupe = groupe;
-	}
-
-	public int nbLiberte(){
-		return this.groupe.liberty();
-	}
-
-
 	public Coordonnee getPosition() {
 		return position;
 	}
+
 	public void setPosition(Coordonnee position) {
 		this.position = position;
 	}
 
-	
+	public Groupe getGroupe() {
+		return groupe;
+	}
 
+	public void setGroupe(Groupe groupe) {
+		this.groupe = groupe;
+	}
+
+	public boolean isMarque() {
+		return marque;
+	}
+
+	public void setMarque(boolean marque) {
+		this.marque = marque;
+	}	
 	
 	
 	

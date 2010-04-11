@@ -1,4 +1,4 @@
-	package fr.alma.modele.intelligence;
+package fr.alma.modele.intelligence;
 
 
 import java.util.HashMap;
@@ -26,6 +26,9 @@ import fr.alma.modele.Vide;
  */
 public class SunTsu {
 
+	/**
+	 * The actual color for the AI
+	 */
 	private CouleurPion coul;
 	private Difficulte diff;
 	private GoBan situation;
@@ -33,12 +36,8 @@ public class SunTsu {
 	private CoordonneeIA play;
 	
 	
-	
-	
-	
-	
-	public SunTsu(){
-		this.situation=new GoBan();
+	public SunTsu(GoBan goier){
+		this.situation=goier;
 		this.diff=Difficulte.Debutant;
 		
 		play= new CoordonneeIA(0, 0);
@@ -54,171 +53,59 @@ public class SunTsu {
 	
 	
 	
-	public void prepareNextMove(GoBan actuel, CouleurPion coulp){
-		//recopie du goban actuel
-				
-		
-		situation.setGoban(actuel.getGoban());
-	
-		
+	public void prepareNextMove(CouleurPion coulp){
 		this.coul=coulp;
 		
 		//calcul profondeur en fonction de la difficulté
 		//modulé difficulté par le nombre de pion sur le plateau ?
 		int profondeur= diff.ordinal()+1*2;
 
-		synchronized (play) {
-			play.setCoordinate(alphaBeta(profondeur,profondeur, null, coul).getPosition());
-		}
-		
-		
-		play.setTermine(true);
-			
 	
-		
+			play.setCoordinate(alphaBeta(profondeur,profondeur, null, coul).getPosition());
+		//	synchronized (play) {	}
+				
+		play.setTermine(true);
+
 		synchronized (play) {
 			play.notify();
 		} 
 		
 	}
 	
-	private Integer goBanEvaluation(){
-		Pion[][] matrice= situation.getGoban();
-		HashSet<Coordonnee> caseVide=new HashSet<Coordonnee>();
-		HashSet<Groupe> groupeNoir= new HashSet<Groupe>();
-		HashSet<Groupe> groupeBlanc= new HashSet<Groupe>();
-		int scoreBlanc=0;
-		int scoreNoir=0;
-		//on récupère toutes les cases vides
-		//et tous les groupes de pions
-		for(int i=0;i<GoBan.TAILLE_GO_BAN;i++){
-			for(int j=0; j<GoBan.TAILLE_GO_BAN;j++){
-				if( matrice[i][j].getCouleur()==CouleurPion.EMPTY){
-					matrice[i][j].setMarque(false);
-					caseVide.add(new Coordonnee(i, j));
-				}else if(matrice[i][j].getCouleur()==CouleurPion.BLANC){
-					groupeBlanc.add(matrice[i][j].getGroupe());					
-				} else{
-					groupeNoir.add(matrice[i][j].getGroupe());
-				}
-			}
-		}
-		
-		/*
-		 * Parcours du set contenant les cases vides pour constitué des groupes de cases vides
-		 * pour pouvoir calculer les yeux etc.
-		 */
-		Iterator<Coordonnee> ite= caseVide.iterator();
-		LinkedList<Vide> groupsVide= new LinkedList<Vide>();
-		/*
-		while (ite.hasNext()){
-			Coordonnee temp= ite.next();
-			if(!matrice[temp.getX()][temp.getY()].isMarque()){
-				groupsVide.add(backtrackingEmptyCell(matrice, new Vide(), temp));
-			}
-		}
-		
-		
-		HashMap<Vide, Integer> mapScoreOeilBlanc= new HashMap<Vide, Integer>();
-		HashMap<Vide, Integer> mapScoreOeilNoir= new HashMap<Vide, Integer>();
-		
-		int nbYeuxNoir=0;
-		int nbOeilNoir=0;
-		int nbBorgneNoir=0;
-		int nbYeuxBlanc=0;
-		int nbOeilBlanc=0;
-		int nbBorgneBlanc=0;
-		
-		Iterator<Vide> emptyIterator= groupsVide.iterator();
-		while (ite.hasNext()){
-			Vide emptTemp=emptyIterator.next();
-			if (emptTemp.getGroupeVoisin().size()==1){
-				if (((Groupe) emptTemp.getGroupeVoisin().toArray()[0]).getCoul()==CouleurPion.NOIR){
-					mapScoreOeilNoir.put(emptTemp,mapScoreOeilNoir.containsKey(emptTemp)?mapScoreOeilNoir.get(emptTemp)+1:new Integer(1) );											
-				}else{
-					mapScoreOeilBlanc.put(emptTemp,mapScoreOeilBlanc.containsKey(emptTemp)?mapScoreOeilBlanc.get(emptTemp)+1:new Integer(1) );
-				}
-			}			
-		}
-		
-		
-		Iterator<Vide> iterVideNoir=mapScoreOeilNoir.keySet().iterator();
-		Iterator<Vide> iterVideBlanc=mapScoreOeilBlanc.keySet().iterator();
-		Vide tempiter=null;
-		while (iterVideNoir.hasNext()){
-			tempiter=iterVideNoir.next();
-			if( mapScoreOeilNoir.get(tempiter)==1){
-				if (tempiter.getPionVides().size()==1){
-					nbBorgneNoir++;
-				}else{
-					nbOeilNoir++;
-				}
-				
-			}else{
-				nbYeuxNoir++;
-			}
-		}
-		while (iterVideBlanc.hasNext()){
-			tempiter=iterVideBlanc.next();
-			if( mapScoreOeilBlanc.get(tempiter)==1){
-				if (tempiter.getPionVides().size()==1){
-					nbBorgneBlanc++;
-				}else{
-					nbOeilBlanc++;
-				}
-				
-			}else{
-				nbYeuxBlanc++;
-			}
-		}
-		
-		int scoreBlanc=0;
-		int scoreNoir=0;
-		for (Groupe gblanc: groupeBlanc){
-			if( gblanc.liberty()==0){
-				scoreBlanc+=-100;
-			}else{
-				scoreBlanc+=-gblanc.liberty()*10;
-			}
-		}
-		
-		
-		for (Groupe gNoir: groupeNoir){
-			if( gNoir.liberty()==0){
-				scoreNoir+=-100;
-			}else{
-				scoreNoir+=-gNoir.liberty()*10;
-			}
-		}
-		*
-		*/
-		 
-		int score=0;
-		if (coul==CouleurPion.BLANC){
-			scoreNoir=scoreNoir*-1;
-			score= scoreBlanc-scoreNoir;//+nbBorgneBlanc*100+nbBorgneNoir*-100+nbOeilBlanc*-50+nbOeilNoir*50+nbYeuxBlanc*-50+nbYeuxNoir*50;
+	public Coordonnee getPlay() {
+		synchronized (play) {
 			
-			
-		}else{
-			scoreBlanc=scoreBlanc*-1;
-			score= scoreBlanc-scoreNoir;//+nbBorgneBlanc*-100+nbBorgneNoir*100+nbOeilBlanc*50+nbOeilNoir*-50+nbYeuxBlanc*50+nbYeuxNoir*-50;
+			if (!play.isTermine()) {
+				try {
+					play.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			Coordonnee result= new Coordonnee(play.getX(), play.getY());
+			play.setTermine(false);
+			return result;
 		}
-		return score;
+	}
+	
+	public void terminerTraitement(){
+		
+		play.setTermine(true);
+		synchronized (play) {
+			play.notify();
+		} 
+		play.setTermine(false);
 	}
 
-
-	
-	
-	
-	
 	private Coup alphaBeta(int profondeurmarx, int profondeur, Coup precedentResult, CouleurPion ajouer){
 		Coup temporaire=null;
 		Coup result=null;
 		for (int i=0; i<GoBan.TAILLE_GO_BAN; i++){
 			for (int j=0;j<GoBan.TAILLE_GO_BAN;j++){
-				TypeCoup typ=situation.estLegal(new Coordonnee(i, j), ajouer);
-				if(typ==TypeCoup.PRISE||typ==TypeCoup.VALID){
-					situation.addPion(i, j, ajouer);
+				Coordonnee coodCoup=new Coordonnee(i, j);
+				TypeCoup typ=situation.isMoveAllowed(coodCoup, ajouer);
+				if(typ!=TypeCoup.NONVALID){
+					situation.addPion(coodCoup, ajouer);
 					Coup coupActuel= new Coup(i, j,ajouer);
 					if ( profondeur ==1){
 										
@@ -227,13 +114,13 @@ public class SunTsu {
 						if (coul==ajouer){
 							result= result==null?coupActuel:(result.getNote()<coupActuel.getNote()?result:coupActuel);
 							if ( precedentResult!=null&& precedentResult.getNote() > result.getNote()){
-								situation.retirerPion(i, j, ajouer);
+								situation.retirerPion(coodCoup, ajouer);
 								return result;
 							}
 						}else{
 								result= result==null?coupActuel:(result.getNote()>coupActuel.getNote()?result:coupActuel);
 								if ( precedentResult!=null&& precedentResult.getNote() < result.getNote()){
-									situation.retirerPion(i, j, ajouer);
+									situation.retirerPion(coodCoup, ajouer);
 									return result;
 								}
 						}
@@ -273,15 +160,13 @@ public class SunTsu {
 					
 						
 					}
-					situation.retirerPion(i, j, ajouer);
+					situation.retirerPion(coodCoup, ajouer);
 				}
 			}
 		}
 		return result;
 	}
 
-	
-	
 	/*
 	 * 
 	 * Borgne:
@@ -295,7 +180,7 @@ public class SunTsu {
 	 * yeux: 
 	 * plusieurs groupe de vide différent entouré par un seul et même groupe
 	 */
-
+	
 	
 	
 	/**
@@ -329,36 +214,126 @@ public class SunTsu {
 		return groupVide;
 	}
 
-	public Coordonnee getPlay() {
-		synchronized (play) {
-			
-			if (!play.isTermine()) {
-				try {
-					play.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+	private Integer goBanEvaluation(){
+		Pion[][] matrice= situation.getGoban();
+		HashSet<Coordonnee> caseVide=new HashSet<Coordonnee>();
+		HashSet<Groupe> groupeNoir= new HashSet<Groupe>();
+		HashSet<Groupe> groupeBlanc= new HashSet<Groupe>();
+		int scoreBlanc=0;
+		int scoreNoir=0;
+		//on récupère toutes les cases vides
+		//et tous les groupes de pions
+		for(int i=0;i<GoBan.TAILLE_GO_BAN;i++){
+			for(int j=0; j<GoBan.TAILLE_GO_BAN;j++){
+				if( matrice[i][j].getCouleur()==CouleurPion.EMPTY){
+					matrice[i][j].setMarque(false);
+					caseVide.add(new Coordonnee(i, j));
+				}else if(matrice[i][j].getCouleur()==CouleurPion.BLANC){
+					groupeBlanc.add(matrice[i][j].getGroupe());					
+				} else{
+					groupeNoir.add(matrice[i][j].getGroupe());
 				}
-
 			}
-		
-			Coordonnee result= new Coordonnee(play.getX(), play.getY());
-			play.setTermine(false);
-			return result;
-		
 		}
-	}
-	
-	public void terminerTraitement(){
 		
-		play.setTermine(true);
+		/*
+		 * Parcours du set contenant les cases vides pour constitué des groupes de cases vides
+		 * pour pouvoir calculer les yeux etc.
+		 */
+		Iterator<Coordonnee> ite= caseVide.iterator();
+		LinkedList<Vide> groupsVide= new LinkedList<Vide>();
+		
+		while (ite.hasNext()){
+			Coordonnee temp= ite.next();
+			if(!matrice[temp.getX()][temp.getY()].isMarque()){
+				groupsVide.add(backtrackingEmptyCell(matrice, new Vide(), temp));
+			}
+		}
+		
+		
+		HashMap<Vide, Integer> mapScoreOeilBlanc= new HashMap<Vide, Integer>();
+		HashMap<Vide, Integer> mapScoreOeilNoir= new HashMap<Vide, Integer>();
+		
+		int nbYeuxNoir=0;
+		int nbOeilNoir=0;
+		int nbBorgneNoir=0;
+		int nbYeuxBlanc=0;
+		int nbOeilBlanc=0;
+		int nbBorgneBlanc=0;
+		
+		Iterator<Vide> emptyIterator= groupsVide.iterator();
+		while (ite.hasNext()){
+			Vide emptTemp=emptyIterator.next();
+			if (emptTemp.getGroupeVoisin().size()==1){
+				if (((Groupe) emptTemp.getGroupeVoisin().toArray()[0]).getCouleur()==CouleurPion.NOIR){
+					mapScoreOeilNoir.put(emptTemp,mapScoreOeilNoir.containsKey(emptTemp)?mapScoreOeilNoir.get(emptTemp)+1:new Integer(1) );											
+				}else{
+					mapScoreOeilBlanc.put(emptTemp,mapScoreOeilBlanc.containsKey(emptTemp)?mapScoreOeilBlanc.get(emptTemp)+1:new Integer(1) );
+				}
+			}			
+		}
+		
+		
+		Iterator<Vide> iterVideNoir=mapScoreOeilNoir.keySet().iterator();
+		Iterator<Vide> iterVideBlanc=mapScoreOeilBlanc.keySet().iterator();
+		Vide tempiter=null;
+		while (iterVideNoir.hasNext()){
+			tempiter=iterVideNoir.next();
+			if( mapScoreOeilNoir.get(tempiter)==1){
+				if (tempiter.getPionVides().size()==1){
+					nbBorgneNoir++;
+				}else{
+					nbOeilNoir++;
+				}
+				
+			}else{
+				nbYeuxNoir++;
+			}
+		}
+		while (iterVideBlanc.hasNext()){
+			tempiter=iterVideBlanc.next();
+			if( mapScoreOeilBlanc.get(tempiter)==1){
+				if (tempiter.getPionVides().size()==1){
+					nbBorgneBlanc++;
+				}else{
+					nbOeilBlanc++;
+				}
+				
+			}else{
+				nbYeuxBlanc++;
+			}
+		}
+		
+	
+		for (Groupe gblanc: groupeBlanc){
+			if( gblanc.getNbLiberty()==0){
+				scoreBlanc+=-100;
+			}else{
+				scoreBlanc+=-gblanc.getNbLiberty()*10;
+			}
+		}
+		
+		
+		for (Groupe gNoir: groupeNoir){
+			if( gNoir.getNbLiberty()==0){
+				scoreNoir+=-100;
+			}else{
+				scoreNoir+=-gNoir.getNbLiberty()*10;
+			}
+		}
+	
+		 
+		int score=0;
+		if (coul==CouleurPion.BLANC){
+			scoreNoir=scoreNoir*-1;
+			score= scoreBlanc-scoreNoir;//+nbBorgneBlanc*100+nbBorgneNoir*-100+nbOeilBlanc*-50+nbOeilNoir*50+nbYeuxBlanc*-50+nbYeuxNoir*50;
 			
-	
-		
-		synchronized (play) {
-			play.notify();
-		} 
-		play.setTermine(false);
-		
+			
+		}else{
+			scoreBlanc=scoreBlanc*-1;
+			score= scoreBlanc-scoreNoir;//+nbBorgneBlanc*-100+nbBorgneNoir*100+nbOeilBlanc*50+nbOeilNoir*-50+nbYeuxBlanc*50+nbYeuxNoir*-50;
+		}
+		return score;
 	}
 	
 	

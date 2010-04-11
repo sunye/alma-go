@@ -1,7 +1,6 @@
 package fr.alma.ihm;
 
 import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
@@ -10,8 +9,6 @@ import javax.swing.JPanel;
 
 import fr.alma.controler.Controler;
 import fr.alma.modele.CouleurPion;
-import fr.alma.modele.GameHandler;
-import fr.alma.modele.GoBan;
 import fr.alma.modele.Pion;
 
 public class GobanPanel extends JPanel{
@@ -132,7 +129,7 @@ public class GobanPanel extends JPanel{
 
 
 
-	public static void afficheGagnant(CouleurPion coul) {
+	public void afficheGagnant(CouleurPion coul) {
 		
 		JOptionPane.showMessageDialog(null,"Les "+coul+"S ont gagnés!");
 		
