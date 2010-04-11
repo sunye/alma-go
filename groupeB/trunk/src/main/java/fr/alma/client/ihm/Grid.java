@@ -13,14 +13,8 @@ package fr.alma.client.ihm;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.imageio.ImageIO;
-
 import fr.alma.client.action.Context;
+import fr.alma.common.ui.Tools;
 
 
 /**
@@ -69,21 +63,8 @@ public class Grid {
 		if (arrayImage[indice-1] == null) {
 		
 			String imageFileName = "image/empty" + indice + ".png";
-			URL imageSrc = null;
-			try {
-				imageSrc = ((new File(imageFileName)).toURI()).toURL();
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
-			BufferedImage image = null;
-			try {
-				image = ImageIO.read(imageSrc);
+			BufferedImage image = Tools.getImage(context.getGoban().getClass(), imageFileName);
 
-			} catch (IOException e) {
-				System.out.println("Image could not be read");
-				System.exit(1);
-			}
 			arrayImage[indice-1] = image;
 		}
 		return arrayImage[indice-1];
