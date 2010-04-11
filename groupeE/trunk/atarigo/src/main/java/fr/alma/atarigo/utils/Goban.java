@@ -146,26 +146,42 @@ public class Goban {
     @Override
     public String toString() {
         StringBuilder sortie = new StringBuilder();
+        sortie.append("Goban :\n");
         //Affichage du plateau :
+//        for (int i = 0; i < taille; ++i) {
+//            sortie.append('-');
+//        }
+
+        sortie.append("\n");
         for (int lin = 0; lin < taille; ++lin) {
             for (int col = 0; col < taille; ++col) {
                 switch (this.getCase(lin, col)) {
                     case NOIR:
-                        sortie.append('N');
+                        sortie.append("—B−");
                         break;
                     case BLANC:
-                        sortie.append('B');
+                        sortie.append("—W−");
                         break;
                     case RIEN:
-                        sortie.append('+');
+                        sortie.append("—+−");
                         break;
                     default:
-                        sortie.append('+');
+                        sortie.append("—+−");
+                }
+            }
+            sortie.append("\n ");
+            if(lin != taille-1){
+                for (int col = 0; col < taille; ++col){
+                    sortie.append("|  ");
                 }
             }
             sortie.append('\n');
         }
-
+//        sortie.append("+");
+//        for (int i = 0; i < taille; ++i) {
+//            sortie.append('-');
+//        }
+        sortie.append("\n");
         return sortie.toString();
     }
 }

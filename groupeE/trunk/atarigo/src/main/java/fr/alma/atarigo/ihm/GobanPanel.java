@@ -5,6 +5,7 @@ package fr.alma.atarigo.ihm;
 
 import fr.alma.atarigo.GameManager;
 import fr.alma.atarigo.utils.Game;
+import fr.alma.atarigo.utils.Goban;
 import fr.alma.atarigo.utils.exceptions.BadPlaceException;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -85,7 +86,7 @@ public final class GobanPanel extends JPanel {
         int col = Math.max(evt.getX() - debutX, 0) / coteCase; // On récupère
 
         if (resteX > ((precision - 1) * coteCase / precision)) {
-            col += (col == 8) ? 0 : 1;
+            col += (col == Goban.getTaille()-1) ? 0 : 1;
         } else if (resteX > (coteCase / 3)) {
             return;
         }
@@ -95,7 +96,7 @@ public final class GobanPanel extends JPanel {
         int lin = Math.max(evt.getY() - debutY, 0) / coteCase; // On récupère
 
         if (resteY > ((precision - 1) * coteCase / precision)) {
-            lin += (lin == 8) ? 0 : 1;
+            lin += (lin == Goban.getTaille()-1) ? 0 : 1;
         } else if (resteY > (coteCase / 3)) {
             return;
         }
@@ -121,8 +122,8 @@ public final class GobanPanel extends JPanel {
             final Game game2 = controleur.getGame();
             if (game2 != null) {
                 //Affichage de tout les pions en parcourant la matrice
-                for (int i = 0; i < 9; ++i) {
-                    for (int j = 0; j < 9; ++j) {
+                for (int i = 0; i < Goban.getTaille(); ++i) {
+                    for (int j = 0; j < Goban.getTaille(); ++j) {
                         try {
                             //System.out.println(goban_tab.getGoban()[i][j].getCouleur());
                             /* Ok, now, let's calculate the coordinates of the image */

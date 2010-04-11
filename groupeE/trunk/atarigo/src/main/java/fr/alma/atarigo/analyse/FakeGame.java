@@ -37,6 +37,7 @@ public final class FakeGame extends Game {
         this.history = new Tree<PlayMove>(new Node<PlayMove>(game.getCurrentMove()));
         this.lastMove = history.getRootElement();
         this.depth = game.getCurrentDepth();
+        this.freePlaces = new HashSet<Stone>(game.getFreePlaces());
     }
 
     public int getDepth() {
@@ -84,6 +85,7 @@ public final class FakeGame extends Game {
         } else {
             throw new BadPlaceException("It is actually better to play on the board");
         }
+//        System.out.print(goban.toString());
     }
 
     private void fakeStartMove(PlayMove currentMove) {
@@ -126,6 +128,7 @@ public final class FakeGame extends Game {
         for (Stone pion : groupe.getStones()) {
             surroundings.addAll(getSurroundingGroups(pion));
         }
+        surroundings.remove(null);
         updateLiberties(surroundings);
 
         getFakeCurrentMove().getGroupes().remove(groupe);
