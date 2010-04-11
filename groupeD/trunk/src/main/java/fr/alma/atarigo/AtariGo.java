@@ -26,7 +26,6 @@ public class AtariGo {
  /**
   * List of stone groups 
   */
- public GroupsList groupsList;
  public int caughtBlack;
  public int caughtWhite;
  public int captureObjective;
@@ -93,7 +92,6 @@ public boolean canPlayMove(Stone player){
  public AtariGo(int lines, int columns) {
 	goban = new Goban(lines, columns);
 	totalMoves=0;
-	groupsList = new GroupsList();
 	end = false;
 	currentPlayer=player1;
 	caughtBlack=0;
@@ -111,7 +109,6 @@ public boolean canPlayMove(Stone player){
 		goban = new Goban(lines, columns);
 		end = false;
 		totalMoves=0;
-		groupsList = new GroupsList();
 		currentPlayer=player1;
 		this.player1=player1;
 		player1.color=Stone.BLACK;
@@ -124,7 +121,6 @@ public boolean canPlayMove(Stone player){
  
  public AtariGo(AtariGo atarigo){
 	goban = new Goban(atarigo.goban);
-	groupsList = atarigo.groupsList.clone();
 	currentPlayer = atarigo.currentPlayer;
 	player1=atarigo.player1;
 	player1.color=Stone.BLACK;
