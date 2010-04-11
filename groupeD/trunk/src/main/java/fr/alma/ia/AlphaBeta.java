@@ -6,7 +6,7 @@ import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Goban;
 
 /**
- * AlphaBeta.java is a static class which implement the AlphaBeta algorithm.
+ * AlphaBeta.java is a static class which implements the AlphaBeta algorithm.
  * Alpha-beta pruning is a search algorithm which seeks to reduce the number 
  * of nodes that are evaluated in the search tree by the minimax algorithm.
  *
@@ -44,6 +44,7 @@ public class AlphaBeta {
 	 * @return a ValuedGoban which indicates the best move
 	 */
 	public static ValuedGoban value(int level, Tree stateOfGame, int currentExtremum, Stone stone, AtariGo atariGo, Position position){
+		//dynamic generation of children nodes
 		if(level<maxLevel){
 			if(level%2==0 || level==0)
 				stateOfGame.generateChildren(atariGo,stone,currentPlayer);
@@ -69,7 +70,6 @@ public class AlphaBeta {
 		//recherche du max
 		ValuedGoban max = new ValuedGoban(-100000);
 		int i = 0;
-		//On ignore l'extremum : 		while(max.evaluation_<ExtremumCourant && edj.getChildren().size()>i){
 		while(max.evaluation_<ExtremumCourant && edj.getChildren().size()>i){
 			totalNodes++;
 			Position position = edj.getGoban().getDifference(edj.getChildren().get(i).getGoban());
