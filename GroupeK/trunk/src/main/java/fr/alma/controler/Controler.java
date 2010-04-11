@@ -109,6 +109,7 @@ public class Controler {
 			affichageLoader.start();
 		} else {
 			affichageLoader.interrupt();
+			
 			chargement.setVisible(false);
 		}
 	}

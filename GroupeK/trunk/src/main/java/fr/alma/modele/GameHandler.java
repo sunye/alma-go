@@ -1,5 +1,6 @@
 package fr.alma.modele;
 
+
 import fr.alma.controler.Controler;
 import fr.alma.modele.intelligence.Difficulte;
 import fr.alma.modele.intelligence.SunTsu;
@@ -16,6 +17,7 @@ public class GameHandler {
 	private CouleurPion coulAi;
 	private Controler control;
 	private Thread thinkspace;
+	private Thread naturalFlow;
 	private int objectif;
 	private boolean termine;
 	
@@ -26,9 +28,14 @@ public class GameHandler {
 		coulAi=CouleurPion.BLANC;
 		this.control=con;
 		this.objectif=1;
+		
 	}
 	
 	
+
+	
+
+
 
 	public boolean ajouterPion(int gobanX, int gobanY){
 		if (termine){
@@ -44,6 +51,8 @@ public class GameHandler {
 		
 		control.repaintBoard();
 		
+		
+		
 		if (isWhoWinner()!=CouleurPion.EMPTY){
 			control.afficheGagnant(isWhoWinner());
 			this.termine=true;
@@ -57,6 +66,7 @@ public class GameHandler {
 			}
 		}
 	
+		control.repaintBoard();
 		
 		return result;
 	}
@@ -87,6 +97,8 @@ public class GameHandler {
 	
 	public void forcerCoup(){
 		this.thinkspace.interrupt();
+		
+		ai.terminerTraitement();
 	}
 	
 		
@@ -118,38 +130,38 @@ public class GameHandler {
 		
 	}
 	
-	private void launchAi(){
-		
-		new Thread (){
-			public void run(){
-			control.afficheLoader(true);
-			}
-		}.start();
-		
-		thinkspace= new Thread() {
-		
-		
-		public void run(){
-			
-			ai.prepareNextMove(coulAi);
-			try {
-				sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		};
-		thinkspace.start();
+
 	
-		Coordonnee nextAiMove=ai.getPlay();
+	
+	private void launchAi(){
+		thinkspace = new Thread() {
+			public void run() {
+				ai.prepareNextMove(coulAi);
+			}
+		};
+		
+		naturalFlow=new Thread (){
+			public void run(){
+			
+				Coordonnee nextAiMove=ai.getPlay();
+				System.out.println("rr");
+				try {
+					sleep(10000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				plateau.addPion(nextAiMove);
+				control.repaintBoard();
+				control.afficheLoader(false);
+			}
+		};
+			
 		
 		
-		plateau.addPion(nextAiMove);
 		
-		
-		control.repaintBoard();
-		control.afficheLoader(false);
+		naturalFlow.start();
+		thinkspace.start();
+		control.afficheLoader(true);
 	}
 
 
