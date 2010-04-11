@@ -578,7 +578,7 @@ public class Jeu {
 	public static Grille miseAjourGrilleApresCapture(Grille g, Point position){
 		
 		Grille other = new Grille();
-	
+		//il resque a mettre la grille aprés capture icis
 		return other;
 	}
 
