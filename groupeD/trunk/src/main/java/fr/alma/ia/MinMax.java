@@ -20,6 +20,7 @@ import fr.alma.atarigo.Goban;
 
 public class MinMax {
 	static public ValuedGoban bestMove;
+	static public Stone currentPlayer;
 	static public int totalNodes;
 	static public int maxLevel;
 	static public Goban initialGoban;
@@ -28,8 +29,9 @@ public class MinMax {
  * Static method that initialize static properties
  * @param nvmax the maximum depth of the search
  */
-	public static void init(int nvmax,Goban goban){
+	public static void init(int nvmax,Goban goban,Stone player){
 		bestMove=new ValuedGoban(0);
+		currentPlayer=player;
 		totalNodes=0;
 		maxLevel=nvmax;
 		initialGoban=goban;
@@ -44,8 +46,12 @@ public class MinMax {
 	 * @return a ValuedGoban which indicates the best move
 	 */	
 	public static ValuedGoban value(int level, Tree stateOfGame, Stone stone, AtariGo atariGo, Position position){
-		if(level<maxLevel)
-			stateOfGame.generateChildren(atariGo,stone);
+		if(level<maxLevel){
+			if(level%2==0 || level==0)
+				stateOfGame.generateChildren(atariGo,stone,currentPlayer);
+			else
+				stateOfGame.generateChildren(atariGo,stone.opponent(),currentPlayer);
+		}
 		
 		if(level<maxLevel && !stateOfGame.isLeaf()){
 		//appel rcursif

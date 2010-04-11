@@ -308,13 +308,22 @@ public ArrayList<Position> getCells(Stone stone){
 	 return cellsList;
 }
 
-public ArrayList<Goban> computeMoves(AtariGo atariGo,Stone stone){
+public ArrayList<Goban> computeMoves(AtariGo atariGo,Stone stone,Stone currentPlayer){
 	 ArrayList<Goban> gobanList = new ArrayList<Goban>();
-	 
+	 boolean save=false;
 	 for(Position position : getCells(Stone.EMPTY)){
-		 Goban newGoban = new Goban(this);
-		 newGoban.writeCell(atariGo,position, stone,false);
-		 gobanList.add(newGoban);
+		 if(stone==currentPlayer){
+			 if(isSuicidal(position,currentPlayer)){
+				 save=true;
+			 }
+		 }else
+			 save=true;
+		 if(save){
+			 Goban newGoban = new Goban(this);
+			 newGoban.writeCell(atariGo,position, stone,false);
+			 gobanList.add(newGoban);
+			 save=false;
+		 }
 	 }
 	 Collections.shuffle(gobanList);
 	 return gobanList;	 

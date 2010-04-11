@@ -122,7 +122,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 			ValuedGoban plv = new ValuedGoban(0);
 			
 			if(nbMove>5){
-				AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
+				AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban,atariGo.currentPlayer.color);
 				plv = AlphaBeta.value(0, jeu, Evaluation.VERYGOOD,atariGo.currentPlayer.color,atariGo,new Position(0,0));
 				try {
 					Thread.sleep(1000);
@@ -206,7 +206,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 							Tree jeu = new Tree(atariGo.goban);
 							ValuedGoban plv = new ValuedGoban(0);
 							if(nbMove>5){
-								AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
+								AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban,atariGo.currentPlayer.color);
 								plv = AlphaBeta.value(0, jeu, Evaluation.VERYGOOD,atariGo.currentPlayer.color,atariGo,new Position(0,0));
 							}else{
 								System.out.println("random");
