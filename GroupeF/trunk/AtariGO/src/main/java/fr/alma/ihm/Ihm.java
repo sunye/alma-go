@@ -311,6 +311,12 @@ public class Ihm {
 							 case CAPTURE : {
 								 miseAjourGrille(miseAjourGrilleApresCapture(grille, position));
 								 JOptionPane.showMessageDialog(jFrame, "Capture éffectué ! Bravo vous avez gagner");
+								 BInterrompre.setEnabled(false);
+									Grille.setEnabled(false);
+									BNouveau.setEnabled(true);
+									INouveau.setEnabled(true);
+									jeuEnCours = false;
+									effacerGrille();
 								 break;
 								}
 							 
