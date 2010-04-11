@@ -1,96 +1,178 @@
 package fr.alma.modele;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 
+/**
+ * 
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
+ *
+ */
 public class GoBan {
 
+	/**
+	 * The current board 
+	 */
 	private Pion[][] goban;
-	private int nbBlanc;
-	private int nbNoir;
-	private int num=0;
-	private CouleurPion gagnant=CouleurPion.EMPTY;
+	
+	/**
+	 * the color of the current player
+	 */
+	private CouleurPion tour;
+	
+	
+	/**
+	 * The groups of stone
+	 */
 	private HashSet<Groupe> group;
+	
+	/**
+	 * special group for empty slot
+	 */
 	private Groupe groupeVide;
+	
+	/**
+	 * Array with 1 and -1 used to move in the matrix 
+	 */
 	private static int[] modifier={1,-1};
+	
+	/**
+	 * Size of the board
+	 */
 	public static int TAILLE_GO_BAN=9;
+	
+	/**
+	 * Number of black token captured by the white
+	 */
+	private int ptsBlanc=0;
+	
+	/**
+	 * Number of white token captured by the black
+	 */
+	private int ptsNoir=0;
 
+	/**
+	 * Simple constructor that (re)set the game to an initial stat
+	 */
 	public GoBan() {
 		this.goban = new Pion[9][9];
 		this.group= new HashSet<Groupe>();
 		this.groupeVide=new Groupe(CouleurPion.EMPTY);
+		this.tour= CouleurPion.NOIR;
 		this.remiseZero();
 	}
 	
+	
+
+	/**
+	 * Reset the game stat
+	 */
+	public void remiseZero(){
+		this.group.clear();
+		groupeVide= new Groupe(CouleurPion.EMPTY);
+		for (int i=0; i<9; i++){
+			for (int k=0; k<9; k++) {
+				goban[i][k] = new Pion(i,k,CouleurPion.EMPTY, 0);
+				goban[i][k].setNumero(-1);
+				goban[i][k].setGroupe(groupeVide);
+				groupeVide.addPion(goban[i][k]);
+			}
+		}
+		this.ptsBlanc=0;
+		this.ptsNoir=0;
+		this.tour= CouleurPion.NOIR;
+	}
+	
+	
+	/**
+	 * @param tour the tour to set
+	 */
+	public void setTour(CouleurPion tour) {
+		this.tour = tour;
+	}
+
+	/**
+	 * @return the tour
+	 */
+	public CouleurPion getTour() {
+		return tour;
+	}
+
+	/**
+	 * @return the goban
+	 */
 	public Pion[][] getGoban() {
 		return goban;
 	}
-	
-	public int getNbBlanc() {
-		return nbBlanc;
-	}
-	public int getNbNoir() {
-		return nbNoir;
-	}
-	public int getNum() {
-		return num;
-	}
-	public void setNum(int num) {
-		this.num = num;
-	}
+
+	/**
+	 * @param goban the goban to set
+	 */
 	public void setGoban(Pion[][] goban) {
 		this.goban = goban;
 	}
-	public void setNbBlanc(int nbBlanc) {
-		this.nbBlanc = nbBlanc;
-	}
-	public void setNbNoir(int nbNoir) {
-		this.nbNoir = nbNoir;
-	}
-	
-	public CouleurPion getGagnant() {
-		return gagnant;
-	}
-	public void setGagnant(CouleurPion gagnant) {
-		this.gagnant = gagnant;
-	}
-	
-	public boolean addPion(int position, int positiony){
-		
-		
-		//FIXME gestion de la prise et du vainqueur
-		CouleurPion coul=num%2!=0?CouleurPion.BLANC:CouleurPion.NOIR;
-		Coordonnee temp=new Coordonnee(position, positiony);
-		if (estLegal(temp, coul)!=TypeCoup.NONVALID){
-			this.ajouterPionleretour(temp, coul);
-			
-		}
-		
-		
-		return true;
-	}
-	
-	public boolean addPion(int position, int positiony, CouleurPion cc){
-		
-		
-		
-		this.ajouterPionleretour(new Coordonnee(position, positiony), cc);
-		return true;
-	}
-	
-	
-	public boolean retirerPion(int position, int positiony, CouleurPion coul){
-		
-		removePion(goban[position][positiony]);
-		
-		
-		return true;
+
+	/**
+	 * @return the group
+	 */
+	public HashSet<Groupe> getGroup() {
+		return group;
 	}
 
+	/**
+	 * @param group the group to set
+	 */
+	public void setGroup(HashSet<Groupe> group) {
+		this.group = group;
+	}
 
-	public TypeCoup estLegal(Coordonnee cood, CouleurPion coul) {
-				
+	/**
+	 * @return the groupeVide
+	 */
+	public Groupe getGroupeVide() {
+		return groupeVide;
+	}
+
+	/**
+	 * @param groupeVide the groupeVide to set
+	 */
+	public void setGroupeVide(Groupe groupeVide) {
+		this.groupeVide = groupeVide;
+	}
+
+	/**
+	 * @return the ptsBlanc
+	 */
+	public int getPtsBlanc() {
+		return ptsBlanc;
+	}
+
+	/**
+	 * @param ptsBlanc the ptsBlanc to set
+	 */
+	public void setPtsBlanc(int ptsBlanc) {
+		this.ptsBlanc = ptsBlanc;
+	}
+
+	/**
+	 * @return the ptsNoir
+	 */
+	public int getPtsNoir() {
+		return ptsNoir;
+	}
+
+	/**
+	 * @param ptsNoir the ptsNoir to set
+	 */
+	public void setPtsNoir(int ptsNoir) {
+		this.ptsNoir = ptsNoir;
+	}
+	
+	// Utils methods
+	public TypeCoup isMoveAllowed(Coordonnee cood, CouleurPion coul) {
+		
 		if( !cood.isValid(GoBan.TAILLE_GO_BAN)){
 			return TypeCoup.NONVALID;
 		}
@@ -105,87 +187,25 @@ public class GoBan {
 
 		for (Pion v:voisin){
 			if( v.getCouleur()==CouleurPion.oppose(coul)){
-				if (v.getGroupe().liberty()==1){
+				if (v.getGroupe().getNbLiberty()==1){
 					return TypeCoup.PRISE;
 				}
 			} else if (v.getCouleur()==coul){
-				if( v.getGroupe().liberty()!=1){
+				if( v.getGroupe().getNbLiberty()!=1){
 					return TypeCoup.VALID;
 				}
 			}else if (v.getCouleur()==CouleurPion.EMPTY){
 				return TypeCoup.VALID;
 			} 
 		}
+		voisin.clear();
+		
 		return TypeCoup.NONVALID;
 	}
-	
-	public void ajouterPionleretour(Coordonnee coord, CouleurPion coul){
-	
-		Pion pi=goban[coord.getX()][coord.getY()];
-		groupeVide.removePion(pi);
-		
-		pi.setCouleur(coul);
-		pi.setGroupe(new Groupe(coul));
-			
-		List<Pion> voisin= getVoisin(pi);
-		
-		
-		
-		for (Pion v:voisin){
-			if( v.getCouleur()== CouleurPion.oppose(pi.getCouleur())){
-				v.getGroupe().removeLiberty(pi.getPosition());
-			}else if(v.getCouleur()== pi.getCouleur()){
-				pi.getGroupe().fusionGroup(v.getGroupe());
-				group.remove(v.getGroupe());
-			}else{
-				pi.getGroupe().addLiberty(v.getPosition());
-			}
-		}
-		
-	
-		
-		group.add(pi.getGroupe());
-		num++;
-	}
-	
 
-	public void removePion(Pion pi){
-		int x=pi.getPosition().getX();
-		int y=pi.getPosition().getY();
-		
-		Pion temp=goban[x][y];
-		
-		goban[x][y] = new Pion(x,y,CouleurPion.EMPTY, 0);
-		goban[x][y].setNumero(-1);
-		goban[x][y].setGroupe(groupeVide);
-		groupeVide.addPion(goban[x][y]);
-		
-		
-		List<Pion> voisin= getVoisin(pi);
-		for (Pion v:voisin){
-			if( v.getCouleur()== CouleurPion.oppose(pi.getCouleur())){
-				v.getGroupe().addLiberty(pi.getPosition());
-			}else if(v.getCouleur()== pi.getCouleur()){
-				Groupe newGroup= new Groupe(v.getCouleur());
-				group.add(newGroup);
-				reformeGroup(newGroup, v);
-			}else{
-				
-			}
-		}
-		
-	
-		
-		if (temp.getGroupe().nbPions()==1){
-			//finaliser ?
-		}else{
-			temp.getGroupe().removePion(temp);
-		}
-			temp.setGroupe(null);
-	}
 	
 	public List<Coordonnee> calculPionLiberte(Pion pi){
-		LinkedList<Coordonnee> result= new LinkedList<Coordonnee>();
+		List<Coordonnee> result= new Vector<Coordonnee>();
 				
 		List<Pion> voisin= getVoisin(pi);
 		
@@ -194,20 +214,21 @@ public class GoBan {
 				result.add(v.getPosition());
 			}
 		}
+		voisin.clear();
 
 		return result;
 	}
 
 	
 	public List<Pion> getVoisin(Pion pi){
-		LinkedList<Pion> listVoisin= new LinkedList<Pion>();
+		List<Pion> listVoisin= new Vector<Pion>();
 		int x=pi.getPosition().getX();
 		int y=pi.getPosition().getY();
 				
 		for (int i=0; i<modifier.length;i++){
 			Coordonnee coordtemp=new Coordonnee(x+modifier[i], y);
 			if (coordtemp.isValid(GoBan.TAILLE_GO_BAN)){
-			listVoisin.add(goban[coordtemp.getX()][coordtemp.getY()]);
+				listVoisin.add(goban[coordtemp.getX()][coordtemp.getY()]);
 			}
 		}
 		for (int i=0; i<modifier.length;i++){
@@ -220,31 +241,150 @@ public class GoBan {
 		return listVoisin;
 		
 	}
+	//end of Utils methods	
 	
 	
-
-	public void remiseZero(){
-		this.group.clear();
-		groupeVide= new Groupe(CouleurPion.EMPTY);
-		for (int i=0; i<9; i++){
-			for (int k=0; k<9; k++) {
-				goban[i][k] = new Pion(i,k,CouleurPion.EMPTY, 0);
-				goban[i][k].setNumero(-1);
-				goban[i][k].setGroupe(groupeVide);
-			}
+	//Goban pion(stone) public management method
+	
+	public boolean addPion(Coordonnee cood){
+		
+		boolean jouer=isMoveAllowed(cood, tour)!=TypeCoup.NONVALID;
+		if (jouer){
+			this.addPion(cood, tour, true);
+			
 		}
-		this.setNbNoir(0);
-		this.setNbBlanc(0);
-		this.setNum(0);
-		this.setGagnant(CouleurPion.EMPTY);
+		
+		return jouer;
+	}
+	
+	public boolean addPion(Coordonnee cood, CouleurPion cc){
+		boolean jouer =isMoveAllowed(cood, cc)!=TypeCoup.NONVALID;
+		if (jouer){
+		this.addPion(cood, cc, false);
+		}
+		return jouer;
+	}
+	
+	
+	public void retirerPion(Coordonnee cood, CouleurPion coul){
+		removePion(goban[cood.getX()][cood.getY()]);
 	}
 
+	//end of Goban pion(stone) public management method
+	
+	
+	private void addPion(Coordonnee coord, CouleurPion coul, boolean enlevement){
+	
+		Pion pi=goban[coord.getX()][coord.getY()];
+		groupeVide.removePion(pi);
+		
+		pi.setCouleur(coul);
+		pi.setGroupe(new Groupe(coul));
+		pi.getGroupe().addPion(pi);
+		List<Pion> voisin= getVoisin(pi);
+			
+		for (Pion v:voisin){
+			if (v.getCouleur()==CouleurPion.EMPTY){
+				pi.getGroupe().addLiberty(v.getPosition());
+			}else if( 
+				v.getCouleur()== CouleurPion.oppose(pi.getCouleur())){
+				v.getGroupe().removeLiberty(pi.getPosition());
+			}else if(v.getCouleur()== pi.getCouleur()){
+				group.remove(v.getGroupe());
+				pi.getGroupe().fusionGroup(v.getGroupe());
+				pi.getGroupe().removeLiberty(pi.getPosition());
+			}
+		}
+
+		group.add(pi.getGroupe());
+		
+		
+		if (enlevement){
+			for (Pion v : voisin) {
+				if ((v.getCouleur() == CouleurPion.oppose(pi.getCouleur()))
+						&& (v.getGroupe().getNbLiberty() == 0)) {
+					removePionAndGroupe(v.getGroupe());
+				}
+			}
+		}
+		
+		voisin.clear();
+		tour= CouleurPion.oppose(tour);
+	}
+	
+
+	private void removePion(Pion pi){
+		int x=pi.getPosition().getX();
+		int y=pi.getPosition().getY();
+		
+		CouleurPion coulinitial=pi.getCouleur();
+		Groupe groupInitial=goban[x][y].getGroupe();
+		
+		goban[x][y].getGroupe().removePion(goban[x][y]);
+		group.remove(groupInitial);
+		
+		
+		goban[x][y].setCouleur(CouleurPion.EMPTY); 
+		goban[x][y].setNumero(-1);
+		goban[x][y].setGroupe(groupeVide);
+		groupeVide.addPion(goban[x][y]);
+		
+		
+		List<Pion> voisin= getVoisin(pi);
+		for (Pion v:voisin){
+			if( v.getCouleur()== CouleurPion.oppose(coulinitial)){
+				v.getGroupe().addLiberty(pi.getPosition());
+			}else if(v.getCouleur()== coulinitial){
+				Groupe newGroup= new Groupe(v.getCouleur());
+				group.add(newGroup);
+				reformeGroup(newGroup, v);
+			}else{
+				
+			}
+		}
+		
+		voisin.clear();
+		tour= CouleurPion.oppose(tour);
+	}
+	
+
+	private void removePionAndGroupe(Groupe grop){
+		this.group.remove(grop);
+		
+		if (grop.getCouleur()==CouleurPion.BLANC){
+			ptsNoir+=grop.getNbPions();
+		}else{
+			ptsBlanc+=grop.getNbPions();
+		}
+		
+		
+		Collection<Pion> list= grop.getPions();
+		for (Pion v:list){
+			v.setGroupe(groupeVide);
+			v.setCouleur(CouleurPion.EMPTY);
+			groupeVide.addPion(v);
+		}
+		
+		for(Pion v: list){
+			Collection<Pion> voisinVoisin=getVoisin(v);
+			for (Pion capt: voisinVoisin){
+				Collection <Coordonnee> libertes=calculPionLiberte(capt);
+				capt.getGroupe().addLibertys(libertes);
+				libertes.clear();
+			}
+		}
+		grop.clear();
+		
+	}
+	
 	
 	private void reformeGroup(Groupe grop, Pion pi){
-		if( pi.getCouleur()==grop.getCoul()){
+		if( pi.getCouleur()==grop.getCouleur()){
 			pi.setGroupe(grop);
 			grop.addPion(pi);
-			grop.addLibertys(calculPionLiberte(pi));
+			Collection<Coordonnee> libert=calculPionLiberte(pi);
+			grop.addLibertys(libert);
+			libert.clear();
 			
 			int x=pi.getPosition().getX();
 			int y=pi.getPosition().getY();
@@ -274,9 +414,13 @@ public class GoBan {
 	
 	private void reformationGroup(Groupe grop, Pion pi, int intmodifierx, int intmodifiery){
 		
-		if( pi.getCouleur()==grop.getCoul()){
+		if( pi.getCouleur()==grop.getCouleur()){
+			pi.setGroupe(grop);
 			grop.addPion(pi);
-			grop.addLibertys(calculPionLiberte(pi));
+			
+			Collection<Coordonnee> libert=calculPionLiberte(pi);
+			grop.addLibertys(libert);
+			libert.clear();
 			
 			int x=pi.getPosition().getX();
 			int y=pi.getPosition().getY();

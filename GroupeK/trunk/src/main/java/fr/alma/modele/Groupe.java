@@ -1,12 +1,12 @@
 package fr.alma.modele;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 public class Groupe {
 
 	// couleur du groupe
-	private CouleurPion coul;
+	private CouleurPion couleur;
 
 	//groupe de pions
 	private HashSet<Pion> pions;
@@ -17,7 +17,7 @@ public class Groupe {
 	//un groupe commence par un pion
 
 	public Groupe(CouleurPion coul) {
-		this.coul = coul;
+		this.couleur = coul;
 		pions = new HashSet<Pion>();
 		libertes = new HashSet<Coordonnee>();
 	}
@@ -32,20 +32,20 @@ public class Groupe {
 		return (libertes.isEmpty());
 	}
 
-	public int liberty() {
+	public int getNbLiberty() {
 		return libertes.size();
 	}
 
-	public int nbPions() {
+	public int getNbPions() {
 		return pions.size();
 	}
 
-	public CouleurPion getCoul() {
-		return coul;
+	public CouleurPion getCouleur() {
+		return couleur;
 	}
 
 	public void setCoul(CouleurPion coul) {
-		this.coul = coul;
+		this.couleur = coul;
 	}
 
 	public HashSet<Pion> getPions() {
@@ -76,7 +76,6 @@ public class Groupe {
 		return libertes.contains(cood);
 	}
 	
-
 	public boolean removePion(Pion pi){
 		return this.pions.remove(pi);
 	}
@@ -89,15 +88,24 @@ public class Groupe {
 		return pions.contains(pi);
 	}
 	
+	public void addLibertys(Collection<Coordonnee> calculPionLiberte) {
+		this.libertes.addAll(calculPionLiberte);
+	}
+
+
+	public void removeLibertys(Collection<Coordonnee> toRemove) {
+		this.libertes.removeAll(toRemove);
+	}
+	
 	public Groupe fusionGroup(Groupe group){
 		Groupe result=this;
 		
-		if(group.nbPions()>result.nbPions()){
+		if(group.getNbPions()>result.getNbPions()){
 			result=group;
 			group=this;
 		}
 		
-		result.getLibertes().addAll(group.getLibertes());
+		result.addLibertys(group.getLibertes());
 		
 		for( Pion pi: group.getPions()){
 			pi.setGroupe(result);
@@ -114,15 +122,9 @@ public class Groupe {
 		return result;
 	}
 	
-	private void clear(){
+	public void clear(){
 		this.libertes.clear();
 		this.pions.clear();
-	}
-
-
-	public void addLibertys(List<Coordonnee> calculPionLiberte) {
-		this.libertes.addAll(calculPionLiberte);
-		
 	}
 	
 
