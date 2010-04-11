@@ -13,11 +13,17 @@ package fr.alma;
 
 import static org.junit.Assert.*;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import fr.alma.client.action.Context;
 import fr.alma.client.action.GameLoader;
+import fr.alma.client.action.IAction;
 import fr.alma.client.action.ParamGame;
 import fr.alma.server.core.Computer;
 import fr.alma.server.core.Factory;
@@ -31,45 +37,57 @@ import fr.alma.server.rule.Configuration;
 public class TestEvaluation {
 
 	IStateGame stateGame = null;
+	IStateGame stateGame2 = null;
 	Evaluation evaluation = null;
-	
+	Evaluation evaluation2 = null;
 	@Before
 	public void setUp() throws Exception {
-				
-		Context context;
-		context = new Context();
-		// Configuration.BLACK, 0
-		ParamGame param = new ParamGame();
-		param.setSizeGoban(9);
+		
+		JFrame jf = new JFrame();
+		
+		jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		jf.setBounds(100, 100, 300, 360);
 		
 		
+		Context context = new Context();
+		context.setMainFrame(jf);
+		
+		context.setStatusBar(Factory.getStatutBarre());
+		
+		jf.setJMenuBar(Factory.getMenuBar(context));
+		jf.add(context.getStatusBar(), BorderLayout.SOUTH);
+	
+			
 		GameLoader gl = new GameLoader();
 		gl.load("TestEvaluation.txt", context);
-		stateGame = Factory.getStateGame(context);
+
+		stateGame = context.getStateGame();
 		IPlayer computer = new Computer("computer", context);
 		IPlayer player = new Player("adversaire", Configuration.WHITE, null, stateGame);
-		
 		context.setComputer(computer);
 		context.setPlayer(player);
-		context.setStateGame(stateGame);
+		
 		
 		evaluation = new Evaluation(context);
+		
+		gl.load("TestEvaluation-1.txt", context);
+		stateGame2 = context.getStateGame();
+		evaluation2 = new Evaluation(context);
 	}
 
 	@Test
 	public void testEvaluate() {
 		FreedomDegrees.showGobanOnConsole(stateGame);
 		int result1 = evaluation.evaluate(stateGame, null);
-		System.out.println("Resultat de l'évalution 1 : " + result1);
-		GameLoader gl = new GameLoader();
-		Context context = new Context();
-		gl.load("TestEvaluation-1.txt", context);
-		FreedomDegrees.showGobanOnConsole(stateGame);
-		int result2 = evaluation.evaluate(stateGame, null);
-		System.out.println("Resultat de l'évalution 2 : " + result2);
+		//System.out.println("Resultat de l'évalution 1 : " + result1);
+
 		
-		assertTrue(result1 == 89100);
-		assertTrue(result2 == 89100);
+		FreedomDegrees.showGobanOnConsole(stateGame2);
+		int result2 = evaluation2.evaluate(stateGame2, null);
+		//System.out.println("Resultat de l'évalution 2 : " + result2);
+		
+		assertEquals(result1, 5450);
+		assertEquals(result2, -4);
 
 	}
 

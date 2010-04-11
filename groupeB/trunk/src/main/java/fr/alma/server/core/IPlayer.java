@@ -52,6 +52,9 @@ public interface IPlayer extends GoObject {
 	 */
 	public void setStrategy(IStrategy strategyGame);
 
+	/**
+	 * Interupt the calculation of the computer
+	 */
 	public void interrupt();
 	
 	public void setEvaluation(IEvaluation evaluation);

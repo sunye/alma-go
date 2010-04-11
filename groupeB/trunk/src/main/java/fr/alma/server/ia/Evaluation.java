@@ -47,19 +47,18 @@ public class Evaluation implements IEvaluation {
 		if ((status != null) && status.isGameOver()) {
 			if (status.getWinner() == getComputer()) {
 				score = 1000000 / (stateGame.getLevel() - 2);
-				//System.out.println("Level : " + stateGame.getLevel() + " - computer can win at : " + status.getEmplacement() + " score : " + score);
+				
 				return score;
 			} else {
 				score = -1000000 / (stateGame.getLevel() - 2);
-				//System.out.println("Level : " + stateGame.getLevel() + " - player can win at : " + status.getEmplacement() + " score : " + score);
+				
 				return score;
 			}
 		}
 		scoreComputer = getScore(searchDegrees(getComputer(), stateGame));
 		scorePlayer = getScore(searchDegrees(getPlayer(), stateGame));
 		score = scoreComputer - scorePlayer;
-		//int score = scoreComputer - (scorePlayer * 2);
-		//System.out.println("score computer : " + scoreComputer + " - score player : " + scorePlayer + " - total : " + score);
+		
 		return (score / (stateGame.getLevel()-2));
 	}
 	
