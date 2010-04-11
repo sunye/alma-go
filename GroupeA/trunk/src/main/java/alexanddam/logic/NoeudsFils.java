@@ -4,10 +4,18 @@ import java.util.ArrayList;
 
 public class NoeudsFils {
 
+    /* le support de notre structure -> un vecteur de type liste chainée
+     */
     private ArrayList<Noeud_LA> al;
-    private int arite;  		// nombre maximal des elements
+    private int arite;  		
     boolean ascendent;
 
+    /*
+     * @param  1) arite = nombre maximal des éléments dans la structure;
+     *         2) ascendent = vrai si les valeurs sont maintenues dans la liste dans ordre croissant et faux si
+     *              elles sont dans ordre decroissant
+     * @return  Une nouvelle structure NoeudFils = le constructeur
+     */
     NoeudsFils(int arite, boolean ascendent) {
 
         this.arite = arite;
@@ -15,6 +23,10 @@ public class NoeudsFils {
         this.ascendent = ascendent;
     }
 
+    /*
+     * @param  index = l'index du l'élément qu'on souhaite récuperer
+     * @return  l'élément situé à l'index cherché
+     */
     public Noeud_LA get(int index) {
 
         if(index < 0 || index >= al.size()) {
@@ -25,6 +37,10 @@ public class NoeudsFils {
         return al.get(index);
     }
 
+    /*
+     * @param  index = l'index du l'élément qu'on souhaite supprimer
+     * @return  l'élément supprimé à l'index demandé
+     */
     public Noeud_LA remove(int index) {
         if(index < 0 || index >= al.size()) {
                 System.out.println("Index out of range in remove");
@@ -34,18 +50,23 @@ public class NoeudsFils {
         return al.remove(index);
     }
 
+    /*
+     * @param vide
+     * @return la taille actuelle de la structure
+     */
     public int size() {
         return this.al.size();
     }
 
+    /*
+     * @param   nla = l'élément à ajouter dans la liste
+     * @param   un booléan vrai si l'élément a été ajouté ou faux sinon
+     */
     public boolean addFils(Noeud_LA nla) {
         boolean insere = false;
         int index = -1;
 
-        //System.out.println("valeur en addFils "+nla.valeur);
-
         index = getIndex(nla);
-        //System.out.println("index "+index);
         if(this.al.size() < this.arite) {
             insere = true;
             if(index == -1) {
@@ -68,6 +89,11 @@ public class NoeudsFils {
         return insere;
     }
 
+    /*
+     * @param   nla = le noeud dont on veut l'index à insérer dans la liste, en gardant l'ordonencement
+     * @return    l'index qui peut être positif ou -1 si l'élément ne doit pas se trouver dans la liste
+     * description : méthode privée
+     */
     private int getIndex(Noeud_LA nla) {
         int index = -1, i;
 
