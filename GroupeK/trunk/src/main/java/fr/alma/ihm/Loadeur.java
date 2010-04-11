@@ -25,7 +25,7 @@ public class Loadeur extends JDialog {
 
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-		this.setSize(180, 90);
+		this.setSize(180, 150);
 		setLocationRelativeTo(owner);
 		this.setLayout(new FlowLayout());
 

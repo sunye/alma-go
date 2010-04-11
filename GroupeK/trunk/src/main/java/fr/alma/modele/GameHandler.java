@@ -1,6 +1,7 @@
 package fr.alma.modele;
 
 import fr.alma.controler.Controler;
+import fr.alma.modele.intelligence.Difficulte;
 import fr.alma.modele.intelligence.SunTsu;
 
 /**
@@ -149,5 +150,25 @@ public class GameHandler {
 		
 		control.repaintBoard();
 		control.afficheLoader(false);
+	}
+
+
+
+	public void setDifficulte(int difficulte) {
+
+		switch (difficulte) {
+		case 1:
+			ai.setDiff(Difficulte.Moyen);
+			break;
+
+		case 2:
+			ai.setDiff(Difficulte.Difficile);
+			break;
+
+		default:
+			ai.setDiff(Difficulte.Debutant);
+			break;
+
+		}
 	}
 }

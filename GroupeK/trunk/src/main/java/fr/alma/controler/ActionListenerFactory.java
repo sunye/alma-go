@@ -67,4 +67,59 @@ public class ActionListenerFactory {
 		};
 	}
 	
+	public ActionListener AfficheAPropos(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controler.afficheMessage("Super Goban de la mort qui tue deux fois, \n developpé par Anthony Caillaud et Manoël Fortun");
+				
+			}
+		};
+	}
+	
+	public ActionListener enableChoiceIa(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controler.enableAiChoice(true);
+			}
+		};
+	}
+	
+	
+	public ActionListener disableChoiceIa(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controler.enableAiChoice(false);
+			}
+		};
+	}
+	
+	public ActionListener afficheDiagNewGame(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controler.afficheNouvellePartie(true);
+				
+			}
+		};
+	}
+	
+	
+	public ActionListener desAfficheDiagNewGame(){
+		return new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controler.afficheNouvellePartie(false);
+				
+			}
+		};
+	}
+	
 }
