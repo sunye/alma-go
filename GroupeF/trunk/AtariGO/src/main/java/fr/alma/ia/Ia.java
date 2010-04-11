@@ -62,10 +62,10 @@ public class Ia {
 			//return ((grille.Contenu[x-1][y]).couleur.equals(c));
 			
 			if(c.equals(Pion.Couleur.BLANC))
-				return ((grille.Contenu[x-1][y]).equal(new Pion(Pion.Couleur.BLANC,new Point(x-1,y))));
+				return ((grille.Contenu[x-1][y]).equals(Pion.Couleur.BLANC));
 			else
 				if(c.equals(Pion.Couleur.NOIR))
-					return ((grille.Contenu[x-1][y]).equal(new Pion(Pion.Couleur.NOIR,new Point(x-1,y))));
+					return ((grille.Contenu[x-1][y]).equals(Pion.Couleur.NOIR));
 				else 
 					return false;
 			
@@ -78,10 +78,10 @@ public class Ia {
 			//return ((grille.Contenu[x+1][y]).couleur.equals(c));
 			
 			if(c.equals(Pion.Couleur.BLANC))
-				return ((grille.Contenu[x+1][y]).equal(new Pion(Pion.Couleur.BLANC,new Point(x+1,y))));
+				return ((grille.Contenu[x+1][y]).equals(Pion.Couleur.BLANC));
 			else
 				if(c.equals(Pion.Couleur.NOIR))
-					return ((grille.Contenu[x+1][y]).equal(new Pion(Pion.Couleur.NOIR,new Point(x+1,y))));
+					return ((grille.Contenu[x+1][y]).equals(Pion.Couleur.NOIR));
 				else
 					return false;
 		
@@ -94,10 +94,10 @@ public class Ia {
 			//return ((grille.Contenu[x][y+1]).couleur.equals(c));
 			
 			if(c.equals(Pion.Couleur.BLANC))
-				return ((grille.Contenu[x][y+1]).equal(new Pion(Pion.Couleur.BLANC,new Point(x,y+1))));
+				return ((grille.Contenu[x][y+1]).equals(Pion.Couleur.BLANC));
 			else
 				if(c.equals(Pion.Couleur.NOIR))
-					return ((grille.Contenu[x][y+1]).equal(new Pion(Pion.Couleur.NOIR,new Point(x,y+1))));
+					return ((grille.Contenu[x][y+1]).equals(Pion.Couleur.NOIR));
 				else
 					return false;
 					
@@ -127,9 +127,12 @@ public class Ia {
 	if(g.Contenu[p.x][p.y].equal(new Pion(p)))
 		return;
 	else{
-		if(voisins.size()!=0)
+		if(voisins.size()!=0){
 			if (!(voisins.contains(p))) 
 				voisins.add(p);
+		}
+		else
+			voisins.add(p);
 	if ((existN(g,p.x,p.y,g.Contenu[p.x][p.y].couleur)))
 		DeterminerVoisins(g,new Point(p.x-1,p.y));
 	if ((existS(g,p.x,p.y,g.Contenu[p.x][p.y].couleur)))

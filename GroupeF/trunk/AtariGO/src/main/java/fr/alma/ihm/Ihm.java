@@ -253,7 +253,8 @@ public class Ihm {
 					 Point position = getValidePosition();
 					 					 
 					 if(position != null) {
-						 						
+				
+						 
 						 int RHomme = SimulerJeu(grille, position, t);
 						 						 
 						 switch(RHomme){
@@ -261,16 +262,17 @@ public class Ihm {
 						 		
 								 mettrePion(position);
 								
+				
 								 position = jouerMachine(grille);
 								 
 								 								 
 								 int RMachine = SimulerJeu(grille, position, t);
 								 
 								 if(RMachine == VALIDE) mettrePion(position); 
-								 else {//elle retourne forcément une capture
-									 miseAjourGrille(miseAjourGrilleApresCapture(grille, position));
-									 JOptionPane.showMessageDialog(jFrame, "Capture éffectué ! Vous avez perdu !");
-									 
+								 else {
+									 	miseAjourGrille(miseAjourGrilleApresCapture(grille, position));
+									 	JOptionPane.showMessageDialog(jFrame, "Capture éffectué ! Vous avez perdu !");
+									    mettrePion(position);
 								 }
 								 break;						 
 								}

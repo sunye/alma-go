@@ -17,7 +17,7 @@ public class Noeud {
 	private int note;
 	
 	private Pion coup;
-	private ArrayList<Noeud> listeFils;
+	public ArrayList<Noeud> listeFils;
 	
 	/**
 	 * Constructeur de la classe.

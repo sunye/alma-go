@@ -21,7 +21,7 @@ public class Arbre {
 	public Noeud racine;
 	public Grille grille;
 	
-	private ArrayList<Pion> cj;
+	public ArrayList<Pion> cj;
 	private ArrayList<Pion> cnj;
 	
 	int compteur = 0;
@@ -46,12 +46,12 @@ public class Arbre {
 	public int max ,parit=1; 
 	public Noeud remValA(int nparite ,Noeud nC,Noeud nF){
 		if(nparite%2==0)
-			if(nC.getNote()> nF.getNote())
+			if(nC.getNote()>= nF.getNote())
 				return nC;
 			else
 				return nF;
 		else
-			if(nC.getNote()> nF.getNote())
+			if(nC.getNote()>= nF.getNote())
 				return nF;
 			else
 				return nC;
@@ -77,13 +77,15 @@ public class Arbre {
 			noeud.AjouterFils(n);compteur++;
 			temp.remove(coups.get(i));
 			parit++;
-			if(temp.size()>80){
+			if(temp.size()>78){
 				ajouterTousLesfils(n,temp);
 				//------------------------------------
-				if (i==0)
-					nc.setNote(n.getNote());
-				else
+				if (i==0){
+					nc=n;
+					}
+				else{
 					nc=remValA(parit,nc, n);
+				}
 				
 				noeud.setNote(nc.getNote());
 				
@@ -134,7 +136,7 @@ public class Arbre {
 	/**
 	 * 
 	 */
-	private void getCoupsJouer(){
+	public void getCoupsJouer(){
 		System.out.println("Appelé");
 		cj = new ArrayList<Pion>();
 		for(int i=0;i<9;i++) 
