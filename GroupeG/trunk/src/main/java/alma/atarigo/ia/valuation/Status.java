@@ -36,7 +36,7 @@ public enum Status {
 	 * @return Oui ou Non
 	 */
 	public boolean isStart(){
-		return id==1;
+		return id==Start.id;
 	}
 
 	/**
@@ -44,7 +44,7 @@ public enum Status {
 	 * @return Oui ou Non
 	 */
 	public boolean isMiddle(){
-		return id==2;
+		return id==Middle.id;
 	}
 
 	/**
@@ -52,7 +52,7 @@ public enum Status {
 	 * @return Oui ou Non
 	 */
 	public boolean isEnd(){
-		return id==3;
+		return id==End.id;
 	}
 
 }

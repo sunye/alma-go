@@ -5,17 +5,23 @@
 
 package alma.atarigo;
 
-import alma.atarigo.ia.ArtificialPlayer;
-import alma.atarigo.ihm.HumanPlayer;
-import alma.atarigo.model.CellImpl;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import alma.atarigo.ia.ArtificialPlayer;
+import alma.atarigo.ihm.HumanPlayer;
+import alma.atarigo.model.CellImpl;
+import alma.atarigo.model.TerritoryImpl;
+import static alma.atarigo.CellContent.*;
 
 /**
  *
@@ -223,16 +229,25 @@ public abstract class Controller implements GameData{
                     	
                     	if(gameOver){
                     		//on cree l'evenement de fin de jeu
-                    		eogEvent = createEOGEvent(capturer,captured);
+                    		eogEvent = createEOGEvent(content.isKuro()?kuro:shiro,capturer,captured);
                     	}else{
                             //on passe le tour
-                            current=isKuroTurn()?shiro:kuro;
+                            current=content.isKuro()?shiro:kuro;
                     	}
 
                     }catch(RuleViolationException ex){
                         //notifier l'erreur
                         fireRuleViolation(createViolationEvent(ex.getWhy(),position,content));
                     }
+            	}
+            	else{
+            		gameOver = true;
+            		List<Territory> captured = new ArrayList<Territory>();
+            		for(CellPosition pos : model.getPositionsFor(content.isKuro()?KuroSuicide:ShiroSuicide)){
+            			captured.add(new TerritoryImpl(pos, content));
+            		}
+            		
+            		eogEvent = createEOGEvent(content.isKuro()?shiro:kuro,new ArrayList<CellPosition>(),captured);
             	}
             	
             }while(!gameOver);
@@ -303,9 +318,9 @@ public abstract class Controller implements GameData{
      * @param losingArea
      * @return
      */
-    private EndOfGameEvent createEOGEvent(final List<CellPosition> winningArea,final List<Territory> losingArea){
-        final Player winner = current;
-        final Player looser = current==kuro?shiro:kuro;
+    private EndOfGameEvent createEOGEvent(Player winr,final List<CellPosition> winningArea,final List<Territory> losingArea){
+        final Player winner = winr;
+        final Player looser = winner==kuro?shiro:kuro;
         return new EndOfGameEvent() {
             public Player getWinner() {
                 return winner;

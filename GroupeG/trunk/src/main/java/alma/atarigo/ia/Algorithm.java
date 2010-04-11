@@ -11,7 +11,7 @@ import alma.atarigo.ia.valuation.Valuation;
 import alma.atarigo.*;
 
 /**
- *
+ * Interface pour les algorithmes d'analyse du jeu
  * @author gass-mouy
  */
 public interface Algorithm {

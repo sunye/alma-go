@@ -22,12 +22,11 @@ public class Border extends AbstractValuation implements Valuation {
      * @param content Le content de l'IA
      */
 	public Border(CellContent content){
-		this.content = content;
-		this.name="Border";
+		super("Border",content);
 	}
 	
 	public Border(){
-		this.name="Border";
+		super("Border",null);
 	}
 
 	public long run(GobanModel goban) {

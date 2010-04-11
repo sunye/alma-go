@@ -27,7 +27,7 @@ public interface IProgressMonitor {
 	/**
 	 * La valeur suivante
 	 */
-	public void setNextValue();
+	public void nextValue();
 	
 	/**
 	 * @return true Si l'utilisateur a annuler la tache

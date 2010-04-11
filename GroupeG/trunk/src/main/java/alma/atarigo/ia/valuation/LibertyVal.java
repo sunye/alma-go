@@ -5,10 +5,11 @@
 
 package alma.atarigo.ia.valuation;
 
+import java.util.List;
+
 import alma.atarigo.CellContent;
 import alma.atarigo.GobanModel;
 import alma.atarigo.Territory;
-import java.util.List;
 
 /**
  * Evaluation des libertes du goban de jeu
@@ -31,12 +32,11 @@ public class LibertyVal extends AbstractValuation implements Valuation {
      * @param content Le content de l'IA
      */
     public LibertyVal(CellContent content){
-        this.content = content;
-        this.name="LibertyVal";
+    	super("LibertyVal",content);
     }
     
     public LibertyVal(){
-        this.name="LibertyVal";
+    	super("LibertyVal",null);
     }
 
     public long run(GobanModel goban) {

@@ -27,9 +27,17 @@ public class IA {
     private Level level = null;
     private Algorithm algorithm = null;
 
+    
+    /**
+     * Constructeur par defaut 
+     */
     public IA(){    	
     }
     
+    /**
+     * Construire
+     * @param game Le controleur du jeu auquel appartient cet IA
+     */
     public IA(Controller game){
         this.game = game;
         
@@ -41,10 +49,20 @@ public class IA {
         			);
     }
 
+    /**
+     * Modifier le jeu auquel appartient l'IA
+     * @param game 
+     */
     public void setController(Controller game){
     	this.game = game;
     }
     
+    /**
+     * Executer l'algorithme de recherche de possibilités et 
+     * retourner son résultat.
+     * @param progressMonitor Le moniteur de progrès 
+     * @return La position proposée, null si aucune proposition
+     */
     public CellPosition run(IProgressMonitor progressMonitor) {
     	List<CellPosition> choices = runAll(progressMonitor);
     	if(choices!=null && !choices.isEmpty()){
@@ -53,6 +71,12 @@ public class IA {
     	return null;
     }
 
+    /**
+     * Executer l'algorithme de recherche de possibilités et 
+     * retourner son résultat.
+     * @param progressMonitor Le moniteur de progrès 
+     * @return Les positions proposées, null si aucune proposition
+     */
     public List<CellPosition> runAll(IProgressMonitor progressMonitor) {
         Level level = this.level!=null?this.level:game.getLevel();
         GobanModel goban = game.getGoban();
@@ -101,10 +125,17 @@ public class IA {
     	this.algorithm = algorithm;
     }
     
+    /**
+     * @return L'algorithme utilisé par cette IA
+     */
     public Algorithm getAlgorithm(){
     	return algorithm;
     }
 
+    /**
+     * Sauvegarder les métadonnées de cet algorithme
+     * @param metadata La destination
+     */
     public void saveInto(Properties metadata){    	
     	if(algorithm instanceof MinMax){
     		metadata.setProperty("algorithm", "alma.atarigo.ia.MinMax");
@@ -116,6 +147,13 @@ public class IA {
     	metadata.setProperty("valuation", "alma.atarigo.ia.valuation.Intelligent");
     }
     
+    /**
+     * Construire une instance à partir de métadonnée
+     * @param metadata Les métadonnées
+     * @param content La couleur de l'IA
+     * @return La nouvelle instance
+     * @throws Throwable
+     */
     public static IA loadFrom(Properties metadata,CellContent content) throws Throwable{
     	IA ia = new IA();
     	Algorithm algo = 
@@ -138,4 +176,4 @@ public class IA {
     	return ia;
     }
     
-}
+}//IA

@@ -15,8 +15,7 @@ import alma.atarigo.GobanModel;
 public class CellCount extends AbstractValuation implements Valuation {
 
     public CellCount(CellContent content){
-        this.content = content;
-        this.name="CellCount";
+    	super("CellCount",content);
     }
 
     public long run(GobanModel goban) {
