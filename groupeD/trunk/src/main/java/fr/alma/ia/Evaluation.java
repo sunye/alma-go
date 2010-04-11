@@ -43,15 +43,16 @@ public class Evaluation {
 		return cmpt;
 	}
 	
-	static boolean constantContact(Goban goban, Goban gobanParent, Stone stone)){
+	/*static boolean constantContact(Goban goban, Goban gobanParent, Stone stone){
 		int cmptBefore=0;
 		for(int i=0;i<9;i++)
 			for(int j=0;j<9;j++){
 				if(goban.matrice[i][j]==Stone.BLACK)
 					goban.contact(new Position(i,j),stone.opponent());
 			}
+		return TRACE;
 		
-	}
+	}*/
 		
 	static boolean commonBorder(Goban goban, Position position, Stone stone){
 		int cmpt = goban.contact(position,stone.opponent());
