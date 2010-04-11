@@ -26,10 +26,10 @@ public class RuleSuicide {
 	}
 
 	
-	public boolean provokeSuicide(IStateGame stateGame, ILocation emplacement, IPlayer currentPlayer) {
+	public boolean provokeSuicide(IStateGame stateGame, ILocation location, IPlayer currentPlayer) {
 		List<ILocation> emplacements = new ArrayList<ILocation>();
-		int degrees = FreedomDegrees.countFreeDegrees(stateGame, currentPlayer.getColor(), emplacement, emplacements);
-		//System.out.println("Freedom degrees for group ["+col+"]["+row+"] d="+degrees);
+		int degrees = FreedomDegrees.countFreeDegrees(stateGame, currentPlayer.getColor(), location, emplacements);
+		//System.out.println("Freedom degrees for group @"+currentPlayer+"["+location.getCol()+"]["+location.getRow()+"] -> d="+degrees);
 		//if (degrees == 0) System.out.println("SUICIDE");
 		return (degrees == 0);
 	}
