@@ -19,6 +19,7 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  * UIGoban.java is the graphic representation of the board game of Atarigo
@@ -43,6 +44,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	// variables pour l'ia
 	Position bestMove;
 	int pos = 0;
+	UIGoban uiGo = this;
 	
 	/**
 	 * logic constructor
@@ -111,6 +113,11 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 		time=0;
 		while(!atariGo.currentPlayer.isHuman() && !atariGo.isOver()){
 			//System.out.println(atariGo.goban.toString());
+			if(!atariGo.canPlayMove(atariGo.currentPlayer.color)){
+				System.out.println("ABANDON!");
+				atariGo.shutDown();
+			    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" ne peut plus jouer ! "+atariGo.currentPlayer.color.opponent()+" a gagné !", "Information", JOptionPane.INFORMATION_MESSAGE);
+			}
 			Tree jeu = new Tree(atariGo.goban);
 			ValuedGoban plv = new ValuedGoban(0);
 			
@@ -168,6 +175,12 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	public void mouseReleased(MouseEvent e) {
 		if (!atariGo.isOver()) {
 			if(atariGo.currentPlayer.isHuman()){
+				//test si le joueur courant peut jouer, sinon abandon automatique
+				if(!atariGo.canPlayMove(atariGo.currentPlayer.color)){
+					System.out.println("ABANDON!");
+					atariGo.shutDown();
+				    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" ne peut plus jouer ! "+atariGo.currentPlayer.color.opponent()+" a gagné !", "Information", JOptionPane.INFORMATION_MESSAGE);
+				}
 				// TODO Auto-generated method stub
 				int x=e.getX();
 				int y=e.getY();
@@ -175,32 +188,46 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 				y=(y)/40;
 				putStone(x,y);
 				//TODO ajouter une actualisation du panneau info...
-				repaint();
 				if(!atariGo.currentPlayer.isHuman()){
-						//removeMouseListener(this);
-						Tree jeu = new Tree(atariGo.goban);
-						ValuedGoban plv = new ValuedGoban(0);
-						if(nbMove>5){
-							AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
-							plv = AlphaBeta.value(0, jeu, Evaluation.VERYGOOD,atariGo.currentPlayer.color,atariGo,new Position(0,0));
-						}else{
-							System.out.println("random");
-							plv.goban_ = RandomMove.play(atariGo,atariGo.goban,atariGo.currentPlayer.color);
-						}
-						nbMove++;
-						
-						
-						if(putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn())==Move.INVALID){
-							System.out.println(atariGo.goban.getDifference(plv.goban_).toString());
-							atariGo.shutDown();
-						    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" abandonne !", "Information", JOptionPane.INFORMATION_MESSAGE);			
-						}
-						
-						
-						System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+" meilleur score = "+plv.evaluation_);
-						addMouseListener(this);
-						repaint();
+					uiGo.removeMouseListener(uiGo);
 				}
+				repaint();
+				SwingUtilities.invokeLater(new Runnable() 
+			    {
+			      public void run()
+			      {
+						if(!atariGo.currentPlayer.isHuman()){
+							if(!atariGo.canPlayMove(atariGo.currentPlayer.color)){
+								System.out.println("ABANDON!");
+								atariGo.shutDown();
+							    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" ne peut plus jouer ! "+atariGo.currentPlayer.color.opponent()+" a gagné !", "Information", JOptionPane.INFORMATION_MESSAGE);
+							}
+							//uiGo.removeMouseListener(uiGo);
+							Tree jeu = new Tree(atariGo.goban);
+							ValuedGoban plv = new ValuedGoban(0);
+							if(nbMove>5){
+								AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban);
+								plv = AlphaBeta.value(0, jeu, Evaluation.VERYGOOD,atariGo.currentPlayer.color,atariGo,new Position(0,0));
+							}else{
+								System.out.println("random");
+								plv.goban_ = RandomMove.play(atariGo,atariGo.goban,atariGo.currentPlayer.color);
+							}
+							nbMove++;
+							
+							
+							if(putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn())==Move.INVALID){
+								System.out.println(atariGo.goban.getDifference(plv.goban_).toString());
+								//atariGo.shutDown();
+							    //myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" abandonne !", "Information", JOptionPane.INFORMATION_MESSAGE);			
+							}
+							
+							
+							System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+" meilleur score = "+plv.evaluation_);
+							uiGo.addMouseListener(uiGo);
+							repaint();
+					}
+			      }
+			    });
 			}
 		}
 	}

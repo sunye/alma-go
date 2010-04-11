@@ -50,58 +50,39 @@ public class AtariGo {
 	}
 	//ecriture sur le plateau nécessaire pour tester le suicide formé par un groupe
 	return goban.writeCell(this,position, player,true);
-	
-	/*
-	//formation d'une nouvelle liste comprenant un nouveau groupe formé
-	GroupsList newGL = groupsList.updateGroups(goban,position,player);
-	//test de la prise sur le nouveau groupe
-	GroupsList caughtList = goban.hasCaught(position,newGL);
-	if(goban.isCaught(newGL.getGroup(position))){
-		if (!caughtList.isEmpty()) {
-			totalMoves++;
-			if(player==Stone.WHITE){
-				caughtBlack += caughtList.totalStones();
-				if(caughtBlack>=captureObjective){
-					return Move.WIN;
-				}
-			}
-			else{
-				caughtWhite += caughtList.totalStones();
-				if(caughtWhite>=captureObjective){
-					return Move.WIN;
-				}
-			}
-			System.out.println(player.toString()+"has won");
+}
+ 
+public boolean canPlayMove(Stone player){
+	AtariGo atariGoTest;
+	boolean peutJouer = false;
+	boolean fini = false;
+	int i = 0;
+	int j = 0;
+	Position postest;
+	while(!fini){
+		System.out.println("test sur "+i+","+j);
+		postest = new Position(i,j);
+		atariGoTest = new AtariGo(this);		
+		if(atariGoTest.playMove(player,postest) != Move.INVALID){
+			return true;
 		}
-		System.out.println("is cuaght !!");
-		System.out.println("printing gList");
-		groupsList.print();
-		goban.emptyCell(position);
-		return Move.INVALID;
-	}
-	//coup valide, on garde le plateau et on recopie la nouvelle liste de groupes sur l'ancienne
-	totalMoves++;
-	groupsList = newGL;
-	caughtList = goban.hasCaught(position,groupsList);
-	if (!caughtList.isEmpty()) {
-		if(player==Stone.WHITE){
-			caughtBlack += caughtList.totalStones();
-			if(caughtBlack>=captureObjective){
-				return Move.WIN;
+		if(i==8){
+			if(j==8){
+				fini=true;
+			}else{
+				i=0;
+				j++;
 			}
 		}
 		else{
-			caughtWhite += caughtList.totalStones();
-			if(caughtWhite>=captureObjective){
-				return Move.WIN;
-			}
+			i++;
 		}
-		System.out.println(player.toString()+"has won");
-		//return Coup.GAGNANT;
+		
 	}
-	return Move.NEUTRAL;
-	*/
- }
+	return false;
+}
+ 
+ 
  
  	
 /**
@@ -140,6 +121,19 @@ public class AtariGo {
 		caughtWhite=0;
 		captureObjective = 1;
 	 }
+ 
+ public AtariGo(AtariGo atarigo){
+	goban = new Goban(atarigo.goban);
+	groupsList = atarigo.groupsList.clone();
+	currentPlayer = atarigo.currentPlayer;
+	player1=atarigo.player1;
+	player1.color=Stone.BLACK;
+	player2=atarigo.player2;
+	player2.color=Stone.WHITE;
+	caughtBlack=atarigo.caughtBlack;
+	caughtWhite=atarigo.caughtWhite;
+	captureObjective = atarigo.captureObjective;
+ }
 
  /**
   * return if the game is over or not

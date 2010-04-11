@@ -84,7 +84,6 @@ public class Goban {
 	if(finalWriting){
 		if(this.isCaught(newGL.getGroup(position))){
 			if (!caughtList.isEmpty()) {
-				System.out.println("COUCOU");
 				atariGo.totalMoves++;
 				if(stone==Stone.WHITE){
 					atariGo.caughtBlack += caughtList.totalStones();
@@ -358,6 +357,37 @@ public Position getDifference(Goban goban){
 		 }
 	 }
 	 return new Position(-1,-1);
+}
+
+public boolean peutJouer(Stone color){
+	Goban gobanTest;
+	boolean peutJouer = false;
+	boolean fini = false;
+	int i = 0;
+	int j = 0;
+	Position postest;
+	while(!fini){
+		System.out.println("test sur "+i+","+j);
+		postest = new Position(i,j);		gobanTest = new Goban(this);
+		/*return gobanTest.writeCell(gobanTest,postest, color,true);
+		
+		if(){
+			
+		}	*/
+		if(i==8){
+			if(j==8){
+				fini=true;
+			}else{
+				i=0;
+				j++;
+			}
+		}
+		else{
+			i++;
+		}
+		
+	}
+	return false;
 }
 
 }
