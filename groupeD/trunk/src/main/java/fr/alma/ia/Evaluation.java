@@ -7,6 +7,14 @@ import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Goban;
 import fr.alma.atarigo.Position;
 
+/**
+ * Evaluation.java is a static class which implements our heuristic.
+ * It is composed of several component function 
+ * and a central function that uses them to associate a score with a goban.
+ *
+ * @author      Adrien GUILLE
+ * @author      Vincent FERREIRA
+ */
 
 public class Evaluation {
 	
@@ -19,6 +27,14 @@ public class Evaluation {
 	
 	static public boolean TRACE = false;
 
+	/**
+	 * Central function
+	 * @param goban
+	 * @param parentGoban
+	 * @param stone
+	 * @param position
+	 * @return a ValuedGoban
+	 */
 	static ValuedGoban evaluate(Goban goban, Goban parentGoban, Stone stone, Position position){
 		ValuedGoban cmpt = new ValuedGoban(0,goban);
 		if(TRACE)
@@ -36,24 +52,16 @@ public class Evaluation {
 			cmpt.evaluation_=VERYGOOD*hasCaught;
 		}
 				
-		
-				
-		//cmpt.evaluation_+=lastLiberty(goban,stone);
-
 		return cmpt;
 	}
-	
-	/*static boolean constantContact(Goban goban, Goban gobanParent, Stone stone){
-		int cmptBefore=0;
-		for(int i=0;i<9;i++)
-			for(int j=0;j<9;j++){
-				if(goban.matrice[i][j]==Stone.BLACK)
-					goban.contact(new Position(i,j),stone.opponent());
-			}
-		return TRACE;
-		
-	}*/
-		
+
+	/**
+	 * Checks if there's a common border with the opponent
+	 * @param goban
+	 * @param position
+	 * @param stone
+	 * @return -1, 0 or +1
+	 */
 	static int commonBorder(Goban goban, Position position, Stone stone){
 		int cmpt = goban.contact(position,stone.opponent());
 		if(cmpt>0 && cmpt<4){
@@ -69,6 +77,13 @@ public class Evaluation {
 		}
 	}
 	
+	/**
+	 * Checks if some stones are caught
+	 * @param goban
+	 * @param position
+	 * @param stone
+	 * @return -1, 0 or +1
+	 */
 	static int hasCaught(Goban goban,Position position,Stone stone){
 		Group group = goban.groupsList.getGroup(position);
 		int prises = goban.hasCaught(position, goban.groupsList).totalStones();
@@ -83,6 +98,13 @@ public class Evaluation {
 		return 0;
 	}
 	
+	/**
+	 * Checks the amount of groups per player
+	 * @param goban
+	 * @param stone
+	 * @param n the maximum amount of groups allowed
+	 * @return -1, 0 or +1
+	 */
 	static int underNGroups(Goban goban, Stone stone, int n){
 		int cmptBlack=0,cmptWhite=0;
 		

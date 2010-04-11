@@ -376,7 +376,7 @@ public Position getDifference(Goban goban){
 	 return new Position(-1,-1);
 }
 
-public boolean peutJouer(Stone color){
+public boolean canPlay(Stone color){
 	Goban gobanTest;
 	boolean peutJouer = false;
 	boolean fini = false;
