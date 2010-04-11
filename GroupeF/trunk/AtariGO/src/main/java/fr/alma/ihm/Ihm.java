@@ -31,6 +31,9 @@ import javax.swing.JButton;
 
 import fr.alma.jeu.Pion.Couleur;
 import fr.alma.jeu.Grille;
+import javax.swing.JDialog;
+import java.awt.Rectangle;
+import javax.swing.JComboBox;
 
 /**
  * Classe de l'interface graphique.
@@ -64,6 +67,8 @@ public class Ihm {
 	
 	//--------------------------------
 	
+	private boolean jeuEnCours = false;
+	
 	private Point p = null;
 	private HashMap <Point, Point> ghmp; 
 		
@@ -78,6 +83,13 @@ public class Ihm {
 	
 	//--------------------------------
 	public static Grille grille = null;
+	private JDialog jDialogNouveau = null;  //  @jve:decl-index=0:visual-constraint="739,469"
+	private JPanel jContentPane = null;
+	private JLabel jLCouleur = null;
+	private JComboBox jCouleur = null;
+	private JButton jBOk = null;
+	private JButton jBAnnuler = null;
+	private JButton BInterrompre = null;
 	
 		
 	/**
@@ -104,12 +116,13 @@ public class Ihm {
 		if (jFrame == null) {
 			jFrame = new JFrame();
 			jFrame.setResizable(false);
-			jFrame.setTitle("AtariGO");
+			jFrame.setTitle("AtariGO V 1.0");
 			jFrame.setSize(new Dimension(580, 557));
 			jFrame.setLocation(new Point(300, 120));
 			jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			jFrame.setJMenuBar(getJJMenuBar());
 			jFrame.setContentPane(getJPanel());
+			getJDialogNouveau();
 			jFrame.setVisible(true);
 		}
 		return jFrame;
@@ -227,6 +240,11 @@ public class Ihm {
 		if (INouveau == null) {
 			INouveau = new JMenuItem();
 			INouveau.setText("Nouveau jeu");
+			INouveau.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					nouveauJeu();
+				}
+			});
 		}
 		return INouveau;
 	}
@@ -250,6 +268,7 @@ public class Ihm {
 			
 			Grille = new JLabel();
 			Grille.setName("Noir");
+			Grille.setEnabled(false);
 			
 			ImageIcon img = new ImageIcon(getClass().getResource("/fr/alma/images/atariGo.png"));
 			
@@ -390,6 +409,7 @@ public class Ihm {
 			PJeu.add(getBNouveau(), null);
 			PJeu.add(getBApropos(), null);
 			PJeu.add(getBQuitter(), null);
+			PJeu.add(getBInterrompre(), null);
 		}
 		return PJeu;
 	}
@@ -412,6 +432,7 @@ public class Ihm {
 			BNouveau.setLocation(new Point(20, 30));
 			BNouveau.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
+					
 					nouveauJeu();
 				}
 			});
@@ -430,7 +451,7 @@ public class Ihm {
 			BApropos.setText("A Propos ...");
 			BApropos.setSize(new Dimension(160, 35));
 			BApropos.setPreferredSize(new Dimension(100, 25));
-			BApropos.setLocation(new Point(20, 85));
+			BApropos.setLocation(new Point(20, 175));
 			BApropos.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					ShowApropos();
@@ -441,7 +462,7 @@ public class Ihm {
 	}
 
 	private void ShowApropos(){
-		JOptionPane.showMessageDialog(null, "Université de Nantes\n Master 1 ALMA\n AtariGo V 1.0", 
+		JOptionPane.showMessageDialog(null, "Université de Nantes\nMaster 1 ALMA\nAtariGo V 1.0\nRéaliser par :\n	- ZERBITA Mohamed El Hadi\n		- Ngassa Hubert", 
 				"AtariGo V 1.0",
 				1);
 		
@@ -486,12 +507,11 @@ public class Ihm {
 	 * Méthode qui efface la grille et initialise son contenu
 	 */
 	private void nouveauJeu(){
+			
+		jDialogNouveau.setVisible(true);
 		
-		JOptionPane.showInputDialog(null, "selectionValues");
-		effacerGrille();
-		for(int i=0;i<9;i++) 
-       	 for(int j=0;j<9;j++) 
-                grille.Contenu[i][j].couleur = Couleur.NULL; 
+		
+			
 	}
 	
 	/**
@@ -558,7 +578,8 @@ public class Ihm {
 	 */
 	private Point getValidePosition(){
 		p = Grille.getMousePosition();
-				
+		
+		if(jeuEnCours){
 		//---------------------- LIGNE 9
 		if(p.x<57 && p.x>33 && p.y<57 && p.y>33) return new Point(0,0);
 		if(p.x<82 && p.x>58 && p.y<57 && p.y>33) return new Point(1,0);
@@ -657,7 +678,7 @@ public class Ihm {
 		if(p.x<202 && p.x>178 && p.y<252 && p.y>228) return new Point(6,8);
 		if(p.x<227 && p.x>203 && p.y<252 && p.y>228) return new Point(7,8);
 		if(p.x<252 && p.x>228 && p.y<252 && p.y>228) return new Point(8,8);
-		
+		}
 		return null;
 			
 	}
@@ -767,6 +788,148 @@ public class Ihm {
             ghmp.put(new Point(6,8), new Point(190,240)); 
             ghmp.put(new Point(7,8), new Point(215,240)); 
             ghmp.put(new Point(8,8), new Point(240,240)); 
-    } 
+    }
+
+	/**
+	 * This method initializes jDialogNouveau	
+	 * 	
+	 * @return javax.swing.JDialog	
+	 */
+	private JDialog getJDialogNouveau() {
+		if (jDialogNouveau == null) {
+			jDialogNouveau = new JDialog(getJFrame());
+			jDialogNouveau.setSize(new Dimension(250, 170));
+			jDialogNouveau.setTitle("Choix de la couleur");
+			jDialogNouveau.setModal(true);
+			jDialogNouveau.setLocation(new Point(470, 300));
+			jDialogNouveau.setContentPane(getJContentPane());
+		}
+		return jDialogNouveau;
+	}
+
+	/**
+	 * This method initializes jContentPane	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getJContentPane() {
+		if (jContentPane == null) {
+			jLCouleur = new JLabel();
+			jLCouleur.setBounds(new Rectangle(21, 23, 205, 16));
+			jLCouleur.setText("Veuillez choisir la couleur du pion :");
+			jContentPane = new JPanel();
+			jContentPane.setLayout(null);
+			jContentPane.add(jLCouleur, null);
+			jContentPane.add(getJCouleur(), null);
+			jContentPane.add(getJBOk(), null);
+			jContentPane.add(getJBAnnuler(), null);
+		}
+		return jContentPane;
+	}
+
+	/**
+	 * This method initializes jCouleur	
+	 * 	
+	 * @return javax.swing.JComboBox	
+	 */
+	private JComboBox getJCouleur() {
+		if (jCouleur == null) {
+			jCouleur = new JComboBox();
+			jCouleur.setBounds(new Rectangle(46, 52, 156, 25));
+			jCouleur.addItem("Noir");
+			jCouleur.addItem("Blanc");
+		}
+		return jCouleur;
+	}
+
+	/**
+	 * This method initializes jBOk	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	private JButton getJBOk() {
+		if (jBOk == null) {
+			jBOk = new JButton();
+			jBOk.setText("Ok");
+			jBOk.setSize(new Dimension(85, 25));
+			jBOk.setLocation(new Point(30, 95));
+			jBOk.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+				
+						if(jCouleur.getSelectedItem()=="Blanc") t = Tour.BLANC;
+						
+						effacerGrille();
+						for(int i=0;i<9;i++) 
+				       	 for(int j=0;j<9;j++) 
+				                grille.Contenu[i][j].couleur = Couleur.NULL; 
+						
+						jeuEnCours = true;
+						Grille.setEnabled(true);
+						BInterrompre.setEnabled(true);
+						BNouveau.setEnabled(false);
+						INouveau.setEnabled(false);
+							
+						jDialogNouveau.dispose();
+				}
+			});
+		}
+		return jBOk;
+	}
+
+	/**
+	 * This method initializes jBAnnuler	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	private JButton getJBAnnuler() {
+		if (jBAnnuler == null) {
+			jBAnnuler = new JButton();
+			jBAnnuler.setText("Annuler");
+			jBAnnuler.setSize(new Dimension(85, 25));
+			jBAnnuler.setLocation(new Point(125, 95));
+			jBAnnuler.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					jDialogNouveau.dispose();
+				}
+			});
+		}
+		return jBAnnuler;
+	}
+
+	/**
+	 * This method initializes BInterrompre	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	private JButton getBInterrompre() {
+		if (BInterrompre == null) {
+			BInterrompre = new JButton();
+			BInterrompre.setText("Interrompre");
+			BInterrompre.setLocation(new Point(20, 85));
+			BInterrompre.setSize(new Dimension(160, 35));
+			BInterrompre.setEnabled(false);
+			BInterrompre.setPreferredSize(new Dimension(100, 25));
+			BInterrompre.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					
+					if(!jeuEnCours){
+						
+					}else  if(JOptionPane.showConfirmDialog(null,
+							"Etes-vous sur de vouloir intérompre le jeu en cours ?",
+							"Confirmation",
+							0) == JOptionPane.OK_OPTION){
+						BInterrompre.setEnabled(false);
+						Grille.setEnabled(false);
+						BNouveau.setEnabled(true);
+						INouveau.setEnabled(true);
+						jeuEnCours = false;
+						effacerGrille();
+						
+					}
+				}
+			});
+		}
+		return BInterrompre;
+	} 
 
 }
