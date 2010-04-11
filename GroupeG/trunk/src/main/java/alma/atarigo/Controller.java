@@ -250,6 +250,9 @@ public abstract class Controller implements GameData{
     	
     }
 
+    /**
+     * Terminer proprement le jeu
+     */
     public void abortGame(){
     	gameOver = true;
     	
@@ -294,6 +297,12 @@ public abstract class Controller implements GameData{
         };
     }
 
+    /**
+     * Créer un évenement de fin de jeu
+     * @param winningArea
+     * @param losingArea
+     * @return
+     */
     private EndOfGameEvent createEOGEvent(final List<CellPosition> winningArea,final List<Territory> losingArea){
         final Player winner = current;
         final Player looser = current==kuro?shiro:kuro;
@@ -342,88 +351,156 @@ public abstract class Controller implements GameData{
         }
     }
 
+    /**
+     * Ajouter un listener qui ecoutera les evenements sur les cellules
+     * @param listener
+     */
     public void addCellListener(CellListener listener){
         if(listener!=null){
             this.cellListeners.add(listener);
         }
     }
 
+    /**
+     * Retirer un ecouteur d'évènement sur cellule
+     * @param listener
+     */
     public void removeCellListener(CellListener listener){
         cellListeners.remove(listener);
     }
 
+    /**
+     * Appeler tous les ecouteurs de violiation de rèbles lorsque une règle 
+     * est violée
+     * @param event
+     */
     public void fireRuleViolation(RuleViolationEvent event){
         for(RuleViolationListener listener : ruleListeners){
             listener.ruleViolated(event);
         }
     }
 
+    /**
+     * Ajouter un listener pour surveiller les violations de règle
+     * @param listener
+     */
     public void addRuleViolationListener(RuleViolationListener listener){
         if(listener!=null){
             this.ruleListeners.add(listener);
         }
     }
 
+    /**
+     * @param listener
+     */
     public void removeRuleViolationListener(RuleViolationListener listener){
         ruleListeners.remove(listener);
     }
 
+    /**
+     * Ajouter un listener qui surveille la fin du jeu
+     * @param listener
+     */
     public void addEndOfGameListener(EndOfGameListener listener){
         if(listener!=null){
             this.gameOverListeners.add(listener);
         }
     }
 
+    /**
+     * @param listener
+     */
     public void removeEndOfGameListener(EndOfGameListener listener){
         if(listener!=null){
             this.gameOverListeners.add(listener);
         }
     }
 
+    /* (non-Javadoc)
+     * @see alma.atarigo.GameData#getLevel()
+     */
     public alma.atarigo.Level getLevel() {
         return level;
     }
 
+    /**
+     * Modifier le niveau du jeu
+     * @param level
+     */
     public void setLevel(Level level){
         this.level = level;
     }
 
+    /**
+     * Ajouter de nouvelles règles au jeu
+     * @param rules
+     */
     public void addRules(Rule ... rules){
         for(Rule rule : rules){
             this.rules.add(rule);
         }
     }
 
+    /**
+     * Ajouter de nouvelles règles au jeu
+     * @param rules
+     */
     public void addRules(Iterable<Rule> rules){
         for(Rule rule : rules){
             this.rules.add(rule);
         }
     }
 
+    /**
+     * 
+     * @return true Si c'est au Noir de jouer
+     */
     public boolean isKuroTurn(){
         return current == kuro;
     }
 
+    /**
+     * @return true si c'est au blanc de jouer
+     */
     public boolean isShiroTurn(){
         return current == shiro;
     }
 
+    /**
+     * Modifier la grille du jeu
+     * @param model
+     */
     protected void setModel(GobanModel model){
         this.model = model;
     }
 
+    /**
+     * 
+     * @return L'instance du joueur noir
+     */
     public Player getKuro(){
         return kuro;
     }
 
+    /**
+     * @return L'instance du joueur blanc
+     */
     public Player getShiro(){
         return shiro;
     }
 
+    /**
+     * @return Le joueur courant
+     */
     public Player getCurrentPlayer(){
         return current;
     }
 
+    /**
+     * Sauvegarder la partie dans un fichier
+     * @param file Le fichier de sortie
+     * @throws IOException
+     */
     public void saveTo(File file) throws IOException{
         Properties properties = new Properties();
 
@@ -448,6 +525,11 @@ public abstract class Controller implements GameData{
         writer.close();
     }
 
+    /**
+     * Charger une partie sauvegardée
+     * @param file
+     * @throws Throwable
+     */
     public void loadFrom(File file) throws Throwable{
         Properties properties = new Properties();
 
@@ -479,9 +561,18 @@ public abstract class Controller implements GameData{
         isReloaded = true;
     }
 
+    /**
+     * 
+     * @return true si on est pas en fin de jeu
+     */
     public boolean isRunning(){
     	return !gameOver;
     }
     
+    /**
+     * Obtenir le moniteur de progrès de reflexion pour un joueur
+     * @param player Le joueur concerné
+     * @return
+     */
     public abstract IProgressMonitor getMonitorFor(Player player);
 }

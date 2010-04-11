@@ -84,5 +84,9 @@ public interface Territory extends Iterable<CellPosition>{
      */
     public int size();
     
+    /**
+     * Tester si le territoire ne contient qu'un element 
+     * @return true <code> size()==1 </code>
+     */
     public boolean isSingleton();
 }

@@ -32,7 +32,7 @@ public class CellPositionImpl implements CellPosition{
             this.row = -1;
             this.column = -1;
         }else{
-            this.column = desc.charAt(0) - (desc.startsWith("A")?'A':'a');
+            this.column = desc.charAt(0) - (desc.startsWith("A")?'A':'a') + 1;
             if(desc.matches(".[1-9]")){
                 this.row = desc.charAt(1) - '1' + 1;
             }else if(desc.matches(".[A-Z]")){

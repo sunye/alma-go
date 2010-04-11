@@ -65,6 +65,11 @@ public interface GobanModel extends Iterable<Cell> {
      */
     public List<CellPosition> getLibertiesFor(Territory territory);
     
+    /**
+     * Recupere les libertés d'une liste de territoires
+     * @param territories La liste des territoires
+     * @return La liste des libertés
+     */
     public List<CellPosition> getLibertiesFor(List<Territory> territories);
 
     public List<CellPosition> getLibertiesFor(CellPosition position,List<Territory>territories);
@@ -165,28 +170,33 @@ public interface GobanModel extends Iterable<Cell> {
     public CellContent getNextPlayer();
 
     /**
-     * retourne le joueur actuel
+     * Retourne le joueur actuel
      * @return : le content
      */
     public CellContent getActualPlayer();
 
     /**
      * 
+     * @param position La position considérée
+     * @return La position au nord de position, null si non existante
      */
     public CellPosition getNorthernCell(final CellPosition position);
 
     /**
-     * 
+     * @param position La position considérée
+     * @return La position au sud de position, null si non existante
      */
     public CellPosition getSouthernCell(final CellPosition position);
 
     /**
-     * 
+     * @param position La position considérée
+     * @return La position au east de position, null si non existante
      */
     public CellPosition getEasternCell(final CellPosition position);
 
     /**
-     * 
+     * @param position La position considérée
+     * @return La position à l'ouest de position, null si non existante
      */
     public CellPosition getWesternCell(final CellPosition position);
 
@@ -208,7 +218,12 @@ public interface GobanModel extends Iterable<Cell> {
      * @param captured La list de position capturée
      */
     public void makePrisoner(CellContent guard,Iterable<CellPosition> captured);
-    
+
+    /**
+     * Rechercher les cellules du bord ayant un certain contenu
+     * @param contents Les contenus souhaités
+     * @return La liste des positions trouvées
+     */
     public List<CellPosition> getBorderCellsFor(CellContent ... contents);
     
 }

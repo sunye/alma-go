@@ -7,16 +7,18 @@ package alma.atarigo;
 
 import java.util.Properties;
 
-import javax.swing.Icon;
-
-import alma.atarigo.IProgressMonitor;
-
 /**
  *
  * @author steg
  */
 public interface Player {
+	/**
+	 * Objectif minimum pour un joueur
+	 */
 	public final static int MIN_OBJECTIVE = 1;
+	/**
+	 * Objectif maximum pour un joueur
+	 */
 	public final static int MAX_OBJECTIVE = 15;
 	
 	/**
@@ -29,12 +31,6 @@ public interface Player {
      * @return : la position de la cellule souhaitée
      */
     public abstract CellPosition nextPlay(IProgressMonitor progressMonitor);
-    
-//    /**
-//     * 
-//     * @return Icon pour representer le joueur
-//     */
-//    public abstract Icon getIcon();
     
     /**
      * @return Le nombre de pion a capturer par le joueur pour gagner

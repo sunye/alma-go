@@ -22,5 +22,5 @@ public interface CellPosition {
      * @return : la colonne
      */
     public int getColumn();
-
+    
 }
