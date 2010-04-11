@@ -25,7 +25,7 @@ public class Fenetre extends JFrame {
     private static final long serialVersionUID = 1L;
     private JMenuBar barreMenu = new JMenuBar();
     private JMenu jeu = new JMenu("Jeu");
-    private JMenu a_propos = new JMenu("A Propos");
+    private JMenu a_propos = new JMenu("À Propos");
     private JMenu nouv = new JMenu("Nouvelle partie");
     private JMenuItem item1 = new JMenuItem("1 joueur");
     private JMenuItem item2 = new JMenuItem("2 joueurs");
@@ -94,7 +94,7 @@ public class Fenetre extends JFrame {
 
             public void actionPerformed(ActionEvent arg0) {
                 JOptionPane jop = new JOptionPane();
-                jop.showMessageDialog(null, "Bla bla bla...", "à propos", JOptionPane.INFORMATION_MESSAGE);
+                jop.showMessageDialog(null, "Bla bla bla...", "À propos", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         this.a_propos.add(propos);
