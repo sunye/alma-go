@@ -29,12 +29,16 @@ public class Loadeur extends JDialog {
 		setLocationRelativeTo(owner);
 		this.setLayout(new FlowLayout());
 
-		JButton quitterUrgence = new JButton("Forcer à jouer");
+		JButton quitterUrgence = new JButton("Quitter jeu");
+			
+		JButton forcerJouer= new JButton("Forcer à jouer");
 
-		quitterUrgence.addActionListener(ctrl.getFactory().forcerCoup());
-
+		quitterUrgence.addActionListener(ctrl.getFactory().quitterListener());
+		forcerJouer.addActionListener(ctrl.getFactory().forcerCoup());
+		
 		this.add(new JLabel("Coup en cours de calcul"));
 		this.add(prog);
+		this.add(forcerJouer);
 		this.add(quitterUrgence);
 
 	}
