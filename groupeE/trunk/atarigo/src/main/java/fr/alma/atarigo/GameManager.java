@@ -58,21 +58,19 @@ public class GameManager {
     }
 
     public void appliqueCoup(int lin, int col) {
-        if (game.playAt(lin, col)){
-            gobanPanel.repaint();
-            if(this.onePlayerGame){
+        if (game.playAt(lin, col)) {
+            gobanPanel.paintImmediately(0, 0, gobanPanel.getWidth(), gobanPanel.getHeight());
+            if (this.onePlayerGame) {
                 coupIA();
             }
         }
     }
 
-    public boolean isEnd(){
+    public boolean isEnd() {
         return game.isEnd();
     }
 
     final public Game getGame() {
         return game;
     }
-
-
 }
