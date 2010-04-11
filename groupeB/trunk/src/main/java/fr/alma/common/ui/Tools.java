@@ -17,7 +17,9 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -91,6 +93,19 @@ public class Tools {
 			}
 		};
 		SwingUtilities.invokeLater(runnable);
+	}
+	
+	/**
+	 * Cette methode charge une image qui se situe relativement
+	 * à une classe donnée.
+	 */	
+	public static BufferedImage getImage(Class cls, String filename) {
+		try {
+			return ImageIO.read(cls.getResourceAsStream(filename));
+		}
+		catch (Throwable e) {
+			return null;
+		}
 	}
 	
 }
