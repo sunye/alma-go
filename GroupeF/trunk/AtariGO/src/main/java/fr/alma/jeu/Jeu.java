@@ -3,8 +3,6 @@ package fr.alma.jeu;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 import fr.alma.ia.Ia;
 import fr.alma.ihm.Ihm.Tour;
 import fr.alma.structure.Arbre;
