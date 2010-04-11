@@ -1,13 +1,7 @@
 package fr.alma.main;
-import java.awt.Point;
-import java.util.ArrayList;
+
 
 import fr.alma.ihm.Ihm;
-import fr.alma.jeu.Grille;
-import fr.alma.jeu.Pion;
-import fr.alma.jeu.Pion.Couleur;
-import fr.alma.structure.Arbre;
-
 
 public class Main {
 
@@ -19,30 +13,6 @@ public class Main {
 		
 		new Ihm();
 		
-		/*ArrayList<Pion> coups = new ArrayList<Pion>();
-		
-		coups.add(new Pion(Couleur.NULL,new Point(0,1)));
-		coups.add(new Pion(Couleur.NULL,new Point(0,2)));
-		coups.add(new Pion(Couleur.NULL,new Point(0,3)));
-		
-		Grille g = new Grille();
-		
-		Arbre a = new Arbre(g);
-		
-		
-		
-		long begin = System.currentTimeMillis();
-		a.remplirArbre();
-		long end = System.currentTimeMillis();
-		float time = ((float) (end-begin)) ;
-		
-		//a.ParcoursProf();
-		//a.AffichageNA();
-*/		
-		//System.out.println("Temp d'execution : "+time);
-				
-		
-					
 	}
 
 }

@@ -8,6 +8,7 @@ import java.awt.Point;
 
 
 import javax.swing.ImageIcon;
+
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -25,6 +26,8 @@ import java.awt.GridBagConstraints;
 import java.util.HashMap;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JButton;
+
+
 
 import fr.alma.jeu.Pion.Couleur;
 import fr.alma.jeu.Grille;
@@ -71,7 +74,7 @@ public class Ihm {
 	 */
 	public enum Tour {NOIR,BLANC};
 	
-	public Tour t = Tour.BLANC;
+	public Tour t = Tour.NOIR;
 	
 	//--------------------------------
 	public static Grille grille = null;
@@ -102,7 +105,7 @@ public class Ihm {
 			jFrame = new JFrame();
 			jFrame.setResizable(false);
 			jFrame.setTitle("AtariGO");
-			jFrame.setSize(new Dimension(620, 597));
+			jFrame.setSize(new Dimension(580, 557));
 			jFrame.setLocation(new Point(300, 120));
 			jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			jFrame.setJMenuBar(getJJMenuBar());
@@ -190,6 +193,11 @@ public class Ihm {
 		if (IApropos == null) {
 			IApropos = new JMenuItem();
 			IApropos.setText("A propos");
+			IApropos.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					ShowApropos();
+				}
+			});
 		}
 		return IApropos;
 	}
@@ -254,17 +262,21 @@ public class Ihm {
 					 					 
 					 if(position != null) {
 				
-						 
 						 int RHomme = SimulerJeu(grille, position, t);
-						 						 
+											 						 
 						 switch(RHomme){
+						 	
+						     case INVALIDE : {
+						    	 JOptionPane.showMessageDialog(jFrame, "Position invalide veuillez choisir une autre case !");
+						    	 break;
+						     }
 						 	 case VALIDE : {
 						 		
 								 mettrePion(position);
-								
+								 System.out.println("positionné");
 				
 								 position = jouerMachine(grille);
-								 
+								 System.out.println("probleme ?");
 								 								 
 								 int RMachine = SimulerJeu(grille, position, t);
 								 
@@ -334,7 +346,7 @@ public class Ihm {
 			PGrille.setLayout(new GridBagLayout());
 			PGrille.setBorder(BorderFactory.createTitledBorder(null, " Grille : ", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
 			PGrille.setSize(new Dimension(311, 325));
-			PGrille.setLocation(new Point(40, 180));
+			PGrille.setLocation(new Point(20, 160));
 			PGrille.add(Grille, new GridBagConstraints());
 		}
 		return PGrille;
@@ -356,7 +368,7 @@ public class Ihm {
 			PAtarigo.setLayout(null);
 			PAtarigo.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 			PAtarigo.setSize(new Dimension(535, 125));
-			PAtarigo.setLocation(new Point(40, 20));
+			PAtarigo.setLocation(new Point(20, 20));
 			PAtarigo.add(ATarigo, null);
 			PAtarigo.add(Logo, null);
 		}
@@ -373,7 +385,7 @@ public class Ihm {
 			PJeu = new JPanel();
 			PJeu.setLayout(null);
 			PJeu.setBorder(BorderFactory.createTitledBorder(null, " Jeu : ", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
-			PJeu.setLocation(new Point(375, 180));
+			PJeu.setLocation(new Point(355, 160));
 			PJeu.setSize(new Dimension(200, 325));
 			PJeu.add(getBNouveau(), null);
 			PJeu.add(getBApropos(), null);
@@ -395,8 +407,9 @@ public class Ihm {
 		if (BNouveau == null) {
 			BNouveau = new JButton();
 			BNouveau.setText("Nouveau jeu");
-			BNouveau.setSize(new Dimension(125, 35));
-			BNouveau.setLocation(new Point(40, 40));
+			BNouveau.setSize(new Dimension(160, 35));
+			BNouveau.setPreferredSize(new Dimension(100, 25));
+			BNouveau.setLocation(new Point(20, 30));
 			BNouveau.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					nouveauJeu();
@@ -415,12 +428,24 @@ public class Ihm {
 		if (BApropos == null) {
 			BApropos = new JButton();
 			BApropos.setText("A Propos ...");
-			BApropos.setSize(new Dimension(125, 35));
-			BApropos.setLocation(new Point(40, 100));
+			BApropos.setSize(new Dimension(160, 35));
+			BApropos.setPreferredSize(new Dimension(100, 25));
+			BApropos.setLocation(new Point(20, 85));
+			BApropos.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					ShowApropos();
+				}
+			});
 		}
 		return BApropos;
 	}
 
+	private void ShowApropos(){
+		JOptionPane.showMessageDialog(null, "Université de Nantes\n Master 1 ALMA\n AtariGo V 1.0", 
+				"AtariGo V 1.0",
+				1);
+		
+	}
 	/**
 	 * Cette méthode initialise le bouton Quitter.	
 	 * 	
@@ -430,8 +455,8 @@ public class Ihm {
 		if (BQuitter == null) {
 			BQuitter = new JButton();
 			BQuitter.setText("Quitter");
-			BQuitter.setSize(new Dimension(125, 35));
-			BQuitter.setLocation(new Point(40, 250));
+			BQuitter.setSize(new Dimension(160, 35));
+			BQuitter.setLocation(new Point(20, 270));
 			BQuitter.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					System.exit(0);
@@ -461,6 +486,8 @@ public class Ihm {
 	 * Méthode qui efface la grille et initialise son contenu
 	 */
 	private void nouveauJeu(){
+		
+		JOptionPane.showInputDialog(null, "selectionValues");
 		effacerGrille();
 		for(int i=0;i<9;i++) 
        	 for(int j=0;j<9;j++) 
@@ -474,9 +501,12 @@ public class Ihm {
 	private void mettrePion(Point position) {
 				
 		if(t == Tour.NOIR ){
+			
+				grille.Contenu[position.x][position.y].couleur = Couleur.NOIR;
 				mettrePionNoir(position);
 				t = Tour.BLANC;
 			}else{
+				grille.Contenu[position.x][position.y].couleur = Couleur.BLANC;
 				mettrePionBlanc(position);
 				t = Tour.NOIR;
 			}
