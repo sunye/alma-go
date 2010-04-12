@@ -7,25 +7,25 @@ import java.util.Vector;
 
 public class FonctionEvaluation {
 
-    private  int[][] goban;		// 0 - rien, 1 - coup ordinateur, 2 - coup adversair humain
-    private  int[][] gobanInc;          // la matrice des coups, mais qui est utilisable afin d'évaluer les noeuds intérieurs
-    private  int[][] lib;		// une matrice qui met a jour les libertes des pierres, apres chaque coup - sauver des calculs -> -1, si il n'y a pas de pierres
-    private  int[][] libInc;		// matrice des libertes de pierres, mais qui servira a l'evaluation incrementale de feuilles
-    private  boolean[][] dejaEvalue;	// matrice des pierres deja evaluées
-    private  int points;		// on memorise le nombre de points afin de profiter de la evaluation incrementale
-    private  int exponentielle;		// l'exponentielle maximale ou l'arité maximale de chaque noeud
-    private  int cOrdinateur;		// le nombre de pierres de l'ordinateur situées sur le goban
-    private  int cHumain;		// le nombre de pierres de l'adversair situées sur le goban
-    private  int profondeur;		// le profondeur de l'arbre, calculable à partir de l'exponentielle
-    private  Vector<Point> groupe;      // groupe des noeuds chaines afin de reduire les calculs des libertés
-    private  int[] cSuivant;		// coup suivant, composé de deux entiers
-    private  boolean liberteZero;       // vrai si le jeu est fini, faux sinon
+    private static  int[][] goban;		// 0 - rien, 1 - coup ordinateur, 2 - coup adversair humain
+    private static  int[][] gobanInc;          // la matrice des coups, mais qui est utilisable afin d'évaluer les noeuds intérieurs
+    private static  int[][] lib;		// une matrice qui met a jour les libertes des pierres, apres chaque coup - sauver des calculs -> -1, si il n'y a pas de pierres
+    private static  int[][] libInc;		// matrice des libertes de pierres, mais qui servira a l'evaluation incrementale de feuilles
+    private static  boolean[][] dejaEvalue;	// matrice des pierres deja evaluées
+    private static  int points;		// on memorise le nombre de points afin de profiter de la evaluation incrementale
+    private static  int exponentielle;		// l'exponentielle maximale ou l'arité maximale de chaque noeud
+    private static  int cOrdinateur;		// le nombre de pierres de l'ordinateur situées sur le goban
+    private static  int cHumain;		// le nombre de pierres de l'adversair situées sur le goban
+    private static  int profondeur;		// le profondeur de l'arbre, calculable à partir de l'exponentielle
+    private static  Vector<Point> groupe;      // groupe des noeuds chaines afin de reduire les calculs des libertés
+    private static  int[] cSuivant;		// coup suivant, composé de deux entiers
+    private static  boolean liberteZero;       // vrai si le jeu est fini, faux sinon
 
  /*
   * méthode qui est appelé dans le constructeur de FonctionEvaluation et chaque fois
   * que l'utilisateur désire commencer un nouveau jeu = typiquement, lors d'appui de boutton "New Game"
   */
-public  void jeuNeu() {
+public static  void jeuNeu() {
 
     int i,j;
 
@@ -55,7 +55,7 @@ public  void jeuNeu() {
  * @param  les deux entiers coordonées de la matrice de goban
  * @return  la valeur du goban dans ce point spécifique <=> 0 = vide, 1 = ordinateur, 2 = adversair humain
  */
-public  int getGobanValue(int x, int y) {
+public static  int getGobanValue(int x, int y) {
     return goban[x][y];
 }
 
@@ -64,7 +64,7 @@ public  int getGobanValue(int x, int y) {
  * @return  void
  * la valeur du goban à l'endroit spécifié est modifié, si cette valeur fournie est entre 0 et 2, y compris
  */
-public  void setGobanValue(int x, int y, int t) {
+public static  void setGobanValue(int x, int y, int t) {
     if(t<0 || t>2 || goban[x][y]!=0) {  // atari go, pas go
         return;
     }
@@ -75,14 +75,14 @@ public  void setGobanValue(int x, int y, int t) {
 /*
  * incrementation de nombre de pierres d'ordinateur sur le goban
  */
-public  void incPO() {
+public static  void incPO() {
         cOrdinateur++;
 }
 
 /* 
  * incrementation de nombre de pierres adversair humain sur le goban
  */
-public  void incPA() {
+public static  void incPA() {
         cHumain++;
 }
 
@@ -96,7 +96,7 @@ public FonctionEvaluation() {
  /*
   * méthode qui réinitialise la matrice des casses déjà évaluées lors d'un calcul de libertés d'une pierre
   */
- void reinitialiserDE() {
+ static void reinitialiserDE() {
 
         dejaEvalue = new boolean[goban.length][goban[0].length]; // false
 }
@@ -109,7 +109,7 @@ public FonctionEvaluation() {
   * entre deux appels de la fonction de libertes de pierres, puisque les libertés peuvent être
   * partagées entre plusisuers chaines de pierres
   */
- void reinitialiserVideDE(int[][] g) {
+ static void reinitialiserVideDE(int[][] g) {
     int i=0,j;
 
     for(; i < dejaEvalue.length; i++)
@@ -126,7 +126,7 @@ public FonctionEvaluation() {
  * fonction recursive qui calcule le nombre de libertés d'une pierre de type défini
  * attention: avant l'appel de cette méthode, il faut pas oublier reinitialiserDE
  */
- int libertes(int x, int y, int[][] g) {
+ static int libertes(int x, int y, int[][] g) {
 
     int lr = 0, type = g[x][y];
     dejaEvalue[x][y] = true;			// cette case est en cours de visite -> on marque la visite
@@ -176,7 +176,7 @@ public FonctionEvaluation() {
  * calcule les libertés de l'état du jeu qui se trouve dans la racine de l'arbre min-max
  * par ailleurs, on n'a pas besoin des 2 vecteurs de coups, parce qu'ils sont vides à la racine
  */
- void calculerLibertes() {
+ static void calculerLibertes() {
 
     int i = 0, j = 0, aux;
     boolean start = true;
@@ -205,7 +205,7 @@ public FonctionEvaluation() {
  * l'évaluation en racine de l'arbre min-max
  * le résultat est retenu dans la variable globale 'points'
  */
- void evaluation() {
+ static void evaluation() {
     int i, j;
 
     points = 0; 	// on reinitialise, parce qu'on va evaluer toute le grille, pas incrementale
@@ -224,7 +224,7 @@ public FonctionEvaluation() {
  * @return  l'évaluation de l'état dans ce noeud particulier du dévellopement de l'arbre, comme entier
  * evaluation incrementale, utilisee pour les feuilles de l'arbre
  */
- int evaluationInc(int[] vo, int[] va) {
+ static int evaluationInc(int[] vo, int[] va) {
 
     int pointsV = 0, i, j;
     calculerLibertesInc(vo, va);
@@ -250,7 +250,7 @@ public FonctionEvaluation() {
   * sign -1 ou si le nombre de libertés est inférieur ou égal à 3 et que le joueur est l'adversair humain;
   * tous les autres cas corréspondent aux résultats négatifs
   */
- int pointsPerCasse(int libertes, int sign) {
+ static int pointsPerCasse(int libertes, int sign) {
     int p = 0;
 
     switch(libertes) {
@@ -270,7 +270,7 @@ public FonctionEvaluation() {
  * actualise dans la matrice libInc les libertés corréspondantes à l'état du jeu dans
  * la racine et les coups representés par les deux vecteurs
  */
-private  void calculerLibertesInc(int[] vo, int[] va) {
+private static  void calculerLibertesInc(int[] vo, int[] va) {
     int i;		// variables pour optimisation
 
     /* on copie les libertés et le goban de la racine dans les matrices incrémentales,
@@ -301,7 +301,7 @@ private  void calculerLibertesInc(int[] vo, int[] va) {
  * @return  vrai si on a une prise et le jeu est fini, faux sinon
  * fonction qui est appelé depuis la classe interface du jeu et établi si le jeu est fini
  */
-public  boolean jeuFini() {
+public static  boolean jeuFini() {
         evaluation();
         
     return liberteZero;
@@ -311,7 +311,7 @@ public  boolean jeuFini() {
  * @param  l'entier correspondant à un coup de joueur gagnant
  * @return  le Vector des pierres prises du joueur perdant
  */
-public  Vector<Point> pierresPrises(int type) {
+public static  Vector<Point> pierresPrises(int type) {
     int i=0, j=0;
     boolean trouve = false;
     Vector<Point> p = new Vector<Point>();
@@ -342,7 +342,7 @@ public  Vector<Point> pierresPrises(int type) {
  * @return  void
  * actualisation incrémentale de libertés affectées par un des deux vecteurs de coups
  */
-private  void actualiserLibertes(int[] v, int type) {
+private static  void actualiserLibertes(int[] v, int type) {
     int i = 0, v1, v2;
     reinitialiserDE();
 
@@ -375,7 +375,7 @@ private  void actualiserLibertes(int[] v, int type) {
  * calcul de libertés d'une casse particulière
  * le résultat est retenu dans la matrice libInc
  */
-private  void modifierLibertesInc(int v1, int v2) {
+private static  void modifierLibertesInc(int v1, int v2) {
     int aux;
 
     reinitialiserVideDE(gobanInc);
@@ -392,7 +392,7 @@ private  void modifierLibertesInc(int v1, int v2) {
  * on copie le goban et on profite du fait qu'on a déjà calculé des libertés
  * dans l'évaluation de la racine et que certaines chaines qui ne seront pas influences par vo et va
  */
-private  void copierLibertesEtGoban(int[][] gDest, int[][] gSource, int[][] lDest, int[][] lSource) {
+private static  void copierLibertesEtGoban(int[][] gDest, int[][] gSource, int[][] lDest, int[][] lSource) {
     int i, j;
 
     for(i = 0; i < gSource.length; i++)
@@ -420,7 +420,7 @@ public  int getPoints() {
  * fonction qui établie si l'on peut insérer dans une casse vide une pierre
  * par exemple, on ne peut pas se suicider; cependant, on peut gagner si l'autre n'a plus de libertés
  */
-public  boolean permissible(int tour, int x, int y) {
+public static  boolean permissible(int tour, int x, int y) {
     /* si il y au moins une place libre autour de lui, c'est permissible
      * le cas le plus repandu, c'est pour ca qu'on l'a mis comme premier test
      */
@@ -446,7 +446,7 @@ public  boolean permissible(int tour, int x, int y) {
  * @return  vrai si il est permis ou faux sinon
  * la version incrémentale de la fonction de permission d'insérer une pierre dans une casse vide
  */
-public  boolean permissibleInc(int tour, int x, int y, int[][] gI, int[][] lI) {
+public static  boolean permissibleInc(int tour, int x, int y, int[][] gI, int[][] lI) {
     if((x > 0 && gI[x-1][y]==0) || (x < gI.length - 1 && gI[x+1][y]==0) ||
        (y > 0 && gI[x][y-1]==0) || (y < gI.length - 1 && gI[x][y+1]==0))
             return true;
@@ -469,7 +469,7 @@ public  boolean permissibleInc(int tour, int x, int y, int[][] gI, int[][] lI) {
  * les noeuds intérieurs et non-feuilles seront eux-mêmes évalués, afin d'en choisir les meilleurs pour le
  * devéloppement de l'arbre min-max
  */
-public  int[] coupSuivant() {
+public static  int[] coupSuivant() {
     int i = 2, j, nProf;
     int nProfSuivant;					// tc est la taille de carre a explorer
 
@@ -506,7 +506,7 @@ public  int[] coupSuivant() {
  * copie après l'exploration des noeuds fils d'un noeud de tous les fils choisis,
  * dans la file parcourue en algorithme BFS - breadth first search
  */
-private  void copyNoeudsFils(NoeudsFils nf, Noeud_LA parent, Queue<Noeud_LA> ad) {
+private static  void copyNoeudsFils(NoeudsFils nf, Noeud_LA parent, Queue<Noeud_LA> ad) {
     while(nf.size() > 0) {
         Noeud_LA nla = nf.remove(0);
         parent.ajouterFils(nla);
@@ -522,7 +522,7 @@ private  void copyNoeudsFils(NoeudsFils nf, Noeud_LA parent, Queue<Noeud_LA> ad)
  *          est égal
  * l'exploration d'un noeud afin de trouver les meilleurs fils à devélopper
  */
-private  int parcoursProfondeur(int i, Noeud_LA nc, NoeudsFils nf, Queue<Noeud_LA> qn) {
+private static  int parcoursProfondeur(int i, Noeud_LA nc, NoeudsFils nf, Queue<Noeud_LA> qn) {
     int k1, k2, nProfSuivant;
     boolean raccourci = false;
     int[][] gIncParent = new int[gobanInc.length][gobanInc[0].length],
@@ -569,7 +569,7 @@ private  int parcoursProfondeur(int i, Noeud_LA nc, NoeudsFils nf, Queue<Noeud_L
  * et va changer selon le coup qui a permi l'obtention de cette valeur le vecteur retourné par
  * la fonction coupSuivant
  */
-private  void changerValeurRacine(Noeud_LA n) {
+private static  void changerValeurRacine(Noeud_LA n) {
     n.pere.valeur = n.valeur;
     cSuivant[0] = n.vo[0];
     cSuivant[1] = n.vo[1];
@@ -582,7 +582,7 @@ private  void changerValeurRacine(Noeud_LA n) {
  * si on réussi ou si on ne peux plus remonter à partir d'un profondeur, on va retourner faux,
  * puisqu'on a pas eu raccourci alpha-beta; si le test alpha-beta réussi, on retourne vrai
  */
-private  boolean remonterRacine(Noeud_LA n, int i) {
+private static  boolean remonterRacine(Noeud_LA n, int i) {
 	n.valeurPresent = true;
 
     switch(i) {
@@ -633,7 +633,7 @@ public  int getExp() {
  * @param  l'exponentielle souhaitée ou l'arité maximale de chaque noeud
  * @return  void
  */
-public  void setExp(int exp) {
+public static  void setExp(int exp) {
 
     if(exp < 2 || exp>40) {
         if(exp < 2) {
@@ -644,7 +644,7 @@ public  void setExp(int exp) {
         return;
     }
 
-    this.exponentielle = exp;
+    exponentielle = exp;
 }
 
 /*
@@ -659,7 +659,7 @@ public  int getProfondeur() {
  * @param  le profondeur souhaité de l'arbre min-max
  * @return  void
  */
-public  void setProfondeur(int prof) {
+public static  void setProfondeur(int prof) {
     if(prof < 2 || prof > 10) {
         System.out.println("Valeur du profondeur mauvaise");
         return;

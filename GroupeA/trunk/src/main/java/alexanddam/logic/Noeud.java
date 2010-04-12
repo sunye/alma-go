@@ -1,8 +1,8 @@
 package main.java.alexanddam.logic;
 
-enum tnoeud  {
+/*enum tnoeud  {
 	RACINE, INTERIEUR, FEUILLE
-};
+};*/
 
 abstract class Noeud {
 		
