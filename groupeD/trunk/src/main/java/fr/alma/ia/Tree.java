@@ -7,6 +7,14 @@ import fr.alma.atarigo.AtariGo;
 import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Goban;
 
+/**
+ * Tree.java is a class which implements a N-Tree.
+ * A node contains a goban. 
+ *
+ * @author      Adrien GUILLE
+ * @author      Vincent FERREIRA
+ */
+
 public class Tree {
 	private Goban goban_;
 	private Tree parent_;

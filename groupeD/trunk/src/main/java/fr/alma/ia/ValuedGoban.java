@@ -2,6 +2,14 @@ package fr.alma.ia;
 
 import fr.alma.atarigo.Goban;
 
+/**
+ * ValuedGoban.java implements a class based on the Goban class.
+ * It associates a goban with an evaluation.
+ *
+ * @author      Adrien GUILLE
+ * @author      Vincent FERREIRA
+ */
+
 public class ValuedGoban {
 	public Goban goban_;
 	public int evaluation_;
