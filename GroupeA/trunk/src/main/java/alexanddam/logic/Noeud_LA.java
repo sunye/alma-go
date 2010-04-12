@@ -2,18 +2,19 @@ package main.java.alexanddam.logic;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
-public class Noeud_LA extends Noeud {
+public class Noeud_LA extends AbstractNoeud {
 
-	public LinkedList<Noeud_LA> liste_fils;
+	public List<Noeud_LA> liste_fils;
 	public Noeud_LA pere;
 	public int hauteur;
 	public boolean valeurPresent;
 	//n'a pas besoin ni de la valeur etiquette ni de position	
 	
-	public Noeud_LA(int tour, int x, int y, int[] voProp, int[] vaProp) {
+	public Noeud_LA(int tour, int coordX, int coordY, int[] voProp, int[] vaProp) {
 		
-		int i = 0;
+		int iVect = 0;
 		this.liste_fils = new LinkedList<Noeud_LA>();
 		
 		switch(tour) {
@@ -21,24 +22,25 @@ public class Noeud_LA extends Noeud {
 		case 0:
 			    // le vecteur voProp est null => le pere est la racine 
 				if(voProp.length == 0) {
-					this.vo = new int[2];
-					this.va = new int[0];
+					this.vOrdi = new int[2];
+					this.vAdver = new int[0];
 					
-					this.vo[0] = x;
-					this.vo[1] = y;
-				}
-				else {
+					this.vOrdi[0] = coordX;
+					this.vOrdi[1] = coordY;
+				} else {
 									
-					this.vo = new int[voProp.length + 2];  // c'est le tour de l'ordinateur
-					this.va = new int[vaProp.length];   
+					this.vOrdi = new int[voProp.length + 2];  // c'est le tour de l'ordinateur
+					this.vAdver = new int[vaProp.length];   
 				
-					for(i = 0; i < voProp.length ; i++)
-						this.vo[i] = voProp[i];
+					for(iVect = 0; iVect < voProp.length ; iVect++){
+						this.vOrdi[iVect] = voProp[iVect];
+					}
 					
-					this.vo[i++] = x;  this.vo[i] = y;  
+					this.vOrdi[iVect++] = coordX;  this.vOrdi[iVect] = coordY;  
 					
-					for(i = 0; i < vaProp.length ; i++)
-						this.va[i] = vaProp[i];
+					for(iVect = 0; iVect < vaProp.length ; iVect++){
+						this.vAdver[iVect] = vaProp[iVect];
+					}
 				}
 				
 			break; 
@@ -47,26 +49,28 @@ public class Noeud_LA extends Noeud {
 			
 				if(vaProp.length == 0) { // c'est le premiere coup de l'adversaire dans le devellopement de l'arbre
 				
-					this.va = new int[2];
-					this.va[0] = x; this.va[1] = y;
+					this.vAdver = new int[2];
+					this.vAdver[0] = coordX; this.vAdver[1] = coordY;
 					
-					this.vo = new int[2];
+					this.vOrdi = new int[2];
 					
-					this.vo[0] = voProp[0];
-					this.vo[1] = voProp[1];					
-				}
-				else {
+					this.vOrdi[0] = voProp[0];
+					this.vOrdi[1] = voProp[1];
 					
-					this.va = new int[vaProp.length + 2];  // c'est le tour de l'adversaire
-					this.vo = new int[voProp.length];   
+				} else {
+					
+					this.vAdver = new int[vaProp.length + 2];  // c'est le tour de l'adversaire
+					this.vOrdi = new int[voProp.length];   
 				
-					for(i = 0; i < vaProp.length ; i++)
-						this.va[i] = vaProp[i];
+					for(iVect = 0; iVect < vaProp.length ; iVect++){
+						this.vAdver[iVect] = vaProp[iVect];
+					}
 					
-					this.va[i++] = x;  this.va[i] = y;  
+					this.vAdver[iVect++] = coordX;  this.vAdver[iVect] = coordY;  
 					
-					for(i = 0; i < voProp.length ; i++)
-						this.vo[i] = voProp[i];				
+					for(iVect = 0; iVect < voProp.length ; iVect++){
+						this.vOrdi[iVect] = voProp[iVect];
+					}
 				}
 			break;
 			
@@ -82,115 +86,97 @@ public class Noeud_LA extends Noeud {
 		this.liste_fils = new LinkedList<Noeud_LA>();
 		this.hauteur = 1;
 		
-		this.vo = new int[0];
-		this.va = new int[0];
+		this.vOrdi = new int[0];
+		this.vAdver = new int[0];
 	}
 	
-	public Noeud_LA(int val,int arite){
+	public Noeud_LA node(int val){
 		
-		this.valeur = val;
-		this.liste_fils = new LinkedList<Noeud_LA>();
-
-		this.vo = new int[0];
-		this.va = new int[0];
-	}
-	
-	public Noeud_LA node(int e){
-		
-		if(e==valeur){// on se trouve dans le bon noeud
+		if(val==valeur){// on se trouve dans le bon noeud
+			return this;			
+		} else{//sinon on recherche au noeud suivant...
 			
-			return this;
+			Iterator<Noeud_LA> iter = liste_fils.iterator(); 
 			
-		}
-		else{//sinon on recherche au noeud suivant...
-			
-			Iterator<Noeud_LA> it = liste_fils.iterator(); 
-			
-			while (it.hasNext()) {
-				
-  				Noeud_LA fils = it.next();				
-   				if(fils.node(e)!=null)return fils.node(e);
-   				
+			while (iter.hasNext()) {
+  				Noeud_LA fils = iter.next();				
+   				if(fils.node(val)!=null) { 
+   					return fils.node(val);
+   				}
 			}	
   		}
 		return null;
 	}
 	
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(Object obj) {
 				
-		if(o instanceof Noeud_LA) {
-			
-			Noeud_LA n = (Noeud_LA) o;
-					
-			return this == n;
-		}
-		else {
-			
+		if(obj instanceof Noeud_LA) {
+			Noeud_LA noeud = (Noeud_LA) obj;
+			return this == noeud;
+		} else {
 			return false;
 		}
 			
 	}
 	
 	// ajoute le noeud f en tant que fils, ne marche que si la liste n'est pas pleine
-	public boolean ajouterFils(Noeud f){
-		
-		((Noeud_LA) f).pere = this;
-		liste_fils.add(((Noeud_LA)f));
+	public boolean ajouterFils(AbstractNoeud fils){
+		((Noeud_LA) fils).pere = this;
+		liste_fils.add(((Noeud_LA)fils));
 		return true;		
 	}
 	
 	//supprimer le noeud et donc son arborescence
-	public void supprimer()
-	{
+	public void supprimer() {
 		this.pere.liste_fils.remove(this.position());
 		this.pere = null;
 	}
 	
 	//position du noeud parmi ses freres
-	public int position()
-	{
+	public int position() {
 		return this.pere.liste_fils.indexOf(this);
 	}
 
 	// accede au i-ieme fils du noeud
-	public Noeud ieme(int i){
+	public AbstractNoeud ieme(int ieme){
 		try{
-			return liste_fils.get(i);
-		}
-		catch(IndexOutOfBoundsException e){
+			return liste_fils.get(ieme);
+		} catch(IndexOutOfBoundsException e) {
 			System.out.println("ne possede pas le fils en question");
 			return null;
 		}
 		
 	}
 	
-	public void affichage_la(){
-		String ch = new String();
-		Iterator<Noeud_LA> it = liste_fils.iterator(); // On paramètre Iterator par le type des éléments de la collection qui sera parcourue
-		while (it.hasNext()) {
-  			ch = ch + it.next().valeur+" , ";
+	public void affichageLA(){
+		String str = new String();
+		Iterator<Noeud_LA> iter = liste_fils.iterator(); // On paramètre Iterator par le type des éléments de la collection qui sera parcourue
+		while (iter.hasNext()) {
+  			str = str + iter.next().valeur+" , ";
 		}
-		System.out.println(valeur+" : "+ch);
+		System.out.println(valeur+" : "+str);
 		
-		it = liste_fils.iterator();
-		while (it.hasNext()) {
-			it.next().affichage_la();
+		iter = liste_fils.iterator();
+		while (iter.hasNext()) {
+			iter.next().affichageLA();
 		}
 	}
 	
-	public void affichage_na(){
-		String ch = new String();
-		Iterator<Noeud_LA> it = liste_fils.iterator(); // On paramètre Iterator par le type des éléments de la collection qui sera parcourue
-		while (it.hasNext()) {
-  			ch = ch + "{"+valeur+","+it.next().valeur+"}"+" , ";
+	public void affichageNA(){
+		String str = new String();
+		Iterator<Noeud_LA> iter = liste_fils.iterator(); // On paramètre Iterator par le type des éléments de la collection qui sera parcourue
+		while (iter.hasNext()) {
+  			str = str + "{"+valeur+","+iter.next().valeur+"}"+" , ";
 		}
-		if(pere!=null) ch = ch + "{"+valeur+","+pere.valeur+"}";
-		System.out.println(valeur+" : "+ch);
+		if(pere!=null){
+			str = str + "{"+valeur+","+pere.valeur+"}";
+		}
+		System.out.println(valeur+" : "+str);
 		
-		it = liste_fils.iterator();
-		while (it.hasNext()) {
-			it.next().affichage_na();
+		iter = liste_fils.iterator();
+		while (iter.hasNext()) {
+			iter.next().affichageNA();
 		}
 	}	
 	

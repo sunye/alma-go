@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.Collection;
 import java.util.Vector;
 
 class Board extends Canvas {
@@ -16,13 +17,13 @@ class Board extends Canvas {
 	int nbCases = 8;
 	static int space = 15;
 	static int diametreBile = 20;
-	float d1, d2;
+	float diam1, diam2;
 	int nbC;
-	int f1,f2;
+
 	
-	private Vector<Point> whitePoints = new Vector<Point>();  // noirs
-	private Vector<Point> blackPoints = new Vector<Point>(); // blancs
-	private Vector<Point> vLoosers = new Vector<Point>(); // blancs
+	private Collection<Point> whitePoints = new Vector<Point>();  // noirs
+	private Collection<Point> blackPoints = new Vector<Point>(); // blancs
+	private Collection<Point> vLoosers = new Vector<Point>(); // blancs
 
 	private WhiteStone wStone;
 	private BlackStone bStone;
@@ -34,16 +35,16 @@ class Board extends Canvas {
 		this.repaint();
 	}
 	
-	public void updateLoosers(Vector<Point> loo){
+	public void updateLoosers(Collection<Point> loo){
 		vLoosers.addAll(loo);
 	}
 
-	public Vector<Point> getvPoints2() {
+	public Collection<Point> getvPoints2() {
 		return blackPoints;
 	}
 
-	public void setBlack(Point p) {
-		this.blackPoints.add(p);
+	public void setBlack(Point point) {
+		this.blackPoints.add(point);
 	}
 
 	public int getWidth() {
@@ -70,62 +71,62 @@ class Board extends Canvas {
 		this.nbCases = nbCases;
 	}
 
-	public Vector<Point> getV() {
+	public Collection<Point> getV() {
 		return whitePoints;
 	}
 
-	public void setWhite(Point v) {
-		this.whitePoints.add(v);
+	public void setWhite(Point whitePoint) {
+		this.whitePoints.add(whitePoint);
 	}
 
 	public Board() {
 		nbC = ((Board) this).getNbCases();
-		d1 = nbC / (float)(this.width - 2 * Board.space);
-		d2 = nbC / (float)(this.height - 2 * Board.space);
+		diam1 = nbC / (float)(this.width - 2 * Board.space);
+		diam2 = nbC / (float)(this.height - 2 * Board.space);
 	}
 
 	@Override
-	public void paint(Graphics g) {
-		g.setColor(new Color(139, 69, 19));
-		g.fillRect(0, 0, width, height);
-		g.setColor(new Color(0, 0, 0));
+	public void paint(Graphics graph) {
+		graph.setColor(new Color(139, 69, 19));
+		graph.fillRect(0, 0, width, height);
+		graph.setColor(new Color(0, 0, 0));
 
 		for (int i = 0; i <= this.nbCases ; i++) {
 
-			g.drawLine(i * (this.width - 2*space) / this.nbCases + space, space,
+			graph.drawLine(i * (this.width - 2*space) / this.nbCases + space, space,
 					i * (this.width - 2*space) / this.nbCases + space, this.height-space);
 
-			g.drawLine(space, i * (this.height - 2*space) / this.nbCases + space,
+			graph.drawLine(space, i * (this.height - 2*space) / this.nbCases + space,
 					this.width-space, i * (this.height - 2*space) / this.nbCases + space);
 
 		}
 
 		// Dessins des points noirs
-		g.setColor(new Color(0, 0, 0));
+		graph.setColor(new Color(0, 0, 0));
 		for(Point v:whitePoints){
 			wStone = new WhiteStone();
-			g.drawImage(wStone.image, v.x, v.y, wStone);
+			graph.drawImage(wStone.image, v.x, v.y, wStone);
 		}
 
 		// Dessins des points blancs
-		g.setColor(new Color(255, 255, 255));
+		graph.setColor(new Color(255, 255, 255));
 		for(Point v2:blackPoints) {
 			bStone = new BlackStone();
-			g.drawImage(bStone.image, v2.x, v2.y, bStone);
+			graph.drawImage(bStone.image, v2.x, v2.y, bStone);
 		}
 
 		// Dessins des pierres perdantes
-		Graphics2D g2 = (Graphics2D) g;
-			g2.setColor(new Color(0, 204 , 255));
+		Graphics2D graph2 = (Graphics2D) graph;
+			graph2.setColor(new Color(0, 204 , 255));
 			float dash1[] = {5.0f};
 		    BasicStroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
-		    g2.setStroke(dashed);
-
+		    graph2.setStroke(dashed); 
+		    
 		for(Point v2:vLoosers) {
-			f1 = (int) (v2.x / d2 - diametreBile / 2);
-			f2 = (int) (v2.y / d1 - diametreBile / 2);
+			int coord1 = (int) (v2.x / diam2 - diametreBile / 2);
+			int coord2 = (int) (v2.y / diam1 - diametreBile / 2);
 			
-			g2.drawRect(f2+10, f1+10, 30, 30);
+			graph2.drawRect(coord2+10, coord1+10, 30, 30);
 		}
 	}
 }

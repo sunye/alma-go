@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import java.util.AbstractList;
 import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -23,7 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-public class ui extends JFrame {
+public class UI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;
@@ -40,10 +41,10 @@ public class ui extends JFrame {
 	private JButton jButtonExit = null;
 	private JButton jButtonPlay = null;
 	private final Canvas board = new Board();
-	private Point p = null;
+	private Point point = null;
 	private boolean tourAdversair, compFirst, fini;
-	float d1, d2;
-	int wB, hB, nbC, coupsAleatoires;
+	float diam1, diam2;
+	int widthtBoard, heightBoard, nbC, coupsAleatoires;
 
 	/**
 	 * This method initializes jPanel
@@ -65,37 +66,37 @@ public class ui extends JFrame {
 			board.setSize(300, 300);
 
 			jPanel.add(board);
-			wB = board.getWidth();
-			hB = board.getHeight();
+			widthtBoard = board.getWidth();
+			heightBoard = board.getHeight();
 			nbC = ((Board) board).getNbCases();
-			d1 = nbC / (float)(wB - 2 * Board.space);
-			d2 = nbC / (float)(hB - 2 * Board.space);
+			diam1 = nbC / (float)(widthtBoard - 2 * Board.space);
+			diam2 = nbC / (float)(heightBoard - 2 * Board.space);
 
 			board.addMouseListener(new MouseAdapter(){
 
 				@Override
 				public void mousePressed(MouseEvent mEvt){
 					 if (tourAdversair){
-                         //modification du curseur en sablier si le jeux est lancé
+                         //modification du curseur en sablier si le jeux est lance
 						 jPanel.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 					 }
 
 					
-					int xc, yc;    // l'indice de casses oryzontales et verticales
-					p.x = mEvt.getX();
-					p.y = mEvt.getY();
-					if(fini || !tourAdversair || p.x < Board.space || p.x > wB - Board.space ||
-							p.y < Board.space || p.y > hB - Board.space) {
+					int caseX, caseY;    // l'indice de cases oryzontales et verticales
+					point.x = mEvt.getX();
+					point.y = mEvt.getY();
+					if(fini || !tourAdversair || point.x < Board.space || point.x > widthtBoard - Board.space ||
+							point.y < Board.space || point.y > heightBoard - Board.space) {
 						return;
 					}
 
-					xc = Math.round((p.y - Board.space) * d1);
-					yc = Math.round((p.x - Board.space) * d2);
+					caseX = Math.round((point.y - Board.space) * diam1);
+					caseY = Math.round((point.x - Board.space) * diam2);
 
 										
-					if(main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(xc, yc) == 0 && main.java.alexanddam.logic.FonctionEvaluation.permissible(1, xc, yc)) {
+					if(main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(caseX, caseY) == 0 && main.java.alexanddam.logic.FonctionEvaluation.permissible(1, caseX, caseY)) {
 						tourAdversair = false;
-						if(!ajoutGobanEtVerifie(xc, yc, 2)) { return; }
+						if(!ajoutGobanEtVerifie(caseX, caseY, 2)) { return; }
 
 						main.java.alexanddam.logic.FonctionEvaluation.incPA();            
 
@@ -108,16 +109,16 @@ public class ui extends JFrame {
 						}
 						else {
 							coupsAleatoires ++;
-							int r = -1, r2 = -1;
-							while(r==-1 || r2==-1 || main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(3 + r%4, 3 + r2%4)!=0
-									|| main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(2 + r%4, 3 + r2%4)==2
-									|| main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(4 + r%4, 3 + r2%4)==2
-									|| main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(3 + r%4, 2 + r2%4)==2
-									|| main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(3 + r%4, 4 + r2%4)==2) {
-								r = (int)(Math.random()*10);
-								r2 = (int)(Math.random()*10);
+							int rand1 = -1, rand2 = -1;
+							while(rand1==-1 || rand2==-1 || main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(3 + rand1%4, 3 + rand2%4)!=0
+									|| main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(2 + rand1%4, 3 + rand2%4)==2
+									|| main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(4 + rand1%4, 3 + rand2%4)==2
+									|| main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(3 + rand1%4, 2 + rand2%4)==2
+									|| main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(3 + rand1%4, 4 + rand2%4)==2) {
+								rand1 = (int)(Math.random()*10);
+								rand2 = (int)(Math.random()*10);
 							}
-							if(!ajoutGobanEtVerifie(3 + r%4, 3 + r2%4, 1)) { return; }
+							if(!ajoutGobanEtVerifie(3 + rand1%4, 3 + rand2%4, 1)) { return; }
 						}
 
 						main.java.alexanddam.logic.FonctionEvaluation.incPO();            
@@ -139,10 +140,10 @@ public class ui extends JFrame {
 	void recupererGagnant(int type) {
 		int loser;
 
-		Vector<Point> v = main.java.alexanddam.logic.FonctionEvaluation.pierresPrises(type);
+		AbstractList<Point> pierresPerdantes = main.java.alexanddam.logic.FonctionEvaluation.pierresPrises(type);
 		
-		((Board) board).updateLoosers(v);
-		Point pierreLoser = v.get(0);
+		((Board) board).updateLoosers(pierresPerdantes);
+		Point pierreLoser = pierresPerdantes.get(0);
 		System.out.println("Une des positions prises "+pierreLoser.x+" , "+pierreLoser.y);
 
 		loser = main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(pierreLoser.x, pierreLoser.y);
@@ -173,20 +174,20 @@ public class ui extends JFrame {
 		JOptionPane.showMessageDialog(this, str, "Jeu fini", JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	boolean ajoutGobanEtVerifie(int x, int y, int type) {
+	boolean ajoutGobanEtVerifie(int coordX, int coordY, int type) {
 		switch(type) {
 		case 1:
 			if(compFirst) { // c'est a dire l'adversair avec le noir
-				ajoutDansBlanc(x, y, 1);
+				ajoutDansBlanc(coordX, coordY, 1);
 			} else {
-				ajoutDansNoire(x, y, 1);
+				ajoutDansNoire(coordX, coordY, 1);
 			}
 			break;
 		case 2:
 			if(compFirst) { // c'est a dire l'adversair avec le noir
-				ajoutDansNoire(x, y, 2);
+				ajoutDansNoire(coordX, coordY, 2);
 			} else {
-				ajoutDansBlanc(x, y, 2);
+				ajoutDansBlanc(coordX, coordY, 2);
 			}
 			break;
 		default:
@@ -199,25 +200,24 @@ public class ui extends JFrame {
 		return true;
 	}
 
-	void ajoutDansBlanc(int xc, int yc, int type) {
+	void ajoutDansBlanc(int coordX, int coordY, int type) {
 
-		float f1 = xc / d2 - Board.diametreBile/2, f2 = yc / d1 - Board.diametreBile/2;
+		float coordX2 = coordX / diam2 - Board.diametreBile/2, coordY2 = coordY / diam1 - Board.diametreBile/2;
 		
-		main.java.alexanddam.logic.FonctionEvaluation.setGobanValue(xc, yc, type);
-		((Board) board).setWhite(new Point((int) (Board.space + f2),
-				(int) (Board.space + f1)));
+		main.java.alexanddam.logic.FonctionEvaluation.setGobanValue(coordX, coordY, type);
+		((Board) board).setWhite(new Point((int) (Board.space + coordY2), (int) (Board.space + coordX2)));
 
 		board.repaint();
 
 	}
 
-	void ajoutDansNoire(int xc, int yc, int type) {
+	void ajoutDansNoire(int coordX, int coordY, int type) {
 
-		float f1 = xc / d2 - Board.diametreBile/2, f2 = yc / d1 - Board.diametreBile/2;
+		float coordX2 = coordX / diam2 - Board.diametreBile/2, coordY2 = coordY / diam1 - Board.diametreBile/2;
 		
-		main.java.alexanddam.logic.FonctionEvaluation.setGobanValue(xc, yc, type);
-		((Board) board).setBlack(new Point((int) (Board.space + f2),
-				(int) (Board.space + f1)));
+		main.java.alexanddam.logic.FonctionEvaluation.setGobanValue(coordX, coordY, type);
+		((Board) board).setBlack(new Point((int) (Board.space + coordY2),
+				(int) (Board.space + coordX2)));
 
 		board.repaint();
 
@@ -249,11 +249,11 @@ public class ui extends JFrame {
 			jLabelLevel.setHorizontalAlignment(SwingConstants.CENTER);
 			jLabelLevel.setSize(new Dimension(170, 25));
 
-			GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
-			gridBagConstraints1.fill = GridBagConstraints.VERTICAL;
-			gridBagConstraints1.gridy = 0;
-			gridBagConstraints1.weightx = 1.0;
-			gridBagConstraints1.gridx = 0;
+			GridBagConstraints gridBagConst = new GridBagConstraints();
+			gridBagConst.fill = GridBagConstraints.VERTICAL;
+			gridBagConst.gridy = 0;
+			gridBagConst.weightx = 1.0;
+			gridBagConst.gridx = 0;
 
 			jPanelSettings = new JPanel();
 			jPanelSettings.setLayout(null);
@@ -337,7 +337,7 @@ public class ui extends JFrame {
 			jButtonExit.setText("End game");
 			jButtonExit.setSize(new Dimension(170, 25));
 			jButtonExit.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent event) {
 					tourAdversair = false;
 				}
 			});
@@ -359,7 +359,7 @@ public class ui extends JFrame {
 			jButtonPlay.addActionListener(new ActionListener() {
 
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent event) {
 					tourAdversair = false;
 					String white, black, level;
 					white = (String)cbWhiteStone.getModel().getSelectedItem();
@@ -390,8 +390,8 @@ public class ui extends JFrame {
 					fini = false;
 
 					if(compFirst) {  //  ordinateur premier, premier coup (blancs)
-						int r = (int)(Math.random()*10), r2 = (int)(Math.random()*10);
-						ajoutDansBlanc(3 + r%4, 3 + r2%4, 1);
+						int rand = (int)(Math.random()*10), rand2 = (int)(Math.random()*10);
+						ajoutDansBlanc(3 + rand%4, 3 + rand2%4, 1);
 						main.java.alexanddam.logic.FonctionEvaluation.incPO();
 						coupsAleatoires++;
 					}
@@ -426,7 +426,7 @@ public class ui extends JFrame {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				ui thisClass = new ui();
+				UI thisClass = new UI();
 				thisClass.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				thisClass.setVisible(true);
 			}
@@ -436,14 +436,14 @@ public class ui extends JFrame {
 	/**
 	 * This is the default constructor
 	 */
-	public ui() {
+	public UI() {
 		super();
 		initialize();
 
-		p = new Point();
+		point = new Point();
 
-		p.x = 0;
-		p.y = 0;
+		point.x = 0;
+		point.y = 0;
 	}
 
 	/**
