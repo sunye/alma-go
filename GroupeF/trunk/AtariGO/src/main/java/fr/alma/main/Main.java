@@ -25,20 +25,20 @@ import fr.alma.structure.Arbre;
 	 */
 	public static void main(String[] args) {
 		
-		//new Ihm();
-		 Grille g = new Grille(); 
-         
-         Arbre a = new Arbre(g); 
-                   
-         long begin = System.currentTimeMillis(); 
-         a.remplirArbre(); 
-         long end = System.currentTimeMillis(); 
-         float time = ((float) (end-begin)) ; 
-          
+		new Ihm();
+//		 Grille g = new Grille(); 
+//         
+//         Arbre a = new Arbre(g); 
+//                   
+//         long begin = System.currentTimeMillis(); 
+//         a.remplirArbre(); 
+//         long end = System.currentTimeMillis(); 
+//         float time = ((float) (end-begin)) ; 
+//          
          //a.ParcoursProf(); 
          //a.AffichageNA(); 
              
-         System.out.println("Temp d'execution : "+time/1000+" secondes"); 
+         //System.out.println("Temp d'execution : "+time/1000+" secondes"); 
 
 	}
 
