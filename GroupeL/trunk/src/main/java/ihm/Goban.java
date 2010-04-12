@@ -43,11 +43,11 @@ public class Goban extends JPanel{
         private int currentDepth;
         
         private boolean partiFini;
-               
-        private boolean moveForced;
+        
         private Coordinates lastMove;
         
-        Future<Coordinates> future;
+    	private Integer playTimeIA;
+
         
         // fenetre dans lequel sera afficher la partie
         private Fenetre window;
@@ -134,8 +134,6 @@ public class Goban extends JPanel{
         private void processMouseClicked(MouseEvent e) {
         	
         	int x, y;
-	            
-            moveForced = false;
             
             if(!partiFini){
             
@@ -189,34 +187,11 @@ public class Goban extends JPanel{
         			}
         		}		            		
         	}else{			            		
-        		//Thread t = new Thread() {
-            			//public void run(){
-	            		// on recherche le meilleur coup
-	            		ExecutorService pool = Executors.newCachedThreadPool();
 
-	            		Callable<Coordinates> aiThread= new AiThread(goban_tab, joueur,currentDepth);
-	            		future = pool.submit(aiThread);
-	            		
-						while(!future.isDone()){
-							if(moveForced){
-								future.cancel(true);		
-							}
-						}
-	            		
-	            		try {
-	            			if ((!moveForced) && (future.isDone())){
-	            				coup = future.get();
-	            			} else {
-	            				moveForced = false;
-	            			}	
-						} catch (InterruptedException e1) {
-							e1.printStackTrace();
-						} catch (ExecutionException e1) {
-							e1.printStackTrace();
-						}
-        			//}	
-				//};
-				//t.start();	
+            		AiThread aiThread= new AiThread(goban_tab, joueur,currentDepth,playTimeIA);
+            		
+            		coup = aiThread.createTree(goban_tab, joueur);
+
         	}     
          	// on joue le coup
         	goban_tab.addPawn(coup,joueur);
@@ -305,13 +280,17 @@ public class Goban extends JPanel{
 			return goban_tab;
 		}
 
-		public void forceToPlay() {
-			if (future.isDone()){
-				moveForced = true;
-			}
-		}
-		
 		public void resetIA(Integer niv) {
 			currentDepth = niv;
 		}
+
+		public Integer getPlayTimeIA() {
+			return playTimeIA;
+		}
+
+		public void setPlayTimeIA(Integer playTimeIA) {
+			this.playTimeIA = playTimeIA;
+		}
+		
+		
 }

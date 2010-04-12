@@ -1,5 +1,8 @@
 package ia;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -10,7 +13,7 @@ import game.GobanStructure;
 import game.GroupPawns;
 
 
-public class AiThread implements Callable<Coordinates>{
+public class AiThread{
 	
     private GobanStructure plateau;
     private Color color;
@@ -24,19 +27,19 @@ public class AiThread implements Callable<Coordinates>{
 	private Integer profondeur;
 	
 	private Integer meilleur;
-    
-    
-    public Coordinates call() {
-      return createTree(plateau, color);
-    }
-    
+	
+	private long dateDebut;
+	
+	private Integer playTimeIA;
+   
 
 	/* Constructor */
-	public AiThread(GobanStructure plateau, Color color, Integer prof) {
+	public AiThread(GobanStructure plateau, Color color, Integer prof, Integer playTimeIA) {
 		super();
 		this.plateau = plateau;
 		this.color = color;
 		this.profondeur = prof;
+		this.playTimeIA = playTimeIA * 1000;
 	}
 	
 	public AiThread(Integer profondeur) {
@@ -93,6 +96,8 @@ public class AiThread implements Callable<Coordinates>{
 		this.plateau = plateau;
 		this.color = color;
 		moveForced = false;
+		
+		dateDebut = Calendar.getInstance().getTimeInMillis();
 		
 		meilleur = NOTE_MIN-1;
 		
@@ -158,86 +163,87 @@ public class AiThread implements Callable<Coordinates>{
 		/* We simulate that we put a token of the right color at coord */
 		hitSimul(coord, depth);
 		
-
-		if (moveForced){
-			System.out.println("coup forcé");
-		}
-
 		Integer eval = evaluation();
 		
-		if ((depth == profondeur) && (!moveForced)){
-			/* We are in a leaf */
-			note = eval;
+		if(!(Calendar.getInstance().getTimeInMillis() - dateDebut > playTimeIA)) {
 			
-			if(note>meilleur){
-				meilleur = note;
-			}
-			
-			plateau.removePawn(coord);
-			
-			return note;
-			
-		} else {
-
-				/* We try to trunk the tree */
-				List<Coordinates> emptySquares = plateau.getFreeCoord();
+			if ((depth == profondeur) && (!moveForced)){
+				/* We are in a leaf */
+				note = eval;
 				
-				if ((depth % 2) != 0)
-				{
-					note = NOTE_MAX;
+				if(note>meilleur){
+					meilleur = note;
+				}
+				
+				plateau.removePawn(coord);
+				
+				return note;
+				
+			} else {
+	
+					/* We try to trunk the tree */
+					List<Coordinates> emptySquares = plateau.getFreeCoord();
 					
-					/* The depth is not pair : we search for the minimum note value of all its sons. */
-					/* Here, we create its sons when we encounter an empty square */
-					
-					if(eval == NOTE_MAX){
-						plateau.removePawn(coord);
-						return eval;
-					}else{
-						for(Coordinates coordTmp : emptySquares){
+					if ((depth % 2) != 0)
+					{
+						note = NOTE_MAX;
 						
-							if(plateau.moveValid(coordTmp, color.invColor())){
-								
-								note = Math.min(note, createNode(coordTmp, depth+1, alpha, beta));
+						/* The depth is not pair : we search for the minimum note value of all its sons. */
+						/* Here, we create its sons when we encounter an empty square */
+						
+						if(eval == NOTE_MAX){
+							plateau.removePawn(coord);
+							return eval;
+						}else{
+							for(Coordinates coordTmp : emptySquares){
 							
-								if (alpha >= note)
+								if(plateau.moveValid(coordTmp, color.invColor())){
+									
+									note = Math.min(note, createNode(coordTmp, depth+1, alpha, beta));
+								
+									if (alpha >= note)
+									{
+										/* We don't need to go further, so we stop here */
+										plateau.removePawn(coord);
+										return note;							
+									}	
+									
+									beta = Math.min(beta, note);
+								}
+							}
+						}
+		
+					} else {
+						
+						note = NOTE_MIN;
+						/* The depth is pair : we search for the maximum note value of all its sons. */
+						/* Here, we create its sons when we encounter an empty square */
+	
+						for(Coordinates coordTmp : emptySquares){
+	
+							if(plateau.moveValid(coordTmp, color)){
+								
+								note = Math.max(note, createNode(coordTmp, depth+1, alpha, beta));
+										
+								if (beta <= note)
 								{
 									/* We don't need to go further, so we stop here */
 									plateau.removePawn(coord);
 									return note;							
-								}	
-								
-								beta = Math.min(beta, note);
+								}
+										
+								alpha = Math.max(alpha, note);
 							}
-						}
-					}
-	
-				} else {
-					
-					note = NOTE_MIN;
-					/* The depth is pair : we search for the maximum note value of all its sons. */
-					/* Here, we create its sons when we encounter an empty square */
-
-					for(Coordinates coordTmp : emptySquares){
-
-						if(plateau.moveValid(coordTmp, color)){
-							
-							note = Math.max(note, createNode(coordTmp, depth+1, alpha, beta));
-									
-							if (beta <= note)
-							{
-								/* We don't need to go further, so we stop here */
-								plateau.removePawn(coord);
-								return note;							
-							}
-									
-							alpha = Math.max(alpha, note);
-						}
-			
-					}					
-				}		
+				
+						}					
+					}		
+			}
+			plateau.removePawn(coord);
+			return note;
+		} else {
+			plateau.removePawn(coord);
+			return eval;
 		}
-		plateau.removePawn(coord);
-		return note;
 	}
 	
 	private void hitSimul(Coordinates coord, int depth){

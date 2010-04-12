@@ -3,6 +3,9 @@ package ihm;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import javax.swing.*;
 
 public class Fenetre extends JFrame implements ActionListener {
@@ -19,6 +22,7 @@ public class Fenetre extends JFrame implements ActionListener {
         private JMenuItem nul;
         private JMenuItem moy;
         private JMenuItem str;
+        private JComboBox timeIA;
         
         //Panel représentant le goban
         private Goban Pan;
@@ -70,10 +74,10 @@ public class Fenetre extends JFrame implements ActionListener {
             diff.add(moy);
             diff.add(str);
             
-            JButton forceToPlay = new JButton("Forcer à jouer");
+            /*JButton forceToPlay = new JButton("Forcer à jouer");
             forceToPlay.setBounds(this.getWidth()-140,this.getHeight()-90,120,30);
             add(forceToPlay);
-            //forceToPlay.addActionListener(this); 
+            forceToPlay.addActionListener(this); 
             forceToPlay.addActionListener(
             		  new ActionListener() {
             		    public void actionPerformed(ActionEvent e) {
@@ -86,7 +90,37 @@ public class Fenetre extends JFrame implements ActionListener {
             		      t.start();
             		    }
             		  }
-            		);
+            		);*/
+            
+            timeIA = new JComboBox();
+            
+            timeIA.setBounds(this.getWidth()-140,this.getHeight()-90,120,30);
+    		
+    		timeIA.addItem("10");
+    		timeIA.addItem("8");
+    		timeIA.addItem("6");
+    		timeIA.addItem("4");
+    		timeIA.addItem("2");
+    		
+    		timeIA.addItemListener(new ItemListener(){
+				public void itemStateChanged(ItemEvent e) {
+					// TODO Auto-generated method stub
+					if (e.getItem().equals("2")) {
+						Pan.setPlayTimeIA(2);
+					} else if (e.getItem().equals("4")) {
+						Pan.setPlayTimeIA(4);
+					} else if (e.getItem().equals("6")) {
+						Pan.setPlayTimeIA(6);
+					} else if (e.getItem().equals("8")) {
+						Pan.setPlayTimeIA(8);
+					} else if (e.getItem().equals("10")) {
+						Pan.setPlayTimeIA(10);
+					}
+				}
+    		});
+
+            add(timeIA);
+            
                 
             this.setJMenuBar(barreMenu);
          
@@ -128,15 +162,7 @@ public class Fenetre extends JFrame implements ActionListener {
 	            }else if(ChoixOption.equals("Fort")){
 	            	Pan.resetIA(4);
 	            }
-			} else if (evt.getActionCommand().equalsIgnoreCase("Forcer à jouer")) {
-				
-				/* We force the artificial intelligence to return the best already computed move. */
-			
-				Pan.forceToPlay();
-				
-			}
-			
-			
+			} 
 		}
 		       
 }
