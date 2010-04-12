@@ -529,10 +529,12 @@ public class Ihm {
 		if(t == Tour.NOIR ){
 			
 				grille.Contenu[position.x][position.y].couleur = Couleur.NOIR;
+				(grille.Contenu[position.x][position.y]).position=position;
 				mettrePionNoir(position);
 				t = Tour.BLANC;
 			}else{
 				grille.Contenu[position.x][position.y].couleur = Couleur.BLANC;
+				(grille.Contenu[position.x][position.y]).position=position;
 				mettrePionBlanc(position);
 				t = Tour.NOIR;
 			}

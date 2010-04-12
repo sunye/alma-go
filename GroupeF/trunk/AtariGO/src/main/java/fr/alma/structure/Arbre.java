@@ -24,7 +24,7 @@ public class Arbre {
 	
 	//--------------------------
 	@SuppressWarnings("unused")
-	private int max ,parit = 1; 
+	private int parit = 1; 
 	//--------------------------
 			
 	public Arbre(Grille grille){
@@ -41,9 +41,9 @@ public class Arbre {
 		Point p = null;
 		getCoupsNonJouer();
 		int prof = getProfMax(cnj);
-		p = ajouterTousLesfils(racine, cnj, prof);
+		racine= ajouterTousLesfils(racine, cnj, prof);
 		System.out.println("Nombre de noeuds total : "+compteur);
-		
+		p=racine.getCoup().position;
 		return p;
 	}
 	
@@ -76,7 +76,7 @@ public class Arbre {
 	/**
 	 * Méthode qui permet de contruire l'arbe et d'atribué les notes
 	 */
-	private Point ajouterTousLesfils(Noeud noeud, ArrayList<Pion> coups, int prof) {
+	private Noeud ajouterTousLesfils(Noeud noeud, ArrayList<Pion> coups, int prof) {
 		ArrayList<Pion> temp;
 		
 		
@@ -96,7 +96,7 @@ public class Arbre {
 			noeud.AjouterFils(n);compteur++;
 			temp.remove(coups.get(i));
 			parit++;
-			if(temp.size()>prof){
+			if(temp.size()>79){
 				ajouterTousLesfils(n,temp, prof);
 				//------------------------------------
 				if (i==0){
@@ -109,7 +109,7 @@ public class Arbre {
 				noeud.setNote(nc.getNote());
 				
 			}else {
-				int value = 0;//Ia.fonctionEvaluation(getGrilleFromList(cj));
+				int value = Ia.fonctionEvaluation(getGrilleFromList(cj));
 				n.setNote(value);
 				//System.out.println("Valeur de fonction = "+value);
 				temp = (ArrayList<Pion>) coups.clone();
@@ -120,11 +120,12 @@ public class Arbre {
 					nc = remValA(parit,nc, n);
 			}
 			
+			
 			cj.remove(coups.get(i));
 			
 		}
 		
-		return nc.getCoup().position;
+		return noeud;//nc.getCoup().position;
 	}
 
 	/**
