@@ -75,10 +75,11 @@ public class ui extends JFrame {
 
 				@Override
 				public void mousePressed(MouseEvent mEvt){
-					if (tourAdversair){
-						//modification du curseur en sablier si le jeux est lancé
-						board.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-					}
+					 if (tourAdversair){
+                         //modification du curseur en sablier si le jeux est lancé
+						 jPanel.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+					 }
+
 					
 					int xc, yc;    // l'indice de casses oryzontales et verticales
 					p.x = mEvt.getX();
@@ -91,6 +92,7 @@ public class ui extends JFrame {
 					xc = Math.round((p.y - Board.space) * d1);
 					yc = Math.round((p.x - Board.space) * d2);
 
+										
 					if(main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(xc, yc) == 0 && main.java.alexanddam.logic.FonctionEvaluation.permissible(1, xc, yc)) {
 						tourAdversair = false;
 						if(!ajoutGobanEtVerifie(xc, yc, 2)) { return; }
@@ -121,9 +123,9 @@ public class ui extends JFrame {
 						main.java.alexanddam.logic.FonctionEvaluation.incPO();            
 						tourAdversair = true;
 					}
-
-					//On remet le curseur a la normal
-					board.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					
+					//on remet le curseur en pointer
+					jPanel.setCursor(Cursor.getPredefinedCursor(DEFAULT_CURSOR));
 				}
 
 				@Override
@@ -138,14 +140,17 @@ public class ui extends JFrame {
 		int loser;
 
 		Vector<Point> v = main.java.alexanddam.logic.FonctionEvaluation.pierresPrises(type);
+		
+		((Board) board).updateLoosers(v);
 		Point pierreLoser = v.get(0);
 		System.out.println("Une des positions prises "+pierreLoser.x+" , "+pierreLoser.y);
 
 		loser = main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(pierreLoser.x, pierreLoser.y);
 		jeuFini(3 - loser);
 
-		//On remet le curseur a la normal
-		board.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        //On remet le curseur a la normal
+        jPanel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
 	}
 
 	void jeuFini(int gagnant) {
@@ -197,7 +202,7 @@ public class ui extends JFrame {
 	void ajoutDansBlanc(int xc, int yc, int type) {
 
 		float f1 = xc / d2 - Board.diametreBile/2, f2 = yc / d1 - Board.diametreBile/2;
-
+		
 		main.java.alexanddam.logic.FonctionEvaluation.setGobanValue(xc, yc, type);
 		((Board) board).setWhite(new Point((int) (Board.space + f2),
 				(int) (Board.space + f1)));
@@ -209,7 +214,7 @@ public class ui extends JFrame {
 	void ajoutDansNoire(int xc, int yc, int type) {
 
 		float f1 = xc / d2 - Board.diametreBile/2, f2 = yc / d1 - Board.diametreBile/2;
-
+		
 		main.java.alexanddam.logic.FonctionEvaluation.setGobanValue(xc, yc, type);
 		((Board) board).setBlack(new Point((int) (Board.space + f2),
 				(int) (Board.space + f1)));
@@ -355,7 +360,6 @@ public class ui extends JFrame {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-
 					tourAdversair = false;
 					String white, black, level;
 					white = (String)cbWhiteStone.getModel().getSelectedItem();
@@ -363,7 +367,7 @@ public class ui extends JFrame {
 					level = (String)cbLevel.getModel().getSelectedItem();
 
 					/************ SYSOUT DU LEVEL ************/
-					System.out.println("Niveau de difficultÃ© choisi: " + level);
+					System.out.println("Niveau de difficulte choisi: " + level);
 
 					if(white.equals(black)) {
 						JOptionPane.showMessageDialog(null,

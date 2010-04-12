@@ -1,8 +1,10 @@
 package main.java.alexanddam.ui;
 
+import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.Vector;
 
@@ -14,7 +16,10 @@ class Board extends Canvas {
 	int nbCases = 8;
 	static int space = 15;
 	static int diametreBile = 20;
-
+	float d1, d2;
+	int nbC;
+	int f1,f2;
+	
 	private Vector<Point> whitePoints = new Vector<Point>();  // noirs
 	private Vector<Point> blackPoints = new Vector<Point>(); // blancs
 	private Vector<Point> vLoosers = new Vector<Point>(); // blancs
@@ -23,10 +28,14 @@ class Board extends Canvas {
 	private BlackStone bStone;
 
 	public void resetTable() {
-
 		whitePoints.clear();
 		blackPoints.clear();
+		vLoosers.clear();
 		this.repaint();
+	}
+	
+	public void updateLoosers(Vector<Point> loo){
+		vLoosers.addAll(loo);
 	}
 
 	public Vector<Point> getvPoints2() {
@@ -70,11 +79,13 @@ class Board extends Canvas {
 	}
 
 	public Board() {
+		nbC = ((Board) this).getNbCases();
+		d1 = nbC / (float)(this.width - 2 * Board.space);
+		d2 = nbC / (float)(this.height - 2 * Board.space);
 	}
 
 	@Override
 	public void paint(Graphics g) {
-
 		g.setColor(new Color(139, 69, 19));
 		g.fillRect(0, 0, width, height);
 		g.setColor(new Color(0, 0, 0));
@@ -104,9 +115,17 @@ class Board extends Canvas {
 		}
 
 		// Dessins des pierres perdantes
-		g.setColor(new Color(255, 0, 0));
+		Graphics2D g2 = (Graphics2D) g;
+			g2.setColor(new Color(0, 204 , 255));
+			float dash1[] = {5.0f};
+		    BasicStroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
+		    g2.setStroke(dashed);
+
 		for(Point v2:vLoosers) {
-			g.drawRect(v2.x-5, v2.y-5, 30, 30);
+			f1 = (int) (v2.x / d2 - diametreBile / 2);
+			f2 = (int) (v2.y / d1 - diametreBile / 2);
+			
+			g2.drawRect(f2+10, f1+10, 30, 30);
 		}
 	}
 }
