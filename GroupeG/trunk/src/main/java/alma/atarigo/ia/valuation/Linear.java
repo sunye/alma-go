@@ -100,13 +100,13 @@ public class Linear extends AbstractValuation implements Valuation {
      */
     private void initValuations(CellContent content){
     	valuations.add(new Border(content));
-    	coefs.add(3.);
+    	coefs.add(1.);
 
     	valuations.add(new LibertyVal(content));
-    	coefs.add(15d);
+    	coefs.add(1.);
 
     	valuations.add(new TerritoryVal(content));
-    	coefs.add(30d);
+    	coefs.add(1.);
 
     }
 

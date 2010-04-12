@@ -10,7 +10,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
 
@@ -23,6 +22,7 @@ import alma.atarigo.EndOfGameEvent;
 import alma.atarigo.EndOfGameListener;
 import alma.atarigo.GobanModel;
 import alma.atarigo.Level;
+import alma.atarigo.Player;
 import alma.atarigo.RuleViolationEvent;
 import alma.atarigo.RuleViolationListener;
 import alma.atarigo.Territory;
@@ -83,11 +83,23 @@ public class GameView extends JXPanel implements CellListener,RuleViolationListe
         toolBar.setFloatable(false);
         toolBar.setBorderPainted(false);
 
-        banPanel = new BanPanel(game.getGoban());
+        Player kuro = game.getKuro();
+        Player shiro = game.getShiro();
+        GobanModel model = game.getGoban();
+
+        banPanel = new BanPanel(model);
         banPanel.add(toolBar,BorderLayout.PAGE_START);
 
-        kuroPanel = new PlayerPanel(banPanel,game.getKuro(),"Kuro");
-        shiroPanel = new PlayerPanel(banPanel,game.getShiro(),"Shiro");
+        
+        kuroPanel = new PlayerPanel(banPanel,kuro,"Kuro");
+        kuroPanel.updateScore(model.getKuroCount());
+        kuroPanel.updateCapture(model.getKuroPrisoners().size());
+        kuroPanel.updateObjective(kuro.getObjective());
+        
+        shiroPanel = new PlayerPanel(banPanel,shiro,"Shiro");
+        shiroPanel.updateScore(model.getShiroCount());
+        shiroPanel.updateCapture(model.getShiroPrisoners().size());
+        shiroPanel.updateObjective(shiro.getObjective());
         
         add(kuroPanel,BorderLayout.WEST);
         add(banPanel,BorderLayout.CENTER);
