@@ -460,7 +460,7 @@ public class FonctionEvaluation {
 	 * @param  le tour de la personne a jouer et les coordonnes de la case pour laquelle on veut savoir
 	 *         si il est permis d'y inserer une pierre
 	 * @return  vrai si il est permis ou faux sinon
-	 * 
+	 * int[]
 	 */
 	public static  boolean permissible(int tour, int coordX, int coordY) {
 		/* si il y au moins une place libre autour de lui, c'est permissible
@@ -542,8 +542,9 @@ public class FonctionEvaluation {
 
 			nProf = nProfSuivant; // pour le profondeur suivant
 		} // fin for boucle profondeur
-
-		return cSuivant;
+		
+		int[] cpCSuivant = cSuivant;// on retourne une copie pour respecter une regle de sunsecure
+		return cpCSuivant;
 	}
 
 
