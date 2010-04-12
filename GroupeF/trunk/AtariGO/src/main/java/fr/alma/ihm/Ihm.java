@@ -290,7 +290,6 @@ public class Ihm {
 						 	 case VALIDE : {
 						 		
 						 		 mettrePion(position); 
-												
 								 position = jouerMachine(grille);
 																 								 
 								 int RMachine = SimulerJeu(grille, position, t);
@@ -299,35 +298,35 @@ public class Ihm {
 								 else {
 									 	miseAjourGrille(miseAjourGrilleApresCapture(grille));
 									 	JOptionPane.showMessageDialog(jFrame, "Capture éffectué ! Vous avez perdu !");
-									 	 BInterrompre.setEnabled(false);
-									 	 IInterrompre.setEnabled(false);
-											Grille.setEnabled(false);
-											BNouveau.setEnabled(true);
-											INouveau.setEnabled(true);
-											jeuEnCours = false;
-											effacerGrille();
+									 	BInterrompre.setEnabled(false);
+									 	IInterrompre.setEnabled(false);
+										//Grille.setEnabled(false);
+										BNouveau.setEnabled(true);
+										INouveau.setEnabled(true);
+										jeuEnCours = false;
+										//effacerGrille();
 								 }
 								 break;						 
 								}
 							 
 							 case CAPTURE : {
-								 miseAjourGrille(miseAjourGrilleApresCapture(grille));
-								 JOptionPane.showMessageDialog(jFrame, "Capture éffectué ! Bravo vous avez gagner");
-								 BInterrompre.setEnabled(false);
-								 IInterrompre.setEnabled(false);
-									Grille.setEnabled(false);
-									BNouveau.setEnabled(true);
-									INouveau.setEnabled(true);
-									jeuEnCours = false;
-									effacerGrille();
+										miseAjourGrille(miseAjourGrilleApresCapture(grille));
+										JOptionPane.showMessageDialog(jFrame, "Capture éffectué ! Bravo vous avez gagner");
+										BInterrompre.setEnabled(false);
+										IInterrompre.setEnabled(false);
+										//Grille.setEnabled(false);
+										BNouveau.setEnabled(true);
+										INouveau.setEnabled(true);
+										jeuEnCours = false;
+										//effacerGrille();
 								 break;
 								}
 							 
 							 case SUICIDE : {
 								 JOptionPane.showMessageDialog(jFrame,
-										 "Le suicide est intérdit, veuillez choisir une autre case  ",
-										 "Suicide interdit", 
-										 JOptionPane.WARNING_MESSAGE);
+										"Le suicide est intérdit, veuillez choisir une autre case  ",
+										"Suicide interdit", 
+										JOptionPane.WARNING_MESSAGE);
 								 break;
 								}
 								 
@@ -359,8 +358,7 @@ public class Ihm {
 			jPanel.add(getPGrille(), null);
 			jPanel.add(getPAtarigo(), null);
 			jPanel.add(getPJeu(), null);
-			
-			
+						
 			}
 		return jPanel;
 	}
