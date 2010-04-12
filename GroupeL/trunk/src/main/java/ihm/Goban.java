@@ -46,7 +46,7 @@ public class Goban extends JPanel{
         
         private Coordinates lastMove;
         
-    	private Integer playTimeIA;
+    	private Integer playTimeIA = 10;
 
         
         // fenetre dans lequel sera afficher la partie

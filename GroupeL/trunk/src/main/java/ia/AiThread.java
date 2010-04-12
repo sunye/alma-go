@@ -102,7 +102,7 @@ public class AiThread{
 		meilleur = NOTE_MIN-1;
 		
 		Coordinates toPlay = new Coordinates();
-		int bestNote = NOTE_MIN-1;
+		int bestNote = NOTE_MIN;
 		
 		/* We run the recursive function on every free square of the plateau */	
 		List<Coordinates> emptySquares = plateau.getFreeCoord();
@@ -113,6 +113,11 @@ public class AiThread{
 			if(plateau.moveValid(coordTmp, color)){
 			
 				note = createNode(coordTmp, 1, NOTE_MIN, NOTE_MAX);
+				
+				/*if(note == NOTE_MAX){
+					System.out.println("note max ->" + note);
+					return coordTmp;
+				}*/
 					
 				//System.out.print(">"+coordTmp.toString()+":"+note);
 				if (note>bestNote)
@@ -123,7 +128,8 @@ public class AiThread{
 				}
 			}
 		}
-
+		
+		System.out.println(bestNote);
 		return toPlay; 
 	}	
 	/*
@@ -163,17 +169,25 @@ public class AiThread{
 		/* We simulate that we put a token of the right color at coord */
 		hitSimul(coord, depth);
 		
-		Integer eval = evaluation();
+		Integer eval = evaluation(depth);
 		
+		if((eval == NOTE_MAX) && (depth == 1)){
+			//System.out.println("(" + depth + ")" + coord.getX() + ", " + coord.getY() + " : " + "coup gagnant");
+			plateau.removePawn(coord);
+			return eval;
+		}
+		
+		if((eval == NOTE_MIN) && (depth == 1)){
+			//System.out.println("(" + depth + ")" + coord.getX() + ", " + coord.getY() + " : " + "coup perdant");
+			plateau.removePawn(coord);
+			return eval;
+		}
+			
 		if(!(Calendar.getInstance().getTimeInMillis() - dateDebut > playTimeIA)) {
 			
 			if ((depth == profondeur) && (!moveForced)){
 				/* We are in a leaf */
 				note = eval;
-				
-				if(note>meilleur){
-					meilleur = note;
-				}
 				
 				plateau.removePawn(coord);
 				
@@ -186,30 +200,26 @@ public class AiThread{
 					
 					if ((depth % 2) != 0)
 					{
+						
 						note = NOTE_MAX;
 						
 						/* The depth is not pair : we search for the minimum note value of all its sons. */
 						/* Here, we create its sons when we encounter an empty square */
 						
-						if(eval == NOTE_MAX){
-							plateau.removePawn(coord);
-							return eval;
-						}else{
-							for(Coordinates coordTmp : emptySquares){
-							
-								if(plateau.moveValid(coordTmp, color.invColor())){
-									
-									note = Math.min(note, createNode(coordTmp, depth+1, alpha, beta));
+						for(Coordinates coordTmp : emptySquares){
+						
+							if(plateau.moveValid(coordTmp, color.invColor())){
 								
-									if (alpha >= note)
-									{
-										/* We don't need to go further, so we stop here */
-										plateau.removePawn(coord);
-										return note;							
-									}	
-									
-									beta = Math.min(beta, note);
-								}
+								note = Math.min(note, createNode(coordTmp, depth+1, alpha, beta));
+								
+								if (alpha >= note)
+								{
+									/* We don't need to go further, so we stop here */
+									plateau.removePawn(coord);
+									return note;							
+								}	
+								
+								beta = Math.min(beta, note);
 							}
 						}
 		
@@ -224,7 +234,7 @@ public class AiThread{
 							if(plateau.moveValid(coordTmp, color)){
 								
 								note = Math.max(note, createNode(coordTmp, depth+1, alpha, beta));
-										
+								
 								if (beta <= note)
 								{
 									/* We don't need to go further, so we stop here */
@@ -261,15 +271,18 @@ public class AiThread{
 	 * @param depth
 	 * @return
 	 */
-	private Integer evaluation()
+	private Integer evaluation(Integer depth)
 	{
 		Integer note=0;
-		if (plateau.isWinner(color)){
-			note = NOTE_MAX;
-		}else if (derniereLiberte(color)!=0){
-			note = NOTE_MIN;
+		
+		if (((plateau.isWinner(color)))){
+			return NOTE_MAX;
+		}else if ((derniereLiberte(color)>0)){
+			return NOTE_MIN;
 		}else{
-			note = note + 1000 * derniereLiberte(color.invColor());
+			note = note + 10000 * derniereLiberte(color.invColor());
+			note = note + 10000 * ((plateau.isWinner(color)?1:0));
+			note = note - 10000 * (derniereLiberte(color));
 			
 			note = note + 200 * tailleGroupe(color);
 			note = note - 100 * tailleGroupe(color.invColor());
@@ -278,12 +291,13 @@ public class AiThread{
 			note = note - 100 * plateau.getGroups(color.invColor()).size();
 			
 			note = note + 200 * nbLiberte(color);
-			note = note - 200 * nbLiberte(color.invColor());
+			note = note - 100 * nbLiberte(color.invColor());
 			
-			// add a little random value
-			Double rand = Math.random()*10;
-			note = note + rand.intValue();
 		}
+		
+		// add a little random value
+		Double rand = Math.random()*10;
+		note = note + rand.intValue();
 		
 		return note;
 	}

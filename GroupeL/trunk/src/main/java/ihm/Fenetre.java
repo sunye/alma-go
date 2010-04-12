@@ -93,24 +93,24 @@ public class Fenetre extends JFrame implements ActionListener {
             
             timeIA.setBounds(this.getWidth()-140,this.getHeight()-90,120,30);
     		
-    		timeIA.addItem("10");
-    		timeIA.addItem("8");
-    		timeIA.addItem("6");
-    		timeIA.addItem("4");
-    		timeIA.addItem("2");
+    		timeIA.addItem("10 s");
+    		timeIA.addItem("8 s");
+    		timeIA.addItem("6 s");
+    		timeIA.addItem("4 s");
+    		timeIA.addItem("2 s");
     		
     		timeIA.addItemListener(new ItemListener(){
 				public void itemStateChanged(ItemEvent e) {
 					// TODO Auto-generated method stub
-					if (e.getItem().equals("2")) {
+					if (e.getItem().equals("2 s")) {
 						Pan.setPlayTimeIA(2);
-					} else if (e.getItem().equals("4")) {
+					} else if (e.getItem().equals("4 s")) {
 						Pan.setPlayTimeIA(4);
-					} else if (e.getItem().equals("6")) {
+					} else if (e.getItem().equals("6 s")) {
 						Pan.setPlayTimeIA(6);
-					} else if (e.getItem().equals("8")) {
+					} else if (e.getItem().equals("8 s")) {
 						Pan.setPlayTimeIA(8);
-					} else if (e.getItem().equals("10")) {
+					} else if (e.getItem().equals("10 s")) {
 						Pan.setPlayTimeIA(10);
 					}
 				}
