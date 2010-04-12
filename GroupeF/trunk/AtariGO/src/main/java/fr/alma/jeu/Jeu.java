@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import fr.alma.ia.Ia;
 import fr.alma.ihm.Ihm.Tour;
+import fr.alma.jeu.Pion.Couleur;
 import fr.alma.structure.Arbre;
 import fr.alma.structure.Noeud;
 
@@ -445,7 +446,7 @@ public class Jeu {
 					
 					setVoisins(new ArrayList<Pion>());
 					if (prise){
-						grille.Contenu[x][y]=pion;
+						//grille.Contenu[x][y]=pion;
 						System.out.println("prise");
 						return CAPTURE;
 					}
@@ -515,14 +516,14 @@ public class Jeu {
 				}
 				setVoisins(new ArrayList<Pion>());
 				if (prise){
-					grille.Contenu[x][y]=pion;
+					//grille.Contenu[x][y]=pion;
 					//System.out.println("Prise");
 					return CAPTURE;
 				}
 					
 				
 				else{
-					grille.Contenu[x][y]=pion;
+					//grille.Contenu[x][y]=pion;
 					return VALIDE;
 					}
 				}
@@ -531,7 +532,7 @@ public class Jeu {
 			
 			
 			else{
-				//System.out.println("erreur");
+				System.out.println("erreur");
 				setVoisins(new ArrayList<Pion>());
 				
 				return INVALIDE;
@@ -546,22 +547,176 @@ public class Jeu {
 	 * @param g
 	 * @return
 	 */
+	public static int min=0;
 	public static Point jouerMachine(Grille g) {
 		
 			
 		Arbre a = Ia.constuireArbre(g);
 		Point p = a.remplirArbre();
 		ArrayList<Noeud> listeF = a.racine.listeFils;
-		a.getCoupsJouer();
-		
+		ArrayList<Pion> cj=getCoupsJouer(g);
+		ArrayList<Pion> cjL=new ArrayList<Pion>();
+		System.out.println(cj.size());
+		if (cj.size()<10){
+			//int min=getLiberte(g, cj.get(0).position, cj.get(0).couleur);
+			setVoisins(new ArrayList<Pion>());
+			System.out.println("initialisation des voisins");
+			for(Pion pion:cj){
+				if((getLiberteFixe(g, pion.position)>0))
+					cjL.add(pion);
+			}
+			System.out.println(cjL.size());
+			min=getLiberteFixe(g,cjL.get(0).position);System.out.println(min);
+			for(Pion pion:cjL){
+				if(getLiberteFixe(g,pion.position)<=min){
+					min=getLiberteFixe(g,pion.position);
+					if(pion.position.x>0)
+						if((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
+							p=new Point(pion.position.x-1,pion.position.y);
+					if(pion.position.x<8)
+						if((g.Contenu[pion.position.x+1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
+							p=new Point(pion.position.x+1,pion.position.y);
+					if(pion.position.y>0)
+						if((g.Contenu[pion.position.x][pion.position.y-1]).couleur.equals(Pion.Couleur.NULL))
+							p=new Point(pion.position.x,pion.position.y-1);
+					if(pion.position.y<8)
+						if((g.Contenu[pion.position.x][pion.position.y+1]).couleur.equals(Pion.Couleur.NULL))
+							p=new Point(pion.position.x,pion.position.y+1);
+					
+				}
+					
+			}
+			
+		}
+		else{
 		for(Noeud n:listeF){
-			for(Pion pion:a.cj){
-				if((EstVoisin(n.getCoup(),pion))&& (n.getNote()==a.racine.getNote()))
+			System.out.println(n.getNote());
+			for(Pion pion:cj){
+				if((EstVoisin(n.getCoup(),pion))&& (n.getNote()==a.racine.getNote())&&(pion.couleur.equals(Pion.Couleur.BLANC)));
 						p = n.getCoup().position;
 				
 			}
 		}
+	}
 		return p;
+	}
+	
+	
+	
+
+	private static int getLiberteFixe(Grille g, Point position) {
+		// TODO Auto-generated method stub
+		int lib=0;
+		if(position.x>0)
+			if((g.Contenu[position.x-1][position.y]).couleur.equals(Pion.Couleur.NULL))
+				lib++;
+		if(position.x<8)
+			if((g.Contenu[position.x+1][position.y]).couleur.equals(Pion.Couleur.NULL))
+				lib++;
+		if(position.y>0)
+			if((g.Contenu[position.x][position.y-1]).couleur.equals(Pion.Couleur.NULL))
+				lib++;
+		if(position.y<8)
+			if((g.Contenu[position.x][position.y+1]).couleur.equals(Pion.Couleur.NULL))
+				lib++;
+		return lib;
+	}
+
+
+	private static Point voisinExistantDeliberteMin(Grille g, Pion pion) {
+		// TODO Auto-generated method stub
+		ArrayList<Pion> Listevoisins=DeterminerVoisins(g, pion);
+		int min = 1;
+		Point p=null;
+		if(Listevoisins.size()>1){
+			Listevoisins.remove(pion);
+			System.out.println(Listevoisins.size());
+		for(Pion pl:Listevoisins){
+			if((getLiberte(g, pl.position, pl.couleur)>0)&&(!existN(g, pl.position.x, pl.position.y, Pion.Couleur.BLANC))&&(!existN(g, pl.position.x, pl.position.y, Pion.Couleur.NOIR))&&(pl.position.x>0)){
+				min=getLiberte(g, new Point(pl.position.x-1,pl.position.y), pl.couleur);
+				p=new Point(pl.position.x-1,pl.position.y);
+			}
+			if((getLiberte(g, pl.position, pl.couleur)>0)&&(!existS(g, pl.position.x, pl.position.y, Pion.Couleur.BLANC))&&(!existS(g, pl.position.x, pl.position.y, Pion.Couleur.NOIR))&&(pl.position.x<8))
+				if(min>getLiberte(g, new Point(pl.position.x+1,pl.position.y), pl.couleur)){
+					min=getLiberte(g, new Point(pl.position.x+1,pl.position.y), pl.couleur);
+					p=new Point(pl.position.x,pl.position.y);
+				}
+			if((getLiberte(g, pl.position, pl.couleur)>0)&&(!existO(g, pl.position.x, pl.position.y, Pion.Couleur.BLANC))&&(!existO(g, pl.position.x, pl.position.y, Pion.Couleur.NOIR))&&(pl.position.y>0));
+				if(min>getLiberte(g, new Point(pl.position.x,pl.position.y-1), pl.couleur)){
+					min=getLiberte(g, new Point(pl.position.x,pl.position.y-1), pl.couleur);
+					p=new Point(pl.position.x,pl.position.y-1);
+					
+				}
+			
+			if((getLiberte(g, pl.position, pl.couleur)>0)&&(!existE(g, pl.position.x, pl.position.y, Pion.Couleur.BLANC))&&(!existE(g, pl.position.x, pl.position.y, Pion.Couleur.NOIR))&&(pl.position.y<8));
+				if(min>getLiberte(g, new Point(pl.position.x,pl.position.y+1), pl.couleur)){
+					min=getLiberte(g, new Point(pl.position.x,pl.position.y+1), pl.couleur);
+					p=new Point(pl.position.x,pl.position.y+1);
+					
+				}
+			
+		}
+	}
+		else
+			if(pion.position.x>0)
+				p=new Point(pion.position.x-1,pion.position.y);
+			else 
+				if(pion.position.x<8)
+					p=new Point(pion.position.x+1,pion.position.y);
+				else
+					if(pion.position.y<8)
+						p=new Point(pion.position.x,pion.position.y+1);
+					else
+						p=new Point(pion.position.x,pion.position.y-1);
+		return p;
+	}
+
+
+	
+	
+	public static ArrayList<Pion> DeterminerVoisins(Grille g,Pion p){
+		Pion.Couleur c;
+		if(g.Contenu[p.position.x][p.position.y].equal(new Pion(p.position)))
+			return null;
+		else{
+			if(voisins.size()!=0){
+				if (!(voisins.contains(p))) 
+					voisins.add(p);
+			}
+			else
+				voisins.add(p);
+			if(p.couleur.equals(Pion.Couleur.BLANC))
+				c=Pion.Couleur.NOIR;
+			else 
+				c=Pion.Couleur.BLANC;
+		if ((existN(g,p.position.x,p.position.y,c)))
+			DeterminerVoisins(g,g.Contenu[p.position.x-1][p.position.y]);
+		if ((existS(g,p.position.x,p.position.y,c)))
+			DeterminerVoisins(g,g.Contenu[p.position.x+1][p.position.y]);
+		if ((existO(g,p.position.x,p.position.y,c)))
+			DeterminerVoisins(g,g.Contenu[p.position.x][p.position.y-1]);
+		if ((existE(g,p.position.x,p.position.y,c)))
+			DeterminerVoisins(g,g.Contenu[p.position.x-1][p.position.y+1]);
+		
+		return voisins;
+		}
+		//System.out.println(voisins.toString());
+		//return voisins;
+		
+		}
+	
+	public static ArrayList<Pion> getCoupsJouer(Grille g){
+	//	System.out.println("Appelé");
+		ArrayList<Pion> cj = new ArrayList<Pion>();
+		for(int i=0;i<9;i++) 
+       	 for(int j=0;j<9;j++) {
+       		if((g.Contenu[i][j].couleur.equals(Couleur.NOIR))) {
+       			cj.add(g.Contenu[i][j]); 
+       		System.out.println("Coup jouer : "+g.Contenu[i][j].position);}
+       	 }
+		return cj;
+                
+		 
 	}
 	private static boolean EstVoisin(Pion coup, Pion pion) {
 		// TODO Auto-generated method stub

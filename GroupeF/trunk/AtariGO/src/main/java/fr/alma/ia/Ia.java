@@ -187,6 +187,9 @@ public class Ia {
 		ArrayList<Point> listeGB=determinerGroupesBlanc(g);
 		//System.out.println(listeGB.size());
 		//System.out.println(listeGN.size());
+		//System.out.println("liste des rep noir: "+listeGN+"de taille"+listeGN.size());
+		//System.out.println("liste des rep noir: "+listeGB+"de taille"+listeGB.size());
+		
 		int minB,minN;
 		if (listeGB.size()==0)
 			minB=0;
