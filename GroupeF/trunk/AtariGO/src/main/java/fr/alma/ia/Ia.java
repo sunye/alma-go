@@ -15,7 +15,7 @@ import static fr.alma.jeu.Jeu.getLiberte;
  */
 public class Ia {
 	
-	public static ArrayList<Point> voisins = new ArrayList<Point>();
+	public static ArrayList<Point> voisins=new ArrayList<Point>();
 	
 	
 	/**
@@ -23,6 +23,8 @@ public class Ia {
 	 * @param grille la grille a traité
 	 * @return Arbre construit
 	 */
+	
+	
 	public static Arbre constuireArbre(Grille grille){
 		
 		Arbre a = new Arbre(grille);
@@ -31,13 +33,16 @@ public class Ia {
 				
 	}
 	
-		
+	/**
+	 * Fonction qui evalue un arbre
+	 * @param n grille correspondant à un état du jeu dans une feille de l'arbre
+	 * @return la valeur de l'evaluation
+	 */
+	
+	
 	// contrairement aux test d'existance des pions advesrse comme voisins dans la classe Jeu
 	//ici on teste plutot le voisinnage d'un pion de même couleur  
 	
-	/**
-	 * 
-	 */
 	public static boolean existN(Grille grille,int x,int y,Pion.Couleur c){
 		if (x>0)
 			//return ((grille.Contenu[x-1][y]).couleur.equals(c));
@@ -54,14 +59,6 @@ public class Ia {
 			return false;
 	}
 
-	/**
-	 * 
-	 * @param grille
-	 * @param x
-	 * @param y
-	 * @param c
-	 * @return
-	 */
 	public static boolean existS(Grille grille,int x,int y,Pion.Couleur c){
 		if (x<8)
 			//return ((grille.Contenu[x+1][y]).couleur.equals(c));
@@ -78,14 +75,6 @@ public class Ia {
 			return false;
 	}
 
-	/**
-	 * 
-	 * @param grille
-	 * @param x
-	 * @param y
-	 * @param c
-	 * @return
-	 */
 	public static boolean existE(Grille grille,int x,int y,Pion.Couleur c){
 		if (y<8)
 			//return ((grille.Contenu[x][y+1]).couleur.equals(c));
@@ -102,14 +91,6 @@ public class Ia {
 			return false;
 	}
 
-	/**
-	 * 
-	 * @param grille
-	 * @param x
-	 * @param y
-	 * @param c
-	 * @return
-	 */
 	public static boolean existO(Grille grille,int x,int y,Pion.Couleur c){
 
 		if (y>0)
@@ -122,14 +103,10 @@ public class Ia {
 				else
 					return false;
 		else
-			return false;
+			return false; 
 	}
 
-	/**
-	 * 
-	 * @param g
-	 * @param p
-	 */
+	
 	public static void DeterminerVoisins(Grille g,Point p){
 	if(g.Contenu[p.x][p.y].equal(new Pion(p)))
 		return;
@@ -153,12 +130,6 @@ public class Ia {
 	//return voisins;
 	
 	}
-	
-	/**
-	 * 
-	 * @param g
-	 * @return
-	 */
 	private static ArrayList<Point> determinerGroupesBlanc(Grille g){
 		ArrayList<Point> listeG=new ArrayList<Point>();
 		for(int i=0;i<9;i++)
@@ -181,11 +152,6 @@ public class Ia {
 				
 	}
 	
-	/**
-	 * 
-	 * @param g
-	 * @return
-	 */
 	private static ArrayList<Point> determinerGroupesNoir(Grille g){
 		ArrayList<Point> listeG=new ArrayList<Point>();
 		for(int i=0;i<9;i++)
@@ -206,12 +172,6 @@ public class Ia {
 
 	}
 	
-	/**
-	 * 
-	 * @param g
-	 * @param listeG
-	 * @return
-	 */
 	private static int determineMin(Grille g,ArrayList<Point> listeG){
 		int min=getLiberte(g, listeG.get(0), g.Contenu[listeG.get(0).x][listeG.get(0).y].couleur);
 		for(int k=0;k<listeG.size();k++){
@@ -222,12 +182,6 @@ public class Ia {
 		}
 		return min;
 	}
-	
-	/**
-	 * 
-	 * @param g
-	 * @return
-	 */
 	public static int fonctionEvaluation(Grille g){
 		ArrayList<Point> listeGN=determinerGroupesNoir(g);
 		ArrayList<Point> listeGB=determinerGroupesBlanc(g);

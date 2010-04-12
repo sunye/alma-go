@@ -11,6 +11,8 @@
 
 package fr.alma.main;
 import fr.alma.ihm.Ihm;
+import fr.alma.jeu.Grille;
+import fr.alma.structure.Arbre;
 
 /**
  * Classe du main
@@ -23,8 +25,21 @@ import fr.alma.ihm.Ihm;
 	 */
 	public static void main(String[] args) {
 		
-		new Ihm();
-		
+		//new Ihm();
+		 Grille g = new Grille(); 
+         
+         Arbre a = new Arbre(g); 
+                   
+         long begin = System.currentTimeMillis(); 
+         a.remplirArbre(); 
+         long end = System.currentTimeMillis(); 
+         float time = ((float) (end-begin)) ; 
+          
+         //a.ParcoursProf(); 
+         //a.AffichageNA(); 
+             
+         System.out.println("Temp d'execution : "+time/1000+" secondes"); 
+
 	}
 
 }
