@@ -38,10 +38,12 @@ public class SunTsu {
 	
 	
 	public SunTsu(GoBan goier){
-		this.situation=goier;
+		this.situation=new GoBan();
 		this.diff=Difficulte.Debutant;
 		this.coupJouer= new HashSet<Coup>();
-		play= new CoordonneeIA(0, 0);
+		play= new CoordonneeIA(null,null);
+		
+		
 	}
 	
 	public Difficulte getDiff() {
@@ -76,13 +78,14 @@ public class SunTsu {
 	public Coordonnee getPlay() {
 		synchronized (play) {
 			
-			if (!play.isTermine()) {
+			while (!play.isTermine()) {
 				try {
 					play.wait();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
+			
 			Coordonnee result= new Coordonnee(play.getX(), play.getY());
 			play.setTermine(false);
 			return result;
@@ -91,16 +94,17 @@ public class SunTsu {
 	
 	public void terminerTraitement(){
 		
-		for (Coup cp: coupJouer){
-			situation.retirerPion(cp.getPosition(), cp.getCoulp());
+		
+		synchronized (situation) {
+			for (Coup cp: coupJouer){
+				situation.retirerPion(cp.getPosition(), cp.getCoulp());
+			}
 		}
 		
-		
-		play.setTermine(true);
 		synchronized (play) {
+			play.setTermine(true);
 			play.notify();
 		} 
-		play.setTermine(false);
 	}
 
 	private Coup alphaBeta(int profondeurmarx, int profondeur, Coup precedentResult, CouleurPion ajouer){
@@ -117,6 +121,9 @@ public class SunTsu {
 				}
 				if(typ!=TypeCoup.NONVALID){
 					situation.addPion(coodCoup, ajouer);
+					if( play.isCoordinateEmpty() && ajouer==coul){
+						play.setCoordinate(coodCoup);
+					}
 					coupJouer.add(coupActuel);
 					if ( profondeur ==1){
 										
