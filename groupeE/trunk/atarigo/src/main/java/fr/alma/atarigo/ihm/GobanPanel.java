@@ -37,7 +37,6 @@ public final class GobanPanel extends JPanel {
     private final int precision = 4;
     private MouseAdapter mouseL;
     private GameManager controleur;
-    private Fenetre fenetre;
 
     public GobanPanel() {
         super();
@@ -111,7 +110,7 @@ public final class GobanPanel extends JPanel {
         if (controleur.isEnd()) {
             // TODO: display the winner.
             removeMouseListener(mouseL);
-            fenetre.finJeu(controleur);
+            controleur.dialogueFinJeu();
         }
     }
 

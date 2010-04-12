@@ -51,7 +51,7 @@ public class Fenetre extends JFrame {
          * On ajoute le GobanPanel dans la fenetre principale
          */
         add(pan);
-        controleur = new GameManager(pan);
+        controleur = new GameManager(pan, this);
 
 
         /**
@@ -114,11 +114,11 @@ public class Fenetre extends JFrame {
 
     }
 
-    public void finJeu(GameManager gameMan) {
+    public void finJeu() {
         JOptionPane jop = new JOptionPane();
             StringBuilder strb = new StringBuilder();
             strb.append("Le grand gagnant de cette partie est : Joueur ");
-            if (gameMan.getGame().getCurrentPlayer() == PionVal.BLANC)
+            if (controleur.getGame().getCurrentPlayer() == PionVal.BLANC)
                 strb.append("Noir !");
             else
                 strb.append("Blanc !");
