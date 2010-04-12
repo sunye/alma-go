@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -38,6 +37,7 @@ public final class GobanPanel extends JPanel {
     private final int precision = 4;
     private MouseAdapter mouseL;
     private GameManager controleur;
+    private Fenetre fenetre;
 
     public GobanPanel() {
         super();
@@ -111,14 +111,7 @@ public final class GobanPanel extends JPanel {
         if (controleur.isEnd()) {
             // TODO: display the winner.
             removeMouseListener(mouseL);
-            JOptionPane jop = new JOptionPane();
-            StringBuilder strb = new StringBuilder();
-            strb.append("Le grand gagnant de cette partie est : Joueur ");
-            if (controleur.getGame().getCurrentPlayer().toString().equals("WHITE")) 
-                strb.append("Noir !");
-            else
-                strb.append("Blanc !");
-            jop.showMessageDialog(null, strb, "Partie terminée !", JOptionPane.INFORMATION_MESSAGE);
+            fenetre.finJeu(controleur);
         }
     }
 
