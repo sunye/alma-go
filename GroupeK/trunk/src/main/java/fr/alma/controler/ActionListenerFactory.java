@@ -5,25 +5,28 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
+/**
+ * 
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
+ *	Class used to get action listener
+ *
+ */
 public class ActionListenerFactory {
-
+	/**
+	 * The controler which receive order from the listener provided form this class
+	 */
 	private Controler controler;
 	
+	/**
+	 * Constructor with the controler that is required
+	 * @param control
+	 */
 	public ActionListenerFactory(Controler control){
 		this.controler= control;
 	}
 	
 
-	public ActionListener modeAi(){
-		
-		return new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				controler.setModeAiVsHuman();
-				
-			}
-		};
-	}
+
 	
 	public ActionListener newGameListener(){
 		return new ActionListener() {
@@ -50,7 +53,7 @@ public class ActionListenerFactory {
 		
 		return  new MouseAdapter() {
 			 public void mouseClicked(MouseEvent e) {
-		          controler.clicBoard(e.getX(), e.getY());
+				   controler.clicBoard(e.getX(), e.getY());
 		        }
 		};
 	}
