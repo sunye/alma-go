@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -86,7 +87,7 @@ public final class GobanPanel extends JPanel {
         int col = Math.max(evt.getX() - debutX, 0) / coteCase; // On récupère
 
         if (resteX > ((precision - 1) * coteCase / precision)) {
-            col += (col == Goban.getTaille()-1) ? 0 : 1;
+            col += (col == Goban.getTaille() - 1) ? 0 : 1;
         } else if (resteX > (coteCase / 3)) {
             return;
         }
@@ -96,7 +97,7 @@ public final class GobanPanel extends JPanel {
         int lin = Math.max(evt.getY() - debutY, 0) / coteCase; // On récupère
 
         if (resteY > ((precision - 1) * coteCase / precision)) {
-            lin += (lin == Goban.getTaille()-1) ? 0 : 1;
+            lin += (lin == Goban.getTaille() - 1) ? 0 : 1;
         } else if (resteY > (coteCase / 3)) {
             return;
         }
@@ -110,6 +111,14 @@ public final class GobanPanel extends JPanel {
         if (controleur.isEnd()) {
             // TODO: display the winner.
             removeMouseListener(mouseL);
+            JOptionPane jop = new JOptionPane();
+            StringBuilder strb = new StringBuilder();
+            strb.append("Le grand gagnant de cette partie est : Joueur ");
+            if (controleur.getGame().getCurrentPlayer().toString().equals("WHITE")) 
+                strb.append("Noir !");
+            else
+                strb.append("Blanc !");
+            jop.showMessageDialog(null, strb, "Partie terminée !", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
