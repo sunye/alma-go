@@ -26,7 +26,7 @@ class NewGameAction extends MyAction {
  */
  public NewGameAction(MyApplication myApplication) {
 	super("Nouvelle partie", 
-	      new ImageIcon(myApplication.getClass().getResource("../resources/images/nouveau.png")),
+	      new ImageIcon(ImageIcon.class.getClassLoader().getSystemResource("resources/images/nouveau.png")),
 	      "Lance une nouvelle partie",
 	      KeyEvent.VK_N,
 	      KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK),

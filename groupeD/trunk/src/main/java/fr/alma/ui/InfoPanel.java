@@ -59,14 +59,14 @@ public class InfoPanel extends JPanel {
         add(challengeTitle, gBC);
 
         capturedBlack = new JLabel("0");
-        capturedBlack.setIcon(new ImageIcon(getClass().getResource("/fr/alma/resources/images/black-stone.gif")));
+        capturedBlack.setIcon(new ImageIcon(ImageIcon.class.getClassLoader().getSystemResource("resources/images/black-stone.gif")));
         gBC.gridx = 0;
         gBC.gridy = 2;
         gBC.fill = gBC.HORIZONTAL;
         add(capturedBlack, gBC);
         
 		capturedWhite = new JLabel("0");
-		capturedWhite.setIcon(new ImageIcon(getClass().getResource("/fr/alma/resources/images/white-stone.gif")));
+		capturedWhite.setIcon(new ImageIcon(ImageIcon.class.getClassLoader().getSystemResource("resources/images/white-stone.gif")));
 		gBC.gridx = 2;
         gBC.gridy = 2;
         gBC.ipady = 40;
