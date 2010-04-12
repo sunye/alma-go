@@ -94,7 +94,7 @@ public class Fenetre extends JFrame {
 
             public void actionPerformed(ActionEvent arg0) {
                 JOptionPane jop = new JOptionPane();
-                jop.showMessageDialog(null, "Bla bla bla...", "À propos", JOptionPane.INFORMATION_MESSAGE);
+                jop.showMessageDialog(null, "Jeu de Go, version Atari, par Julien Durillon et Clotilde Massot.", "À propos", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         this.a_propos.add(propos);
