@@ -6,6 +6,7 @@
 package fr.alma.atarigo.ihm;
 
 import fr.alma.atarigo.GameManager;
+import fr.alma.atarigo.utils.PionVal;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,7 +36,7 @@ public class Fenetre extends JFrame {
     //Panel représentant le goban
     private GobanPanel pan;
     private boolean sendData;
-    private GameManager gaman;
+    private GameManager controleur;
 
     public Fenetre(String s) {
 
@@ -50,7 +51,7 @@ public class Fenetre extends JFrame {
          * On ajoute le GobanPanel dans la fenetre principale
          */
         add(pan);
-        gaman = new GameManager(pan);
+        controleur = new GameManager(pan);
 
 
         /**
@@ -60,7 +61,7 @@ public class Fenetre extends JFrame {
         item1.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
-                OptionWindow ow = new OptionWindow(null, "Choisissez votre couleur !", true, gaman);
+                OptionWindow ow = new OptionWindow(null, "Choisissez votre couleur !", true, controleur);
             }
         });
         this.nouv.add(item1);
@@ -69,7 +70,7 @@ public class Fenetre extends JFrame {
         item2.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
-                gaman.twoPlayers();
+                controleur.twoPlayers();
             }
         });
         this.nouv.add(item2);
@@ -111,5 +112,16 @@ public class Fenetre extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 
+    }
+
+    public void finJeu(GameManager gameMan) {
+        JOptionPane jop = new JOptionPane();
+            StringBuilder strb = new StringBuilder();
+            strb.append("Le grand gagnant de cette partie est : Joueur ");
+            if (gameMan.getGame().getCurrentPlayer() == PionVal.BLANC)
+                strb.append("Noir !");
+            else
+                strb.append("Blanc !");
+            jop.showMessageDialog(null, strb, "Partie terminée !", JOptionPane.INFORMATION_MESSAGE);
     }
 }
