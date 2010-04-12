@@ -593,6 +593,7 @@ public class Jeu {
 	
 	public static Point jouerMachine(Grille g) {
 		
+	System.out.println("dans jouermachine");
 			
 		Arbre a = Ia.constuireArbre(g);
 		Point p = a.remplirArbre();
@@ -804,7 +805,9 @@ public class Jeu {
 	
 	public static ArrayList<Pion> LpionsCapture=new ArrayList<Pion>();
 	public static void DeterminerVoisinsG(Grille g,Pion p){
-		LpionsCapture.add(p);
+		if(!(LpionsCapture.contains(p))){
+			LpionsCapture.add(p);
+		
 		if((p.position.x>0))
 			if((p.couleur.equals(g.Contenu[p.position.x-1][p.position.y].couleur)))
 			DeterminerVoisinsG(g, g.Contenu[p.position.x-1][p.position.y]);
@@ -815,8 +818,9 @@ public class Jeu {
 			if (p.couleur.equals(g.Contenu[p.position.x][p.position.y-1].couleur))
 				DeterminerVoisinsG(g, g.Contenu[p.position.x][p.position.y-1]);
 		if((p.position.x<8))
-			if((p.couleur.equals(g.Contenu[p.position.x-1][p.position.y].couleur)))
+			if((p.couleur.equals(g.Contenu[p.position.x][p.position.y+1].couleur)))
 			DeterminerVoisinsG(g, g.Contenu[p.position.x][p.position.y+1]);
+		}
 	}
 	
 	
