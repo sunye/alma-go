@@ -25,6 +25,8 @@ import javax.swing.JButton;
 
 import fr.alma.jeu.Pion.Couleur;
 import fr.alma.jeu.Grille;
+import fr.alma.jeu.Jeu;
+
 import javax.swing.JDialog;
 import java.awt.Rectangle;
 import javax.swing.JComboBox;
@@ -295,7 +297,7 @@ public class Ihm {
 								 
 								 if(RMachine == VALIDE) mettrePion(position); 
 								 else {
-									 	miseAjourGrille(miseAjourGrilleApresCapture(grille, position));
+									 	miseAjourGrille(miseAjourGrilleApresCapture(grille));
 									 	JOptionPane.showMessageDialog(jFrame, "Capture éffectué ! Vous avez perdu !");
 									 	 BInterrompre.setEnabled(false);
 									 	 IInterrompre.setEnabled(false);
@@ -309,7 +311,7 @@ public class Ihm {
 								}
 							 
 							 case CAPTURE : {
-								 miseAjourGrille(miseAjourGrilleApresCapture(grille, position));
+								 miseAjourGrille(miseAjourGrilleApresCapture(grille));
 								 JOptionPane.showMessageDialog(jFrame, "Capture éffectué ! Bravo vous avez gagner");
 								 BInterrompre.setEnabled(false);
 								 IInterrompre.setEnabled(false);
@@ -865,22 +867,32 @@ public class Ihm {
 			jBOk.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 				
-						if(jCouleur.getSelectedItem()=="Blanc") t = Tour.BLANC;
-						else t = Tour.NOIR;
-						
-						effacerGrille();
-						for(int i=0;i<9;i++) 
-				       	 for(int j=0;j<9;j++) 
-				                grille.Contenu[i][j].couleur = Couleur.NULL; 
-						
 						jeuEnCours = true;
 						Grille.setEnabled(true);
 						BInterrompre.setEnabled(true);
 						IInterrompre.setEnabled(true);
 						BNouveau.setEnabled(false);
 						INouveau.setEnabled(false);
+						
+						effacerGrille();
+						for(int i=0;i<9;i++) 
+				       	 for(int j=0;j<9;j++) 
+				                grille.Contenu[i][j].couleur = Couleur.NULL; 
 							
 						jDialogNouveau.dispose();
+						
+						if(jCouleur.getSelectedItem()=="Blanc") {
+							 
+							 t = Tour.NOIR;
+							 
+							 Point position = Jeu.jouerMachine(grille);
+							 mettrePion(position); 
+						}
+						else {
+							t = Tour.NOIR;
+							
+						}
+											
 				}
 			});
 		}

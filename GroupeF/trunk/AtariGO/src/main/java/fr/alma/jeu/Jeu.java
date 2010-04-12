@@ -22,6 +22,8 @@ public class Jeu {
 	public static final int INVALIDE = 2;
 	public static final int CAPTURE = 3;
 	
+	public static int min = 0;
+	
 	public static ArrayList<Pion> voisins = new ArrayList<Pion>();
 	
 	/**
@@ -579,7 +581,7 @@ public class Jeu {
 	 * @param g
 	 * @return
 	 */
-	public static int min=0;
+	
 	public static Point jouerMachine(Grille g) {
 		
 			
@@ -643,7 +645,7 @@ public class Jeu {
 	 * @return
 	 */
 	private static int getLiberteFixe(Grille g, Point position) {
-		// TODO Auto-generated method stub
+		
 		int lib=0;
 		if(position.x>0)
 			if((g.Contenu[position.x-1][position.y]).couleur.equals(Pion.Couleur.NULL))
@@ -660,6 +662,7 @@ public class Jeu {
 		return lib;
 	}
 
+	
 	/**
 	 * 
 	 * @param g
@@ -667,7 +670,7 @@ public class Jeu {
 	 * @return
 	 */
 	private static Point voisinExistantDeliberteMin(Grille g, Pion pion) {
-		// TODO Auto-generated method stub
+		
 		ArrayList<Pion> Listevoisins=DeterminerVoisins(g, pion);
 		int min = 1;
 		Point p=null;
@@ -753,6 +756,7 @@ public class Jeu {
 		
 		}
 	
+	
 	/**
 	 * 
 	 * @param g
@@ -772,6 +776,7 @@ public class Jeu {
 		 
 	}
 	
+	
 	/**
 	 * 
 	 * @param coup
@@ -779,7 +784,7 @@ public class Jeu {
 	 * @return
 	 */
 	private static boolean EstVoisin(Pion coup, Pion pion) {
-		// TODO Auto-generated method stub
+		
 		return ((coup.position.x+1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x-1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y+1==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y-1==pion.position.y));
 	}
 
@@ -790,7 +795,7 @@ public class Jeu {
 	 * @param position la position du pion
 	 * @return la grille mis à jour
 	 */
-	public static Grille miseAjourGrilleApresCapture(Grille g, Point position){
+	public static Grille miseAjourGrilleApresCapture(Grille g){
 		
 		Grille other = new Grille();
 		//il resque a mettre la grille aprés capture icis
