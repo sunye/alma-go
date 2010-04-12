@@ -22,11 +22,8 @@ public class AiThread{
 	private final static int NOTE_MAX = 100000;
 	
 	private boolean moveForced = false;
-	private Coordinates bestMove;
 
 	private Integer profondeur;
-	
-	private Integer meilleur;
 	
 	private long dateDebut;
 	
@@ -98,9 +95,7 @@ public class AiThread{
 		moveForced = false;
 		
 		dateDebut = Calendar.getInstance().getTimeInMillis();
-		
-		meilleur = NOTE_MIN-1;
-		
+			
 		Coordinates toPlay = new Coordinates();
 		int bestNote = NOTE_MIN;
 		
@@ -113,13 +108,7 @@ public class AiThread{
 			if(plateau.moveValid(coordTmp, color)){
 			
 				note = createNode(coordTmp, 1, NOTE_MIN, NOTE_MAX);
-				
-				/*if(note == NOTE_MAX){
-					System.out.println("note max ->" + note);
-					return coordTmp;
-				}*/
-					
-				//System.out.print(">"+coordTmp.toString()+":"+note);
+												
 				if (note>bestNote)
 				{
 					/* We have the best move and we store it */
@@ -129,7 +118,10 @@ public class AiThread{
 			}
 		}
 		
-		System.out.println(bestNote);
+		if((toPlay.getX() == 0) && (toPlay.getY() == 0)){
+			toPlay = emptySquares.get(0);
+		}
+		
 		return toPlay; 
 	}	
 	/*
@@ -172,15 +164,21 @@ public class AiThread{
 		Integer eval = evaluation(depth);
 		
 		if((eval == NOTE_MAX) && (depth == 1)){
-			//System.out.println("(" + depth + ")" + coord.getX() + ", " + coord.getY() + " : " + "coup gagnant");
 			plateau.removePawn(coord);
 			return eval;
 		}
 		
 		if((eval == NOTE_MIN) && (depth == 1)){
-			//System.out.println("(" + depth + ")" + coord.getX() + ", " + coord.getY() + " : " + "coup perdant");
 			plateau.removePawn(coord);
 			return eval;
+		}
+		
+		if((eval == NOTE_MIN) &&  (depth != 1)){
+			eval = NOTE_MIN + 1;
+		}
+		
+		if((eval == NOTE_MAX) &&  (depth != 1)){
+			eval = NOTE_MAX - 1;
 		}
 			
 		if(!(Calendar.getInstance().getTimeInMillis() - dateDebut > playTimeIA)) {
@@ -277,12 +275,13 @@ public class AiThread{
 		
 		if (((plateau.isWinner(color)))){
 			return NOTE_MAX;
-		}else if ((derniereLiberte(color)>0)){
+		}		
+		else if ((derniereLiberte(color)>0)){
 			return NOTE_MIN;
 		}else{
-			note = note + 10000 * derniereLiberte(color.invColor());
-			note = note + 10000 * ((plateau.isWinner(color)?1:0));
-			note = note - 10000 * (derniereLiberte(color));
+			note = note + 1000 * derniereLiberte(color.invColor());
+			note = note + 1000 * ((plateau.isWinner(color)?1:0));
+			note = note - 1000 * (derniereLiberte(color));
 			
 			note = note + 200 * tailleGroupe(color);
 			note = note - 100 * tailleGroupe(color.invColor());
@@ -408,16 +407,6 @@ public class AiThread{
 		
 		return cpt;
 	}
-
-	public Coordinates forceToPlay() {
-		moveForced = true;
-		return bestMove;
-		
-	}
-    
-    
-    
-    
 
 }
 
