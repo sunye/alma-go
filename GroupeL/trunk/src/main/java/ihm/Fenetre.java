@@ -15,7 +15,6 @@ public class Fenetre extends JFrame implements ActionListener {
         private JMenuBar barreMenu;
         private JMenu jeu;
         private JMenu diff;
-        private JMenu a_propos;
         private JMenuItem pVp;
         private JMenuItem pVc;
         private JMenuItem quitter;
@@ -38,8 +37,7 @@ public class Fenetre extends JFrame implements ActionListener {
             barreMenu=new JMenuBar();
            
             jeu=new JMenu("Nouvelle partie");
-            a_propos=new JMenu("A Propos");
-           
+              
             pVp=new JMenuItem("2 joueurs");
             pVp.addActionListener(this);
             
@@ -64,7 +62,6 @@ public class Fenetre extends JFrame implements ActionListener {
            
             barreMenu.add(jeu);
             barreMenu.add(diff);
-            barreMenu.add(a_propos);
            
             jeu.add(pVp);
             jeu.add(pVc);
