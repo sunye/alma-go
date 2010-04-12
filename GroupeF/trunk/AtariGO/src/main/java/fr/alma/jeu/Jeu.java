@@ -11,9 +11,9 @@ import fr.alma.structure.Noeud;
 
 
 /**
- * 
- * @author lahuidi
  * @author landryngassa
+ * @author lahuidi
+ * 
  */
 public class Jeu {
 	
@@ -22,13 +22,23 @@ public class Jeu {
 	public static final int INVALIDE = 2;
 	public static final int CAPTURE = 3;
 	
+	public static int min = 0;
+	
 	public static ArrayList<Pion> voisins = new ArrayList<Pion>();
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public  ArrayList<Pion> getVoisins() {
 		return voisins;
 	}
 
 
+	/**
+	 * 
+	 * @param vois
+	 */
 	public static void setVoisins(ArrayList<Pion> vois) {
 		voisins = vois;
 	}
@@ -311,6 +321,14 @@ public class Jeu {
 			return false;
 	}
 
+	/**
+	 * 
+	 * @param grille
+	 * @param x
+	 * @param y
+	 * @param c
+	 * @return
+	 */
 	public static boolean existS(Grille grille,int x,int y,Pion.Couleur c){
 		if (x<8){
 			if(c.equals(Pion.Couleur.BLANC))
@@ -322,6 +340,14 @@ public class Jeu {
 			return false;
 	}
 
+	/**
+	 * 
+	 * @param grille
+	 * @param x
+	 * @param y
+	 * @param c
+	 * @return
+	 */
 	public static boolean existE(Grille grille,int x,int y,Pion.Couleur c){
 		if (y<8)
 			if(c.equals(Pion.Couleur.BLANC))
@@ -333,6 +359,14 @@ public class Jeu {
 			return false;
 	}
 
+	/**
+	 * 
+	 * @param grille
+	 * @param x
+	 * @param y
+	 * @param c
+	 * @return
+	 */
 	public static boolean existO(Grille grille,int x,int y,Pion.Couleur c){
 	
 		if (y>0)
@@ -556,7 +590,7 @@ public class Jeu {
 	 * @param g
 	 * @return
 	 */
-	public static int min=0;
+	
 	public static Point jouerMachine(Grille g) {
 		
 			
@@ -646,8 +680,14 @@ public class Jeu {
 	
 	
 
+	/**
+	 * 
+	 * @param g
+	 * @param position
+	 * @return
+	 */
 	private static int getLiberteFixe(Grille g, Point position) {
-		// TODO Auto-generated method stub
+		
 		int lib=0;
 		if(position.x>0)
 			if((g.Contenu[position.x-1][position.y]).couleur.equals(Pion.Couleur.NULL))
@@ -664,9 +704,15 @@ public class Jeu {
 		return lib;
 	}
 
-
-	private static Point voisinExistantDeliberteMin(Grille g, Pion pion) {
-		// TODO Auto-generated method stub
+	
+	/**
+	 * 
+	 * @param g
+	 * @param pion
+	 * @return
+	 */
+	/*private static Point voisinExistantDeliberteMin(Grille g, Pion pion) {
+		
 		ArrayList<Pion> Listevoisins=DeterminerVoisins(g, pion);
 		int min = 1;
 		Point p=null;
@@ -713,9 +759,14 @@ public class Jeu {
 		return p;
 	}
 
-
+*/
 	
-	
+	/**
+	 * 
+	 * @param g
+	 * @param p
+	 * @return
+	 */
 	public static ArrayList<Pion> DeterminerVoisins(Grille g,Pion p){
 		Pion.Couleur c;
 		if(g.Contenu[p.position.x][p.position.y].equal(new Pion(p.position)))
@@ -744,10 +795,34 @@ public class Jeu {
 		}
 		//System.out.println(voisins.toString());
 		//return voisins;
-				
+		
 		}
 	
+
+	
+	
+	
+	public static ArrayList<Pion> LpionsCapture=new ArrayList<Pion>();
+	public static void DeterminerVoisinsG(Grille g,Pion p){
+		LpionsCapture.add(p);
+		if((p.position.x>0))
+			if((p.couleur.equals(g.Contenu[p.position.x-1][p.position.y].couleur)))
+			DeterminerVoisinsG(g, g.Contenu[p.position.x-1][p.position.y]);
+		if((p.position.x<8))
+			if(p.couleur.equals(g.Contenu[p.position.x+1][p.position.y].couleur))
+			DeterminerVoisinsG(g, g.Contenu[p.position.x+1][p.position.y]);
+		if((p.position.y>0))
+			if (p.couleur.equals(g.Contenu[p.position.x][p.position.y-1].couleur))
+				DeterminerVoisinsG(g, g.Contenu[p.position.x][p.position.y-1]);
+		if((p.position.x<8))
+			if((p.couleur.equals(g.Contenu[p.position.x-1][p.position.y].couleur)))
+			DeterminerVoisinsG(g, g.Contenu[p.position.x][p.position.y+1]);
+	}
+	
+	
+	
 	public static ArrayList<Pion> getCoupsJouerAd(Grille g){
+
 	//	System.out.println("Appelé");
 		ArrayList<Pion> cj = new ArrayList<Pion>();
 		for(int i=0;i<9;i++) 
@@ -760,6 +835,7 @@ public class Jeu {
                 
 		 
 	}
+
 	
 	public static ArrayList<Pion> getCoupsJouerM(Grille g){
 		//	System.out.println("Appelé");
@@ -772,8 +848,9 @@ public class Jeu {
 	       	 }
 			return cj;
 		}
+	
 	private static boolean EstVoisin(Pion coup, Pion pion) {
-		// TODO Auto-generated method stub
+		
 		return ((coup.position.x+1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x-1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y+1==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y-1==pion.position.y));
 	}
 
@@ -784,15 +861,21 @@ public class Jeu {
 	 * @param position la position du pion
 	 * @return la grille mis à jour
 	 */
+	
+	
+	
+
 	public static Grille miseAjourGrilleApresCapture(Grille g){
-		ArrayList<Pion> pionsPris=DeterminerVoisins(g, pionCapture);
+		LpionsCapture=new ArrayList<Pion>();
+		DeterminerVoisinsG(g, pionCapture);
+
 		Grille other = new Grille();
 		for(int i=0;i<9;i++){
 			for(int j=0;j<9;j++){
 				other.Contenu[i][j]=g.Contenu[i][j];
 			}
 		}
-		for (Pion pion:pionsPris){
+		for (Pion pion:LpionsCapture){
 			other.Contenu[pion.position.x][pion.position.y]=new Pion(pion.position);
 		}
 		//il resque a mettre la grille aprés capture icis
