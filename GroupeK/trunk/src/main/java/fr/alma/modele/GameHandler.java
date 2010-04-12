@@ -156,13 +156,22 @@ public class GameHandler {
 			e.printStackTrace();
 		}
 		this.thinkspace.interrupt();
+		//naturalFlow.interrupt();
 		
 		ai.terminerTraitement();
 		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+
+			e.printStackTrace();
+		}
+		control.afficheLoader(false);
+		
+		/*try {
 			naturalFlow.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 		
@@ -214,6 +223,7 @@ public class GameHandler {
 			public void run(){
 			
 				Coordonnee nextAiMove=ai.getPlay();
+				
 				plateau.addPion(nextAiMove);
 				control.repaintBoard();
 				control.afficheLoader(false);
