@@ -100,15 +100,20 @@ public class Controler {
 	}
 	
 	public void afficheLoader(boolean affiche){
+		
+		
 		if (affiche) {
-			affichageLoader = new Thread() {
+			
+			chargement.setVisible(true);
+			
+			/*affichageLoader = new Thread() {
 				public void run() {
-					chargement.setVisible(true);
+					
 				}
 			};
-			affichageLoader.start();
+			affichageLoader.start();*/
 		} else {
-			affichageLoader.interrupt();
+			//affichageLoader.interrupt();
 			
 			chargement.setVisible(false);
 		}

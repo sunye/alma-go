@@ -29,6 +29,7 @@ public class GameHandler {
 		this.control=con;
 		this.objectif=1;
 		
+		
 	}
 	
 	
@@ -96,6 +97,13 @@ public class GameHandler {
 	}
 	
 	public void forcerCoup(){
+		
+		try {
+			this.thinkspace.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.thinkspace.interrupt();
 		
 		ai.terminerTraitement();
@@ -134,6 +142,7 @@ public class GameHandler {
 	
 	
 	private void launchAi(){
+
 		thinkspace = new Thread() {
 			public void run() {
 				ai.prepareNextMove(coulAi);
@@ -144,18 +153,11 @@ public class GameHandler {
 			public void run(){
 			
 				Coordonnee nextAiMove=ai.getPlay();
-				System.out.println("rr");
-				try {
-					sleep(10000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 				plateau.addPion(nextAiMove);
 				control.repaintBoard();
 				control.afficheLoader(false);
 			}
 		};
-			
 		
 		
 		

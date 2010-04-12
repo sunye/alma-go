@@ -23,6 +23,13 @@ public class CoordonneeIA extends Coordonnee {
 	}
 	
 	
+	public boolean isCoordinateEmpty(){
+		return this.getX()!=null && this.getY()!=null;
+	}
 	
+	
+	public Coordonnee convert(){
+		return new Coordonnee(getX(), getY());
+	}
 	
 }
