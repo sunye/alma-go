@@ -105,7 +105,7 @@ public final class FakeGame extends Game {
                 //il faut donc supprimer les pierres du goban, et le groupe du pm.
                 fakeRemoveGroupe(groupe);
                 getFakeCurrentMove().setEnd(true);
-//                Logger.getLogger(FakeGame.class.getName()).log(Level.INFO, "Fin du jeu détectée − coup joué : "+getFakeCurrentMove().getPutStone().toString());
+                Logger.getLogger(FakeGame.class.getName()).log(Level.INFO, "Fin du jeu détectée − coup joué : "+getFakeCurrentMove().getPutStone().toString());
             }
         }
     }
