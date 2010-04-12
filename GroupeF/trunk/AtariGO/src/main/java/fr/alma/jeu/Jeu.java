@@ -11,9 +11,9 @@ import fr.alma.structure.Noeud;
 
 
 /**
- * 
- * @author lahuidi
  * @author landryngassa
+ * @author lahuidi
+ * 
  */
 public class Jeu {
 	
@@ -24,11 +24,19 @@ public class Jeu {
 	
 	public static ArrayList<Pion> voisins = new ArrayList<Pion>();
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public  ArrayList<Pion> getVoisins() {
 		return voisins;
 	}
 
 
+	/**
+	 * 
+	 * @param vois
+	 */
 	public static void setVoisins(ArrayList<Pion> vois) {
 		voisins = vois;
 	}
@@ -311,6 +319,14 @@ public class Jeu {
 			return false;
 	}
 
+	/**
+	 * 
+	 * @param grille
+	 * @param x
+	 * @param y
+	 * @param c
+	 * @return
+	 */
 	public static boolean existS(Grille grille,int x,int y,Pion.Couleur c){
 		if (x<8){
 			if(c.equals(Pion.Couleur.BLANC))
@@ -322,6 +338,14 @@ public class Jeu {
 			return false;
 	}
 
+	/**
+	 * 
+	 * @param grille
+	 * @param x
+	 * @param y
+	 * @param c
+	 * @return
+	 */
 	public static boolean existE(Grille grille,int x,int y,Pion.Couleur c){
 		if (y<8)
 			if(c.equals(Pion.Couleur.BLANC))
@@ -333,6 +357,14 @@ public class Jeu {
 			return false;
 	}
 
+	/**
+	 * 
+	 * @param grille
+	 * @param x
+	 * @param y
+	 * @param c
+	 * @return
+	 */
 	public static boolean existO(Grille grille,int x,int y,Pion.Couleur c){
 	
 		if (y>0)
@@ -604,6 +636,12 @@ public class Jeu {
 	
 	
 
+	/**
+	 * 
+	 * @param g
+	 * @param position
+	 * @return
+	 */
 	private static int getLiberteFixe(Grille g, Point position) {
 		// TODO Auto-generated method stub
 		int lib=0;
@@ -622,7 +660,12 @@ public class Jeu {
 		return lib;
 	}
 
-
+	/**
+	 * 
+	 * @param g
+	 * @param pion
+	 * @return
+	 */
 	private static Point voisinExistantDeliberteMin(Grille g, Pion pion) {
 		// TODO Auto-generated method stub
 		ArrayList<Pion> Listevoisins=DeterminerVoisins(g, pion);
@@ -673,7 +716,12 @@ public class Jeu {
 
 
 	
-	
+	/**
+	 * 
+	 * @param g
+	 * @param p
+	 * @return
+	 */
 	public static ArrayList<Pion> DeterminerVoisins(Grille g,Pion p){
 		Pion.Couleur c;
 		if(g.Contenu[p.position.x][p.position.y].equal(new Pion(p.position)))
@@ -705,6 +753,11 @@ public class Jeu {
 		
 		}
 	
+	/**
+	 * 
+	 * @param g
+	 * @return
+	 */
 	public static ArrayList<Pion> getCoupsJouer(Grille g){
 	//	System.out.println("Appelé");
 		ArrayList<Pion> cj = new ArrayList<Pion>();
@@ -718,6 +771,13 @@ public class Jeu {
                 
 		 
 	}
+	
+	/**
+	 * 
+	 * @param coup
+	 * @param pion
+	 * @return
+	 */
 	private static boolean EstVoisin(Pion coup, Pion pion) {
 		// TODO Auto-generated method stub
 		return ((coup.position.x+1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x-1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y+1==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y-1==pion.position.y));

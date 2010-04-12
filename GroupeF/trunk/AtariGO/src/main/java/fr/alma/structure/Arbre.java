@@ -23,7 +23,6 @@ public class Arbre {
 	int compteur = 0;
 	
 	//--------------------------
-	@SuppressWarnings("unused")
 	private int parit = 1; 
 	//--------------------------
 			
