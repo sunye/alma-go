@@ -44,7 +44,7 @@ public class AlphaBeta {
             this.generateMoves(tests);
         }
         if (prof == profondeurMax || tests.isInLeaf()) {
-            tests.getCurrentMove().setEval(EvalFunc.evaluate(tests, couleur, tests.getDepth() <= BEGINLIMIT));
+            tests.getCurrentMove().setEval((profondeurMax-prof+1)*EvalFunc.evaluate(tests, couleur, tests.getDepth() <= BEGINLIMIT));
             return tests.getCurrentMove();
         } else {
             if (prof % 2 == 0) {//profondeur paire = a l'ordinateur de jouer

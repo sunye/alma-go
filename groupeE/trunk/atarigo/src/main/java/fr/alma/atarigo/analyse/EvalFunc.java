@@ -279,9 +279,9 @@ public class EvalFunc {
     static int evaluate(FakeGame tests, PionVal pionVal, boolean beginning) {
         if (tests.isEnd()) {
             if (tests.getCurrentMove().getPutStone().getAfter() == pionVal) {
-                return GAGNE + GAGNE;
+                return GAGNE + GAGNE + GAGNE;
             } else {
-                return PERDU + PERDU;
+                return PERDU + PERDU + PERDU;
             }
 
         }
