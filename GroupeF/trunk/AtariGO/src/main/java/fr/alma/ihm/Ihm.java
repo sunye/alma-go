@@ -5,10 +5,7 @@ import static fr.alma.jeu.Jeu.*;
 import javax.swing.JFrame;
 import java.awt.Dimension;
 import java.awt.Point;
-
-
 import javax.swing.ImageIcon;
-
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -18,7 +15,6 @@ import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import javax.swing.BorderFactory;
 import javax.swing.border.TitledBorder;
-
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Color;
@@ -26,8 +22,6 @@ import java.awt.GridBagConstraints;
 import java.util.HashMap;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JButton;
-
-
 
 import fr.alma.jeu.Pion.Couleur;
 import fr.alma.jeu.Grille;
@@ -82,7 +76,7 @@ public class Ihm {
 	public Tour t = Tour.NOIR;
 	
 	//--------------------------------
-	public static Grille grille = null;
+	private Grille grille = null;
 	private JDialog jDialogNouveau = null;  //  @jve:decl-index=0:visual-constraint="739,469"
 	private JPanel jContentPane = null;
 	private JLabel jLCouleur = null;
@@ -872,6 +866,7 @@ public class Ihm {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 				
 						if(jCouleur.getSelectedItem()=="Blanc") t = Tour.BLANC;
+						else t = Tour.NOIR;
 						
 						effacerGrille();
 						for(int i=0;i<9;i++) 
