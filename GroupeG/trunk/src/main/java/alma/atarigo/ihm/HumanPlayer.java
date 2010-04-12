@@ -5,14 +5,9 @@
 
 package alma.atarigo.ihm;
 
-import java.util.Properties;
-
-import com.sun.media.sound.AlawCodec;
-
 import alma.atarigo.AbstractPlayer;
 import alma.atarigo.CellContent;
 import alma.atarigo.CellPosition;
-import alma.atarigo.Controller;
 import alma.atarigo.IProgressMonitor;
 import alma.atarigo.Level;
 import alma.atarigo.Player;

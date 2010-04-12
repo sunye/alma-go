@@ -185,8 +185,7 @@ public final class PlayerPanel extends JXPanel implements CellMouseListener,Chan
 			actions.add(forceButton);
 			forceButton.setAlignmentX(CENTER_ALIGNMENT);
 		}		
-		add(actions,BorderLayout.CENTER);
-		
+		add(actions,BorderLayout.CENTER);		
 		
 		view.addCellListener(this);
 	}
@@ -206,6 +205,11 @@ public final class PlayerPanel extends JXPanel implements CellMouseListener,Chan
 
 	public void updateCapture(int value){
 		capture.setText(String.format("%d", value));
+	}
+	
+	public void updateObjective(int objective){
+		goalEditor.setText(""+objective);
+		player.setObjective(objective);
 	}
 	
 	@Override

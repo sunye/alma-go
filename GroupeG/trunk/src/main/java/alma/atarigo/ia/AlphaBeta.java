@@ -119,9 +119,9 @@ public class AlphaBeta extends AbstractAlgorithm{
         				if(immediateAction(state,pos,content)){
         					val = Long.MAX_VALUE;
         				}
-        				else if(lostAtTheNextLevel(state, pos, content)){
-        					val = Long.MIN_VALUE;
-        				}
+//        				else if(lostAtTheNextLevel(state, pos, content)){
+//        					val = Long.MIN_VALUE;
+//        				}
         				else{
         					GobanModel childState = makeArtificialGoban(state, pos, content);
         					val = Math.max(val, alphabeta(childState,alpha,beta,MIN_TYPE,depth+1));
@@ -136,8 +136,8 @@ public class AlphaBeta extends AbstractAlgorithm{
         		case MIN_TYPE:{
         			val = Long.MAX_VALUE;
         			for(CellPosition pos : getChildrenFor(state, content.getEnemy())){
-        				if(immediateAction(state,pos,content.getEnemy())
-        						|| lostAtTheNextLevel(state, pos, content.getEnemy())){
+        				if(immediateAction(state,pos,content.getEnemy())){
+//        						|| lostAtTheNextLevel(state, pos, content.getEnemy())){
         					val = Long.MIN_VALUE;
         				}
         				else{

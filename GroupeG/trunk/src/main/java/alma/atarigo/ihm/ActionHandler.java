@@ -12,7 +12,6 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-import alma.atarigo.CellContent;
 import alma.atarigo.Level;
 
 /**

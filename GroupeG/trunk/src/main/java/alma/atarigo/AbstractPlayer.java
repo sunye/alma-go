@@ -27,7 +27,7 @@ public abstract class AbstractPlayer implements Player {
 	protected long playerId;
 	protected Controller owner;
 	protected CellContent content;
-	protected int objective;
+	protected Integer objective;
     protected IA brain;
 	
 	/**
@@ -89,10 +89,10 @@ public abstract class AbstractPlayer implements Player {
 	 * @see alma.atarigo.Player#setObjective(int)
 	 */
 	public void setObjective(int newOne){
-		this.objective = newOne;//Math.max(Math.min(newOne, MAX_OBJECTIVE),MIN_OBJECTIVE);
-//		if(objective<MIN_OBJECTIVE || objective>MAX_OBJECTIVE){
-//			objective = MIN_OBJECTIVE;
-//		}
+		this.objective = newOne;
+		if(objective<MIN_OBJECTIVE || objective>MAX_OBJECTIVE){
+			objective = MIN_OBJECTIVE;
+		}
 		metadata.setProperty("objective",""+objective);
 	}
 

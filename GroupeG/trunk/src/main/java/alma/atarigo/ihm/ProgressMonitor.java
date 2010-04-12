@@ -1,7 +1,6 @@
 package alma.atarigo.ihm;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collections;
@@ -15,7 +14,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JToolBar;
 
 import alma.atarigo.IProgressMonitor;
 

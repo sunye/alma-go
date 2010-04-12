@@ -176,4 +176,10 @@ public class IA {
     	return ia;
     }
     
+    public boolean sameAs(IA other){
+    	return algorithm.getClass().isInstance(other.algorithm)
+    			&& level.equals(other.level)
+    			&& algorithm.getValuation().getClass().isInstance(other.algorithm.getValuation());
+    }
+    
 }//IA
