@@ -16,13 +16,10 @@ import fr.alma.modele.Pion;
 import fr.alma.modele.TypeCoup;
 import fr.alma.modele.Vide;
 
-
-
-
-
 /**
- * Classe qui gère l'intelligence articificiel
  * 
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
+ * Our awesome Ai class
  */
 public class SunTsu {
 
@@ -30,13 +27,36 @@ public class SunTsu {
 	 * The actual color for the AI
 	 */
 	private CouleurPion coul;
+	
+	/**
+	 * the actual difficulty
+	 */
 	private Difficulte diff;
+	
+	/**
+	 * The gale board
+	 */
 	private GoBan situation;
+	
+	/**
+	 * Array with 1 and -1 used to move in the matrix 
+	 */
 	private static int[] modifier={1,-1};
+	
+	/**
+	 * calculated position for the next move
+	 */
 	private CoordonneeIA play;
+	
+	/**
+	 * collection that contain temporary move played by the SunTsu Ai
+	 */
 	private HashSet<Coup> coupJouer;
 	
-	
+	/**
+	 * 
+	 * @param goier game board
+	 */
 	public SunTsu(GoBan goier){
 		this.situation=new GoBan();
 		this.diff=Difficulte.Debutant;
@@ -46,16 +66,26 @@ public class SunTsu {
 		
 	}
 	
+	/**
+	 * 
+	 * @return the difficulty
+	 */
 	public Difficulte getDiff() {
 		return diff;
 	}
-	
+	/**
+	 * set the difficulty
+	 * @param diff
+	 */
 	public void setDiff(Difficulte diff) {
 		this.diff = diff;
 	}
 	
 	
-	
+	/**
+	 * prepare the next move for the color
+	 * @param coulp
+	 */
 	public void prepareNextMove(CouleurPion coulp){
 		this.coul=coulp;
 		coupJouer.clear();
@@ -63,18 +93,25 @@ public class SunTsu {
 		//modulé difficulté par le nombre de pion sur le plateau ?
 		int profondeur= diff.ordinal()+1*2;
 
+		Coordonnee temp= alphaBeta(profondeur,profondeur, null, coul).getPosition();
 		
-		play.setCoordinate(alphaBeta(profondeur,profondeur, null, coul).getPosition());
-		//	synchronized (play) {	}
+		synchronized (play) {
+			play.setCoordinate(temp);
+			play.setTermine(true);
+		}
 	
-		play.setTermine(true);
+		
 
 		synchronized (play) {
 			play.notify();
 		} 
 		
 	}
-	
+	/**
+	 * Get the next move to play
+	 * this is a waiting method it block until a solution calculated by the method(prepareNextMove) or if the move is force by terminerTraitement
+	 * @return the next move to play 
+	 */
 	public Coordonnee getPlay() {
 		synchronized (play) {
 			
@@ -92,6 +129,9 @@ public class SunTsu {
 		}
 	}
 	
+	/**
+	 * Force the calcultation to end
+	 */
 	public void terminerTraitement(){
 		
 		
@@ -107,6 +147,14 @@ public class SunTsu {
 		} 
 	}
 
+	/**
+	 * the Alpha beta algorithm
+	 * @param profondeurmarx the maximum deep
+	 * @param profondeur 
+	 * @param precedentResult the last best move
+	 * @param ajouer the turn color
+	 * @return a good move
+	 */
 	private Coup alphaBeta(int profondeurmarx, int profondeur, Coup precedentResult, CouleurPion ajouer){
 		Coup temporaire=null;
 		Coup result=null;
@@ -121,7 +169,7 @@ public class SunTsu {
 				}
 				if(typ!=TypeCoup.NONVALID){
 					situation.addPion(coodCoup, ajouer);
-					if( play.isCoordinateEmpty() && ajouer==coul){
+					if( play.isCoordinateNotEmpty() && ajouer==coul){
 						play.setCoordinate(coodCoup);
 					}
 					coupJouer.add(coupActuel);
@@ -234,7 +282,10 @@ public class SunTsu {
 		
 		return groupVide;
 	}
-
+	/**
+	 * 
+	 * @return a mark for the actual situation
+	 */
 	private Integer goBanEvaluation(){
 		Pion[][] matrice= situation.getGoban();
 		HashSet<Coordonnee> caseVide=new HashSet<Coordonnee>();

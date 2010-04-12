@@ -7,7 +7,11 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
 import fr.alma.controler.Controler;
-
+/**
+ * 
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud 
+ * A dialog with a progress bar to indicate that something is in progress
+ */
 public class Loadeur extends JDialog {
 
 	/**
@@ -17,6 +21,11 @@ public class Loadeur extends JDialog {
 
 	private JProgressBar prog;
 
+	/**
+	 * construct and initialise the dialog
+	 * @param owner the windows that own the loadeur
+	 * @param ctrl the controler
+	 */
 	public Loadeur(Fenetre owner, Controler ctrl) {
 		super(owner, "", true);
 

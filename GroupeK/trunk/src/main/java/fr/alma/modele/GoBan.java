@@ -8,7 +8,7 @@ import java.util.Vector;
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
- *
+ * Class that represent a goban board and is rules
  */
 public class GoBan {
 
@@ -74,8 +74,7 @@ public class GoBan {
 		groupeVide= new Groupe(CouleurPion.EMPTY);
 		for (int i=0; i<9; i++){
 			for (int k=0; k<9; k++) {
-				goban[i][k] = new Pion(i,k,CouleurPion.EMPTY, 0);
-				goban[i][k].setNumero(-1);
+				goban[i][k] = new Pion(i,k,CouleurPion.EMPTY);
 				goban[i][k].setGroupe(groupeVide);
 				groupeVide.addPion(goban[i][k]);
 			}
@@ -171,6 +170,11 @@ public class GoBan {
 	}
 	
 	// Utils methods
+
+	/**
+	 * Calculate if the move is allowed
+	 * @return the type of move: Valid, NonValid, Prise
+	 */
 	public TypeCoup isMoveAllowed(Coordonnee cood, CouleurPion coul) {
 		
 		if( !cood.isValid(GoBan.TAILLE_GO_BAN)){
@@ -203,7 +207,11 @@ public class GoBan {
 		return TypeCoup.NONVALID;
 	}
 
-	
+	/**
+	 * Calculate the liberty of a stone
+	 * @param pi the stone
+	 * @return list of his liberty
+	 */
 	public List<Coordonnee> calculPionLiberte(Pion pi){
 		List<Coordonnee> result= new Vector<Coordonnee>();
 				
@@ -219,7 +227,11 @@ public class GoBan {
 		return result;
 	}
 
-	
+	/**
+	 * Obtain the neighbors of a stone
+	 * @param pi
+	 * @return list of the neighbors
+	 */ 
 	public List<Pion> getVoisin(Pion pi){
 		List<Pion> listVoisin= new Vector<Pion>();
 		int x=pi.getPosition().getX();
@@ -245,8 +257,13 @@ public class GoBan {
 	
 	
 	//Goban pion(stone) public management method
-	
+	/**
+	 * Add a stone on the board with capture enabled (classical play)
+	 * @param cood the coordinate
+	 * @return if the stone where add
+	 */
 	public boolean addPion(Coordonnee cood){
+		
 		
 		boolean jouer=isMoveAllowed(cood, tour)!=TypeCoup.NONVALID;
 		if (jouer){
@@ -257,6 +274,12 @@ public class GoBan {
 		return jouer;
 	}
 	
+	/**
+	 * add a stone on the board with capture disabled (AI calculation play)
+	 * @param cood the coorninate
+	 * @param cc the coolor
+	 * @return if the stone where add
+	 */
 	public boolean addPion(Coordonnee cood, CouleurPion cc){
 		boolean jouer =isMoveAllowed(cood, cc)!=TypeCoup.NONVALID;
 		if (jouer){
@@ -265,14 +288,23 @@ public class GoBan {
 		return jouer;
 	}
 	
-	
+	/**
+	 * remove a stone of the board (AI calculation play)
+	 * @param cood the coordinate of the stone
+	 * @param coul the color	
+	 */
 	public void retirerPion(Coordonnee cood, CouleurPion coul){
 		removePion(goban[cood.getX()][cood.getY()]);
 	}
 
 	//end of Goban pion(stone) public management method
 	
-	
+	/**
+	 * Add a stone on the board
+	 * @param cood the coordinate
+	 * @param coul the color of the stone to add
+	 * @param enlevement if captured stone has to be remove
+	 */
 	private void addPion(Coordonnee coord, CouleurPion coul, boolean enlevement){
 	
 		Pion pi=goban[coord.getX()][coord.getY()];
@@ -312,7 +344,10 @@ public class GoBan {
 		tour= CouleurPion.oppose(tour);
 	}
 	
-
+	/**
+	 * remove a stone from the board (not capture, just remove a move) 
+	 * @param pi
+	 */
 	private void removePion(Pion pi){
 		int x=pi.getPosition().getX();
 		int y=pi.getPosition().getY();
@@ -325,7 +360,6 @@ public class GoBan {
 		
 		
 		goban[x][y].setCouleur(CouleurPion.EMPTY); 
-		goban[x][y].setNumero(-1);
 		goban[x][y].setGroupe(groupeVide);
 		groupeVide.addPion(goban[x][y]);
 		
@@ -347,7 +381,10 @@ public class GoBan {
 		tour= CouleurPion.oppose(tour);
 	}
 	
-
+	/**
+	 * remove a group that is captured
+	 * @param grop
+	 */
 	private void removePionAndGroupe(Groupe grop){
 		this.group.remove(grop);
 		
@@ -377,7 +414,11 @@ public class GoBan {
 		
 	}
 	
-	
+	/**
+	 * used to reform the group the removal of a stone (backtracking)
+	 * @param grop the new group for the stone
+	 * @param pi the stone
+	 */
 	private void reformeGroup(Groupe grop, Pion pi){
 		if( pi.getCouleur()==grop.getCouleur()){
 			pi.setGroupe(grop);
@@ -407,11 +448,14 @@ public class GoBan {
 			}
 		}
 	}
-		
 	
-	
-	
-	
+	/**
+	 * Don't call it. It used by the reformeGroup Method (backtracking)
+	 * @param grop
+	 * @param pi
+	 * @param intmodifierx
+	 * @param intmodifiery
+	 */
 	private void reformationGroup(Groupe grop, Pion pi, int intmodifierx, int intmodifiery){
 		
 		if( pi.getCouleur()==grop.getCouleur()){
