@@ -90,6 +90,7 @@ public class Ihm {
 	private JButton jBOk = null;
 	private JButton jBAnnuler = null;
 	private JButton BInterrompre = null;
+	private JMenuItem IInterrompre = null;
 	
 		
 	/**
@@ -226,6 +227,7 @@ public class Ihm {
 			MJeu = new JMenu();
 			MJeu.setText("Jeu");
 			MJeu.add(getINouveau());
+			MJeu.add(getIInterrompre());
 		}
 		return MJeu;
 	}
@@ -291,19 +293,23 @@ public class Ihm {
 						     }
 						 	 case VALIDE : {
 						 		
-								 mettrePion(position);
-								 System.out.println("positionné");
-				
+						 		 mettrePion(position); 
+												
 								 position = jouerMachine(grille);
-								 System.out.println("probleme ?");
-								 								 
+																 								 
 								 int RMachine = SimulerJeu(grille, position, t);
 								 
 								 if(RMachine == VALIDE) mettrePion(position); 
 								 else {
 									 	miseAjourGrille(miseAjourGrilleApresCapture(grille, position));
 									 	JOptionPane.showMessageDialog(jFrame, "Capture éffectué ! Vous avez perdu !");
-									    mettrePion(position);
+									 	 BInterrompre.setEnabled(false);
+									 	 IInterrompre.setEnabled(false);
+											Grille.setEnabled(false);
+											BNouveau.setEnabled(true);
+											INouveau.setEnabled(true);
+											jeuEnCours = false;
+											effacerGrille();
 								 }
 								 break;						 
 								}
@@ -312,6 +318,7 @@ public class Ihm {
 								 miseAjourGrille(miseAjourGrilleApresCapture(grille, position));
 								 JOptionPane.showMessageDialog(jFrame, "Capture éffectué ! Bravo vous avez gagner");
 								 BInterrompre.setEnabled(false);
+								 IInterrompre.setEnabled(false);
 									Grille.setEnabled(false);
 									BNouveau.setEnabled(true);
 									INouveau.setEnabled(true);
@@ -332,6 +339,8 @@ public class Ihm {
 							 
 					 }  
 				}
+
+				
 			});
 			
 			Blanc = new JBlanc();
@@ -515,8 +524,6 @@ public class Ihm {
 	private void nouveauJeu(){
 			
 		jDialogNouveau.setVisible(true);
-		
-		
 			
 	}
 	
@@ -874,6 +881,7 @@ public class Ihm {
 						jeuEnCours = true;
 						Grille.setEnabled(true);
 						BInterrompre.setEnabled(true);
+						IInterrompre.setEnabled(true);
 						BNouveau.setEnabled(false);
 						INouveau.setEnabled(false);
 							
@@ -919,25 +927,52 @@ public class Ihm {
 			BInterrompre.setPreferredSize(new Dimension(100, 25));
 			BInterrompre.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					
-					if(!jeuEnCours){
-						
-					}else  if(JOptionPane.showConfirmDialog(null,
-							"Etes-vous sur de vouloir intérompre le jeu en cours ?",
-							"Confirmation",
-							0) == JOptionPane.OK_OPTION){
-						BInterrompre.setEnabled(false);
-						Grille.setEnabled(false);
-						BNouveau.setEnabled(true);
-						INouveau.setEnabled(true);
-						jeuEnCours = false;
-						effacerGrille();
-						
-					}
+					interrompreJeu();
 				}
+				
 			});
 		}
 		return BInterrompre;
+	}
+
+	/**
+	 * Méthode pour intérrompre le jeu
+	 */
+	private void interrompreJeu() {
+		if(JOptionPane.showConfirmDialog(null,
+					"Etes-vous sur de vouloir intérrompre le jeu en cours ?",
+					"Confirmation",
+					0) == JOptionPane.OK_OPTION && jeuEnCours){
+				BInterrompre.setEnabled(false);
+				Grille.setEnabled(false);
+				BNouveau.setEnabled(true);
+				INouveau.setEnabled(true);
+				jeuEnCours = false;
+				effacerGrille();
+				
+			}
+	}
+	
+	/**
+	 * This method initializes IInterrompre	
+	 * 	
+	 * @return javax.swing.JMenuItem	
+	 */
+	private JMenuItem getIInterrompre() {
+		if (IInterrompre == null) {
+			IInterrompre = new JMenuItem();
+			IInterrompre.setEnabled(false);
+			IInterrompre.setText("Interrompre");
+			IInterrompre.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					
+					 interrompreJeu();
+				}
+
+				
+			});
+		}
+		return IInterrompre;
 	} 
 
 }
