@@ -66,7 +66,7 @@ public class Linear extends AbstractValuation implements Valuation {
         	total += val;
     	}
     	
-    	return (long)(result/Math.max(total, 1));
+    	return (long)(result);
     }
     
     /**
@@ -100,13 +100,13 @@ public class Linear extends AbstractValuation implements Valuation {
      */
     private void initValuations(CellContent content){
     	valuations.add(new Border(content));
-    	coefs.add(0.40);
+    	coefs.add(3.);
 
     	valuations.add(new LibertyVal(content));
-    	coefs.add(0.15);
+    	coefs.add(15d);
 
     	valuations.add(new TerritoryVal(content));
-    	coefs.add(0.45);
+    	coefs.add(30d);
 
     }
 

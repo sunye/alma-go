@@ -30,14 +30,14 @@ public enum Level {
      * -temps limité à 15 secondes
      * -profondeur de l'arbre égale à 10
      */
-    Expert(Long.MAX_VALUE,5),
+    Expert(Long.MAX_VALUE,4),
 
     /**
      * Niveau psycho :
      * -temps limité à 5 secondes
      * -profondeur de l'arbre égale à 50
      */
-    Psycho(Long.MAX_VALUE,8);
+    Psycho(Long.MAX_VALUE,6);
 
     /**
      * Implémentation de l'infini
