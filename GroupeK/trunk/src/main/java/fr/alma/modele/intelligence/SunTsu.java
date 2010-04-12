@@ -58,7 +58,7 @@ public class SunTsu {
 	 * @param goier game board
 	 */
 	public SunTsu(GoBan goier){
-		this.situation=new GoBan();
+		this.situation=goier;
 		this.diff=Difficulte.Debutant;
 		this.coupJouer= new HashSet<Coup>();
 		play= new CoordonneeIA(null,null);
@@ -89,6 +89,11 @@ public class SunTsu {
 	public void prepareNextMove(CouleurPion coulp){
 		this.coul=coulp;
 		coupJouer.clear();
+		synchronized (play) {
+			play.setTermine(false);
+			play.setCoordinate(new Coordonnee(null, null));
+		}
+		
 		//calcul profondeur en fonction de la difficulté
 		//modulé difficulté par le nombre de pion sur le plateau ?
 		int profondeur= diff.ordinal()+1*2;
@@ -100,6 +105,7 @@ public class SunTsu {
 			play.setTermine(true);
 		}
 	
+		
 		
 
 		synchronized (play) {
@@ -115,15 +121,16 @@ public class SunTsu {
 	public Coordonnee getPlay() {
 		synchronized (play) {
 			
-			while (!play.isTermine()) {
+			if (!play.isTermine()) {
+				
 				try {
 					play.wait();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
-			
 			Coordonnee result= new Coordonnee(play.getX(), play.getY());
+			System.out.println(result.getX()+" "+result.getY());
 			play.setTermine(false);
 			return result;
 		}
