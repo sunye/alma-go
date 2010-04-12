@@ -17,6 +17,20 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+<!--                    <classesDirectory>${project.build.outputDirectory}</classesDirectory> -->
+                    <archive>
+                        <manifest>
+                            <mainClass>fr.alma.atarigo.App</mainClass>
+                            <packageName>fr.alma.atarigo</packageName>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
         </plugins>
         <resources>
             <resource>

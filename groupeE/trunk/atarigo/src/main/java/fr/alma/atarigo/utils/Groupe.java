@@ -8,8 +8,9 @@ import java.util.Set;
 
 public class Groupe {
 
-    private HashSet<Stone> stones;
-    private HashSet<Groupe> eyes;
+    private Set<Stone> stones;
+    private Set<Groupe> eyes;
+    private Set<Stone> liberties;
     private int libertes;
     private PionVal couleur;
 
@@ -131,12 +132,12 @@ public class Groupe {
         return eyes;
     }
 
-    public int getLibertes() {
-        return libertes;
+    public Set<Stone> getLiberties() {
+        return liberties;
     }
 
-    public void setLibertes(int libertes) {
-        this.libertes = libertes;
+    public void setLiberties(Set<Stone> libertes) {
+        this.liberties = libertes;
     }
 
     public Collection<Stone> getStones() {

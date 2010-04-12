@@ -127,10 +127,10 @@ public class Game {
                 ++i;
                 if (gr.getCouleur() != pionVal) {
                     // If ennemy, check if it has one liberty left
-                    if (gr.getLibertes() == 1) {
+                    if (gr.getLiberties().size() == 1) {
                         return false;
                     }
-                } else if (gr.getLibertes() > 1) {
+                } else if (gr.getLiberties().size() > 1) {
                     // If allie and more than 1 liberty, it is not a suicide.
                     return false;
                 }
@@ -193,7 +193,7 @@ public class Game {
             }
         }
         groupes.add(lastAdded);
-        lastAdded.setLibertes(getGroupLiberties(lastAdded).size());
+        lastAdded.setLiberties(getGroupLiberties(lastAdded));
         return others;
     }
 
@@ -202,7 +202,7 @@ public class Game {
      * @param groupe
      * @return
      */
-    protected Set<Stone> getGroupLiberties(Groupe groupe) {
+    public Set<Stone> getGroupLiberties(Groupe groupe) {
         HashSet<Stone> libertes = new HashSet<Stone>(groupe.size() * 2 + 2);
 
         for (Stone pion : groupe.getStones()) {
@@ -218,7 +218,7 @@ public class Game {
      */
     private void processGroupeTaking(Set<Groupe> ennemies) {
         for (Groupe groupe : ennemies) {
-            if (groupe.getLibertes() == 0) {
+            if (groupe.getLiberties().size() == 0) {
                 // Dans ce cas là, on a bouché la dernière libertée,
                 //il faut donc supprimer les pierres du goban, et le groupe du pm.
                 removeGroupe(groupe);
@@ -259,7 +259,7 @@ public class Game {
         Set<Groupe> surroundings = getSurroundingGroups(current);
         for (Groupe groupe : surroundings) {
             if (groupe.getCouleur() != current.getCouleur()) {
-                groupe.setLibertes(getGroupLiberties(groupe).size());
+                groupe.setLiberties(getGroupLiberties(groupe));
             }
         }
     }
@@ -270,7 +270,7 @@ public class Game {
      */
     protected void updateLiberties(Set<Groupe> ennemies) {
         for (Groupe groupe : ennemies) {
-            groupe.setLibertes(getGroupLiberties(groupe).size());
+            groupe.setLiberties(getGroupLiberties(groupe));
         }
     }
 

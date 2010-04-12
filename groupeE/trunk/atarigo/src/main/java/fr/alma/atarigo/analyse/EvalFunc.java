@@ -83,11 +83,11 @@ public class EvalFunc {
 
             // Calculate in both side the group with the least liberties
             if (groupe.getCouleur() == curColor) {
-                if (minLibMySide == null || minLibMySide.getLibertes() > groupe.getLibertes()) {
+                if (minLibMySide == null || minLibMySide.getLiberties().size() > groupe.getLiberties().size()) {
                     minLibMySide = groupe;
                 }
             } else {
-                if (minLibOtherSide == null || minLibOtherSide.getLibertes() > groupe.getLibertes()) {
+                if (minLibOtherSide == null || minLibOtherSide.getLiberties().size() > groupe.getLiberties().size()) {
                     minLibOtherSide = groupe;
                 }
             }
@@ -96,18 +96,39 @@ public class EvalFunc {
         int myLibs;
         int otherLibs;
 
-        if(minLibMySide == null){
+        if (minLibMySide == null) {
             myLibs = 0;
-            Logger.getAnonymousLogger().log(Level.WARNING, "groupe null "+game.getCurrentMove().getGroupes().toString());
+            Logger.getAnonymousLogger().log(Level.WARNING, "groupe null " + game.getCurrentMove().getGroupes().toString());
         } else {
-            myLibs = minLibMySide.getLibertes();
+            myLibs = minLibMySide.getLiberties().size();
         }
 
-        if(minLibOtherSide == null){
+        if (minLibOtherSide == null) {
             otherLibs = 0;
-            Logger.getAnonymousLogger().log(Level.WARNING, "groupe null "+game.getCurrentMove().getGroupes().toString());
+            Logger.getAnonymousLogger().log(Level.WARNING, "groupe null " + game.getCurrentMove().getGroupes().toString());
         } else {
-            otherLibs = minLibOtherSide.getLibertes();
+            otherLibs = minLibOtherSide.getLiberties().size();
+        }
+
+
+        // Check if only one liberty
+        if (myLibs == 1) {
+            score += PERDU;
+            Stone[] lib = new Stone[1];
+            minLibMySide.getLiberties().toArray(lib);
+
+            if (game.getGoban().getLibertes(lib[0]).size() <= 1) {
+                score += PERDU;
+            }
+        }
+
+        if (otherLibs == 1) {
+            score += IMPORTANT;
+            for (Stone lib : minLibOtherSide.getLiberties()) {
+                if (game.getGoban().getLibertes(lib).size() <= 1) {
+                    score += GAGNE;
+                }
+            }
         }
 
         // Compare minimum of group liberties.
@@ -136,9 +157,9 @@ public class EvalFunc {
         score += evaluateGroupsLiberties(game, MOYEN);
 
         Groupe containing = pm.getGroupeContaining(new Stone(putStone.getCouleur(), putStone.getLine(), putStone.getColumn()));
-        if (containing.getLibertes() >= containing.size() * 2) {
+        if (containing.getLiberties().size() >= containing.size() * 2) {
             score += MOYEN;
-        } else if (containing.getLibertes() <= containing.size()) {
+        } else if (containing.getLiberties().size() <= containing.size()) {
             score -= IMPORTANT;
         }
 
@@ -148,8 +169,7 @@ public class EvalFunc {
         return score;
     }
 
-
-    static private int checkEyes(Game game){
+    static private int checkEyes(Game game) {
         int score = 0;
         Stone putStone = game.getCurrentMove().getPutStone().getNewStone();
 
@@ -160,10 +180,10 @@ public class EvalFunc {
                 } else if (groupe.nbEyes() == 1) {
                     for (Groupe eye : groupe.getEyes()) {
                         if (eye.size() == 1) {
-                            if (groupe.getLibertes() == 1) {
+                            if (groupe.getLiberties().size() == 1) {
                                 // If it's the last liberty, we lose much than him, because, he just has to play.
-                                score += (PERDU+PERDU);
-                            } else if (groupe.getLibertes() > groupe.size()) {
+                                score += (PERDU + PERDU);
+                            } else if (groupe.getLiberties().size() > groupe.size()) {
                                 // If we still have some liberties, it's better.
                                 score -= MOYEN;
                             } else {
@@ -180,10 +200,10 @@ public class EvalFunc {
                 } else if (groupe.nbEyes() == 1) {
                     for (Groupe eye : groupe.getEyes()) {
                         if (eye.size() == 1) {
-                            if (groupe.getLibertes() == 1) {
+                            if (groupe.getLiberties().size() == 1) {
                                 // If it's the last liberty, we almost win...
                                 score += TRESIMPORTANT;
-                            } else if (groupe.getLibertes() > groupe.size()) {
+                            } else if (groupe.getLiberties().size() > groupe.size()) {
                                 // If we still have some liberties, it's better.
                                 score += MOYEN;
                             } else {
@@ -257,23 +277,23 @@ public class EvalFunc {
     }
 
     static int evaluate(FakeGame tests, PionVal pionVal, boolean beginning) {
-        if(tests.isEnd()){
-            if(tests.getCurrentMove().getPutStone().getAfter() == pionVal){
-                return GAGNE+GAGNE;
+        if (tests.isEnd()) {
+            if (tests.getCurrentMove().getPutStone().getAfter() == pionVal) {
+                return GAGNE + GAGNE;
             } else {
-                return PERDU+PERDU;
+                return PERDU + PERDU;
             }
-            
+
         }
 
-        if(beginning){
-            if(tests.getCurrentMove().getPutStone().getAfter() == pionVal){
+        if (beginning) {
+            if (tests.getCurrentMove().getPutStone().getAfter() == pionVal) {
                 return evaluateBeginning(tests);
             } else {
                 return -evaluateBeginning(tests);
             }
         } else {
-            if(tests.getCurrentMove().getPutStone().getAfter() == pionVal){
+            if (tests.getCurrentMove().getPutStone().getAfter() == pionVal) {
                 return evaluateFollowing(tests);
             } else {
                 return -evaluateFollowing(tests);

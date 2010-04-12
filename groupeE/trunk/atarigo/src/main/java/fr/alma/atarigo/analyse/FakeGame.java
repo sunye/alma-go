@@ -100,7 +100,7 @@ public final class FakeGame extends Game {
 
     private void fakeProcessGroupeTaking(Set<Groupe> ennemies) {
         for (Groupe groupe : ennemies) {
-            if (groupe.getLibertes() == 0) {
+            if (groupe.getLiberties().size() == 0) {
                 // Dans ce cas là, on a bouché la dernière libertée,
                 //il faut donc supprimer les pierres du goban, et le groupe du pm.
                 fakeRemoveGroupe(groupe);
@@ -182,8 +182,7 @@ public final class FakeGame extends Game {
             }
         }
         groupes.add(lastAdded);
-        int lib = getGroupLiberties(lastAdded).size();
-        lastAdded.setLibertes(lib);
+        lastAdded.setLiberties(getGroupLiberties(lastAdded));
         return others;
     }
 
