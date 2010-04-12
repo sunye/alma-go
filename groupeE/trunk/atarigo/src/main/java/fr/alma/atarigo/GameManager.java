@@ -5,6 +5,7 @@
 package fr.alma.atarigo;
 
 import fr.alma.atarigo.analyse.AlphaBeta;
+import fr.alma.atarigo.ihm.Fenetre;
 import fr.alma.atarigo.utils.Game;
 import fr.alma.atarigo.utils.PionVal;
 import fr.alma.atarigo.ihm.GobanPanel;
@@ -18,10 +19,12 @@ public class GameManager {
 
     private Game game;
     private GobanPanel gobanPanel;
+    private Fenetre fenetre;
     private Boolean onePlayerGame;
 
-    public GameManager(GobanPanel gobPan) {
+    public GameManager(GobanPanel gobPan, Fenetre fenetre) {
         this.gobanPanel = gobPan;
+        this.fenetre = fenetre;
     }
 
     //Lance une partie :
@@ -73,4 +76,11 @@ public class GameManager {
     final public Game getGame() {
         return game;
     }
+
+    public void dialogueFinJeu() {
+        this.fenetre.finJeu();
+    }
+
+
+
 }
