@@ -7,23 +7,23 @@ import java.util.Vector;
 
 public class FonctionEvaluation {
 
-    private static  int[][] goban;		// 0 - rien, 1 - coup ordinateur, 2 - coup adversair humain
-    private static  int[][] gobanInc;          // la matrice des coups, mais qui est utilisable afin d'évaluer les noeuds intérieurs
-    private static  int[][] lib;		// une matrice qui met a jour les libertes des pierres, apres chaque coup - sauver des calculs -> -1, si il n'y a pas de pierres
-    private static  int[][] libInc;		// matrice des libertes de pierres, mais qui servira a l'evaluation incrementale de feuilles
-    private static  boolean[][] dejaEvalue;	// matrice des pierres deja evaluées
-    private static  int points;		// on memorise le nombre de points afin de profiter de la evaluation incrementale
-    private static  int exponentielle;		// l'exponentielle maximale ou l'arité maximale de chaque noeud
-    private static  int cOrdinateur;		// le nombre de pierres de l'ordinateur situées sur le goban
-    private static  int cHumain;		// le nombre de pierres de l'adversair situées sur le goban
-    private static  int profondeur;		// le profondeur de l'arbre, calculable à partir de l'exponentielle
-    private static  Vector<Point> groupe;      // groupe des noeuds chaines afin de reduire les calculs des libertés
-    private static  int[] cSuivant;		// coup suivant, composé de deux entiers
-    private static  boolean liberteZero;       // vrai si le jeu est fini, faux sinon
+    private static  int[][] goban;				// 0 - rien, 1 - coup ordinateur, 2 - coup adversair humain
+    private static  int[][] gobanInc;          	// la matrice des coups, mais qui est utilisable afin d'évaluer les noeuds intérieurs
+    private static  int[][] lib;				// une matrice qui met a jour les libertes des pierres, apres chaque coup - sauver des calculs -> -1, si il n'y a pas de pierres
+    private static  int[][] libInc;				// matrice des libertes de pierres, mais qui servira a l'evaluation incrementale de feuilles
+    private static  boolean[][] dejaEvalue;		// matrice des pierres deja evaluées
+    private static  int points;					// on memorise le nombre de points afin de profiter de la evaluation incrementale
+    private static  int exponentielle;			// l'exponentielle maximale ou l'arité maximale de chaque noeud
+    private static  int cOrdinateur;			// le nombre de pierres de l'ordinateur situées sur le goban
+    private static  int cHumain;				// le nombre de pierres de l'adversair situées sur le goban
+    private static  int profondeur;				// le profondeur de l'arbre, calculable à partir de l'exponentielle
+    private static  Vector<Point> groupe;      	// groupe des noeuds chaines afin de reduire les calculs des libertés
+    private static  int[] cSuivant;				// coup suivant, composé de deux entiers
+    private static  boolean liberteZero;      	// vrai si le jeu est fini, faux sinon
 
  /*
-  * méthode qui est appelé dans le constructeur de FonctionEvaluation et chaque fois
-  * que l'utilisateur désire commencer un nouveau jeu = typiquement, lors d'appui de boutton "New Game"
+  * methode qui est appelé dans le constructeur de FonctionEvaluation et chaque fois
+  * que l'utilisateur desire commencer un nouveau jeu = typiquement, lors d'appui de boutton "New Game"
   */
 public static  void jeuNeu() {
 
@@ -53,16 +53,16 @@ public static  void jeuNeu() {
 
 /*
  * @param  les deux entiers coordonées de la matrice de goban
- * @return  la valeur du goban dans ce point spécifique <=> 0 = vide, 1 = ordinateur, 2 = adversair humain
+ * @return  la valeur du goban dans ce point specifique <=> 0 = vide, 1 = ordinateur, 2 = adversair humain
  */
 public static  int getGobanValue(int x, int y) {
     return goban[x][y];
 }
 
 /*
- * @param  les deux entiers coordonées de la matrice de goban et la valeur qu'on veut établir
+ * @param  les deux entiers coordonees de la matrice de goban et la valeur qu'on veut etablir
  * @return  void
- * la valeur du goban à l'endroit spécifié est modifié, si cette valeur fournie est entre 0 et 2, y compris
+ * la valeur du goban a� l'endroit specifie est modifié, si cette valeur fournie est entre 0 et 2, y compris
  */
 public static  void setGobanValue(int x, int y, int t) {
     if(t<0 || t>2 || goban[x][y]!=0) {  // atari go, pas go
@@ -73,7 +73,7 @@ public static  void setGobanValue(int x, int y, int t) {
 }
 
 /*
- * incrementation de nombre de pierres d'ordinateur sur le goban
+ * incrementation du nombre de pierres d'ordinateur sur le goban
  */
 public static  void incPO() {
         cOrdinateur++;
@@ -311,10 +311,14 @@ public static  boolean jeuFini() {
  * @param  l'entier correspondant à un coup de joueur gagnant
  * @return  le Vector des pierres prises du joueur perdant
  */
-public static  Vector<Point> pierresPrises(int type) {
+
+public static Vector<Point> pierresPrises(int type) {
     int i=0, j=0;
     boolean trouve = false;
     Vector<Point> p = new Vector<Point>();
+    reinitialiserDE();
+
+    //afficheGobanLibertes();
 
     for(; i < goban.length; i++) {
         for( j=0; j < goban.length; j++) {
@@ -336,7 +340,30 @@ public static  Vector<Point> pierresPrises(int type) {
 
     return p;
 }
+/**.
+ * Affiche les libert�s sur le gobans
+ */
+private static void afficheGobanLibertes() {
+    int i = 0, j = 0;
 
+    System.out.println("");
+    System.out.println("goban");
+   for(; i < goban.length; i++) {
+       for( j=0; j < goban.length; j++) {
+           System.out.print(goban[i][j]+"  ");
+       }
+       System.out.println();
+   }
+
+    System.out.println("");
+    System.out.println("libertes");
+   for(i = 0; i < goban.length; i++) {
+       for( j=0; j < goban.length; j++) {
+           System.out.print(lib[i][j]+"  ");
+       }
+       System.out.println();
+   }
+}
 /*
  * @param  le vecteur de coups et le type selon cette ordinateur ou adversair humain
  * @return  void

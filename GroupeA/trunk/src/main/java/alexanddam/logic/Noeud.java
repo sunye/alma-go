@@ -1,9 +1,5 @@
 package main.java.alexanddam.logic;
 
-/*enum tnoeud  {
-	RACINE, INTERIEUR, FEUILLE
-};*/
-
 abstract class Noeud {
 		
 	int[] vo;				// les differences de l'ordinateur
