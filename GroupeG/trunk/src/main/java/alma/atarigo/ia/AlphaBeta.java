@@ -65,13 +65,13 @@ public class AlphaBeta extends AbstractAlgorithm{
         @Override
         protected List<CellPosition> doInBackground(IProgressMonitor monitor){
         	this.monitor = monitor;
-        	return Collections.singletonList(launch(goban));
+        	return Collections.singletonList(depthZero(goban));
         }
 
         static final int MAX_TYPE = 1;
         static final int MIN_TYPE = 2;
         
-        public CellPosition launch(GobanModel state){
+        public CellPosition depthZero(GobanModel state){
         	CellPosition result = null;
         	long alpha = Long.MIN_VALUE;
         	long beta = Long.MAX_VALUE;
@@ -106,10 +106,7 @@ public class AlphaBeta extends AbstractAlgorithm{
         
         public Long alphabeta(GobanModel state,long alpha,long beta,int nodetype,int depth){
         	Long val = null;
-        	
-        	if(monitor!=null){
-        		monitor.nextValue();
-        	}
+        	monitor.nextValue();
         	
         	if(depth>=height || !couldContinue()){    		
         		val = valuation.run(state);
@@ -121,6 +118,9 @@ public class AlphaBeta extends AbstractAlgorithm{
         			for(CellPosition pos : getChildrenFor(state, content)){
         				if(immediateAction(state,pos,content)){
         					val = Long.MAX_VALUE;
+        				}
+        				else if(lostAtTheNextLevel(state, pos, content)){
+        					val = Long.MIN_VALUE;
         				}
         				else{
         					GobanModel childState = makeArtificialGoban(state, pos, content);
@@ -136,7 +136,8 @@ public class AlphaBeta extends AbstractAlgorithm{
         		case MIN_TYPE:{
         			val = Long.MAX_VALUE;
         			for(CellPosition pos : getChildrenFor(state, content.getEnemy())){
-        				if(immediateAction(state,pos,content.getEnemy())){
+        				if(immediateAction(state,pos,content.getEnemy())
+        						|| lostAtTheNextLevel(state, pos, content.getEnemy())){
         					val = Long.MIN_VALUE;
         				}
         				else{
@@ -177,6 +178,12 @@ public class AlphaBeta extends AbstractAlgorithm{
 			}
 			
 			return imAttack || imDefense;
+        }
+        
+        public boolean lostAtTheNextLevel(GobanModel state,CellPosition position,CellContent content){
+        	GobanModel nextLevel = makeArtificialGoban(state, position, content);
+        	List<CellPosition> liberties = nextLevel.getLiberties(position);
+        	return liberties!=null && liberties.size()==1;
         }
         
     }
