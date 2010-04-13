@@ -29,7 +29,7 @@ public class Game {
     protected Tree<PlayMove> history;
     // Last move played (faster backtracking).
     protected Node<PlayMove> lastMove;
-    private PionVal currentPlayer;
+    protected  PionVal currentPlayer;
     protected Set<Stone> freePlaces;
 
     public Game() {
@@ -144,7 +144,7 @@ public class Game {
     private void startMove(PlayMove currentMove) {
 
         //prepare the group modifications
-        currentMove.setGroupes((ArrayList<Groupe>) getCurrentMove().getGroupes().clone());
+        currentMove.setGroups((ArrayList<Groupe>) getCurrentMove().getGroups().clone());
 
         Node<PlayMove> newMove = new Node<PlayMove>(currentMove);
         lastMove.addChild(newMove);
@@ -180,7 +180,7 @@ public class Game {
         } catch (BadCouleurException e) {
         }
 
-        List<Groupe> groupes = getCurrentMove().getGroupes();
+        List<Groupe> groupes = getCurrentMove().getGroups();
 
         Set<Groupe> groups = getSurroundingGroups(last);
         Set<Groupe> others = new HashSet<Groupe>(4);
@@ -248,7 +248,7 @@ public class Game {
         }
         updateLiberties(surroundings);
 
-        getCurrentMove().getGroupes().remove(groupe);
+        getCurrentMove().getGroups().remove(groupe);
     }
 
     /**

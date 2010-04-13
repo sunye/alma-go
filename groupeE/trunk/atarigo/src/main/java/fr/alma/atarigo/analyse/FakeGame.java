@@ -38,6 +38,7 @@ public final class FakeGame extends Game {
         this.lastMove = history.getRootElement();
         this.depth = game.getCurrentDepth();
         this.freePlaces = new HashSet<Stone>(game.getFreePlaces());
+        this.currentPlayer = game.getCurrentPlayer();
     }
 
     public int getDepth() {
@@ -91,7 +92,7 @@ public final class FakeGame extends Game {
     private void fakeStartMove(PlayMove currentMove) {
 
         //prepare the group modifications
-        currentMove.setGroupes((ArrayList<Groupe>) getCurrentMove().getGroupes().clone());
+        currentMove.setGroups((ArrayList<Groupe>) getCurrentMove().getGroups().clone());
 
         Node<PlayMove> newMove = new Node<PlayMove>(currentMove);
         lastMove.addChild(newMove);
@@ -105,7 +106,7 @@ public final class FakeGame extends Game {
                 //il faut donc supprimer les pierres du goban, et le groupe du pm.
                 fakeRemoveGroupe(groupe);
                 getFakeCurrentMove().setEnd(true);
-                Logger.getLogger(FakeGame.class.getName()).log(Level.INFO, "Fin du jeu détectée − coup joué : "+getFakeCurrentMove().getPutStone().toString());
+//                Logger.getLogger(FakeGame.class.getName()).log(Level.INFO, "Fin du jeu détectée − coup joué : "+getFakeCurrentMove().getPutStone().toString());
             }
         }
     }
@@ -131,7 +132,7 @@ public final class FakeGame extends Game {
         surroundings.remove(null);
         updateLiberties(surroundings);
 
-        getFakeCurrentMove().getGroupes().remove(groupe);
+        getFakeCurrentMove().getGroups().remove(groupe);
 
         try {
             // Now, let's revert the removal, to keep the same goban.
@@ -168,7 +169,7 @@ public final class FakeGame extends Game {
         } catch (BadCouleurException e) {
         }
 
-        List<Groupe> groupes = getFakeCurrentMove().getGroupes();
+        List<Groupe> groupes = getFakeCurrentMove().getGroups();
 
         Set<Groupe> surroundingGroups = fakeGetSurroundingGroups(last);
         Set<Groupe> others = new HashSet<Groupe>(4);

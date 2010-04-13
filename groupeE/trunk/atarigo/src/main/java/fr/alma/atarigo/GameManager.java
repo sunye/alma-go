@@ -4,12 +4,15 @@
  */
 package fr.alma.atarigo;
 
+import fr.alma.atarigo.analyse.ABThread;
 import fr.alma.atarigo.analyse.AlphaBeta;
 import fr.alma.atarigo.ihm.Fenetre;
 import fr.alma.atarigo.utils.Game;
 import fr.alma.atarigo.utils.PionVal;
 import fr.alma.atarigo.ihm.GobanPanel;
 import fr.alma.atarigo.utils.PlayMove;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,6 +24,8 @@ public class GameManager {
     private GobanPanel gobanPanel;
     private Fenetre fenetre;
     private Boolean onePlayerGame;
+    private PionVal iaColor;
+    private ABThread thread;
 
     public GameManager(GobanPanel gobPan, Fenetre fenetre) {
         this.gobanPanel = gobPan;
@@ -50,11 +55,29 @@ public class GameManager {
      */
     public void onePlayer(PionVal couleur) {
         init();
+        iaColor = couleur;
         this.onePlayerGame = Boolean.TRUE;
         gobanPanel.startGame(this, this.game);
-        if (couleur == PionVal.BLANC) {
+        if (couleur == PionVal.NOIR) {
             coupIA();
         }
+    }
+
+
+    private PlayMove threadizeAB(){
+//        AlphaBeta alphabeta = new AlphaBeta(3, iaColor);
+        
+        thread = new ABThread(3, iaColor, game);
+        thread.start();
+        try {
+            thread.join(10000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        PlayMove retour = thread.getCurrentBest();
+        thread.interrupt();
+        return retour;
     }
 
     /**
@@ -62,9 +85,8 @@ public class GameManager {
      */
     private void coupIA() {
         gobanPanel.desactivateMouse();
-        AlphaBeta alphabeta = new AlphaBeta(3, PionVal.NOIR);
-        PlayMove coup = new PlayMove();
-        coup = alphabeta.init(game);
+        PlayMove coup;
+        coup = threadizeAB();
         game.playAt(coup.getPutStone().getLine(), coup.getPutStone().getColumn());
         gobanPanel.repaint();
         gobanPanel.activateMouse();

@@ -48,9 +48,9 @@ public class OptionWindow extends JDialog {
                 pion,
                 pion[1]);
         if (pion[choix].equals("Noir")) {
-            gaman.onePlayer(PionVal.NOIR);
-        } else {
             gaman.onePlayer(PionVal.BLANC);
+        } else {
+            gaman.onePlayer(PionVal.NOIR);
         }
     }
 }
