@@ -7,6 +7,12 @@ public class BadCouleurException extends Exception {
      */
     private static final long serialVersionUID = -2416508440769689377L;
 
+    public BadCouleurException() {}
+
+    public BadCouleurException(String message) {
+        super(message);
+    }
+
     public BadCouleurException(Throwable cause) {
         super(cause);
     }
@@ -14,11 +20,7 @@ public class BadCouleurException extends Exception {
     public BadCouleurException(String message, Throwable cause) {
         super(message, cause);
     }
-
-    public BadCouleurException(String message) {
-        super(message);
-    }
-
-    public BadCouleurException() {
-    }
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

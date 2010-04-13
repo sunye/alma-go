@@ -18,11 +18,76 @@ import java.util.logging.Logger;
 public class EvalFunc {
 
     static public final int GAGNE = 1000;
-    static public final int PERDU = -GAGNE;
-    static public final int TRESIMPORTANT = 20;
+    static public final int PERDU = -1000;
+    static public final int TRESTRESIMPORTANT = 200;
+    static public final int TRESIMPORTANT = 40;
     static public final int IMPORTANT = 10;
     static public final int MOYEN = 5;
     static public final int FAIBLE = 2;
+
+    static int evaluate(FakeGame tests, PionVal pionVal, boolean beginning) {
+        if (tests.isEnd()) {
+            if (tests.getCurrentMove().getPutStone().getAfter() == pionVal) {
+                return GAGNE + GAGNE + GAGNE;
+            } else {
+                return PERDU + PERDU + PERDU;
+            }
+
+        }
+
+        if (beginning) {
+            if (tests.getCurrentMove().getPutStone().getAfter() == pionVal) {
+                return evaluateBeginning(tests);
+            } else {
+                return -evaluateBeginning(tests);
+            }
+        } else {
+            if (tests.getCurrentMove().getPutStone().getAfter() == pionVal) {
+                return evaluateFollowing(tests);
+            } else {
+                return -evaluateFollowing(tests);
+            }
+        }
+    }
+
+    static public int evaluateBeginning(Game game) {
+        int score = 0;
+        PlayMove pm = game.getCurrentMove();
+
+        Stone putStone = pm.getPutStone().getNewStone();
+
+
+
+        score += checkStonePlaces(game, IMPORTANT);
+
+        score += evaluateGroupsLiberties(game, MOYEN);
+
+        Groupe containing = pm.getGroupeContaining(new Stone(putStone.getCouleur(), putStone.getLine(), putStone.getColumn()));
+        if (containing.getLiberties().size() >= containing.size() * 2) {
+            score += MOYEN;
+        } else if (containing.getLiberties().size() <= containing.size()) {
+            score -= IMPORTANT;
+        }
+
+        if (nbKeima(game, putStone) > 0) {
+            score += TRESIMPORTANT;
+        }
+        return score;
+    }
+
+    static public int evaluateFollowing(Game game) {
+        int score = 0;
+        Stone putStone = game.getCurrentMove().getPutStone().getNewStone();
+
+        score += evaluateGroupsLiberties(game, TRESIMPORTANT);
+        score += checkStonePlaces(game, FAIBLE);
+        if (nbKeima(game, putStone) > 0) {
+            score += IMPORTANT;
+        }
+        calculateEyes(game);
+        score += checkEyes(game);
+        return score;
+    }
 
     /**
      * Calculate the eyes of each Groupe
@@ -79,6 +144,7 @@ public class EvalFunc {
 
         PionVal curColor = game.getCurrentMove().getPutStone().getNewStone().getCouleur();
 
+        // First, get each side's group with a minimum of liberties
         for (Groupe groupe : game.getCurrentMove().getGroupes()) {
 
             // Calculate in both side the group with the least liberties
@@ -113,7 +179,7 @@ public class EvalFunc {
 
         // Check if only one liberty
         if (myLibs == 1) {
-            score += PERDU;
+            score += PERDU+PERDU;
             Stone[] lib = new Stone[1];
             minLibMySide.getLiberties().toArray(lib);
 
@@ -124,10 +190,11 @@ public class EvalFunc {
 
         if (otherLibs == 1) {
             score += IMPORTANT;
-            for (Stone lib : minLibOtherSide.getLiberties()) {
-                if (game.getGoban().getLibertes(lib).size() <= 1) {
-                    score += GAGNE;
-                }
+            Stone[] lib = new Stone[1];
+            minLibOtherSide.getLiberties().toArray(lib);
+
+            if (game.getGoban().getLibertes(lib[0]).size() <= 1) {
+                score += TRESTRESIMPORTANT;
             }
         }
 
@@ -140,31 +207,6 @@ public class EvalFunc {
             score -= importance;
         } else if (myLibs < otherLibs) {
             score -= importance / 2;
-        }
-        return score;
-    }
-
-    static public int evaluateBeginning(Game game) {
-        int score = 0;
-        PlayMove pm = game.getCurrentMove();
-
-        Stone putStone = pm.getPutStone().getNewStone();
-
-
-
-        score += checkStonePlaces(game, IMPORTANT);
-
-        score += evaluateGroupsLiberties(game, MOYEN);
-
-        Groupe containing = pm.getGroupeContaining(new Stone(putStone.getCouleur(), putStone.getLine(), putStone.getColumn()));
-        if (containing.getLiberties().size() >= containing.size() * 2) {
-            score += MOYEN;
-        } else if (containing.getLiberties().size() <= containing.size()) {
-            score -= IMPORTANT;
-        }
-
-        if (nbKeima(game, putStone) > 0) {
-            score += MOYEN;
         }
         return score;
     }
@@ -218,17 +260,6 @@ public class EvalFunc {
         return score;
     }
 
-    static public int evaluateFollowing(Game game) {
-        int score = 0;
-        Stone putStone = game.getCurrentMove().getPutStone().getNewStone();
-
-        score += evaluateGroupsLiberties(game, TRESIMPORTANT);
-        score += checkStonePlaces(game, MOYEN);
-        calculateEyes(game);
-        score += checkEyes(game);
-        return score;
-    }
-
     static private int nbKeima(Game game, Stone putStone) {
         int keimas = 0;
         try {
@@ -274,30 +305,5 @@ public class EvalFunc {
         }
 
         return keimas;
-    }
-
-    static int evaluate(FakeGame tests, PionVal pionVal, boolean beginning) {
-        if (tests.isEnd()) {
-            if (tests.getCurrentMove().getPutStone().getAfter() == pionVal) {
-                return GAGNE + GAGNE + GAGNE;
-            } else {
-                return PERDU + PERDU + PERDU;
-            }
-
-        }
-
-        if (beginning) {
-            if (tests.getCurrentMove().getPutStone().getAfter() == pionVal) {
-                return evaluateBeginning(tests);
-            } else {
-                return -evaluateBeginning(tests);
-            }
-        } else {
-            if (tests.getCurrentMove().getPutStone().getAfter() == pionVal) {
-                return evaluateFollowing(tests);
-            } else {
-                return -evaluateFollowing(tests);
-            }
-        }
     }
 }
