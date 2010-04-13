@@ -2,6 +2,7 @@ package fr.alma.jeu;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Random;
 
 import fr.alma.ia.Ia;
 import fr.alma.ihm.Ihm;
@@ -687,8 +688,10 @@ public class Jeu {
 			}
 		}
 		}
-		else
-			p=new Point(((int)Math.random()*1000000000)%9,((int)Math.random()*1000000000)%9);
+		else{
+			Random n=new Random();
+			p=new Point(n.nextInt(8),n.nextInt(8));
+		}
 		return p;
 	}
 	
