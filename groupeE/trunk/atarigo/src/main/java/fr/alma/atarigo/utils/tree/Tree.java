@@ -1,6 +1,11 @@
 package fr.alma.atarigo.utils.tree;
 
+//~--- non-JDK imports --------------------------------------------------------
+
 import fr.alma.atarigo.utils.PlayMove;
+
+//~--- JDK imports ------------------------------------------------------------
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,7 +18,6 @@ import java.util.List;
  * in the Tree.
  */
 public class Tree<T> {
-
     private Node<T> rootElement;
 
     /**
@@ -53,7 +57,9 @@ public class Tree<T> {
      */
     public List<Node<T>> toList() {
         List<Node<T>> list = new LinkedList<Node<T>>();
+
         walk(rootElement, list);
+
         return list;
     }
 
@@ -76,6 +82,7 @@ public class Tree<T> {
      */
     private void walk(Node<T> element, List<Node<T>> list) {
         list.add(element);
+
         for (Node<T> data : element.getChildren()) {
             walk(data, list);
         }
@@ -86,3 +93,5 @@ public class Tree<T> {
     }
 }
 
+
+//~ Formatted by Jindent --- http://www.jindent.com
