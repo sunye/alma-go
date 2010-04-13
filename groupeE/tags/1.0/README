@@ -32,6 +32,6 @@ Dependencies :
 
 Type 'mvn package' in this directory. It should create a target folder, with a jar file.
 
-To run the program, type 'java -jar target/atarigo-1.0-SNAPSHOT.jar'.
+To run the program, type 'java -jar target/atarigo-1.0.jar'.
 
 Enjoy.
