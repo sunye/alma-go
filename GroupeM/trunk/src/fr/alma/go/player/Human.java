@@ -12,7 +12,9 @@ public class Human implements IPlayer {
 
 	@Override
 	public int getPlace() {
-		// TODO Auto-generated method stub
+		/*
+		 * TODO Here is some kinda user interface waiting for player's turn
+		 */
 		return 0;
 	}
 

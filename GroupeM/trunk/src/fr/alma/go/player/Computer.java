@@ -15,7 +15,9 @@ public class Computer implements IPlayer {
 
 	@Override
 	public int getPlace() {
-		// TODO Auto-generated method stub
+		/*
+		 * TODO Here is the call to the so called AI
+		 */
 		return 0;
 	}
 

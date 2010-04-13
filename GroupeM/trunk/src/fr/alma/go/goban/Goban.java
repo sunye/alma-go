@@ -76,13 +76,11 @@ public class Goban {
 	 * @return
 	 */
 	private boolean addGroup(StonesGroup newGroup, char col) {
-		ArrayList<StonesGroup> stonesGroups;
 		if (col == 'w') {
-			stonesGroups = whiteGroups;
+			return whiteGroups.add(newGroup);
 		} else {
-			stonesGroups = blackGroups;
+			return blackGroups.add(newGroup);
 		} // if
-		return stonesGroups.add(newGroup);
 	}
 
 	/**
@@ -93,16 +91,16 @@ public class Goban {
 	 * @return
 	 */
 	private boolean remove(ArrayList<StonesGroup> inGroups, char col) {
-		ArrayList<StonesGroup> stonesGroups;
-		if (col == 'w') {
-			stonesGroups = whiteGroups;
-		} else {
-			stonesGroups = blackGroups;
-		} // if
 		boolean ok = true;
-		for (StonesGroup group : inGroups) {
-			ok &= stonesGroups.remove(group);
-		} // for
+		if (col == 'w') {
+			for (StonesGroup group : inGroups) {
+				ok &= whiteGroups.remove(group);
+			} // for
+		} else {
+			for (StonesGroup group : inGroups) {
+				ok &= blackGroups.remove(group);
+			} // for
+		} // if
 		return ok;
 	}
 
@@ -112,22 +110,31 @@ public class Goban {
 	 * @param turn
 	 */
 	private void changes(char turn) {
-		ArrayList<StonesGroup> groups;
-		int stonesTaken;
 		if (turn == 'b') {
-			groups = whiteGroups;
-			stonesTaken = whiteTaken;
+			ArrayList<StonesGroup> whiteGroupsToRemove = new ArrayList<StonesGroup>();
+			for (StonesGroup group : whiteGroups) {
+				if (this.getLiberties(group) == 0) {
+					this.remove(group);
+					whiteGroupsToRemove.add(group);
+				} // if
+			} // for
+			for (StonesGroup group : whiteGroupsToRemove) {
+				whiteTaken += group.size();
+				whiteGroups.remove(group);
+			} // for
 		} else {
-			groups = blackGroups;
-			stonesTaken = blackTaken;
+			ArrayList<StonesGroup> blackGroupsToRemove = new ArrayList<StonesGroup>();
+			for (StonesGroup group : blackGroups) {
+				if (this.getLiberties(group) == 0) {
+					this.remove(group);
+					blackGroupsToRemove.add(group);
+				} // if
+			} // for
+			for (StonesGroup group : blackGroupsToRemove) {
+				blackTaken += group.size();
+				blackGroups.remove(group);
+			} // for
 		} // if
-		for (StonesGroup group : groups) {
-			if (this.getLiberties(group) == 0) {
-				stonesTaken += group.size();
-				this.remove(group);
-				groups.remove(group); // Maybe a problem
-			} // if
-		} // for
 	} // changes(char)
 
 	/**
@@ -224,6 +231,11 @@ public class Goban {
 	 */
 	public Goban() {
 		plate = new Stone[9][9];
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				plate[i][j] = new Stone();
+			} // for
+		} // for
 		whiteGroups = new ArrayList<StonesGroup>();
 		blackGroups = new ArrayList<StonesGroup>();
 		whiteTaken = 0;
@@ -253,7 +265,7 @@ public class Goban {
 				return false;
 			} // if
 
-			return this.remove(inGroups, col) && this.addGroup(newGroup, col);
+			return (this.remove(inGroups, col) && this.addGroup(newGroup, col));
 
 		} // if
 
@@ -266,7 +278,11 @@ public class Goban {
 	 * @return
 	 */
 	public boolean gameOver() {
-		return whiteTaken > 0 | blackTaken > 0;
+		return (whiteTaken > 0 | blackTaken > 0);
 	}
 
+	public boolean testGroups(){
+		return (whiteGroups.size()==1 && blackGroups.size()==2);
+	}
+	
 } // class Goban
