@@ -38,7 +38,7 @@
 	\listoffigures
 	\clearpage
 
-	\abstract{Ce document explique l'étude du cas de l'atari-go dans le cadre du projet d'IA du master 1 ALMA 2010. Y sera utilisé la méthode Alpha-Beta pour gérer l'arbre des possibles.}
+	\abstract{Ce document explique l'étude du cas de l'atari-go dans le cadre du projet d'IA du master 1 ALMA 2010. Y sera utilisée la méthode Alpha-Beta pour gérer l'arbre des possibles.}
 
 	\section*{Introduction}
 		Le projet demandé dans ce module d'intelligence artificielle est de développer un programme capable de jouer à l'atari-go. Ce jeu est une modification du jeu de go traditionnel, jeu inventé en chine médiévale. La version d'atari-go que nous allons traiter se joue sur un goban plus petit --- d'une taille de 9x9. Le but est d'être le premier à prendre des pierres à l'adversaire. Quand une prise a été effectuée, le jeu est fini. Nous parlerons de pierres ou groupes \emph{adverses} pour désigner les pierres et groupes de l'adversaire, et \emph{alliés} pour désigner les nôtres --- i.e. ceux joués par le programme.
@@ -60,12 +60,12 @@
 	\section{Heuristique}
 
 		\subsection{Un premier jet}
-			Un premier indice utilisé pour déterminer l'état d'un jeu est d'identifier les groupes de pierres, et calculer leurs libertés, et noter les différents groupes en fonction de ce critère. On s'intéresse au groupe qui a le moins de libertés. Si un groupe ami a 0 liberté, le score est fixé à une valeur très basse --- $-2000$ par exemple. À l'inverse, si un groupe adverse a 0 liberté, le score est fixé à $+2000$.
+			Un premier indice utilisé pour déterminer l'état d'un jeu est d'identifier les groupes de pierres, calculer leurs libertés, et noter les différents groupes en fonction de ce critère. On s'intéresse au groupe qui a le moins de libertés. Si un groupe ami a 0 liberté, le score est fixé à une valeur très basse --- $-2000$ par exemple. À l'inverse, si un groupe adverse a 0 liberté, le score est fixé à $+2000$.
 
 			Cette méthode va entraîner une tendance à construire des longues chaînes. Il faut donc chercher une heuristique plus fine.
 
 		\subsection{Affiner les cas gagnant ou perdant}
-			Un cas gagnant --- resp. perdant --- est à première vue un cas où un groupe adverse --- resp. allié --- n'a plus aucune liberté. Mais il existe d'autres cas où un groupe est dit \emph{mort}, c'est-à-dire qu'il ne peut plus sortir vivant. Un des cas les plus évidents est le cas (c.f. figure \ref{groupemort}) où il ne reste plus qu'une libertée, et que l'adversaire est déjà autour de cette liberté.
+			Un cas gagnant --- resp. perdant --- est à première vue un cas où un groupe adverse --- resp. allié --- n'a plus aucune liberté. Mais il existe d'autres cas où un groupe est dit \emph{mort}, c'est-à-dire qu'il ne peut plus sortir vivant. Un des cas les plus évidents est le cas (c.f. figure \ref{groupemort}) où il ne reste plus qu'une liberté, et que l'adversaire est déjà autour de cette liberté.
 
 			\begin{figure}[hbt]
 			\label{groupemort}
@@ -77,7 +77,7 @@
 			\end{figure}
 
 		\subsection{Les yeux}
-			Au go, un groupe ayant deux yeux est dit imprenable --- cf. figure \ref{deuxyeux} . Un amélioration de la fonction présentée ci-dessus peut être de détecter de telles dispositions ; en effet, un groupe ayant deux yeux d'une case chacun peut n'avoir que 2 libertés tout en restant imprenable. On noterait alors mieux de tels groupes, et on aurait pas à s'en «~soucier~». Pour détecter de tels yeux, il «~suffit~» de chercher des libertés entourées uniquement du bord ou de pierres du groupe étudié. Nous pouvons assez facilement détecter des cas simples d'yeux.
+			Au go, un groupe ayant deux yeux est dit imprenable --- cf. figure \ref{deuxyeux} . Une amélioration de la fonction présentée ci-dessus peut être de détecter de telles dispositions ; en effet, un groupe ayant deux yeux d'une case chacun peut n'avoir que 2 libertés tout en restant imprenable. On noterait alors mieux de tels groupes, et on n'aurait pas à s'en «~soucier~». Pour détecter de tels yeux, il «~suffit~» de chercher des libertés entourées uniquement du bord ou de pierres du groupe étudié. Nous pouvons assez facilement détecter des cas simples d'yeux.
 
 			\begin{figure}[hbt]
 			\label{deuxyeux}
@@ -89,7 +89,7 @@
 
 		\subsection{Les sauts}
 
-			Une des formes intéressantes est le coup en diagonale ou \emph{kosumi} --- cf. figure \ref{kosumi}. Ce coup fait un lien entre les deux pierre qui n'existe pas encore, mais qui ne peut être coupé en un seul coup. Dans la figure \ref{kosumi}, si blanc joue dans le cercle, noir connecte dans le triangle, et vice-versa.
+			Une des formes intéressantes est le coup en diagonale ou \emph{kosumi} --- cf. figure \ref{kosumi}. Ce coup fait un lien entre les deux pierres qui n'existe pas encore, mais qui ne peut être coupé en un seul coup. Dans la figure \ref{kosumi}, si blanc joue dans le cercle, noir connecte dans le triangle, et vice-versa.
 
 			\begin{figure}[hbt]
 			\label{kosumi}
@@ -102,13 +102,13 @@
 	\section[Algorithme alpha beta]{Algorithme $\alpha\beta$}
 	\label{alphab}
 		\subsection{Base}
-			Cet algorithme se base sur l'algorithme du min-max. La base du min-max consiste à jouer un certain nombre de coup, créer un arbre représentant les possibilités de jeu, donner un score aux états de jeu atteints après génération des coups, et trouver la branche la plus intéressante. Plus un score est haut, plus le jeu est avantageux pour nous. Le parcours de l'arbre est fait en profondeur.
+			Cet algorithme se base sur l'algorithme du min-max. La base du min-max consiste à jouer un certain nombre de coups, créer un arbre représentant les possibilités de jeu, donner un score aux états de jeu atteints après génération des coups, et trouver la branche la plus intéressante. Plus un score est haut, plus le jeu est avantageux pour nous. Le parcours de l'arbre est fait en profondeur.
 
 			Pour trouver quelle branche jouer, l'algorithme prend alternativement la branche qui a un score maximum et celle qui a un score minimum, parmi les coups possibles. Si le coup testé est joué par l'IA, la valeur maximum est choisie, car l'IA cherche à jouer le meilleur coup. Si le coup testé est joué par l'adversaire, le minimum est choisi, car l'IA considère que l'adversaire jouera le coup le pire.
 
 		\subsection[Amélioration]{Amélioration $\alpha\beta$}
 
-				L'algorithme du min-max effectue l'évaluation de tous les nœuds de l'arbre de jeu d'un horizon donné. Or dans certains cas --- qui ne sont pas négligeables, l'évaluation de certains nœuds n'apporte aucun changement au processus de décision. La figure \ref{abex} va illustrer l'exemple suivant.
+				L'algorithme du min-max effectue l'évaluation de tous les nœuds de l'arbre de jeu d'un horizon donné. Or dans certains cas --- qui ne sont pas négligeables ---, l'évaluation de certains nœuds n'apporte aucun changement au processus de décision. La figure \ref{abex} va illustrer l'exemple suivant.
 
 				\begin{figure}[hbt]
 					\label{abex}
@@ -118,7 +118,7 @@
 					\caption{Exemple d'élagage $\alpha\beta$}
 				\end{figure}
 
-				L'algorithme a calculé la valeur du nœud MAX de gauche, ce nœud prend alors la valeur 5. Lorsque le deuxième nœud max est calculé, on s'apperçoit que la première valeur renvoyée --- en l'occurrence 8 --- est supérieure à 5. Or, comme l'algorithme se trouve dans un cas où il choisira la valeur maximum, le nœud MAX de gauche aura au moins la valeur 8. Donc ce n'est pas la peine d'étudier les sous-arbres suivants, car de toutes façons, c'est le 5 qui sera remonté au niveau d'au dessus.
+				L'algorithme a calculé la valeur du nœud MAX de gauche, ce nœud prend alors la valeur 5. Lorsque le deuxième nœud max est calculé, on s'aperçoit que la première valeur renvoyée --- en l'occurrence 8 --- est supérieure à 5. Or, comme l'algorithme se trouve dans un cas où il choisira la valeur maximum, le nœud MAX de gauche aura au moins la valeur 8. Donc ce n'est pas la peine d'étudier les sous-arbres suivants, car de toutes façons, c'est le 5 qui sera remonté au niveau d'au dessus.
 
 				L'algorithme $\alpha\beta$ consiste à détecter ces cas de coupure, et donc à éviter des calculs inutiles.
 
@@ -129,14 +129,14 @@
 				Pour améliorer cet algorithme, nous allons définir deux fonctions d'évaluation du jeu~:
 
 				\paragraph{evaluateBeginning}
-					Cette première fonction est appelée tant que moins de 6 coups ont été joués. Le grand principe de cette évaluation est de s'assurer que les coups sont joués plutôt vers le centre du goban. Comme il n'y a pas encore de groupes, ce n'est pas la peine de calculer les yeux des groupes, et moins important de compter les libertées, car il est plus difficile d'être pris au début du jeu.
+					Cette première fonction est appelée tant que moins de 6 coups ont été joués. Le grand principe de cette évaluation est de s'assurer que les coups sont plutôt joués vers le centre du goban. Comme il n'y a pas encore de groupe, ce n'est pas la peine de calculer les yeux des groupes, et moins important de compter les libertés car il est plus difficile d'être pris au début du jeu.
 
 
 				\paragraph{evaluateFollowing}
-					La deuxième fonction est appelée quand le jeu a déjà bien démarré. Ici, sont testés les yeux des groupes, leurs libertés, et les sauts possibles.
+					La deuxième fonction est appelée quand le jeu a déjà bien démarré. Ici sont testés les yeux des groupes, leurs libertés, et les sauts possibles.
 
 			\subsubsection{Réduction des coups possibles}
-				Nous considérons que certains coups n'apportent rien. Au début du jeu, on restreint les endroits où jouer à un carré excluant les deux lignes/colonnes extérieures. Pendant la suite du jeu, les possibilités  sont encores restreintes à un rectangle entourant les pierres déjà jouées agrandi de deux lignes et colonnes. Le rectangle bleu de la figure \ref{rectangletest} montre la zone qui sera testée dans le cas présenté --- les intersections situées sur les côtés du rectangle sont inclues dans la zone.
+				Nous considérons que certains coups n'apportent rien. Au début du jeu, on restreint les endroits où jouer au carré central, excluant les deux lignes/colonnes extérieures --- cela équivaut à la zone délimitée par les hoshi. Pendant la suite du jeu, les possibilités  sont encores restreintes à un rectangle entourant les pierres déjà jouées agrandi de deux lignes et colonnes. Le rectangle bleu de la figure \ref{rectangletest} montre la zone qui sera testée dans le cas présenté --- les intersections situées sur les côtés du rectangle sont inclues dans la zone.
 
 				\begin{figure}[hbt]
 					\begin{center}
@@ -148,7 +148,7 @@
 
 
 			\subsubsection{Arrêt de l'algorithme au plus tôt}
-				Nous avons ajouté une pondération de l'évaluation. Si on évalue une feuille qui est à un niveau inférieur au niveau maximum demandé, l'évaluation vaudra plus cher que si la feuille est à la profondeur maximum. Il vaut mieux jouer un très bon coup qui finit le jeu plus tôt qu'un très bon coup qui le fini plus tard.
+				Nous avons ajouté une pondération de l'évaluation. Si on évalue une feuille qui est à un niveau inférieur au niveau maximum demandé, l'évaluation vaudra plus cher que si la feuille est à la profondeur maximale. Il vaut mieux jouer un très bon coup qui finit le jeu plus tôt qu'un très bon coup qui le finit plus tard.
 
 
 	\section{Fonctionnement de l'application}
@@ -180,7 +180,7 @@
 				\end{figure}
 
 
-				Nous pouvons y distinguer des grands éléments de notre application~: La fenêtre principale, le contrôleur --- GameManager, le plateau graphique --- GobanPanel, le jeu en lui même, et la partie IA, soit l'algorithme $\alpha\beta$. L'algorithme $\alpha\beta$ a été décrit dans la section \ref{alphab}. Le jeu en lui même sera décrit dans la section \ref{howgame}. Pour lancer une partie, le joueur doit cliquer sur le bouton idoine. S'il a choisi une partie à un joueur, l'application lui demande la couleur qu'il veut jouer. Une fois la couleur choisie, on alternera les coups joués par l'ordinateur et les coups joués par le joueur.
+				Nous pouvons y distinguer des grands éléments de notre application~: la fenêtre principale, le contrôleur --- GameManager ---, le plateau graphique --- GobanPanel ---, le jeu en lui même, et la partie IA --- soit l'algorithme $\alpha\beta$. L'algorithme $\alpha\beta$ a été décrit dans la section \ref{alphab}. Le jeu en lui-même sera décrit dans la section \ref{howgame}. Pour lancer une partie, le joueur doit cliquer sur le bouton idoine. S'il a choisi une partie à un joueur, l'application lui demande la couleur qu'il veut jouer. Une fois la couleur choisie, on alternera les coups joués par l'ordinateur et les coups joués par le joueur.
 
 			\subsubsection{Partie à deux joueurs}
 
@@ -201,7 +201,7 @@
 
 			\subsubsection{Game et Goban}
 
-			Le centre de l'application est ici la classe Game. Elle représente une partie d'atari go. Elle contient le goban courant --- état du plateau, un arbre de déroulement de la partie --- prévu pour pouvoir annuler un coup, des informations sur les groupes, leurs libertés, etc.
+			Le centre de l'application est ici la classe Game. Elle représente une partie d'atari go. Elle contient le goban courant --- état du plateau ---, un arbre de déroulement de la partie --- prévu pour pouvoir annuler un coup ---, des informations sur les groupes, leurs libertés, etc.
 
 			Le diagramme de classes décrit par la figure \ref{classes} (page \pageref{classes}) montre l'agencement des différents éléments composant un jeu.
 
@@ -214,7 +214,7 @@
 					\label{classes}
 				\end{figure}
 
-			Ce diagramme est incomplet. Néanmoins, il permet de repérer les différents éléments d'un jeu. La classe Game en elle même ne contient qu'une méthode utile pour un joueur~: \emph{playAt}. Les autres méthodes publiques servent pour la fonction d'évaluation et l'algorithme $\alpha\beta$. La classe Goban est une classe métier. Elle contient le plateau tel que représenté logiquement, ainsi que des méthodes d'accès basiques, sans vérification, ainsi que des méthodes de récupération des voisins ou des libertés de pions.
+			Ce diagramme est incomplet. Néanmoins, il permet de repérer les différents éléments d'un jeu. La classe Game en elle-même ne contient qu'une méthode utile pour un joueur~: \emph{playAt}. Les autres méthodes publiques servent pour la fonction d'évaluation et l'algorithme $\alpha\beta$. La classe Goban est une classe métier. Elle contient le plateau tel que représenté logiquement, ainsi que des méthodes d'accès basiques, sans vérification, et des méthodes de récupération des voisins ou des libertés de pions.
 
 
 			\subsubsection{L'historique}
@@ -231,14 +231,14 @@
 						\label{history}
 					\end{figure}
 
-				La partie Historique n'est qu'une structure d'arbre chainé. La partie importante ici est la notion de PlayMove. C'est cette classe qui contient tous les changements engendrés par le coup qui vient d'être joué. On y trouve~:
+				La partie Historique n'est qu'une structure d'arbre chaîné. La partie importante ici est la notion de PlayMove. C'est cette classe qui contient tous les changements engendrés par le coup qui vient d'être joué. On y trouve~:
 				\begin{itemize}
 					\item les groupes du moment~;
-					\item les changements sur le goban --- ajout/suppression de pierres~;
+					\item les changements sur le goban (ajout/suppression de pierres)~;
 					\item un booléen en cas de prise, appelé end dans notre cas.
 				\end{itemize}
 
-				Les groupes sont des ensembles de pierres. Ils sont décris dans la section \ref{groupes}. Les changements --- décrits par des objets Modif, représentent un diff du goban avant et après le coup. Modif contient des coordonnées, ainsi que la valeur à ces coordonnées avant et après le coup. On ne peut avoir que des couples (RIEN,NOIR), (RIEN,BLANC), (BLANC,RIEN) et (NOIR,RIEN).
+				Les groupes sont des ensembles de pierres. Ils sont décrits dans la section \ref{groupes}. Les changements --- décrits par des objets Modif ---, représentent un diff du goban avant et après le coup. Modif contient des coordonnées, ainsi que la valeur à ces coordonnées avant et après le coup. On ne peut avoir que des couples (RIEN,NOIR), (RIEN,BLANC), (BLANC,RIEN) et (NOIR,RIEN).
 
 
 
