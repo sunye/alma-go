@@ -1,6 +1,11 @@
+// File App.java
+// Last commited $Date$
+// Revision $Rev$
+
+
+
 package fr.alma.atarigo;
 
-//~--- non-JDK imports --------------------------------------------------------
 import fr.alma.atarigo.ihm.Fenetre;
 
 /**
