@@ -89,7 +89,7 @@
 			\end{figure}
 
 	\section{Algorithme $\alpha\beta$}
-
+	\label{alphab}
 		\subsection{Base}
 			Cet algorithme se base sur l'algorithme du min-max. La base du min-max consiste à jouer un certain nombre de coup, créer un arbre représentant les possibilités de jeu, donner un score aux états de jeu atteints après génération des coups, et trouver la branche la plus intéressante. Plus un score est haut, plus le jeu est avantageux pour nous. Le parcours de l'arbre est fait en profondeur.
 
@@ -138,5 +138,59 @@
 
 			\subsubsection{Arrêt de l'algorithme au plus tôt}
 				Nous avons ajouté une pondération de l'évaluation. Si on évalue une feuille qui est à un niveau inférieur au niveau maximum demandé, l'évaluation vaudra plus cher que si la feuille est à la profondeur maximum. Il vaut mieux jouer un très bon coup qui finit le jeu plus tôt qu'un très bon coup qui le fini plus tard.
+
+
+	\section{Fonctionnement de l'application}
+
+		\subsection{Cas d'utilisation}
+			Les cas d'utilisation sont présentés dans la figure \ref{use case}.
+
+			\begin{figure}[hbt]
+				\begin{center}
+					\includegraphics[width=0.7\textwidth]{./usecase.png}
+				\end{center}
+				\caption{Cas d'utilisation}
+				\label{use case}
+			\end{figure}
+
+		Les actions possibles ne sont pas foule, car nous avons principalement orienté notre travail sur l'intelligence artificielle de l'application.
+
+		\subsection{Diagrammes de séquence}
+
+			\subsubsection{Partie à un joueur}
+				Le déroulement d'une partie à un joueur --- contre l'ordinateur --- est décrit par la figure \ref{oneplayer}.
+
+				\begin{figure}[hbt]
+					\begin{center}
+						\includegraphics[width=1.2\textwidth]{./IA_1J.png}
+					\end{center}
+					\caption{Partie à un joueur}
+					\label{oneplayer}
+				\end{figure}
+
+
+				Nous pouvons y distinguer des grands éléments de notre application~: La fenêtre principale, le contrôleur --- GameManager, le plateau graphique --- GobanPanel, le jeu en lui même, et la partie IA, soit l'algorithme $\alpha\beta$. L'algorithme $\alpha\beta$ a été décrit dans la section \ref{alphab}. Le jeu en lui même sera décrit dans la section \ref{howgame}.
+
+			\subsubsection{Partie à deux joueurs}
+
+				La figure \ref{twoplayers} décrit le déroulement d'une partie à deux joueurs.
+
+				\begin{figure}[hbt]
+					\begin{center}
+						\includegraphics[width=1.2\textwidth]{./IA_2J.png}
+					\end{center}
+					\caption{Partie à deux joueurs}
+					\label{twoplayers}
+				\end{figure}
+
+
+		\subsection{Le jeu : la classe Game}
+
+			Le centre de l'application est ici la classe Game. Elle représente une partie d'atari go. Elle contient le goban courant --- état du plateau, un arbre de déroulement de la partie --- prévu pour pouvoir annuler un coup, des informations sur les groupes, leurs libertés, etc.
+
+			Le diagramme de classes décrit par la figure \ref{classes} montre l'agencement des différents élément composant un jeu.
+
+
+
 
 \end{document}
