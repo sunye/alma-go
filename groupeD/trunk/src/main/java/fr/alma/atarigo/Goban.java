@@ -14,18 +14,21 @@ import fr.alma.atarigo.AtariGo.Move;
  */
 public class Goban {
 
- /**
-  * matrice of stones
-  */
+ /** matrice of stones */
  public Stone[][] matrice;
+ /** the list of stone groups on the goban */
  public GroupsList groupsList;
- 
+ /** Amount of captured black stones*/
  public int caughtBlack;
+ /** Amount of captured white stones*/
  public int caughtWhite;
  
-/**
- * logic constructor
- */
+ 
+ /**
+  * Logic constructor
+  * @param line number of lines of the goban.
+  * @param column number of columns of the goban. 
+  */
  public Goban(int line, int column) {
 	this.matrice = new Stone[line][column];
 	this.groupsList=new GroupsList();
@@ -34,6 +37,10 @@ public class Goban {
 	newGame();
  }
  
+ /**
+  * Copy constructor
+  * @param p the goban we want to copy.
+  */
  public Goban(Goban p){
 	 matrice = new Stone[p.getLines()][p.getColumns()];
 	 for(int i=0;i<p.getLines();i++)
@@ -79,7 +86,12 @@ public class Goban {
  }
 
  /**
-  * setter for squares.
+  * Write on the goban if the move is not invalid and return the type of move.
+  * @param atariGo the atarigo instance
+  * @param position the position of the stone
+  * @param stone the color of the stone (black or white)
+  * @param finalWriting used by AI to not modify the goban
+  * @return the type of move 
   */
  public Move writeCell(AtariGo atariGo,Position position, Stone stone, boolean finalWriting) {
 	matrice[position.getLine()][position.getColumn()] = stone;
@@ -150,7 +162,7 @@ public class Goban {
 }
  
  /**
-  * @deprecated
+  * @deprecated if we empty a stone we should also update groups of stones.
   * empty a square
   * @param position
   */
