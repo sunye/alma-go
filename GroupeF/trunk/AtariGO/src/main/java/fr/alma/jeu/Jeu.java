@@ -647,7 +647,7 @@ public class Jeu {
 				}
 				
 				for(Pion pion:cjMachine){
-					if(getLiberteFixe(g,pion.position)<min){
+					if(getLiberteFixe(g,pion.position)<=min){
 						min=getLiberteFixe(g,pion.position);
 						if(pion.position.x>0)
 							if((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
@@ -779,7 +779,7 @@ public class Jeu {
 		if((p.position.y>0))
 			if (p.couleur.equals(g.Contenu[p.position.x][p.position.y-1].couleur))
 				DeterminerVoisinsG(g, g.Contenu[p.position.x][p.position.y-1]);
-		if((p.position.x<8))
+		if((p.position.y<8))
 			if((p.couleur.equals(g.Contenu[p.position.x][p.position.y+1].couleur)))
 			DeterminerVoisinsG(g, g.Contenu[p.position.x][p.position.y+1]);
 		}
