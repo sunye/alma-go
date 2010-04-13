@@ -6,6 +6,7 @@ import java.util.ListIterator;
 /**
  * Group.java represents a group of stones from the same color.
  * @author VINCENT FERREIRA, ADRIEN GUILLE 
+ * @version 1.0
  */
 public class Group implements Cloneable{
 

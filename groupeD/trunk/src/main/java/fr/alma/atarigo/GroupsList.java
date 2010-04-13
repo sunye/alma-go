@@ -9,9 +9,11 @@ import java.util.ListIterator;
  *
  */
 public class GroupsList implements Cloneable{
-
+	/** encapsulated groups of stones*/
 	public ArrayList<Group> gList;
-	
+	/**
+	 * logic constructor
+	 */
 	public GroupsList(){
 		gList = new ArrayList<Group>();
 	}
@@ -31,7 +33,9 @@ public class GroupsList implements Cloneable{
 		return groupList;
 	}
 
-	
+	/**
+	 * accessor for list of groups
+	 */
 	public ArrayList<Group >getListe(){
 		return gList;
 	}
@@ -120,10 +124,16 @@ public class GroupsList implements Cloneable{
  		return groupe1;
  	}
  	
+ 	/**
+ 	 * return if the list is empty or not.
+ 	 */
  	public boolean isEmpty(){
  		return gList.size()==0;
  	}
  	
+ 	/**
+ 	 * return the total amount of stones of the list of groups.
+ 	 */
  	public int totalStones(){
  		int nb = 0;
  		for(Group current : gList){

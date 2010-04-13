@@ -3,6 +3,7 @@ package fr.alma.atarigo;
  /**
  * Enumeration of the 4 possible directions.
  * and for each of them, the corrections to give.
+ * @version 1.0
  */
 enum Direction {
 

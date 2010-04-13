@@ -3,6 +3,8 @@ package fr.alma.atarigo;
 
 /**
  * Position.java represent a position in a board.
+ * @author VINCENT FERREIRA, ADRIEN GUILLE
+ * @version 1.0
  */
 public class Position {
 
@@ -24,6 +26,10 @@ public class Position {
 	this.column = c;
  }
 
+ /** 
+  * Copy constructor
+  * @param position position we want to copy.
+  */
  public Position(Position position) {
 		this.line = position.line;
 		this.column = position.column;

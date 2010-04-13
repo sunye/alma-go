@@ -6,33 +6,38 @@ import java.util.*;
 /**
  * AtariGo.java contains the game rules and mechanisms of Atarigo.
  * @author VINCENT FERREIRA, ADRIEN GUILLE
+ * @version 1.0
  */
 public class AtariGo {
 
-/**
- *  Enumeration of the different types of moves.
- */
+	/**
+	 *  Enumeration of the different types of moves.
+	 *  <li>
+	 *  INVALID for an invalid move
+	 *  <li>
+	 *  WIN for a winning move
+	 *  <li>
+	 *  NEUTRAL for a neutral move
+	 */
  public enum Move { INVALID, WIN, NEUTRAL };
  
- /**
-  * Total number of moves played during a game.
-  */
+ /** Total number of moves played during a game. */
  public int totalMoves;
+ /** Tell if the game is over */
  public boolean end;
- /**
-  *  Game board
-  */
+ /** Game board */
  public Goban goban;
- /**
-  * List of stone groups 
-  */
+ /** Amount of captured black stones*/
  public int caughtBlack;
+ /** Amount of captured white stones*/
  public int caughtWhite;
+ /** Objective of captured stones to win the game */
  public int captureObjective;
- 
+ /** currentPlayer is player1 or player2. Depends on who got the turn. */
  public Player currentPlayer;
- 
+ /** the player1 (black stones) */
  public Player player1;
+ /** the player2 (white stones) */
  public Player player2;
 
  /**
@@ -51,6 +56,10 @@ public class AtariGo {
 	return goban.writeCell(this,position, player,true);
 }
  
+/**
+* Tell if the current player can make a move. Usefull to know if the game is over or not.
+* @param player The player whot got the turn.
+*/
 public boolean canPlayMove(Stone player){
 	AtariGo atariGoTest;
 	boolean peutJouer = false;
@@ -118,7 +127,10 @@ public boolean canPlayMove(Stone player){
 		caughtWhite=0;
 		captureObjective = 1;
 	 }
- 
+ /**
+  * Copy constructor
+  * @param atarigo Atarigo instance we want to copy.
+  */
  public AtariGo(AtariGo atarigo){
 	goban = new Goban(atarigo.goban);
 	currentPlayer = atarigo.currentPlayer;
