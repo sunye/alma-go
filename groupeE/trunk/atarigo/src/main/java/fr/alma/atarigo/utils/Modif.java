@@ -40,6 +40,12 @@ public class Modif {
         return new Modif(line, column, after, before);
     }
 
+    /**
+     * Reverse-patches the given goban from <em>after</em> to <em>before</em>.
+     * If goban[line][column] does not contains the <em>after</em> value, there is an exception.
+     * @param goban
+     * @throws BadGobanStateException
+     */
     public void revert(Goban goban) throws BadGobanStateException{
         if(goban.getCase(line, column) != this.after){
             throw new BadGobanStateException("Cannot apply this modification to the goban, since the after state is not right.");
@@ -47,7 +53,13 @@ public class Modif {
             goban.setCase(line, column, before);
         }
     }
-    
+
+    /**
+     * Patches the given goban from <em>before</em> to <em>after</em>.
+     * If goban[line][column] does not contains the <em>before</em> value, there is an exception.
+     * @param goban
+     * @throws BadGobanStateException
+     */
     public void apply(Goban goban) throws BadGobanStateException{
         if(goban.getCase(line, column) != this.before){
             throw new BadGobanStateException("Cannot apply this modification to the goban, since the before state is not right.");
@@ -56,10 +68,18 @@ public class Modif {
         }
     }
 
+    /**
+     * Creates a Stone with <em>line</em>, <em>column</em> and <em>before</em>.
+     * @return
+     */
     public Stone getOldStone(){
         return new Stone(getBefore(), line, column);
     }
 
+    /**
+     * Creates a Stone with <em>line</em>, <em>column</em> and <em>after</em>.
+     * @return
+     */
     public Stone getNewStone(){
         return new Stone(getAfter(), line, column);
     }

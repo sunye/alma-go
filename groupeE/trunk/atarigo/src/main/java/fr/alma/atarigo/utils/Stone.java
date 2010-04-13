@@ -1,8 +1,5 @@
 package fr.alma.atarigo.utils;
 
-//~--- non-JDK imports --------------------------------------------------------
-
-import fr.alma.atarigo.utils.PionVal;
 
 public class Stone {
     private short   column;
@@ -32,7 +29,7 @@ public class Stone {
 
     @Override
     public int hashCode() {
-        return (Goban.getTaille() * column + line) * ((couleur == null)
+        return (13 * column + line) * ((couleur == null)
                 ? 0
                 : couleur.valeur());
     }

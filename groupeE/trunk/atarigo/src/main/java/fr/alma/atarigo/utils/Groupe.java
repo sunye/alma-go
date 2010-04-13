@@ -6,14 +6,25 @@ import fr.alma.atarigo.utils.exceptions.BadCouleurException;
 import java.util.Collection;
 import java.util.Set;
 
+/**
+ * This class describes a group of stones. We have here the stones (all the same color), the eyes, the liberties, and the group's color.
+ * @author judu
+ */
 public class Groupe {
 
+    /// Stones with the same color
     private Set<Stone> stones;
     private Set<Groupe> eyes;
+    /// All the free places surrounding the group
     private Set<Stone> liberties;
-    private int libertes;
+    /// The color of the stones.
     private PionVal couleur;
 
+
+    /**
+     * We define a group by its color. A colorless group does not mean anything.
+     * @param couleur
+     */
     public Groupe(PionVal couleur) {
         super();
         this.couleur = couleur;
@@ -21,6 +32,11 @@ public class Groupe {
         eyes = new HashSet<Groupe>();
     }
 
+    /**
+     * Check if the group contains the Stone.
+     * @param p
+     * @return
+     */
     public boolean contains(Stone p) {
         return stones.contains(p);
     }
@@ -55,28 +71,43 @@ public class Groupe {
         return false;
     }
 
-    public Object getCouleur() {
+    public PionVal getCouleur() {
         return couleur;
     }
 
-    public Groupe fusion(Groupe autre) {
+
+    /**
+     * Creates a new group containing the union of <em>this</em>, and <em>other</em>.
+     * @param other
+     * @return
+     */
+    public Groupe fusion(Groupe other) {
         Groupe sortie = null;
-        if (this.intersectionNonVide(autre)) {
+        if (this.intersectionNonVide(other)) {
             //Si on partage un pion, alors on doit fusionner les deux groupes.
             sortie = new Groupe(couleur);
             sortie.stones.addAll(stones);
-            sortie.stones.addAll(autre.stones);
+            sortie.stones.addAll(other.stones);
         }
 
         return sortie;
     }
 
-    public void addAll(Groupe autre) {
-        if (this.getCouleur() == autre.getCouleur()) {
-            this.stones.addAll(autre.stones);
+    /**
+     * Adds all the stones of <em>other</em> to this.
+     * @param other
+     */
+    public void addAll(Groupe other) {
+        if (this.getCouleur() == other.getCouleur()) {
+            this.stones.addAll(other.stones);
         }
     }
 
+    /**
+     * Adds a collection of stones, one-by-one, to ensure all added stones have the same color.
+     * @param collec
+     * @throws BadCouleurException
+     */
     public void addAll(Collection<Stone> collec) throws BadCouleurException{
         for(Stone pion:collec){
             this.addStone(pion);

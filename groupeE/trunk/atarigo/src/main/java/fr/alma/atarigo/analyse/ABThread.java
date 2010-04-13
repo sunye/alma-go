@@ -8,10 +8,10 @@ package fr.alma.atarigo.analyse;
 import fr.alma.atarigo.utils.Game;
 import fr.alma.atarigo.utils.PionVal;
 import fr.alma.atarigo.utils.PlayMove;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
+ * Embbeds an AlphaBeta, and allows to get the best PlayMove at any time (theorically).
+ *
  *
  * @author judu
  */
@@ -34,6 +34,10 @@ public class ABThread extends Thread {
         
     }
 
+    /**
+     * Returns the current best move to play.
+     * @return
+     */
     public PlayMove getCurrentBest(){
         if(best != null){
             return best;
