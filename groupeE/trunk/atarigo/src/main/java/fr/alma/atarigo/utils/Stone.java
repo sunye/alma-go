@@ -1,3 +1,7 @@
+// File Stone.java
+// Last commited $Date$
+// Revision $Rev$
+
 package fr.alma.atarigo.utils;
 
 

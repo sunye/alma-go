@@ -1,7 +1,6 @@
 // File App.java
 // Last commited $Date$
 // Revision $Rev$
-// Let's try this
 
 
 
