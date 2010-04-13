@@ -1,0 +1,107 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{ucs}
+%\usepackage{fullpage}
+\usepackage[francais]{babel}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[pdftex]{graphicx}
+\usepackage{makeidx}
+\makeindex
+\usepackage{array}
+%\usepackage{multirow}
+\usepackage{color}
+%\usepackage{moreverb}
+\usepackage{listings} 
+\definecolor{colKeys}{rgb}{0,0,1} 
+\definecolor{colIdentifier}{rgb}{0,0,0} 
+\definecolor{colComments}{rgb}{0,0.5,1} 
+\definecolor{colString}{rgb}{0.6,0.1,0.1} 
+\lstset{ 
+language=java,
+basicstyle=\ttfamily\small, % 
+identifierstyle=\color{colIdentifier}, % 
+keywordstyle=\color{colKeys}, % 
+stringstyle=\color{colString}, % 
+commentstyle=\color{colComments}, 
+columns=flexible,
+tabsize=5,
+%frame=single,
+frame=shadowbox,
+rulesepcolor=\color[gray]{0.5},
+extendedchars=true,
+showspaces=false,
+showstringspaces=false,
+numbers=left,
+numberstyle=\tiny,
+breaklines=true,
+%backgroundcolor=\color{hellgelb},
+captionpos=b,%
+%morekeywords={AND,ASC,avg,CHECK,COMMIT,count,DECODE,DESC,DISTINCT,%
+%GROUP,IN,LIKE,NUMBER,ROLLBACK,SUBSTR,sum,VARCHAR2,iif},%
+} 
+
+\usepackage{url} 
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead{}
+\fancyfoot{}
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%
+% MAIN PAGE %
+%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+
+	%\vspace*{2cm}
+
+
+	\begin{flushleft}
+		 \includegraphics*[width=4cm]{logo.jpg} \\
+		 \textsl{12, rue de la Houssinière}\\
+		 \textit{44322 Nantes}
+		\hrulefill
+	\end{flushleft}
+
+
+	\vspace{2cm}
+
+
+	\begin{flushleft}
+
+		{\fontfamily{ppl}\fontseries{b}\fontsize{1.4cm}{1.65cm}\selectfont ObiGO  } 	 \\ 
+	
+		\vspace{1cm}
+	
+		{\Large Technical Documentation}\\
+	
+		\vspace{1cm}
+		Adrien Guille \\
+		Vincent Ferreira \\
+		\textit{2009-2010}
+	
+	\end{flushleft}
+
+	\vspace{2cm}
+
+	\begin{flushleft}
+	 	\textsc{Master 1 - ALMA}\\	
+	 	\hrulefill
+	\end{flushleft}
+
+
+\end{titlepage}
+% \hspace{\stretch{1}}
+
+%%%%%%%%%%%%%%%%%%%%
+% TABLE OF CONTENTS %
+%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+
+
+\end{document} 
