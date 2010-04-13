@@ -27,20 +27,27 @@ public class GameManager {
         this.fenetre = fenetre;
     }
 
-    //Lance une partie :
+    /**
+     * Start a game
+     */
     private void init() {
         game = new Game();
 
     }
 
-    //Begin a two players game :
+    /**
+     * Begin a two-players game
+     */
     public void twoPlayers() {
         init();
         this.onePlayerGame = Boolean.FALSE;
         gobanPanel.startGame(this, this.game);
     }
 
-    //Begin a onePlayerGame
+    /**
+     * Begin a one-player game
+     * @param couleur : color of the stone player
+     */
     public void onePlayer(PionVal couleur) {
         init();
         this.onePlayerGame = Boolean.TRUE;
@@ -50,6 +57,9 @@ public class GameManager {
         }
     }
 
+    /**
+     * The computer plays.
+     */
     private void coupIA() {
         gobanPanel.desactivateMouse();
         AlphaBeta alphabeta = new AlphaBeta(3, PionVal.NOIR);
@@ -60,6 +70,11 @@ public class GameManager {
         gobanPanel.activateMouse();
     }
 
+    /**
+     * Do a move (and display it)
+     * @param lin : line of the move
+     * @param col : column of the move
+     */
     public void appliqueCoup(int lin, int col) {
         if (game.playAt(lin, col)) {
             gobanPanel.paintImmediately(0, 0, gobanPanel.getWidth(), gobanPanel.getHeight());
@@ -69,18 +84,26 @@ public class GameManager {
         }
     }
 
+    /**
+     * Test an endgame
+     * @return if it is the end of the game
+     */
     public boolean isEnd() {
         return game.isEnd();
     }
 
+    /**
+     * Accessor : game
+     * @return the current game
+     */
     final public Game getGame() {
         return game;
     }
 
+    /**
+     * Open a window endgame to announce the winner of the game.
+     */
     public void dialogueFinJeu() {
         this.fenetre.finJeu();
     }
-
-
-
 }

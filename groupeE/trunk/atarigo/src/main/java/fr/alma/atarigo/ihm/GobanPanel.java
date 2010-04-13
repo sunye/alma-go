@@ -38,6 +38,9 @@ public final class GobanPanel extends JPanel {
     private MouseAdapter mouseL;
     private GameManager controleur;
 
+    /**
+     * Constructor
+     */
     public GobanPanel() {
         super();
 
