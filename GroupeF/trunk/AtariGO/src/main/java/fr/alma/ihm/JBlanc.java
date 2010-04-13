@@ -4,17 +4,18 @@ import javax.swing.JLabel;
 
 /**
  * Classe qui permet de cloner un Pion blanc.
- * @author lahuidi
+ * @author ZERBITA Mohamed El Hadi
  *
  */
 public class JBlanc extends JLabel implements Cloneable{
 	
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Constructeur de la classe
+	 */
 	public JBlanc(){
-		
 		super();
-		
 	}
 	
 	/**
@@ -26,16 +27,11 @@ public class JBlanc extends JLabel implements Cloneable{
           JLabel cl = null;
           
 		try {
-			
 			cl = (JBlanc)super.clone();
-						
 		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-          
-		  
-          return cl;
+        return cl;
      }
 
 

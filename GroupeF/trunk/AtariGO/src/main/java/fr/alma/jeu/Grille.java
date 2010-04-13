@@ -14,7 +14,7 @@ import fr.alma.jeu.Pion.Couleur;
 
   
   /** 
-  * Classe qui contien la grille du jeu et le dictionnaire des valeurs positions. 
+  * Classe qui contien la grille du jeu et le positionnement des pions. 
   * @author lahuidi 
   * 
   */ 
@@ -26,15 +26,18 @@ import fr.alma.jeu.Pion.Couleur;
          public Grille() { 
                   
                 Contenu = new Pion[9][9]; 
-                  
+                //int count = 0;  
                 for(int i=0;i<9;i++) 
-                	 for(int j=0;j<9;j++) 
-                         Contenu[i][j] = new Pion(new Point(i,j)); 
+                	 for(int j=0;j<9;j++){
+                		 Contenu[i][j] = new Pion(new Point(i,j)); 
+                		 //if(count<30) Contenu[i][j].couleur = Couleur.NOIR; 
+                		 //count++;
+                	 }
+                         
               
                 initHashMap();
          } 
-         
-         
+                 
         /**
      	 * Méthode qui permet d'effacer la grille de tout les pions
      	 */
@@ -54,13 +57,11 @@ import fr.alma.jeu.Pion.Couleur;
     	public Tour mettrePion(Point position,JLabel LGrille, JBlanc Blanc, JNoir Noir, Tour t) {
     				
     		if(t == Tour.NOIR ){
-    				System.out.println(t);
     				Contenu[position.x][position.y].couleur = Couleur.NOIR;
     				(Contenu[position.x][position.y]).position = position;
     				mettrePionNoir(LGrille, Noir, position);
     				t = Tour.BLANC;
     			}else{
-    				System.out.println(t);
     				Contenu[position.x][position.y].couleur = Couleur.BLANC;
     				(Contenu[position.x][position.y]).position=position;
     				mettrePionBlanc(LGrille,Blanc, position);
@@ -68,9 +69,7 @@ import fr.alma.jeu.Pion.Couleur;
     			}
     		return t;
     	}
-    	
-    	
-    	
+    	    	
      	/**
     	 * Méthode qui met un pion blanc dans une position
     	 * @param position position du pion
@@ -94,13 +93,11 @@ import fr.alma.jeu.Pion.Couleur;
     		noir.setVisible(true);
     	}
     	
-    	
-
     	/**
     	 * Méthode qui met à jour toute la grille lors d'une capture
     	 * @param other contenu de la nouvelle grille
     	 */
-    	public void miseAjourGrille(Grille other, JLabel LGrille, JBlanc Blanc, JNoir Noir){
+    	  public void miseAjourGrille(Grille other, JLabel LGrille, JBlanc Blanc, JNoir Noir){
     		effacerGrille(LGrille);
     				
     		for(int i=0;i<9;i++) 
@@ -112,11 +109,12 @@ import fr.alma.jeu.Pion.Couleur;
                     	Contenu[i][j] = other.Contenu[i][j];
                    	 	mettrePionBlanc(LGrille, Blanc,new Point(i,j));
                     }
-        }
+          }
+    	
          /** 
-          * Initialise la table de hachage avec les points qui correspondent aux valeurs. 
+          * Initialise la Map avec les points qui correspondent aux valeurs. 
           */ 
-         private void initHashMap(){ 
+          private void initHashMap(){ 
                   
                   
                  ghmp = new HashMap< Point, Point>(); 
@@ -218,7 +216,5 @@ import fr.alma.jeu.Pion.Couleur;
                  ghmp.put(new Point(6,8), new Point(190,240)); 
                  ghmp.put(new Point(7,8), new Point(215,240)); 
                  ghmp.put(new Point(8,8), new Point(240,240)); 
-         }
-         
-           
+        }
  } 
