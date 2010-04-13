@@ -20,7 +20,9 @@ public class Pion {
 		this.position = point;
 	}
 
-	public boolean equal(Pion pion) {
-		return this.couleur.equals(pion.couleur)&&(this.position.x==pion.position.x)&&(this.position.y==pion.position.y);
+	public boolean equals(Pion pion) {
+		return this.couleur.equals(pion.couleur)&&
+		(this.position.x == pion.position.x)&&
+		(this.position.y == pion.position.y);
 	}
 }
