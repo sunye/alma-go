@@ -1,7 +1,6 @@
 package fr.alma.atarigo;
 
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ListIterator;
@@ -229,6 +228,7 @@ public class Goban {
 
  /**
   * indicate the number of liberties owned by the position
+  * @param position
   */
  public int getLiberty(Position position){
 	 int count = 0;
@@ -290,11 +290,10 @@ public class Goban {
 	return goban;
  }
 
-public void actionPerformed(ActionEvent arg0) {
-	// TODO Auto-generated method stub
-	
-}
-
+/**
+ * Find all the empty cells of the goban
+ * @return a list containing all the empty cells
+ */
 public ArrayList<Position> emptyCells(){
 	 ArrayList<Position> emptyCellsList = new ArrayList<Position>();
 	 
@@ -307,6 +306,11 @@ public ArrayList<Position> emptyCells(){
 	 return emptyCellsList;
 }
 
+/**
+ * Find all cells of a given color
+ * @param stone
+ * @return a list of the stones
+ */
 public ArrayList<Position> getCells(Stone stone){
 	 ArrayList<Position> cellsList = new ArrayList<Position>();
 	 
@@ -319,6 +323,13 @@ public ArrayList<Position> getCells(Stone stone){
 	 return cellsList;
 }
 
+/**
+ * Compute all the possible moves from a given goban
+ * @param atariGo
+ * @param stone the color of the stone to be played
+ * @param currentPlayer the color of the player calling this method
+ * @return a list of the possible gobans
+ */
 public ArrayList<Goban> computeMoves(AtariGo atariGo,Stone stone,Stone currentPlayer){
 	 ArrayList<Goban> gobanList = new ArrayList<Goban>();
 	 boolean save=false;
@@ -340,19 +351,24 @@ public ArrayList<Goban> computeMoves(AtariGo atariGo,Stone stone,Stone currentPl
 	 return gobanList;	 
 }
 
-public int liberty(Position pos){
+/**
+ * 
+ * @param position
+ * @return the total liberties
+ */
+public int liberty(Position position){
 	 int cmpt=0;
-	 if(isValid(pos.neighbor(Direction.NORTH)))
-		 if(readCell(pos.neighbor(Direction.NORTH)).equals(Stone.EMPTY))
+	 if(isValid(position.neighbor(Direction.NORTH)))
+		 if(readCell(position.neighbor(Direction.NORTH)).equals(Stone.EMPTY))
 			 cmpt++;
-	 if(isValid(pos.neighbor(Direction.SOUTH)))
-		 if(readCell(pos.neighbor(Direction.SOUTH)).equals(Stone.EMPTY))
+	 if(isValid(position.neighbor(Direction.SOUTH)))
+		 if(readCell(position.neighbor(Direction.SOUTH)).equals(Stone.EMPTY))
 			 cmpt++;
-	 if(isValid(pos.neighbor(Direction.EAST)))
-		 if(readCell(pos.neighbor(Direction.EAST)).equals(Stone.EMPTY))
+	 if(isValid(position.neighbor(Direction.EAST)))
+		 if(readCell(position.neighbor(Direction.EAST)).equals(Stone.EMPTY))
 			 cmpt++;
-	 if(isValid(pos.neighbor(Direction.WEST)))
-		 if(readCell(pos.neighbor(Direction.WEST)).equals(Stone.EMPTY))
+	 if(isValid(position.neighbor(Direction.WEST)))
+		 if(readCell(position.neighbor(Direction.WEST)).equals(Stone.EMPTY))
 			 cmpt++;
 			 
 	 return cmpt;	 
@@ -369,6 +385,11 @@ public int contact(Position pos,Stone opponentStone){
 	 return cmpt;	 
 }
 
+/**
+ * Compares two goban and find the difference
+ * @param goban
+ * @return the position of the difference, if there's one, or returns an invalid position.
+ */
 public Position getDifference(Goban goban){
 	 for(int i=0;i<getLines();i++){
 		 for(int j=0;j<getColumns();j++){
