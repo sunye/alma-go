@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * This class describes the alpha-beta algorithm.
  * @author clotildemassot
  */
 public class AlphaBeta {
@@ -27,6 +27,21 @@ public class AlphaBeta {
     private final static int BEGINLIMIT = 6;
     private PionVal couleur;
 
+    /**
+     * Constructor
+     * @param profondeurMax : Maximum depth to attain
+     * @param couleur : color of the stone starting AlphaBeta
+     */
+    public AlphaBeta(int profondeurMax, PionVal couleur) {
+        this.profondeurMax = profondeurMax;
+        this.couleur = couleur;
+    }
+
+    /**
+     * Initialization of AlphaBeta from a game
+     * @param jeu : State of the game
+     * @return the best move to play
+     */
     public PlayMove init(Game jeu) {
         FakeGame tests = new FakeGame(jeu);
         PlayMove aJouer = alphaBeta(tests, 0, -INFINI, +INFINI);
@@ -34,11 +49,14 @@ public class AlphaBeta {
         return aJouer;
     }
 
-    public AlphaBeta(int profondeurMax, PionVal couleur) {
-        this.profondeurMax = profondeurMax;
-        this.couleur = couleur;
-    }
-
+    /**
+     * Start of AlphaBeta
+     * @param tests : Copy (false) of the game starting
+     * @param prof : Starting depth
+     * @param alpha
+     * @param beta
+     * @return the best move to play
+     */
     public PlayMove alphaBeta(FakeGame tests, int prof, int alpha, int beta) {
         if (prof < profondeurMax && !tests.isEnd()) {
             this.generateMoves(tests);
@@ -69,6 +87,14 @@ public class AlphaBeta {
         }
     }
 
+    /**
+     * Calculation of the max move
+     * @param tests : Copy (false) of the game
+     * @param prof : depth from beginning
+     * @param alpha
+     * @param beta
+     * @return the max move to play
+     */
     private PlayMove max(FakeGame tests, int prof, int alpha, int beta) {
         PlayMove alphadep = new PlayMove();
         int indexMax = 0;
@@ -90,6 +116,14 @@ public class AlphaBeta {
         return alphadep;
     }
 
+    /**
+     * Calculation of the min move
+     * @param tests : Copy (false) of the game
+     * @param prof : depth from beginning
+     * @param alpha
+     * @param beta
+     * @return the min move to play
+     */
     private PlayMove min(FakeGame tests, int prof, int alpha, int beta) {
         PlayMove betadep = new PlayMove();
         int indexMin = 0;
@@ -111,6 +145,10 @@ public class AlphaBeta {
         return betadep;
     }
 
+    /**
+     * Generate all possible moves from a state gaming
+     * @param tests : State of the game
+     */
     private void generateMoves(FakeGame tests) {
         Set<Stone> freeToTry = new HashSet<Stone>(tests.getFreePlaces());
         if (tests.getDepth() <= BEGINLIMIT) {
@@ -151,6 +189,14 @@ public class AlphaBeta {
         }
     }
 
+    /**
+     * Search free places in the Goban
+     * @param linBeg : Line beginning
+     * @param colBeg : Column beginning
+     * @param linEnd : End line
+     * @param colEnd : End column
+     * @return free moves
+     */
     private Set<Stone> generateFreePlaces(int linBeg, int colBeg, int linEnd, int colEnd) {
         Set<Stone> retour = new HashSet<Stone>();
         for (int l = linBeg; l <= linEnd; ++l) {

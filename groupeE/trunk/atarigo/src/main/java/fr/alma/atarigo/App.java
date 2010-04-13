@@ -1,7 +1,6 @@
 package fr.alma.atarigo;
 
 //~--- non-JDK imports --------------------------------------------------------
-
 import fr.alma.atarigo.ihm.Fenetre;
 
 /**
@@ -9,7 +8,13 @@ import fr.alma.atarigo.ihm.Fenetre;
  *
  */
 public class App {
+
+    /**
+     * Main class for exectution
+     * @param args
+     */
     public static void main(String[] args) {
+
         Fenetre fenetre = new Fenetre("Atari go");
 
         fenetre.setVisible(true);
@@ -17,4 +22,3 @@ public class App {
 }
 
 
-//~ Formatted by Jindent --- http://www.jindent.com
