@@ -1,10 +1,28 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+// File Node.java
+// Last commited $Date$
+// By $Author$
+// Revision $Rev$
+//
+// Copyright (C) 2010 Clotilde Massot & Julien Durillon
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+//
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of this program.
 package fr.alma.atarigo.utils.tree;
 
-import fr.alma.atarigo.utils.PlayMove;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,14 +41,14 @@ public class Node<T> {
     private int evaluation;
 
     /**
-     * Default ctor.
+     * Default constructor.
      */
     public Node() {
         super();
     }
 
     /**
-     * Convenience ctor to create a Node<T> with an instance of T.
+     * Convenience constructor to create a Node<T> with an instance of T.
      * @param data an instance of T.
      */
     public Node(T data) {
@@ -162,11 +180,11 @@ public class Node<T> {
         }
     }
 
-    public void keepChild(Node<PlayMove> lastMove) {
-        if (lastMove != null) {
+    public void keepChild(Node<T> child) {
+        if (child != null) {
             //Before lastMove
-            ArrayList<Node<PlayMove>> thisOne = new ArrayList<Node<PlayMove>>(1);
-            thisOne.add(lastMove);
+            ArrayList<Node<T>> thisOne = new ArrayList<Node<T>>(1);
+            thisOne.add(child);
             children.retainAll(thisOne);
         }
     }
@@ -177,8 +195,8 @@ public class Node<T> {
      */
     public void keepChildAt(int i) {
         if(i < children.size()){
-            ArrayList<Node<PlayMove>> thisOne = new ArrayList<Node<PlayMove>>(1);
-            thisOne.add((Node<PlayMove>) children.get(i));
+            ArrayList<Node<T>> thisOne = new ArrayList<Node<T>>(1);
+            thisOne.add((Node<T>) children.get(i));
             children.retainAll(thisOne);
         }
     }
