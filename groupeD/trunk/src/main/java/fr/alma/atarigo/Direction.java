@@ -8,13 +8,9 @@ package fr.alma.atarigo;
 enum Direction {
 
  NORTH(0, -1),
- //NORD_EST(+1, -1),
  EAST(+1, 0),
- //SUD_EST(+1, +1),
  SOUTH(0, +1),
- //SUD_OUEST(-1, +1),
  WEST(-1, 0);
- //NORD_OUEST(-1, -1);
 
  /**
   * correction to give to a line. 

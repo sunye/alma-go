@@ -43,7 +43,6 @@ class NewGameAction extends MyAction {
 			if ((nvdialog != null) && (nvdialog.isVisible())) return;
 			nvdialog = new NewGameDialog(null, "Nouvelle Partie", true,myApplication);
 			nvdialog.setLocationRelativeTo(myApplication);
-			//monApplication.uiplateau.enPause=true;
 			nvdialog.setVisible(true);
 			myApplication.uiGoban.pause=false;
 		 }

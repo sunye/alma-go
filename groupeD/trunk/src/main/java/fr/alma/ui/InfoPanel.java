@@ -33,7 +33,7 @@ public class InfoPanel extends JPanel {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints gBC = new GridBagConstraints();
         gBC.fill = GridBagConstraints.HORIZONTAL;
-		// titre "Capture pour gagner"
+		// title "Capture pour gagner"
 		challengeTitle = new JLabel("Captures pour gagner");
 		gBC.ipady = 40;
 		gBC.weightx = 0.5;
@@ -41,13 +41,13 @@ public class InfoPanel extends JPanel {
         gBC.gridy = 0;
         add(challengeTitle, gBC);
         
-        // nombre de captures pour gagner
+        // left captures to win for player1
 		challengeNb = new JLabel("0");
         gBC.gridx = 2;
         gBC.gridy = 0;
         add(challengeNb, gBC);
         
-		// titre "vies restantes"
+		// title "vies restantes"
 		challengeTitle = new JLabel("vies restantes");
 		challengeTitle.setHorizontalTextPosition(JLabel.RIGHT);
 		gBC.ipady = 20;
@@ -73,14 +73,14 @@ public class InfoPanel extends JPanel {
         add(capturedWhite, gBC);
         
         
-		// titre "Niveau du joueur"
+		// title "Niveau du joueur"
         dif1 = new JLabel();
 		gBC.weightx = 0.5;
         gBC.gridx = 0;
         gBC.gridy = 3;
         add(dif1, gBC);
         
-        // nombre de captures pour gagner
+        // left captures to win for player2
         dif2 = new JLabel();
         gBC.gridx = 2;
         gBC.gridy = 3;

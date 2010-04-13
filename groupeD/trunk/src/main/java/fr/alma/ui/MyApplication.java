@@ -29,7 +29,6 @@ class MyApplication extends JFrame {
  * board of the atarigo
  */
  protected UIGoban uiGoban;
- //TODO decrire les autres attributs
  protected AtariGo atarigo;
  protected InfoPanel panInfos;
  protected JOptionPane message;
@@ -75,27 +74,23 @@ class MyApplication extends JFrame {
  */
  public MyApplication() {
 
-	// Construction de la barre de menus et d'outils.
+	// Construction of the menu and the tool bar.
 	buildAll();
 	atarigo = new AtariGo(9,9);
 	atarigo.shutDown();	
-	// Création d'une instance graphique du plateau.
+	// Creation of a graphic instance of the goban.
 	uiGoban = new UIGoban(this);
 	uiGoban.setMaximumSize(new Dimension(360,360));
-	
-	// Positionnement du plateau au milieu de la fenêtre.
 	getContentPane().add(uiGoban, BorderLayout.CENTER);
 	panInfos = new InfoPanel();
 	panInfos.buildAll();
 	panInfos.setPreferredSize(new Dimension(270,450));
 	getContentPane().add(panInfos,BorderLayout.EAST);
-	//uiplateau.tempo.start();
-	// Nom de la fenêtre.
+	// Name of the window.
 	setTitle("Atarigo");
-	// Positionnement initial au milieu de l'écran.
+	// initial move at the center of the screen.
 	setLocationRelativeTo(null);
-	// Comportement par défaut en cas de suppression de la fenêtre : tout
-	// doit passer par l'action Quitter.
+	// default behavior if the window is closed : calls the Quit action.
 	addWindowListener(new WindowAdapter() {
 		public void windowClosing(WindowEvent evt) {
 		    quitAction.quit();

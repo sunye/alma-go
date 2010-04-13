@@ -32,16 +32,14 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	private static final long serialVersionUID = 1L;
 	private MyApplication myApplication;
 	private AtariGo atariGo;
-	// variables pour le plateau ui
+	// positions for the user interface of goban
 	int currentStoneX;
 	int currentStoneY;
-	// variables pour le thread de jeu
-	private int time=0;
 	boolean running = true;
 	public boolean stop=false;
 	public boolean pause=false;
 	public int nbMove;
-	// variables pour l'ia
+	// best move for the AI
 	Position bestMove;
 	int pos = 0;
 	UIGoban uiGo = this;
@@ -62,7 +60,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	 */
 	public void paintComponent(Graphics g){
 		if(atariGo!=null){
-			//dessin du plateau
+			//draw the goban
 			Color background = new Color(128,128,128);
 			Color line = new Color(0,0,0);
 			g.setColor(background);
@@ -73,12 +71,11 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 				g.drawLine(20, (40*i)+20, 340, (40*i)+20);
 				g.drawLine((40*i)+20, 20, (40*i)+20,340);
 			}
-			//fin dessin plateau
+			//end of the draw
 			
-			//dessin des pions joués
+			//draw the played stones
 			for(int i=0;i<9;i++){
 				for(int j=0;j<9;j++){
-				//g.drawOval((40/4)+(40*i)-(1*8),(40/4)-(1*8),(40/2)+(2*8),(40/2)+(2*8));
 					switch (atariGo.goban.matrice[i][j]) {
 				    	case BLACK:
 				    		g.setColor(Color.BLACK);
@@ -93,9 +90,9 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 					}
 				}
 			}
-			//fin dessin des pions joués
+			//end of the draw of played stones
 			
-			//dessin du pion à jouer (depend du joueur en cours)
+			//draw the current stone to play
 			if(!atariGo.isOver()){
 				g.setColor(Color.BLACK);
 				g.drawOval((40/4)+(40*currentStoneX)-(1*8),(40/4)+(40*currentStoneY)-(1*8),(40/2)+(2*8),(40/2)+(2*8));
@@ -107,12 +104,9 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	 * initialisation of the board
 	 */
 	public void newGame(){
-		//ici on reinit...
 		this.atariGo = myApplication.atarigo;
 		nbMove=0;
-		time=0;
 		while(!atariGo.currentPlayer.isHuman() && !atariGo.isOver()){
-			//System.out.println(atariGo.goban.toString());
 			if(!atariGo.canPlayMove(atariGo.currentPlayer.color)){
 				System.out.println("ABANDON!");
 				atariGo.shutDown();
@@ -175,7 +169,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	public void mouseReleased(MouseEvent e) {
 		if (!atariGo.isOver()) {
 			if(atariGo.currentPlayer.isHuman()){
-				//test si le joueur courant peut jouer, sinon abandon automatique
+				//test if the current player can make a move, if not, game is over
 				if(!atariGo.canPlayMove(atariGo.currentPlayer.color)){
 					System.out.println("ABANDON!");
 					atariGo.shutDown();
@@ -187,11 +181,11 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 				x=(x)/40;
 				y=(y)/40;
 				putStone(x,y);
-				//TODO ajouter une actualisation du panneau info...
 				if(!atariGo.currentPlayer.isHuman()){
 					uiGo.removeMouseListener(uiGo);
 				}
 				repaint();
+				// to be sure the repaint() will be done before the AI
 				SwingUtilities.invokeLater(new Runnable() 
 			    {
 			      public void run()
@@ -202,7 +196,6 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 								atariGo.shutDown();
 							    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" ne peut plus jouer ! "+atariGo.currentPlayer.color.opponent()+" a gagné !", "Information", JOptionPane.INFORMATION_MESSAGE);
 							}
-							//uiGo.removeMouseListener(uiGo);
 							Tree jeu = new Tree(atariGo.goban);
 							ValuedGoban plv = new ValuedGoban(0);
 							if(nbMove>5){
@@ -216,9 +209,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 							
 							
 							if(putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn())==Move.INVALID){
-								System.out.println(atariGo.goban.getDifference(plv.goban_).toString());
-								//atariGo.shutDown();
-							    //myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" abandonne !", "Information", JOptionPane.INFORMATION_MESSAGE);			
+								System.out.println(atariGo.goban.getDifference(plv.goban_).toString());		
 							}
 							
 							
@@ -233,9 +224,9 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	}
 	
 	public Move putStone(int x,int y){
-		//System.out.println("clic sur la case"+"["+x+","+y+"]");
-		//ici on joue le coup  et on test avant pr savoir etat du jeu en cours...
+		//here we make the move and update the ui
 		switch (atariGo.playMove(atariGo.currentPlayer.color, new Position(x,y))) {
+		// winning move : show a message and shut down the game.
 	    case WIN:
 		myApplication.panInfos.setBlackLife(atariGo.captureObjective-atariGo.caughtBlack);
 		myApplication.panInfos.setWhiteLife(atariGo.captureObjective-atariGo.caughtWhite);
@@ -243,12 +234,9 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 		nbMove++;
 	    atariGo.shutDown();
 	    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" a gagné !", "Information", JOptionPane.INFORMATION_MESSAGE);
-		//sortie.println(plateau.toString());
-		//sortie.println("=> Vous avez gagne"); 
-		//scanner.close();
 	    return Move.WIN;
+	    // neutral move : update the ui
 	    case NEUTRAL:
-		//nombreCoups --;
 	    atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
 	    myApplication.panInfos.setBlackLife(atariGo.captureObjective-atariGo.caughtBlack);
 	    myApplication.panInfos.setWhiteLife(atariGo.captureObjective-atariGo.caughtWhite);
@@ -256,8 +244,7 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 		nbMove++;
 		return Move.NEUTRAL;
 	    default:
-	    	
-	    //sortie.println("=> Erreur : position invalide");
+	    // invalid move : we do nothing
 		return Move.INVALID;
 	    }
 	}
@@ -274,7 +261,6 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 		if (!atariGo.isOver()) {
 			currentStoneX=e.getX()/40;
 			currentStoneY=e.getY()/40;
-			//System.out.println("clic sur la case"+"["+x+","+y+"]");
 			repaint();
 		}
 	}
