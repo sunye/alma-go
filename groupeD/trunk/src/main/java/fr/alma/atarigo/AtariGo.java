@@ -182,47 +182,4 @@ public boolean canPlayMove(Stone player){
 	caughtWhite=0;
  }
 
-/**
- * @deprecated
- * launch the game in console mode
- */
- public void jouer(Stone joueur, InputStream entree, PrintStream sortie) {
-	int nombreCoups = getLines() * getColumns();
-	Scanner scanner = new Scanner(entree);
-	while (nombreCoups != 0) {
-	    sortie.println(goban.toString());
-	    sortie.print("=> Joueur " + joueur.toString() + " : ");
-	    int ligne;
-	    int colonne;
-	    try {
-		ligne = scanner.nextInt();
-		colonne = scanner.nextInt();
-	    }
-	    catch (InputMismatchException erreur) {
-		sortie.println("=> Erreur : position incorrecte");
-		continue;
-	    }
-	    Position position = new Position(ligne, colonne);
-	    // joue coup en fonction du joueur...
-	    switch (playMove(joueur, position)) {
-	    case WIN:
-	    end = true;
-		sortie.println(goban.toString());
-		sortie.println("=> Vous avez gagne"); 
-		scanner.close();
-		return;
-	    case NEUTRAL:
-		nombreCoups --;
-		joueur = joueur == Stone.WHITE ? Stone.BLACK : Stone.WHITE;
-		break;
-	    default:
-		sortie.println("=> Erreur : position invalide");
-		break;
-	    }
-	}
-	sortie.println(goban.toString());
-	sortie.println("=> Match nul");
-	scanner.close();
- }
-
 }
