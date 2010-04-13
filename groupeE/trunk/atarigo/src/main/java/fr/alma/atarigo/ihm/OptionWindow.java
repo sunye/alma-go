@@ -1,5 +1,5 @@
 /**
- * File {Nom du fichier}
+ * File {OptionWindow.java}
  * Last commited $Date$
  * By $Author$
  * Revision $Rev$

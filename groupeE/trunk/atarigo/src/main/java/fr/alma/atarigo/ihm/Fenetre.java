@@ -1,5 +1,5 @@
 /**
- * File {Nom du fichier}
+ * File {Fenetre.java}
  * Last commited $Date$
  * By $Author$
  * Revision $Rev$
