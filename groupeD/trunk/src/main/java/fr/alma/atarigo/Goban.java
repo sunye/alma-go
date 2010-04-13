@@ -110,9 +110,7 @@ public class Goban {
 					if(atariGo.caughtBlack>=atariGo.captureObjective){
 						return Move.WIN;
 					}
-					else{
-						// on doit aussi compter le nombre de pions pris dans le suicide
-						
+					else{						
 						return Move.NEUTRAL;
 					}
 				}
@@ -152,7 +150,6 @@ public class Goban {
 				}
 			}
 			System.out.println(stone.toString()+" has won");
-			//return Coup.GAGNANT;
 		}
 	}
 	else{
@@ -175,7 +172,7 @@ public class Goban {
   * @param position tested position
   */
  public boolean isValid(Position position) {
-	//test si rentre dans le plateau
+	//test if it's in the goban
 	final int LINE = position.getLine();
 	final int COLUMN = position.getColumn();
 	return LINE >= 0 && LINE < getLines() &
@@ -190,14 +187,12 @@ public class Goban {
   */
  public boolean isSuicidal(Position position, Stone player){
 	boolean isValid;
-	//on test d'abord si la position est bonne
+	//we test if the position is valid
 	if(isValid(position)){
-		//test si ne se suicide pas
-		int count = 0; // nombre de non-libertes
+		//test if no suicide
+		int count = 0; // amount of no-liberties
 		for (Direction myDirection : Direction.values()) {
-			//maPosition = position.voisine(maDirection);
 			if(isValid(position.neighbor(myDirection))){
-				//System.err.println(lireCase(position.voisine(maDirection)).toString());
 				if (readCell(position.neighbor(myDirection)) == player.opponent()){
 					count++;
 				}
@@ -206,9 +201,9 @@ public class Goban {
 			}
 		}
 		if(count==4){isValid=false;} // suicide
-		else{isValid=true;} //pas de suicide
+		else{isValid=true;} //no suicide
 	}
-	else{isValid=false;} // la position n'est pas bonne
+	else{isValid=false;} // position is not right
 	return isValid;
  }
  
@@ -237,11 +232,8 @@ public class Goban {
   */
  public int getLiberty(Position position){
 	 int count = 0;
-	 //Position maPosition;
 	 for (Direction myDirection : Direction.values()) {
-		 //maPosition = position.voisine(maDirection);
 		 if(isValid(position.neighbor(myDirection))){
-			 //System.err.println(lireCase(position.voisine(maDirection)).toString());
 			 if (readCell(position.neighbor(myDirection)) == Stone.EMPTY){
 				 count++;
 			 }
@@ -263,7 +255,6 @@ public class Goban {
 		 if(isValid(position.neighbor(myDirection))){
 			 if (readCell(position.neighbor(myDirection)) == readCell(position).opponent()){
 				 if(isCaught(lg.getGroup(position.neighbor(myDirection)))){
-					 //estGagnant = true;
 					 result.gList.add(lg.getGroup(position.neighbor(myDirection)));
 				 }
 			 }
@@ -398,11 +389,7 @@ public boolean canPlay(Stone color){
 	while(!fini){
 		System.out.println("test sur "+i+","+j);
 		postest = new Position(i,j);		gobanTest = new Goban(this);
-		/*return gobanTest.writeCell(gobanTest,postest, color,true);
-		
-		if(){
-			
-		}	*/
+
 		if(i==8){
 			if(j==8){
 				fini=true;

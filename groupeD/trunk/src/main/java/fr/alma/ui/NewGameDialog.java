@@ -131,7 +131,7 @@ public class NewGameDialog extends JDialog {
             public void actionPerformed(ActionEvent arg0) {
            	 	Thread t = new Thread() {
         		public void run() {   	
-            	//test des options et demarrage
+            	//test options then run the game
             	JOptionPane jop = new JOptionPane();			
         		if(!myApp.atarigo.isOver()){
 	            	int option = jop.showConfirmDialog(null, "Voulez-vous vraiment faire une nouvelle partie ? Votre partie sera définitivement perdue", "Nouvelle partie", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);

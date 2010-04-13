@@ -9,14 +9,14 @@ public class Main {
      */
     public static void main(String[] argv) {
 
-	// Création d'une instance de l'application.
+	// Creating application instance
 	MyApplication myApplication = new MyApplication();
 
-	// Calcul des dimensions de tous les composants de la fenêtre.
+	// Calculate dimensions of all the composant of the window application.
 	myApplication.pack();
 	myApplication.setSize(640, 450);
 	myApplication.setLocationRelativeTo(null);
-	// Affichage de la fenêtre : il existe maintenant deux threads.
+
 	myApplication.setVisible(true);
     }
 

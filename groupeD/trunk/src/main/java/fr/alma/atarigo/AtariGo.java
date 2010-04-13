@@ -47,12 +47,12 @@ public class AtariGo {
   * @return The type of the resulting move INVALID, WIN or NEUTRAL .
   */
  public Move playMove(Stone player, Position position) {
-	// ces conditions n'ont pas besoin de changer l'état du plateau pour savoir si le placement est possible
+	// these conditions don't need to change the goban stateto know if the move is possible
 	if (! goban.isValid(position) || goban.readCell(position) != Stone.EMPTY ) {
 		System.out.println("bad move");
 	    return Move.INVALID;
 	}
-	//ecriture sur le plateau nécessaire pour tester le suicide formé par un groupe
+	//write on the goban necessary to test the suicide made by a group
 	return goban.writeCell(this,position, player,true);
 }
  

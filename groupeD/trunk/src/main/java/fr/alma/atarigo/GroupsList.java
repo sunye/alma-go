@@ -49,7 +49,6 @@ public class GroupsList implements Cloneable{
  		ListIterator itr = gList.listIterator();
  		while(itr.hasNext()){
  			currentGroup = (Group)itr.next();
- 			//groupEnCours.afficher();
  			if(currentGroup.hasPos(position)){
  				group = currentGroup;
  			}
@@ -82,12 +81,11 @@ public class GroupsList implements Cloneable{
  	public GroupsList updateGroups(Goban plateau, Position position,Stone joueur){
  		boolean estAjoute=false;
  		Group nouveauGroupe = null;
-		// clonage de la liste de groupe
+		// cloning list of groups
  		GroupsList nouvListeG=null;
 		nouvListeG = (GroupsList) this.clone();
 		for (Direction maDirection : Direction.values()) {
 			if(plateau.isValid(position.neighbor(maDirection))){
-				//System.out.println("position voisine : "+position.voisine(maDirection).lireColonne()+position.voisine(maDirection).lireLigne());
 				if (plateau.readCell(position.neighbor(maDirection)) == joueur & !estAjoute){
 					nouvListeG.getGroup(position.neighbor(maDirection)).add(position);
 					nouveauGroupe = nouvListeG.getGroup(position.neighbor(maDirection));
@@ -101,7 +99,7 @@ public class GroupsList implements Cloneable{
 				}
 			}
 		}
-		//n'appartient à aucun groupe donc constitue un groupe à lui seul
+		// don't belong to any group so it's a group on his own
 		if (!estAjoute){
 			ArrayList<Position> linkedList = new ArrayList<Position>();
  			linkedList.add(position);

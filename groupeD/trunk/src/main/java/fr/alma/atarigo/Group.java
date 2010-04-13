@@ -50,9 +50,7 @@ public class Group implements Cloneable{
 		ListIterator itr = linkedStones.listIterator();
  		while(itr.hasNext()){
  			currentPosition = (Position)itr.next();
- 			//System.out.println("position ["+position.lireLigne()+","+position.lireColonne()+"] comparé à ["+currentPosition.lireLigne()+","+currentPosition.lireColonne()+"]"); 			
  			if(position.isEqual(currentPosition)){
- 				//System.out.println("estvrai");
  				hasPos = true;
  			}
  		}
@@ -64,7 +62,6 @@ public class Group implements Cloneable{
 	 *
 	 */
 	public void print(){
-		//System.out.println("affichage du groupe");
 		Position currentPosition;
 		ListIterator itr = linkedStones.listIterator();
 		while(itr.hasNext()){
