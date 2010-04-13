@@ -592,11 +592,11 @@ public class Jeu {
 	 * @return
 	 */
 	
-	public static Point jouerMachine(Grille g,Ihm.Tour t) {
+	public static Point jouerMachine(Grille g,Tour t) {
 		
 	System.out.println("dans jouermachine");
 		Pion.Couleur c;
-		if(t==Ihm.Tour.BLANC)
+		if(t==Tour.BLANC)
 			c=Pion.Couleur.BLANC;
 		else 
 			c=Pion.Couleur.NOIR;
