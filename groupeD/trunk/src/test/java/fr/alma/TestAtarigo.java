@@ -1,6 +1,7 @@
 package fr.alma.test;
 
 import fr.alma.atarigo.AtariGo;
+import fr.alma.atarigo.IAPlayer;
 import fr.alma.atarigo.Player;
 import fr.alma.atarigo.HumanPlayer;
 import fr.alma.atarigo.Stone;
@@ -17,11 +18,15 @@ public class TestAtarigo extends TestCase {
     protected void setUp() {
         atarigo = new AtariGo(9,9);
         j1 = new HumanPlayer(Stone.WHITE, "bob");
-        j2 = new HumanPlayer(Stone.BLACK, "bill");
+        j2 = new IAPlayer(Stone.BLACK, "bill",1);
         
     }
     
     public void testplayMove(){
+    	//test des joueurs
+    	assertEquals(j1.color.opponent(), Stone.BLACK);
+    	assertEquals(j2.color.opponent(), Stone.WHITE);
+    	//test du deroulement du jeu
         Move MoveNeutre = atarigo.playMove(j1.color, new Position(0,0));
         Move MoveHorsPlateau = atarigo.playMove(j2.color, new Position(10,10));
         Move MoveSurMove = atarigo.playMove(j1.color, new Position(0,0));
@@ -58,6 +63,24 @@ public class TestAtarigo extends TestCase {
         //assertEquals(MoveSuicideWin,Move.WIN); 
     }
 
+    	public void testCanPlayMove(){
+	        j1 = new HumanPlayer(Stone.WHITE, "bob");
+	        j2 = new IAPlayer(Stone.BLACK, "bill",2);
+	        atarigo = new AtariGo(9,9,j1,j2);
+	        //plateau vide donc peut jouer
+	    	assertTrue(atarigo.canPlayMove(j2.color));
+	    	assertTrue(atarigo.canPlayMove(j1.color));
+	    	//plateau plein donc ne peut plus jouer
+	    	Stone[][] matrice = new Stone[9][9];
+	    	for(int i = 0;i<9;i++){
+	    		for(int j = 0;j<9;j++){
+	    			matrice[i][j] = Stone.WHITE;
+	    		}
+	    	}
+	    	atarigo.goban.matrice=matrice;
+	    	assertFalse(atarigo.canPlayMove(j1.color));
+    	}
+    
         public void testAtariGo(){
         j1 = new HumanPlayer(Stone.WHITE, "bob");
         j2 = new HumanPlayer(Stone.BLACK, "bill");
@@ -79,7 +102,10 @@ public class TestAtarigo extends TestCase {
                 assertFalse(atarigo.isOver());
         }
         
-        
+        public void testAIPlayer(){
+        	assertFalse(j2.isHuman());
+        	assertEquals(j2.getDifficulty(),1);
+        }
         
         
 }
