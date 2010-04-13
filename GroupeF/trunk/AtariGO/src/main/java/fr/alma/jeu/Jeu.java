@@ -688,7 +688,7 @@ public class Jeu {
 		}
 		}
 		else
-			p=new Point(((int)Math.random()*100000000)%9,((int)Math.random()*10000000)%9);
+			p=new Point(((int)Math.random()*1000000000)%9,((int)Math.random()*1000000000)%9);
 		return p;
 	}
 	
