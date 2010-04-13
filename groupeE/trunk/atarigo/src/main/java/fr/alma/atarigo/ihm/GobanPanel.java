@@ -153,11 +153,11 @@ public final class GobanPanel extends JPanel {
                     }
                 }
                 //Affichage joueur courant :
-                g.drawString("Joueur en cours :", goban.getImage().getHeight(this) + 10, 20);
+                g.drawString("Joueur en cours :", goban.getImage().getWidth(this) + 10, 20);
                 if (game2.getCurrentPlayer() == PionVal.BLANC) {
-                    g.drawImage(pionB.getImage(), goban.getImage().getHeight(this) + 20, 40, this);
+                    g.drawImage(pionB.getImage(), goban.getImage().getWidth(this) + 20, 40, this);
                 } else {
-                    g.drawImage(pionN.getImage(), goban.getImage().getHeight(this) + 20, 40, this);
+                    g.drawImage(pionN.getImage(), goban.getImage().getWidth(this) + 20, 40, this);
                 }
 
             }
