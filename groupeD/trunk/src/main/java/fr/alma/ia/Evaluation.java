@@ -14,6 +14,8 @@ import fr.alma.atarigo.Position;
  *
  * @author      Adrien GUILLE
  * @author      Vincent FERREIRA
+ * 
+ * @version 1.0
  */
 
 public class Evaluation {
@@ -35,7 +37,7 @@ public class Evaluation {
 	 * @param position
 	 * @return a ValuedGoban
 	 */
-	static ValuedGoban evaluate(Goban goban, Goban parentGoban, Stone stone, Position position){
+	static public ValuedGoban evaluate(Goban goban, Goban parentGoban, Stone stone, Position position){
 		ValuedGoban cmpt = new ValuedGoban(0,goban);
 		if(TRACE)
 			System.out.println(stone+" joue");
@@ -62,7 +64,7 @@ public class Evaluation {
 	 * @param stone
 	 * @return -1, 0 or +1
 	 */
-	static int commonBorder(Goban goban, Position position, Stone stone){
+	static public int commonBorder(Goban goban, Position position, Stone stone){
 		int cmpt = goban.contact(position,stone.opponent());
 		if(cmpt>0 && cmpt<4){
 			if(goban.readCell(position)==stone)
@@ -84,7 +86,7 @@ public class Evaluation {
 	 * @param stone
 	 * @return -1, 0 or +1
 	 */
-	static int hasCaught(Goban goban,Position position,Stone stone){
+	static public int hasCaught(Goban goban,Position position,Stone stone){
 		Group group = goban.groupsList.getGroup(position);
 		int prises = goban.hasCaught(position, goban.groupsList).totalStones();
 		if(prises>0){
@@ -105,7 +107,7 @@ public class Evaluation {
 	 * @param n the maximum amount of groups allowed
 	 * @return -1, 0 or +1
 	 */
-	static int underNGroups(Goban goban, Stone stone, int n){
+	static public int underNGroups(Goban goban, Stone stone, int n){
 		int cmptBlack=0,cmptWhite=0;
 		
 		for(Group group : goban.groupsList.gList){
@@ -135,7 +137,5 @@ public class Evaluation {
 			}else
 				return -1;
 		}
-				
-		
 	}
 }
