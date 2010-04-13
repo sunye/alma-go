@@ -623,12 +623,13 @@ public class Jeu {
 						cjMachine.add(pion);
 				}
 				System.out.println(cjHumain.size());
-				min=getLiberteFixe(g,cjHumain.get(0).position);System.out.println(min);
-				for(Pion pion:cjHumain){
-					if(getLiberteFixe(g,pion.position)<=min){
+				
+				
+				for(Pion pion:cjMachine){
+					if((getLiberteFixe(g,pion.position)<=min)&&(SimulerJeu(g, pion.position, t)!=SUICIDE)){
 						min=getLiberteFixe(g,pion.position);
 						if(pion.position.x>0)
-							if((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
+							if(((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Pion.Couleur.NULL)))
 								p=new Point(pion.position.x-1,pion.position.y);
 						if(pion.position.x<8)
 							if((g.Contenu[pion.position.x+1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
@@ -646,8 +647,9 @@ public class Jeu {
 						
 				}
 				
-				for(Pion pion:cjMachine){
-					if(getLiberteFixe(g,pion.position)<=min){
+				min=getLiberteFixe(g,cjHumain.get(0).position);System.out.println(min);
+				for(Pion pion:cjHumain){
+					if((getLiberteFixe(g,pion.position)<=min)&&(SimulerJeu(g, pion.position, t)!=SUICIDE)){
 						min=getLiberteFixe(g,pion.position);
 						if(pion.position.x>0)
 							if((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
@@ -772,7 +774,7 @@ public class Jeu {
 		
 		if((p.position.x>0))
 			if((p.couleur.equals(g.Contenu[p.position.x-1][p.position.y].couleur)))
-			DeterminerVoisinsG(g, g.Contenu[p.position.x-1][p.position.y]);
+				DeterminerVoisinsG(g, g.Contenu[p.position.x-1][p.position.y]);
 		if((p.position.x<8))
 			if(p.couleur.equals(g.Contenu[p.position.x+1][p.position.y].couleur))
 			DeterminerVoisinsG(g, g.Contenu[p.position.x+1][p.position.y]);
