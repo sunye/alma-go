@@ -7,6 +7,18 @@
   <version>1.0-SNAPSHOT</version>
   <name>GO</name>
   <url>http://maven.apache.org</url>
+  <description>AtariGo develop as a project for our AI module</description>
+  <organization>
+    <name>Master alma</name>
+    <url>alma.univ-nantes.fr</url>
+</organization>
+  
+  <scm>
+    <connection>scm:svn:http://alma-go.googlecode.com/svn/GroupeK/trunk/</connection>
+    <url>http://alma-go.googlecode.com/svn/GroupeK/trunk/</url>
+    <tag>HEAD</tag>
+</scm>
+  
   <build>
         <plugins>
             <plugin>
@@ -19,9 +31,88 @@
                         <exclude>**/*Point*.java</exclude>
                     </excludes>
                 </configuration>
-             </plugin>
+             </plugin>        
          </plugins>
   </build>
+  <reporting>
+  <plugins>
+  <plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-site-plugin</artifactId>
+			  <version>2.0.1</version>
+			  <configuration>
+			    <locales>en</locales>
+			  </configuration>
+			 </plugin>
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-pmd-plugin</artifactId>
+    <version>2.4</version>
+    <configuration>
+         <targetJdk>1.6</targetJdk>
+    </configuration>
+</plugin>
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-javadoc-plugin</artifactId>
+    <version>2.6</version>
+</plugin>
+  
+  
+  </plugins>
+  
+  
+  
+  </reporting>
+  
+  <developers>
+    <developer>
+        <id>1</id>
+        <name>Fortun Manoël</name>
+        <email>manoel.fortun@gmail.com</email>
+        <url>-</url>
+         <organization>Master alma</organization>
+        <organizationUrl>alma.univ-nantes.fr</organizationUrl>
+        <roles>
+            <role>Co-chef</role>
+            <role>Développeur</role>
+        </roles>
+        <timezone>1</timezone>
+    </developer>
+    
+   <developer>
+        <id>2</id>
+        <name>Caillaud Anthony</name>
+        <email>anthony.caillaud@gmail.com</email>
+        <url>-</url>
+         <organization>Master alma</organization>
+        <organizationUrl>alma.univ-nantes.fr</organizationUrl>
+        <roles>
+            <role>Co-chef</role>
+            <role>Développeur</role>
+        </roles>
+        <timezone>1</timezone>
+    </developer>
+    
+</developers>
+
+  <licenses>
+    <license>
+        <name>GNU GPL V3</name>
+        <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+        <distribution>repo</distribution>
+  <comments>A nice license for our project that permit improvement</comments>
+    </license>
+    <license>
+        <name>Apache Software License, Version 2.0</name>
+        <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        <distribution>repo</distribution>
+        <comments>Maven license's</comments>
+    </license>
+</licenses>
+  
+  
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
