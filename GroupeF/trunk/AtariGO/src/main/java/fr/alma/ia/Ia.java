@@ -99,7 +99,7 @@ public class Ia {
 				return ((grille.Contenu[x][y-1]).couleur.equals(c));
 			else
 				if(c.equals(Pion.Couleur.NOIR))
-					return ((grille.Contenu[x][y-1]).equal(new Pion(Pion.Couleur.NOIR,new Point(x,y-1))));
+					return ((grille.Contenu[x][y-1]).equals(new Pion(Pion.Couleur.NOIR,new Point(x,y-1))));
 				else
 					return false;
 		else
@@ -108,7 +108,7 @@ public class Ia {
 
 	
 	public static void DeterminerVoisins(Grille g,Point p){
-	if(g.Contenu[p.x][p.y].equal(new Pion(p)))
+	if(g.Contenu[p.x][p.y].equals(new Pion(p)))
 		return;
 	else{
 		if(voisins.size()!=0){
