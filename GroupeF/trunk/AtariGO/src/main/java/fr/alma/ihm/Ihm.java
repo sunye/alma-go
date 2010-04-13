@@ -25,7 +25,7 @@ import javax.swing.JButton;
 
 import fr.alma.jeu.Pion.Couleur;
 import fr.alma.jeu.Grille;
-import fr.alma.jeu.Jeu;
+
 
 import javax.swing.JDialog;
 import java.awt.Rectangle;
@@ -289,7 +289,7 @@ public class Ihm {
 						 	 case VALIDE : {
 						 		
 						 		 mettrePion(position); 
-								 position = jouerMachine(grille);
+								 position = jouerMachine(grille, t); 
 																 								 
 								 int RMachine = SimulerJeu(grille, position, t);
 								 
@@ -300,11 +300,10 @@ public class Ihm {
 									 	JOptionPane.showMessageDialog(jFrame, "Capture éffectué ! Vous avez perdu !");
 									 	BInterrompre.setEnabled(false);
 									 	IInterrompre.setEnabled(false);
-										//Grille.setEnabled(false);
 										BNouveau.setEnabled(true);
 										INouveau.setEnabled(true);
 										jeuEnCours = false;
-										//effacerGrille();
+										
 								 }
 								 break;						 
 								}
@@ -315,11 +314,11 @@ public class Ihm {
 										JOptionPane.showMessageDialog(jFrame, "Capture éffectué ! Bravo vous avez gagner");
 										BInterrompre.setEnabled(false);
 										IInterrompre.setEnabled(false);
-										//Grille.setEnabled(false);
+										
 										BNouveau.setEnabled(true);
 										INouveau.setEnabled(true);
 										jeuEnCours = false;
-										//effacerGrille();
+										
 								 break;
 								}
 							 
@@ -885,7 +884,7 @@ public class Ihm {
 							 
 							 t = Tour.NOIR;
 							 
-							 Point position = Jeu.jouerMachine(grille);
+							 Point position = jouerMachine(grille, t);
 							 mettrePion(position); 
 						}
 						else {
