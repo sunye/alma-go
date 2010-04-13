@@ -5,6 +5,7 @@
 \usepackage[T1]{fontenc}
 %\usepackage[top=3cm,right=3.5cm,bottom=3cm,left=3.5cm]{geometry}
 \usepackage{graphicx}
+\usepackage[unicode=true,pdftex,colorlinks=true,linkcolor=black,urlcolor=black]{hyperref}
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} %Pour mettre dans la title page
 \parindent 1.0cm
@@ -34,6 +35,9 @@
 	\tableofcontents
 	\clearpage
 
+	\listoffigures
+	\clearpage
+
 	\abstract{Ce document explique l'étude du cas de l'atari-go dans le cadre du projet d'IA du master 1 ALMA 2010. Y sera utilisé la méthode Alpha-Beta pour gérer l'arbre des possibles.}
 
 	\section*{Introduction}
@@ -58,22 +62,23 @@
 			Un cas gagnant --- resp. perdant --- est à première vue un cas où un groupe adverse --- resp. allié --- n'a plus aucune liberté. Mais il existe d'autres cas où un groupe est dit \emph{mort}, c'est-à-dire qu'il ne peut plus sortir vivant. Un des cas les plus évidents est le cas (c.f. figure \ref{groupemort}) où il ne reste plus qu'une libertée, et que l'adversaire est déjà autour de cette liberté.
 
 			\begin{figure}[hbt]
+			\label{groupemort}
 			\begin{center}
 			\includegraphics[width=0.4\textwidth]{groupemort.png}
 			\end{center}
 			\caption{Le groupe blanc est mort}
-			\label{groupemort}
+
 			\end{figure}
 
 		\subsection{Les yeux}
 			Au go, un groupe ayant deux yeux est dit imprenable --- cf. figure \ref{deuxyeux} . Un amélioration de la fonction présentée ci-dessus peut être de détecter de telles dispositions ; en effet, un groupe ayant deux yeux d'une case chacun peut n'avoir que 2 libertés tout en restant imprenable. On noterait alors mieux de tels groupes, et on aurait pas à s'en «~soucier~». Pour détecter de tels yeux, il «~suffit~» de chercher des libertés entourées uniquement du bord ou de pierres du groupe étudié. Nous pouvons assez facilement détecter des cas simples d'yeux.
 
 			\begin{figure}[hbt]
+			\label{deuxyeux}
 			\begin{center}
 			\includegraphics[width=0.4\textwidth]{deuxyeux.png}
 			\end{center}
 			\caption{Le groupe noir a deux yeux}
-			\label{deuxyeux}
 			\end{figure}
 
 		\subsection{Les sauts}
@@ -81,30 +86,30 @@
 			Une des formes intéressantes est le coup en diagonale ou \emph{kosumi} --- cf. figure \ref{kosumi}. Ce coup fait un lien entre les deux pierre qui n'existe pas encore, mais qui ne peut être coupé en un seul coup. Dans la figure \ref{kosumi}, si blanc joue dans le cercle, noir connecte dans le triangle, et vice-versa.
 
 			\begin{figure}[hbt]
+			\label{kosumi}
 			\begin{center}
 			\includegraphics[width=0.3\textwidth]{kosumi.png}
 			\end{center}
 			\caption{Kosumi}
-			\label{kosumi}
 			\end{figure}
 
-	\section{Algorithme $\alpha\beta$}
+	\section[Algorithme alpha beta]{Algorithme $\alpha\beta$}
 	\label{alphab}
 		\subsection{Base}
 			Cet algorithme se base sur l'algorithme du min-max. La base du min-max consiste à jouer un certain nombre de coup, créer un arbre représentant les possibilités de jeu, donner un score aux états de jeu atteints après génération des coups, et trouver la branche la plus intéressante. Plus un score est haut, plus le jeu est avantageux pour nous. Le parcours de l'arbre est fait en profondeur.
 
 			Pour trouver quelle branche jouer, l'algorithme prend alternativement la branche qui a un score maximum et celle qui a un score minimum, parmi les coups possibles. Si le coup testé est joué par l'IA, la valeur maximum est choisie, car l'IA cherche à jouer le meilleur coup. Si le coup testé est joué par l'adversaire, le minimum est choisi, car l'IA considère que l'adversaire jouera le coup le pire.
 
-		\subsection{Amélioration $\alpha\beta$}
+		\subsection[Amélioration]{Amélioration $\alpha\beta$}
 
 				L'algorithme du min-max effectue l'évaluation de tous les nœuds de l'arbre de jeu d'un horizon donné. Or dans certains cas --- qui ne sont pas négligeables, l'évaluation de certains nœuds n'apporte aucun changement au processus de décision. La figure \ref{abex} va illustrer l'exemple suivant.
 
 				\begin{figure}[hbt]
+					\label{abex}
 					\begin{center}
 						\includegraphics[width=\textwidth]{./alphabeta.png}
 					\end{center}
 					\caption{Exemple d'élagage $\alpha\beta$}
-					\label{abex}
 				\end{figure}
 
 				L'algorithme a calculé la valeur du nœud MAX de gauche, ce nœud prend alors la valeur 5. Lorsque le deuxième nœud max est calculé, on s'apperçoit que la première valeur renvoyée --- en l'occurrence 8 --- est supérieure à 5. Or, comme l'algorithme se trouve dans un cas où il choisira la valeur maximum, le nœud MAX de gauche aura au moins la valeur 8. Donc ce n'est pas la peine d'étudier les sous-arbres suivants, car de toutes façons, c'est le 5 qui sera remonté au niveau d'au dessus.
@@ -145,7 +150,7 @@
 		\subsection{Cas d'utilisation}
 			Les cas d'utilisation sont présentés dans la figure \ref{use case}.
 
-			\begin{figure}[hbt]
+			\begin{figure}[ohbt]
 				\begin{center}
 					\includegraphics[width=0.7\textwidth]{./usecase.png}
 				\end{center}
@@ -158,9 +163,9 @@
 		\subsection{Diagrammes de séquence}
 
 			\subsubsection{Partie à un joueur}
-				Le déroulement d'une partie à un joueur --- contre l'ordinateur --- est décrit par la figure \ref{oneplayer}.
+				Le déroulement d'une partie à un joueur --- contre l'ordinateur --- est décrit par la figure \ref{oneplayer} --- page \pageref{oneplayer}.
 
-				\begin{figure}[hbt]
+				\begin{figure}[ohbt]
 					\begin{center}
 						\includegraphics[width=1.1\textwidth]{./IA_1J.png}
 					\end{center}
@@ -173,9 +178,9 @@
 
 			\subsubsection{Partie à deux joueurs}
 
-				La figure \ref{twoplayers} décrit le déroulement d'une partie à deux joueurs.
+				La figure \ref{twoplayers} (page \pageref{twoplayers}) décrit le déroulement d'une partie à deux joueurs.
 
-				\begin{figure}[hbt]
+				\begin{figure}[ohbt]
 					\begin{center}
 						\includegraphics[width=1.1\textwidth]{./IA_2J.png}
 					\end{center}
@@ -192,7 +197,7 @@
 
 			Le centre de l'application est ici la classe Game. Elle représente une partie d'atari go. Elle contient le goban courant --- état du plateau, un arbre de déroulement de la partie --- prévu pour pouvoir annuler un coup, des informations sur les groupes, leurs libertés, etc.
 
-			Le diagramme de classes décrit par la figure \ref{classes} montre l'agencement des différents éléments composant un jeu.
+			Le diagramme de classes décrit par la figure \ref{classes} (page \pageref{classes}) montre l'agencement des différents éléments composant un jeu.
 
 
 				\begin{figure}[hbt]
@@ -210,7 +215,7 @@
 
 				L'historique joue un rôle important dans le jeu. Prévu pour suivre le déroulement du jeu, et pouvoir revenir en arrière si besoin, il contient les informations de groupes, de fin de jeu, de modifications à chaque coup du jeu.
 
-				Le diagramme de la figure \ref{history} décrit sa composition.
+				Le diagramme de la figure \ref{history} (page \pageref{history}) décrit sa composition.
 
 					\begin{figure}[hbt]
 						\begin{center}
@@ -224,7 +229,7 @@
 				\begin{itemize}
 					\item les groupes du moment~;
 					\item les changements sur le goban --- ajout/suppression de pierres~;
-					\item un booléen en cas de prise, appelé end dans notre cas~;
+					\item un booléen en cas de prise, appelé end dans notre cas.
 				\end{itemize}
 
 				Les groupes sont des ensembles de pierres. Ils sont décris dans la section \ref{groupes}. Les changements --- décrits par des objets Modif, représentent un diff du goban avant et après le coup. Modif contient des coordonnées, ainsi que la valeur à ces coordonnées avant et après le coup. On ne peut avoir que des couples (RIEN,NOIR), (RIEN,BLANC), (BLANC,RIEN) et (NOIR,RIEN).
@@ -236,6 +241,8 @@
 				Les groupes sont des ensembles de pions --- ici Stone. Tous les groupes d'un PlayMove forment une partition de l'ensemble des pierres présentes sur un plateau. Chaque pierre est dans un unique groupe, et n'y est qu'en un seul exemplaire. Nous utilisons ici l'interface Set, et son implémentation HashSet. Les codes de hashage des objets Stone sont étudiés pour être uniques. Un groupe ne contient évidemment que des pierres de même couleur. Le choix de l'implémentation est justifié par le fait que les opérations de recherche, ajout et supression d'éléments dans un HashSet sont faites en $O(1)$, tant que leurs hashCodes sont vraiment uniques.
 
 	\section*{Conclusion}
+
+		Malgré la lenteur de l'algorithme d'intelligence artificielle, qui ne tient pas vraiment compte de la limite de temps donnée, le jeu est possible. Nous avons pu trouver des améliorations de l'algorithme $\alpha\beta$ pour court-circuiter des évaluations inutiles. Il aurait peut-être néanmoins été plus intéressant de réaliser ce projet dans un langage plus à même de traiter ce genre de problèmes, tel que le \emph{prolog}.
 
 
 \end{document}
