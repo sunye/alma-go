@@ -11,7 +11,9 @@ public class JNoir extends JLabel implements Cloneable {
 
 		private static final long serialVersionUID = 1L;
 	
-	
+	/**
+	 * Constructeur de la classe
+	 */
 	public JNoir(){
 		
 		super();

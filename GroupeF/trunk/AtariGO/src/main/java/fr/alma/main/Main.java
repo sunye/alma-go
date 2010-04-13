@@ -11,10 +11,14 @@
 
 package fr.alma.main;
 
+import java.awt.Point;
+
 import fr.alma.ihm.Ihm;
+import fr.alma.jeu.Grille;
+import fr.alma.structure.Arbre;
 
 /**
- * Classe du main
+ * Classe qui contient le main
  */
 	public class Main {
 
@@ -25,6 +29,17 @@ import fr.alma.ihm.Ihm;
 	public static void main(String[] args) {
 				
 		new Ihm();
+		
+		/*Grille g = new Grille();  
+		  
+		 Arbre a = new Arbre(g);  
+		  
+		 long begin = System.currentTimeMillis();  
+		 a.remplirArbre();  
+		 long end = System.currentTimeMillis();  
+		 float time = ((float) (end-begin)) ;  
+		 System.out.println("Temps ecoulé : "+time/1000+" secondes");  */
+		 
 		 
 	}
 

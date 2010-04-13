@@ -28,7 +28,7 @@ import javax.swing.JComboBox;
 
 /**
  * Classe de l'interface graphique et la gestion des évennements.
- * @author lahuidi
+ * @author ZERBITA Mohamed El Hadi
  *
  */
 public class Ihm {
@@ -255,18 +255,14 @@ public class Ihm {
 	 */
 	private JPanel getJPanel() {
 		if (jPanel == null) {
-			
 			ATarigo = new JLabel();
 			ATarigo.setIcon(new ImageIcon(getClass().getResource("/fr/alma/images/ago.PNG")));
 			ATarigo.setSize(new Dimension(388, 82));
 			ATarigo.setLocation(new Point(15, 20));
-			
 			LGrille = new JLabel();
 			LGrille.setName("Noir");
 			LGrille.setEnabled(false);
-			
 			ImageIcon img = new ImageIcon(getClass().getResource("/fr/alma/images/atariGo.png"));
-			
 			LGrille.setIcon(img);
 			
 			LGrille.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -275,7 +271,6 @@ public class Ihm {
 					 Point position = JCase.getValidePosition(LGrille, jeuEnCours);
 					 					 
 					 if(position != null) {
-				
 						 int RHomme = SimulerJeu(grille, position, t);
 											 						 
 						 switch(RHomme){
@@ -341,28 +336,23 @@ public class Ihm {
 
 				
 			});
-			
 			Blanc = new JBlanc();
 			Blanc.setIcon(new ImageIcon(getClass().getResource("/fr/alma/images/blanc.PNG")));
 			Blanc.setLocation(new Point(57, 146));
 			Blanc.setSize(new Dimension(30, 30));
 			Blanc.setVisible(false);
-						
 			Noir = new JNoir();
 			Noir.setIcon(new ImageIcon(getClass().getResource("/fr/alma/images/noir.PNG")));
 			Noir.setSize(new Dimension(30, 30));
 			Noir.setLocation(new Point(15, 146));
 			Noir.setVisible(false);
-			
 			jPanel = new JPanel();
 			jPanel.setLayout(null);
-			
 			LGrille.add(Noir, null);
 			LGrille.add(Blanc, null);
 			jPanel.add(getPGrille(), null);
 			jPanel.add(getPAtarigo(), null);
 			jPanel.add(getPJeu(), null);
-						
 			}
 		return jPanel;
 	}
@@ -626,7 +616,7 @@ public class Ihm {
 							 t = Tour.NOIR;
 							 
 							 Point position = jouerMachine(grille, t);
-							 grille.mettrePion(position, LGrille, Blanc, Noir, t); 
+							 t = grille.mettrePion(position, LGrille, Blanc, Noir, t); 
 						}
 						else {
 							t = Tour.NOIR;
@@ -658,7 +648,6 @@ public class Ihm {
 		}
 		return jBAnnuler;
 	}
-
 
 	/**
 	 * Méthode pour intérrompre le jeu

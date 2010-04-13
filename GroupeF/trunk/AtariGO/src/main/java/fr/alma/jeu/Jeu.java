@@ -7,7 +7,8 @@ import fr.alma.ia.Ia;
 import fr.alma.ihm.Tour;
 import fr.alma.structure.Arbre;
 import fr.alma.structure.Noeud;
-
+import static fr.alma.jeu.LibertePion.*;
+import static fr.alma.jeu.OutilsJEU.*;
 
 /**
  * @author landryngassa
@@ -22,363 +23,7 @@ public class Jeu {
 	public static final int CAPTURE = 3;
 	
 	public static int min = 0;
-	
-	public static ArrayList<Pion> voisins = new ArrayList<Pion>();
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public  ArrayList<Pion> getVoisins() {
-		return voisins;
-	}
-
-
-	/**
-	 * 
-	 * @param vois
-	 */
-	public static void setVoisins(ArrayList<Pion> vois) {
-		voisins = vois;
-	}
-
-	/**
-	 * 
-	 * @param grille
-	 * @param p
-	 * @param c
-	 * @return
-	 */
-	public static int getLiberte(Grille grille, Point p,Pion.Couleur c){ 
-		
-		int x = p.x;
-		int y = p.y;
-				
-		int N=0,S=0,E=0,O=0;
-		voisins.add(grille.Contenu[x][y]);
-		//System.out.println(" dans getliberte");
-		
-		if(x==0)
-			if(y==0){
-				
-				if ((!voisins.contains(grille.Contenu[x+1][y]))&&grille.Contenu[x+1][y].equals(new Pion(new Point(x+1,y)))){
-					S=1;
-					voisins.add(grille.Contenu[x+1][y]);
-				}
-				else
-					if ((!voisins.contains(grille.Contenu[x+1][y]))&&(c.equals(grille.Contenu[x+1][y].couleur)))
-						S=getLiberte(grille,new Point(x+1,y),c);
-				if((!voisins.contains(grille.Contenu[x][y+1]))&&grille.Contenu[x][y+1].equals(new Pion(new Point(x,y+1)))){
-					E=1;
-					voisins.add(grille.Contenu[x][y+1]);
-				}
-				else{
-					if((!voisins.contains(grille.Contenu[x][y+1]))&&(c.equals(grille.Contenu[x][y+1].couleur)))
-						E=getLiberte(grille,new Point(x, y+1), c);
-					}
-				return E+S;
-			}
-				
-			else{
-				
-				if(y==8){
-					if ((!voisins.contains(grille.Contenu[x+1][y]))&&grille.Contenu[x+1][y].equals(new Pion(new Point(x+1,y)))){
-						S=1;
-						voisins.add(grille.Contenu[x+1][y]);
-					}
-					else
-						if ((!voisins.contains(grille.Contenu[x+1][y]))&&(c.equals(grille.Contenu[x+1][y].couleur)))
-							S=getLiberte(grille,new Point(x+1,y),c);
-					if((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
-						O=1;
-					    voisins.add(grille.Contenu[x][y-1]);
-					}
-					else{
-						if((!voisins.contains(grille.Contenu[x][y-1]))&&(c.equals(grille.Contenu[x][y-1].couleur)))
-							O=getLiberte(grille,new Point(x, y-1), c);
-						}
-					return O+S;
-				}				
-				else{ //0<y<8
-					if((!voisins.contains(grille.Contenu[x+1][y]))&&grille.Contenu[x+1][y].equals(new Pion(new Point(x+1,y)))){
-						S=1;
-						voisins.add(grille.Contenu[x+1][y]);
-					}
-					else{
-						if ((!voisins.contains(grille.Contenu[x+1][y]))&&(c.equals(grille.Contenu[x+1][y].couleur)))
-							S=getLiberte(grille,new Point(x+1,y), c);
-					}
-					if((!voisins.contains(grille.Contenu[x][y+1]))&&grille.Contenu[x][y+1].equals(new Pion(new Point(x,y)))){
-						E=1;
-						voisins.add(grille.Contenu[x][y+1]);
-					}
-					else{
-						if((!voisins.contains(grille.Contenu[x][y+1]))&&(c.equals(grille.Contenu[x][y+1].couleur)))
-							E=getLiberte(grille,new Point(x, y+1), c);
-					}
-					if((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
-						O=1;
-						voisins.add(grille.Contenu[x][y-1]);
-					}
-					else{
-						if((!voisins.contains(grille.Contenu[x][y-1]))&&(c.equals(grille.Contenu[x][y-1].couleur)))
-							O=getLiberte(grille,new Point(x, y-1), c);
-					}
-					return S+E+O;
-			  }
-				
-			}
-				
-		else{ //x!=0
-			if (x<8)//0<x<8
-				if (y==0){
-					if((!voisins.contains(grille.Contenu[x+1][y]))&&grille.Contenu[x][y+1].equals(new Pion(new Point(x,y+1)))){
-						S=1;
-						voisins.add(grille.Contenu[x+1][y]);
-					}
-					else{
-						if((!voisins.contains(grille.Contenu[x][y+1]))&&(c.equals(grille.Contenu[x][y+1].couleur)))
-							S=getLiberte(grille,new Point(x, y+1), c);
-					}
-					if((!voisins.contains(grille.Contenu[x][y+1]))&&grille.Contenu[x][y+1].equals(new Pion(new Point(x,y+1))))
-						E=1;
-					else{
-						if((!voisins.contains(grille.Contenu[x+1][y]))&&(c.equals(grille.Contenu[x][y+1].couleur)))
-							 E=getLiberte(grille,new Point(x, y+1), c);
-					}
-					
-					if((!voisins.contains(grille.Contenu[x-1][y]))&&grille.Contenu[x-1][y].equals(new Pion(new Point(x-1,y)))){
-						N=1;
-						voisins.add(grille.Contenu[x-1][y]);
-					}
-					else{
-						if((!voisins.contains(grille.Contenu[x-1][y]))&&(c.equals(grille.Contenu[x-1][y].couleur)))
-							N=getLiberte(grille,new Point(x-1, y), c);
-					}
-					return N+S+E;
-				}
 			
-				else
-					if(y==8){ //0<x<8 && y=8
-						if((!voisins.contains(grille.Contenu[x-1][y]))&&grille.Contenu[x-1][y].equals(new Pion(new Point(x-1,y)))){
-							N=1;
-							voisins.add(grille.Contenu[x-1][y]);
-						}
-						else{
-							if((!voisins.contains(grille.Contenu[x-1][y]))&&(c.equals(grille.Contenu[x-1][y].couleur)))
-								N=getLiberte(grille,new Point(x-1, y), c);
-						}
-						if((!voisins.contains(grille.Contenu[x+1][y]))&&grille.Contenu[x+1][y].equals(new Pion(new Point(x+1,y)))){
-							S=1;
-							voisins.add(grille.Contenu[x+1][y]);
-						}
-						else{
-							if((!voisins.contains(grille.Contenu[x+1][y]))&&(c.equals(grille.Contenu[x+1][y].couleur)))
-								S=getLiberte(grille,new Point(x+1, y), c);
-						}					
-						
-						if((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
-							O=1;
-							voisins.add(grille.Contenu[x][y-1]);
-						}
-						else{
-							if((!voisins.contains(grille.Contenu[x][y-1]))&&(c.equals(grille.Contenu[x][y-1].couleur)))
-								O=getLiberte(grille,new Point(x, y-1),c);
-						}
-						return N+S+O;
-				  }
-				  else{ // 0<x<8 && 0<y<8
-					  if((!voisins.contains(grille.Contenu[x][y+1]))&&grille.Contenu[x][y+1].equals(new Pion(new Point(x,y+1)))){
-							E=1;
-							voisins.add(grille.Contenu[x][y+1]);
-						}
-						else{
-							if((!voisins.contains(grille.Contenu[x][y+1]))&&(c.equals(grille.Contenu[x][y+1].couleur)))
-								E=getLiberte(grille,new Point(x, y+1),c);
-						}
-						if((!voisins.contains(grille.Contenu[x+1][y]))&&grille.Contenu[x+1][y].equals(new Pion(new Point(x+1,y)))){
-							S=1;
-							voisins.add(grille.Contenu[x+1][y]);
-						}
-						else{
-							if((!voisins.contains(grille.Contenu[x+1][y]))&&(c.equals(grille.Contenu[x+1][y].couleur)))
-								 S=getLiberte(grille,new Point(x+1, y),c);
-						}
-						
-						if((!voisins.contains(grille.Contenu[x-1][y]))&&grille.Contenu[x-1][y].equals(new Pion(new Point(x-1,y)))){
-							N=1;
-							voisins.add(grille.Contenu[x-1][y]);
-						}
-						else{
-							if((!voisins.contains(grille.Contenu[x-1][y]))&&(c.equals(grille.Contenu[x-1][y].couleur)))
-								N=getLiberte(grille,new Point(x-1, y),c);
-						}
-						
-						if ((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
-							O=1;
-							voisins.add(grille.Contenu[x][y-1]);
-						}
-						else{
-							if((!voisins.contains(grille.Contenu[x][y-1]))&&(c.equals(grille.Contenu[x][y-1].couleur)))
-								O=getLiberte(grille,new Point(x, y-1),c);
-						}
-						return N+S+E+O;
-				  }
-			
-			else{   //x=8
-				if(y==0){
-					if ((!voisins.contains(grille.Contenu[x-1][y]))&&grille.Contenu[x-1][y].equals(new Pion(new Point(x-1,y)))){
-						N=1;
-						voisins.add(grille.Contenu[x-1][y]);
-					}
-					else
-						if ((!voisins.contains(grille.Contenu[x-1][y]))&&(c.equals(grille.Contenu[x-1][y].couleur)))
-							N=getLiberte(grille,new Point(x-1,y),c);
-					if((!voisins.contains(grille.Contenu[x][y+1]))&&grille.Contenu[x][y+1].equals(new Pion(new Point(x,y+1)))){
-						E=1;
-						voisins.add(grille.Contenu[x][y+1]);
-					}
-					else{
-						if((!voisins.contains(grille.Contenu[x][y+1]))&&(c.equals(grille.Contenu[x][y+1].couleur)))
-							E=getLiberte(grille,new Point(x, y+1),c);
-						}
-					return N+E;
-				}
-				else 
-					if(y==8){
-						if((!voisins.contains(grille.Contenu[x-1][y]))&&grille.Contenu[x-1][y].equals(new Pion(new Point(x-1,y)))){
-							N=1;
-							voisins.add(grille.Contenu[x-1][y]);
-						}
-						else{
-							if((!voisins.contains(grille.Contenu[x-1][y]))&&(c.equals(grille.Contenu[x-1][y].couleur)))
-								 N=getLiberte(grille,new Point(x-1, y),c);
-						}
-						
-						if((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
-							O=1;
-							voisins.add(grille.Contenu[x][y-1]);
-						}
-						else{
-							if((!voisins.contains(grille.Contenu[x][y-1]))&&(c.equals(grille.Contenu[x][y-1].couleur)))
-								O=getLiberte(grille,new Point(x, y-1),c);
-						}
-						return N+O;
-					}
-				
-					else{ // x==8 && 0<8<y
-						
-					
-						if((!voisins.contains(grille.Contenu[x-1][y]))&&grille.Contenu[x-1][y].equals(new Pion(new Point(x-1,y)))){
-							N=1;
-							voisins.add(grille.Contenu[x-1][y]);
-						}
-						else{
-							if((!voisins.contains(grille.Contenu[x-1][y]))&&(c.equals(grille.Contenu[x-1][y].couleur)))
-								N=getLiberte(grille,new Point(x-1, y),c);
-						}
-						if((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
-							O=1;
-							voisins.add(grille.Contenu[x][y-1]);
-						}
-						else{
-							if((!voisins.contains(grille.Contenu[x][y-1]))&&(c.equals(grille.Contenu[x][y-1].couleur)))
-								O=getLiberte(grille,new Point(x, y-1),c);
-						}
-						if((!voisins.contains(grille.Contenu[x][y+1]))&&grille.Contenu[x][y+1].equals(new Pion(new Point(x,y+1)))){
-							E=1;
-							voisins.add(grille.Contenu[x][y+1]);
-						}
-						else{
-							if((!voisins.contains(grille.Contenu[x][y+1]))&&(c.equals(grille.Contenu[x][y+1].couleur)))
-								E=getLiberte(grille,new Point(x, y+1),c);
-						}
-						return N+E+O;
-					}			  	
-			}		
-		}			
-		
-	}	
-	
-	/**
-	 * 
-	 * @param grille
-	 * @param x
-	 * @param y
-	 * @param c
-	 * @return
-	 */
-	public static boolean existN(Grille grille,int x,int y,Pion.Couleur c){
-		
-		if (x>0)
-			if(c.equals(Pion.Couleur.BLANC))
-				return ((grille.Contenu[x-1][y]).equals(new Pion(Pion.Couleur.NOIR,new Point(x-1,y))));
-			else
-				return ((grille.Contenu[x-1][y]).equals(new Pion(Pion.Couleur.BLANC,new Point(x-1,y))));
-	
-		else
-			return false;
-	}
-
-	/**
-	 * 
-	 * @param grille
-	 * @param x
-	 * @param y
-	 * @param c
-	 * @return
-	 */
-	public static boolean existS(Grille grille,int x,int y,Pion.Couleur c){
-		if (x<8){
-			if(c.equals(Pion.Couleur.BLANC))
-				return ((grille.Contenu[x+1][y]).equals(new Pion(Pion.Couleur.NOIR,new Point(x+1,y))));
-			else
-				return ((grille.Contenu[x+1][y]).equals(new Pion(Pion.Couleur.BLANC,new Point(x+1,y))));
-		}
-		else
-			return false;
-	}
-
-	/**
-	 * 
-	 * @param grille
-	 * @param x
-	 * @param y
-	 * @param c
-	 * @return
-	 */
-	public static boolean existE(Grille grille,int x,int y,Pion.Couleur c){
-		if (y<8)
-			if(c.equals(Pion.Couleur.BLANC))
-				return ((grille.Contenu[x][y+1]).equals(new Pion(Pion.Couleur.NOIR,new Point(x,y+1))));
-			else
-				return ((grille.Contenu[x][y+1]).equals(new Pion(Pion.Couleur.BLANC,new Point(x,y+1))));
-	
-		else
-			return false;
-	}
-
-	/**
-	 * 
-	 * @param grille
-	 * @param x
-	 * @param y
-	 * @param c
-	 * @return
-	 */
-	public static boolean existO(Grille grille,int x,int y,Pion.Couleur c){
-	
-		if (y>0)
-			if(c.equals(Pion.Couleur.BLANC))
-				return ((grille.Contenu[x][y-1]).equals(new Pion(Pion.Couleur.NOIR,new Point(x,y-1))));
-			else
-				return ((grille.Contenu[x][y-1]).equals(new Pion(Pion.Couleur.BLANC,new Point(x,y-1))));
-	
-		else
-			return false;
-	}
-
-
 	/**
 	 * 
 	 * @param grille
@@ -393,20 +38,14 @@ public class Jeu {
 		int x = p.x;
 		int y = p.y;
 		
-		if(t == Tour.BLANC)
-		   pion=new Pion(Pion.Couleur.BLANC,new Point(x,y));
-		else
-			pion=new Pion(Pion.Couleur.NOIR,new Point(x,y));
-		
-		//System.out.println("la fonction jouer");
+		if(t == Tour.BLANC) pion=new Pion(Pion.Couleur.BLANC,new Point(x,y));
+		else pion=new Pion(Pion.Couleur.NOIR,new Point(x,y));
+			
 		if((x<0)||(x>8)||(y<0)||(y>8)){
 			
-		//JOptionPane.showInputDialog("indice insuffisante","erreur");
-		//System.out.println("err.");
-		return 2;
+		return INVALIDE;
 		}
-		
-		
+				
 		else{			
 					
 			if (grille.Contenu[x][y].equals(new Pion(new Point(x,y)))){
@@ -581,25 +220,20 @@ public class Jeu {
 				
 				}
 			}
-		}
-
+	}
 
 	/**
 	 * 
 	 * @param g
 	 * @return
 	 */
-	
 	public static Point jouerMachine(Grille g,Tour t) {
 		
-	System.out.println("dans jouermachine");
-		Pion.Couleur c;
-		if(t==Tour.BLANC)
-			c = Pion.Couleur.BLANC;
-		else 
-			c = Pion.Couleur.NOIR;
-		
 		Point p=new Point();
+		Pion.Couleur c;
+		if(t==Tour.BLANC) c = Pion.Couleur.BLANC;
+		else c = Pion.Couleur.NOIR;
+				
 		ArrayList<Pion> cj=getCoupsJouerAd(g,c);
 		ArrayList<Pion> cMachine=getCoupsJouerM(g,c);
  		ArrayList<Pion> cjHumain=new ArrayList<Pion>();
@@ -608,7 +242,7 @@ public class Jeu {
 		System.out.println(cj.size());
 		
 			if (cj.size()<30){
-				//int min=getLiberte(g, cj.get(0).position, cj.get(0).couleur);
+				
 				setVoisins(new ArrayList<Pion>());
 				System.out.println("initialisation des voisins");
 				for(Pion pion:cj){
@@ -640,12 +274,8 @@ public class Jeu {
 								p=new Point(pion.position.x,pion.position.y+1);
 						
 					}
-					
-					
-						
 				}
-				
-			
+							
 				for(Pion pion:cjHumain){
 					if((getLiberteFixe(g,pion.position)<=min)&&(SimulerJeu(g, pion.position, t)!=SUICIDE)){
 						min=getLiberteFixe(g,pion.position);
@@ -661,16 +291,9 @@ public class Jeu {
 						if(pion.position.y<8)
 							if((g.Contenu[pion.position.x][pion.position.y+1]).couleur.equals(Pion.Couleur.NULL))
 								p=new Point(pion.position.x,pion.position.y+1);
-						
 					}
-					
-					
-						
 				}
-				
-				
-				
-				
+					
 			}
 			else{
 				
@@ -683,113 +306,25 @@ public class Jeu {
 				for(Pion pion:cj){
 					if((EstVoisin(n.getCoup(),pion))&& (n.getNote()==a.racine.getNote())&&(pion.couleur.equals(Pion.Couleur.BLANC)));
 							p = n.getCoup().position;
-					
 				}
 			}
 		}
 		}
 		else{
-			Random n=new Random();
-			p=new Point(n.nextInt(8),n.nextInt(8));
+			Random n = new Random();
+			p = new Point(n.nextInt(9),n.nextInt(9));
 		}
 		return p;
 	}
-	
-	
-	
-
-	/**
-	 * 
-	 * @param g
-	 * @param position
-	 * @return
-	 */
-	private static int getLiberteFixe(Grille g, Point position) {
-		
-		int lib=0;
-		if(position.x>0)
-			if((g.Contenu[position.x-1][position.y]).couleur.equals(Pion.Couleur.NULL))
-				lib++;
-		if(position.x<8)
-			if((g.Contenu[position.x+1][position.y]).couleur.equals(Pion.Couleur.NULL))
-				lib++;
-		if(position.y>0)
-			if((g.Contenu[position.x][position.y-1]).couleur.equals(Pion.Couleur.NULL))
-				lib++;
-		if(position.y<8)
-			if((g.Contenu[position.x][position.y+1]).couleur.equals(Pion.Couleur.NULL))
-				lib++;
-		return lib;
-	}
-
-	
 		
 	/**
 	 * 
 	 * @param g
-	 * @param p
+	 * @param c
 	 * @return
 	 */
-	public static ArrayList<Pion> DeterminerVoisins(Grille g,Pion p){
-		Pion.Couleur c;
-		if(g.Contenu[p.position.x][p.position.y].equals(new Pion(p.position)))
-			return null;
-		else{
-			if(voisins.size()!=0){
-				if (!(voisins.contains(p))) 
-					voisins.add(p);
-			}
-			else
-				voisins.add(p);
-			if(p.couleur.equals(Pion.Couleur.BLANC))
-				c=Pion.Couleur.NOIR;
-			else 
-				c=Pion.Couleur.BLANC;
-		if ((existN(g,p.position.x,p.position.y,c)))
-			DeterminerVoisins(g,g.Contenu[p.position.x-1][p.position.y]);
-		if ((existS(g,p.position.x,p.position.y,c)))
-			DeterminerVoisins(g,g.Contenu[p.position.x+1][p.position.y]);
-		if ((existO(g,p.position.x,p.position.y,c)))
-			DeterminerVoisins(g,g.Contenu[p.position.x][p.position.y-1]);
-		if ((existE(g,p.position.x,p.position.y,c)))
-			DeterminerVoisins(g,g.Contenu[p.position.x-1][p.position.y+1]);
-		
-		return voisins;
-		}
-		//System.out.println(voisins.toString());
-		//return voisins;
-		
-		}
-	
-
-	
-	
-	
-	public static ArrayList<Pion> LpionsCapture=new ArrayList<Pion>();
-	public static void DeterminerVoisinsG(Grille g,Pion p){
-		if(!(LpionsCapture.contains(p))){
-			LpionsCapture.add(p);
-		
-		if((p.position.x>0))
-			if((p.couleur.equals(g.Contenu[p.position.x-1][p.position.y].couleur)))
-				DeterminerVoisinsG(g, g.Contenu[p.position.x-1][p.position.y]);
-		if((p.position.x<8))
-			if(p.couleur.equals(g.Contenu[p.position.x+1][p.position.y].couleur))
-			DeterminerVoisinsG(g, g.Contenu[p.position.x+1][p.position.y]);
-		if((p.position.y>0))
-			if (p.couleur.equals(g.Contenu[p.position.x][p.position.y-1].couleur))
-				DeterminerVoisinsG(g, g.Contenu[p.position.x][p.position.y-1]);
-		if((p.position.y<8))
-			if((p.couleur.equals(g.Contenu[p.position.x][p.position.y+1].couleur)))
-			DeterminerVoisinsG(g, g.Contenu[p.position.x][p.position.y+1]);
-		}
-	}
-	
-	
-	
 	public static ArrayList<Pion> getCoupsJouerAd(Grille g,Pion.Couleur c){
 
-	//	System.out.println("Appelé");
 		Pion.Couleur cPrime;
 		if(c.equals(Pion.Couleur.NOIR))
 			cPrime=Pion.Couleur.BLANC;
@@ -803,13 +338,16 @@ public class Jeu {
        		System.out.println("Coup jouer : "+g.Contenu[i][j].position);}
        	 }
 		return cj;
-                
-		 
-	}
-
+    }
 	
+	/**
+	 * 
+	 * @param g
+	 * @param c
+	 * @return
+	 */
 	public static ArrayList<Pion> getCoupsJouerM(Grille g,Pion.Couleur c){
-		//	System.out.println("Appelé");
+		
 			ArrayList<Pion> cj = new ArrayList<Pion>();
 			for(int i=0;i<9;i++) 
 	       	 for(int j=0;j<9;j++) {
@@ -820,27 +358,19 @@ public class Jeu {
 			return cj;
 		}
 	
-	private static boolean EstVoisin(Pion coup, Pion pion) {
-		
-		return ((coup.position.x+1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x-1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y+1==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y-1==pion.position.y));
-	}
-
-
 	/**
 	 * Met a jour la grille aprés une capture
 	 * @param g grille a mettre à jour
 	 * @param position la position du pion
 	 * @return la grille mis à jour
 	 */
-	
-	
-	
-
 	public static Grille miseAjourGrilleApresCapture(Grille g){
-		LpionsCapture=new ArrayList<Pion>();
-		DeterminerVoisinsG(g, pionCapture);
-
+		
 		Grille other = new Grille();
+		LpionsCapture = new ArrayList<Pion>();
+		
+		DeterminerVoisinsG(g, pionCapture);
+		
 		for(int i=0;i<9;i++){
 			for(int j=0;j<9;j++){
 				other.Contenu[i][j]=g.Contenu[i][j];
@@ -849,7 +379,7 @@ public class Jeu {
 		for (Pion pion:LpionsCapture){
 			other.Contenu[pion.position.x][pion.position.y]=new Pion(pion.position);
 		}
-		//il resque a mettre la grille aprés capture icis
+		
 		return other;
 	}
 

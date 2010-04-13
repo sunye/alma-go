@@ -12,8 +12,7 @@ public class JCase {
 	 * @return la case de la grille.
 	 */
 	public static Point getValidePosition(JLabel Grille, boolean jeuEnCours){
-		
-		
+				
 		Point p = Grille.getMousePosition();
 		
 		if(jeuEnCours){
