@@ -117,9 +117,9 @@ public class Game {
      * @param pionVal
      * @return whether or not it is a suicide
      */
-    public boolean isSuicide(int line, int column, PionVal pionVal) {
+    protected boolean isSuicide(int line, int column, PionVal pionVal) {
         //TODO : correct this function
-        if (goban.libertesPion(new Stone(pionVal, line, column)) == 0) {
+        if (goban.nbLibertes(new Stone(pionVal, line, column)) == 0) {
             // No liberty ? Let's check if we are killing a ennemy group.
             Set<Groupe> groupes = getSurroundingGroups(new Stone(pionVal, line, column));
             int i = 0;
@@ -151,7 +151,7 @@ public class Game {
         lastMove = newMove;
     }
 
-    public HashSet<Groupe> getGroupsFromPions(List<Stone> pions) {
+    private HashSet<Groupe> getGroupsFromPions(List<Stone> pions) {
         HashSet<Groupe> groups = new HashSet<Groupe>(4);
         for (Stone pi : pions) {
             Groupe containing = getCurrentMove().getGroupeContaining(pi);
@@ -160,7 +160,7 @@ public class Game {
         return groups;
     }
 
-    public HashSet<Groupe> getSurroundingGroups(Stone pion) {
+    protected HashSet<Groupe> getSurroundingGroups(Stone pion) {
         // Get the (<= 4) neighbours groups of the current stone.
         List<Stone> pions = goban.getVoisins(pion);
 
@@ -202,7 +202,7 @@ public class Game {
      * @param groupe
      * @return
      */
-    public Set<Stone> getGroupLiberties(Groupe groupe) {
+    protected  Set<Stone> getGroupLiberties(Groupe groupe) {
         HashSet<Stone> libertes = new HashSet<Stone>(groupe.size() * 2 + 2);
 
         for (Stone pion : groupe.getStones()) {
@@ -356,15 +356,6 @@ public class Game {
         }
     }
 
-    /**
-     * Wrapper for Goban <em>libertesPion</em> method.
-     * @param pion
-     * @return
-     */
-    public int nbLibPion(Stone pion) {
-        return goban.libertesPion(pion);
-    }
-
     public boolean isEnd() {
         return getCurrentMove().isEnd();
     }
@@ -455,10 +446,6 @@ public class Game {
 
     public PionVal getCurrentPlayer() {
         return currentPlayer;
-    }
-
-    public boolean isFree(int line, int column) {
-        return freePlaces.contains(new Stone(PionVal.RIEN, line, column));
     }
 
     private void changeCurrentPlayer() {

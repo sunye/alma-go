@@ -3,18 +3,18 @@ package fr.alma.atarigo.analyse;
 import fr.alma.atarigo.utils.Game;
 import fr.alma.atarigo.utils.Goban;
 import fr.alma.atarigo.utils.Groupe;
-import fr.alma.atarigo.utils.Modif;
 import fr.alma.atarigo.utils.Stone;
 import fr.alma.atarigo.utils.PionVal;
 import fr.alma.atarigo.utils.PlayMove;
 import fr.alma.atarigo.utils.exceptions.BadPlaceException;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Provides static evaluation functions for an atari go game.
+ * @author judu
+ */
 public class EvalFunc {
 
     static public final int GAGNE = 1000;

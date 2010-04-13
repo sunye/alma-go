@@ -111,7 +111,7 @@ public class AlphaBeta {
         synchronized (lastBest) {
             while (lastBest.getPutStone() == null) {
                 try {
-                    lastBest.wait(1000);
+                    lastBest.wait();
                 } catch (InterruptedException ex) {
                     Logger.getLogger(AlphaBeta.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -137,7 +137,13 @@ public class AlphaBeta {
         for (int i = 0; i < tests.getChildrenMove().size(); ++i) {
             tests.apply(i);
             PlayMove valFils = alphaBeta(tests, prof, Math.max(alpha, alphadep.getEval()), beta);
+            if(tests.isEnd()){
+                tests.revert();
+                tests.keepChildAt(i);
+                return valFils;
+            }
             tests.revert();
+
             if (valFils.getEval() > alphadep.getEval()) {
                 alphadep = valFils;
                 indexMax = i;
@@ -173,6 +179,11 @@ public class AlphaBeta {
         for (int i = 0; i < tests.getChildrenMove().size(); ++i) {
             tests.apply(i);
             PlayMove valFils = alphaBeta(tests, prof, alpha, Math.min(beta, betadep.getEval()));
+            if(tests.isEnd()){
+                tests.revert();
+                tests.keepChildAt(i);
+                return valFils;
+            }
             tests.revert();
             if (valFils.getEval() < betadep.getEval()) {
                 betadep = valFils;

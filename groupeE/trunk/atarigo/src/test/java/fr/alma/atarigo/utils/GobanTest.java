@@ -129,7 +129,7 @@ public class GobanTest extends TestCase {
     }
 
     /**
-     * Test of libertesPion method, of class Goban.
+     * Test of nbLibertes method, of class Goban.
      */
     public void testLibertesPion() {
         System.out.println("libertesPion");
@@ -137,7 +137,7 @@ public class GobanTest extends TestCase {
         int col = 0;
         Goban instance = new Goban();
         int expResult = 2;
-        int result = instance.libertesPion(new Stone(PionVal.BLANC, ligne, col));
+        int result = instance.nbLibertes(new Stone(PionVal.BLANC, ligne, col));
         assertEquals(expResult, result);
     }
 }

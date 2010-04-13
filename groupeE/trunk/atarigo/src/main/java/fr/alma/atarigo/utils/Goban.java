@@ -101,7 +101,7 @@ public class Goban {
         return pions;
     }
 
-    public int libertesPion(Stone pion) {
+    public int nbLibertes(Stone pion) {
         int ligne = pion.getLine();
         int col = pion.getColumn();
 
