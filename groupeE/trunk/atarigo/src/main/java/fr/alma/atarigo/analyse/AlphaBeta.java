@@ -1,5 +1,5 @@
 /**
- * File {Nom du fichier}
+ * File {AlphaBeta.java}
  * Last commited $Date$
  * By $Author$
  * Revision $Rev$
