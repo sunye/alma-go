@@ -41,7 +41,7 @@ public class Fenetre extends JFrame {
     public Fenetre(String s) {
 
         super(s);
-        setSize(700, 700);
+        setSize(750, 690);
         this.setLocationRelativeTo(null);
 
 
