@@ -25,24 +25,24 @@ public class EvalFunc {
     static public final int MOYEN = 5;
     static public final int FAIBLE = 2;
 
-    static int evaluate(FakeGame tests, PionVal pionVal, boolean beginning) {
+    static int evaluate(FakeGame tests, PionVal couleur, boolean beginning) {
         if (tests.isEnd()) {
-            if (tests.getCurrentMove().getPutStone().getAfter() == pionVal) {
-                return GAGNE + GAGNE + GAGNE;
+            if (tests.getCurrentMove().getPutStone().getAfter() == couleur) {
+                return 6*GAGNE;
             } else {
-                return PERDU + PERDU + PERDU;
+                return 6*PERDU;
             }
 
         }
 
         if (beginning) {
-            if (tests.getCurrentMove().getPutStone().getAfter() == pionVal) {
+            if (tests.getCurrentMove().getPutStone().getAfter() == couleur) {
                 return evaluateBeginning(tests);
             } else {
                 return -evaluateBeginning(tests);
             }
         } else {
-            if (tests.getCurrentMove().getPutStone().getAfter() == pionVal) {
+            if (tests.getCurrentMove().getPutStone().getAfter() == couleur) {
                 return evaluateFollowing(tests);
             } else {
                 return -evaluateFollowing(tests);
@@ -70,7 +70,7 @@ public class EvalFunc {
         }
 
         if (nbKeima(game, putStone) > 0) {
-            score += TRESIMPORTANT;
+            score += TRESTRESIMPORTANT;
         }
         return score;
     }
@@ -80,9 +80,9 @@ public class EvalFunc {
         Stone putStone = game.getCurrentMove().getPutStone().getNewStone();
 
         score += evaluateGroupsLiberties(game, TRESIMPORTANT);
-        score += checkStonePlaces(game, FAIBLE);
+        score += checkStonePlaces(game, IMPORTANT);
         if (nbKeima(game, putStone) > 0) {
-            score += IMPORTANT;
+            score += TRESTRESIMPORTANT;
         }
         calculateEyes(game);
         score += checkEyes(game);
@@ -114,6 +114,41 @@ public class EvalFunc {
         }
     }
 
+
+    /**
+     * Check if the current group is in a Shicho position :
+     * http://en.wikipedia.org/wiki/Shicho
+     * @param game
+     * @param groupe
+     * @return
+     */
+    static private int checkShicho(final Game game, final Groupe groupe){
+        int score = 0;
+        int diff;
+
+        // First, a Shicho appends when you only have one liberty.
+        if(groupe.getLiberties().size() == 1){
+            Stone[] lib = new Stone[1];
+            groupe.getLiberties().toArray(lib);
+            List<Stone> libslibs = game.getGoban().getLibertes(lib[0]);
+            
+            if (libslibs.size() == 2) {
+                // Check if the liberties form a keima.
+                Stone[] libsoflib = new Stone[2];
+                libslibs.toArray(libsoflib);
+                diff = Math.abs(Math.abs(libsoflib[0].getColumn() - libsoflib[1].getColumn()) - Math.abs(libsoflib[0].getLine() - libsoflib[1].getLine()));
+
+                if(diff == 0){
+                    score += TRESTRESIMPORTANT;
+                }
+            }
+        }
+
+        return score;
+    }
+
+
+
     static private int checkStonePlaces(Game game, int importance) {
 
         final int minBonnePlace = 2;
@@ -121,7 +156,7 @@ public class EvalFunc {
         final PionVal curColor = game.getCurrentMove().getPutStone().getNewStone().getCouleur();
         int score = 0;
 
-        for (Groupe groupe : game.getCurrentMove().getGroupes()) {
+        for (Groupe groupe : game.getCurrentMove().getGroups()) {
             for (Stone stone : groupe.getStones()) {
                 if (stone.getLine() >= minBonnePlace && stone.getLine() <= maxBonnePlace && stone.getColumn() >= minBonnePlace && stone.getColumn() <= maxBonnePlace) {
                     score = (stone.getCouleur() == curColor) ? score + importance : score - importance;
@@ -145,7 +180,7 @@ public class EvalFunc {
         PionVal curColor = game.getCurrentMove().getPutStone().getNewStone().getCouleur();
 
         // First, get each side's group with a minimum of liberties
-        for (Groupe groupe : game.getCurrentMove().getGroupes()) {
+        for (Groupe groupe : game.getCurrentMove().getGroups()) {
 
             // Calculate in both side the group with the least liberties
             if (groupe.getCouleur() == curColor) {
@@ -164,14 +199,14 @@ public class EvalFunc {
 
         if (minLibMySide == null) {
             myLibs = 0;
-            Logger.getAnonymousLogger().log(Level.WARNING, "groupe null " + game.getCurrentMove().getGroupes().toString());
+            Logger.getAnonymousLogger().log(Level.WARNING, "groupe null " + game.getCurrentMove().getGroups().toString());
         } else {
             myLibs = minLibMySide.getLiberties().size();
         }
 
         if (minLibOtherSide == null) {
             otherLibs = 0;
-            Logger.getAnonymousLogger().log(Level.WARNING, "groupe null " + game.getCurrentMove().getGroupes().toString());
+            Logger.getAnonymousLogger().log(Level.WARNING, "groupe null " + game.getCurrentMove().getGroups().toString());
         } else {
             otherLibs = minLibOtherSide.getLiberties().size();
         }
@@ -179,23 +214,27 @@ public class EvalFunc {
 
         // Check if only one liberty
         if (myLibs == 1) {
-            score += PERDU+PERDU;
+            score += 4*PERDU;
             Stone[] lib = new Stone[1];
             minLibMySide.getLiberties().toArray(lib);
 
             if (game.getGoban().getLibertes(lib[0]).size() <= 1) {
                 score += PERDU;
             }
+
+            score -= checkShicho(game, minLibMySide);
         }
 
         if (otherLibs == 1) {
-            score += IMPORTANT;
+            score += TRESIMPORTANT;
             Stone[] lib = new Stone[1];
             minLibOtherSide.getLiberties().toArray(lib);
 
             if (game.getGoban().getLibertes(lib[0]).size() <= 1) {
                 score += TRESTRESIMPORTANT;
             }
+
+            score += checkShicho(game, minLibOtherSide);
         }
 
         // Compare minimum of group liberties.
@@ -215,7 +254,7 @@ public class EvalFunc {
         int score = 0;
         Stone putStone = game.getCurrentMove().getPutStone().getNewStone();
 
-        for (Groupe groupe : game.getCurrentMove().getGroupes()) {
+        for (Groupe groupe : game.getCurrentMove().getGroups()) {
             if (groupe.getCouleur() == putStone.getCouleur()) {
                 if (groupe.nbEyes() > 2) {
                     score += IMPORTANT;

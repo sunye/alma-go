@@ -40,7 +40,7 @@ public class PlayMove {
         return null;
     }
 
-    public ArrayList<Groupe> getGroupes() {
+    public ArrayList<Groupe> getGroups() {
         return groups;
     }
 
@@ -93,7 +93,7 @@ public class PlayMove {
         }
     }
 
-    public void setGroupes(ArrayList<Groupe> groupes) {
+    public void setGroups(ArrayList<Groupe> groupes) {
         groups = groupes;
     }
 
@@ -108,6 +108,11 @@ public class PlayMove {
     public Set<Modif> getDiff() {
         return diff;
     }
+
+    public void setDiff(Set<Modif> diff) {
+        this.diff = diff;
+    }
+
 
     public boolean isEnd() {
         return end;
