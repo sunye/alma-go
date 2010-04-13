@@ -281,8 +281,8 @@ public class Goban {
 		return (whiteTaken > 0 | blackTaken > 0);
 	}
 
-	public boolean testGroups(){
-		return (whiteGroups.size()==1 && blackGroups.size()==2);
-	}
+//	public boolean testGroups(){
+//		return (whiteGroups.size()==1 && blackGroups.size()==2);
+//	}
 	
 } // class Goban

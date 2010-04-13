@@ -1,8 +1,9 @@
-package fr.alma.goban;
+package fr.alma.go;
 
 public class Place {
 
 	private int abs;
+
 	private int ord;
 
 	public Place(int a, int o) {
