@@ -624,9 +624,9 @@ public class Jeu {
 				}
 				System.out.println(cjHumain.size());
 				
-				
+				min=getLiberteFixe(g,cjHumain.get(0).position);System.out.println(min);
 				for(Pion pion:cjMachine){
-					if((getLiberteFixe(g,pion.position)<=min)&&(SimulerJeu(g, pion.position, t)!=SUICIDE)){
+					if((getLiberteFixe(g,pion.position)<min)&&(SimulerJeu(g, pion.position, t)!=SUICIDE)){
 						min=getLiberteFixe(g,pion.position);
 						if(pion.position.x>0)
 							if(((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Pion.Couleur.NULL)))
@@ -647,9 +647,9 @@ public class Jeu {
 						
 				}
 				
-				min=getLiberteFixe(g,cjHumain.get(0).position);System.out.println(min);
+			
 				for(Pion pion:cjHumain){
-					if((getLiberteFixe(g,pion.position)<min)&&(SimulerJeu(g, pion.position, t)!=SUICIDE)){
+					if((getLiberteFixe(g,pion.position)<=min)&&(SimulerJeu(g, pion.position, t)!=SUICIDE)){
 						min=getLiberteFixe(g,pion.position);
 						if(pion.position.x>0)
 							if((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
