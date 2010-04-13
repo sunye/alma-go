@@ -32,23 +32,23 @@
 	\tableofcontents
 	\clearpage
 
-	\abstract{Ce document explique l'étude du cas de l'atari go dans le cadre du projet d'IA du master 1 ALMA 2010. Y sera utilisé la méthode Alpha-Beta pour gérer l'arbre des possibles.}
+	\abstract{Ce document explique l'étude du cas de l'atari-go dans le cadre du projet d'IA du master 1 ALMA 2010. Y sera utilisé la méthode Alpha-Beta pour gérer l'arbre des possibles.}
 
 	\section*{Introduction}
-		Le projet demandé dans ce module d'intelligence artificielle est de développer un programme capable de jouer à l'atari go. Ce jeu est une modification du jeu de go traditionnel, jeu inventé en chine médiévale. La version Atari go que nous allons traiter se joue sur un goban plus petit --- d'une taille de 9x9. Le but est d'être le premier à prendre des pierres à l'adversaire. Quand une prise a été effectuée, le jeu est fini. Nous parlerons de pierres ou groupes \emph{adverses} pour désigner les pierres et groupes de l'adversaire, et \emph{alliés} pour désigner les nôtres --- i.e. ceux joués par le programme.
+		Le projet demandé dans ce module d'intelligence artificielle est de développer un programme capable de jouer à l'atari-go. Ce jeu est une modification du jeu de go traditionnel, jeu inventé en chine médiévale. La version d'atari-go que nous allons traiter se joue sur un goban plus petit --- d'une taille de 9x9. Le but est d'être le premier à prendre des pierres à l'adversaire. Quand une prise a été effectuée, le jeu est fini. Nous parlerons de pierres ou groupes \emph{adverses} pour désigner les pierres et groupes de l'adversaire, et \emph{alliés} pour désigner les nôtres --- i.e. ceux joués par le programme.
 
 		Nous commencerons par expliciter notre démarche de développement, puis nous continuerons par décrire le cheminement de notre recherche sur les heuristiques, et finirons en présentant l'implémentation de l'algorithme Alpha-Beta, ainsi qu'une éventuelle interface, et les améliorations apportées et pouvant l'être.
 
 	\section{Mise en place du projet}
 		\subsection{Environnement}
 		\subsection{Partage du travail}
-			L'étude est faite en binôme, et les classes de description du goban ont été faites de la même façon. Le travail est ensuite partagé comme ceci : Clotilde Massot implémente dans un premier temps l'algorithme Alpha-Beta, tandis que Julien Durillon prépare la partie heuristique --- calcul de groupes de pierres\dots --- % Expliquer l'interface
+			L'étude est faite en binôme, et les classes de description du goban ont été faites de la même façon. Le travail est ensuite partagé comme ceci : Clotilde Massot implémente dans un premier temps l'algorithme Alpha-Beta, tandis que Julien Durillon prépare la partie heuristique --- calcul de groupes de pierres\dots % Expliquer l'interface
 
 
 	\section{Heuristique}
 
 		\subsection{Un premier jet}
-			Un premier indice utilisé pour déterminer l'état d'un jeu est d'identifier les groupes de pierres, et calculer leurs libertés, et noter les différents groupes en fonction de ce critère. On s'intéresse au groupe qui a le moins de libertés. Si un groupe ami a 0 liberté, on fixe le score à $-\infty$ (en java, on prendra $-MAX\_LONG$). À l'inverse, si un groupe adverse a 0 libertés, on fixe le score à $+\infty$.
+			Un premier indice utilisé pour déterminer l'état d'un jeu est d'identifier les groupes de pierres, et calculer leurs libertés, et noter les différents groupes en fonction de ce critère. On s'intéresse au groupe qui a le moins de libertés. Si un groupe ami a 0 liberté, on fixe le score à $-\infty$ (en java, on prendra $-MAX\_LONG$). À l'inverse, si un groupe adverse a 0 liberté, on fixe le score à $+\infty$.
 
 			Cette méthode va entraîner une tendance à construire des longues chaînes. Il faut donc chercher une heuristique plus fine.
 
@@ -89,7 +89,9 @@
 	\section{Algorithme Alpha-Beta}
 
 		\subsection{Base}
-
+			
+			
+			
 		\subsection{Amélioration possible de l'algorithme}
-			Pour améliorer cet algorithme, on peut définir plusieurs fonctions d'analyse du jeu, correspondant à plusieurs cas : Une fonction pour un cas neutre : ni plutôt avantageux, ni plutôt mauvais, une fonction pour un cas mauvais (où on est en train de perdre), et une fonction pour un cas où on est en train de gagner.
+			Pour améliorer cet algorithme, on peut définir plusieurs fonctions d'analyse du jeu, correspondant à plusieurs cas : une fonction pour un cas neutre (ni plutôt avantageux, ni plutôt mauvais), une fonction pour un cas mauvais (où on est en train de perdre), et une fonction pour un cas où on est en train de gagner.
 \end{document}
