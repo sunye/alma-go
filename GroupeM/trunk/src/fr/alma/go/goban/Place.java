@@ -1,4 +1,4 @@
-package fr.alma.go;
+package fr.alma.go.goban;
 
 public class Place {
 
@@ -17,6 +17,10 @@ public class Place {
 
 	public int getOrd() {
 		return ord;
+	}
+
+	public boolean equals(Place place) {
+		return (this.abs == place.abs && this.ord == place.ord);
 	}
 
 }

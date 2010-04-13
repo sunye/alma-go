@@ -281,8 +281,34 @@ public class Goban {
 		return (whiteTaken > 0 | blackTaken > 0);
 	}
 
-//	public boolean testGroups(){
-//		return (whiteGroups.size()==1 && blackGroups.size()==2);
-//	}
-	
+	/**
+	 * Get the plate
+	 * 
+	 * @return
+	 */
+	public Stone[][] getPlate() {
+		return plate;
+	}
+
+	/**
+	 * Get the place of a stone
+	 * 
+	 * @param stone
+	 * @return
+	 */
+	public Place getPlace(Stone stone) {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (stone == plate[i][j]) {
+					return new Place(i, j);
+				} // if
+			} // for
+		} // for
+		return null;
+	} // Place getPlace(Stone)
+
+	// public boolean testGroups(){
+	// return (whiteGroups.size()==1 && blackGroups.size()==2);
+	// }
+
 } // class Goban
