@@ -6,6 +6,7 @@ package fr.alma.atarigo.ihm;
 import fr.alma.atarigo.GameManager;
 import fr.alma.atarigo.utils.Game;
 import fr.alma.atarigo.utils.Goban;
+import fr.alma.atarigo.utils.PionVal;
 import fr.alma.atarigo.utils.exceptions.BadPlaceException;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -125,7 +126,7 @@ public final class GobanPanel extends JPanel {
         if (controleur != null) {
             final Game game2 = controleur.getGame();
             if (game2 != null) {
-                //Affichage de tout les pions en parcourant la matrice
+                //Affichage de tous les pions en parcourant la matrice
                 for (int i = 0; i < Goban.getTaille(); ++i) {
                     for (int j = 0; j < Goban.getTaille(); ++j) {
                         try {
@@ -151,6 +152,14 @@ public final class GobanPanel extends JPanel {
                         }
                     }
                 }
+                //Affichage joueur courant :
+                g.drawString("Joueur en cours :", goban.getImage().getHeight(this) + 10, 20);
+                if (game2.getCurrentPlayer() == PionVal.BLANC) {
+                    g.drawImage(pionB.getImage(), goban.getImage().getHeight(this) + 20, 40, this);
+                } else {
+                    g.drawImage(pionN.getImage(), goban.getImage().getHeight(this) + 20, 40, this);
+                }
+
             }
         }
     }
