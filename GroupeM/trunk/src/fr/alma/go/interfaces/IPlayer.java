@@ -1,7 +1,9 @@
 package fr.alma.go.interfaces;
 
+import fr.alma.go.Place;
+
 public interface IPlayer {
 
-	public int getPlace();
+	public Place getPlace();
 
 }

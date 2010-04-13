@@ -1,24 +1,35 @@
 package fr.alma.go.player;
 
+import fr.alma.go.Place;
+import fr.alma.go.heuristics.Beginner;
+import fr.alma.go.heuristics.Expert;
+import fr.alma.go.heuristics.Medium;
+import fr.alma.go.interfaces.IHeuristics;
 import fr.alma.go.interfaces.IPlayer;
 
 public class Computer implements IPlayer {
 
 	private char color;
 
-	private int level;
+	private IHeuristics level;
 
 	public Computer(char col, int lvl) {
 		color = col;
-		level = lvl;
-	}
+		switch (lvl) {
+		case 1:
+			level = new Beginner();
+		case 2:
+			level = new Medium();
+		case 3:
+			level = new Expert();
+		default:
+			level = null;
+		} // switch
+	} // Computer()
 
 	@Override
-	public int getPlace() {
-		/*
-		 * TODO Here is the call to the so called AI
-		 */
-		return 0;
-	}
+	public Place getPlace() {
+		return level.getBestPlace();
+	} // Place getPlace()
 
 }

@@ -17,14 +17,14 @@ public class Game {
 		boolean turn = true; // true for black turn, false for white turn
 		while (true) {
 			if (turn) {
-				int place = black.getPlace();
-				int abs = place / 10;
-				int ord = place % 10;
+				Place place = black.getPlace();
+				int abs = place.getAbs();
+				int ord = place.getOrd();
 				goban.play(abs, ord, 'b');
 			} else {
-				int place = white.getPlace();
-				int abs = place / 10;
-				int ord = place % 10;
+				Place place = white.getPlace();
+				int abs = place.getAbs();
+				int ord = place.getOrd();
 				goban.play(abs, ord, 'w');
 			} // if
 			if (goban.gameOver()) {
