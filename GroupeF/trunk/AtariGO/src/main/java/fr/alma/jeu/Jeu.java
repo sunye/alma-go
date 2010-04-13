@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import fr.alma.ia.Ia;
+import fr.alma.ihm.Ihm;
 import fr.alma.ihm.Ihm.Tour;
 import fr.alma.jeu.Pion.Couleur;
 import fr.alma.structure.Arbre;
@@ -591,15 +592,19 @@ public class Jeu {
 	 * @return
 	 */
 	
-	public static Point jouerMachine(Grille g) {
+	public static Point jouerMachine(Grille g,Ihm.Tour t) {
 		
 	System.out.println("dans jouermachine");
-			
+		Pion.Couleur c;
+		if(t==Ihm.Tour.BLANC)
+			c=Pion.Couleur.BLANC;
+		else 
+			c=Pion.Couleur.NOIR;
 		Arbre a = Ia.constuireArbre(g);
 		Point p = a.remplirArbre();
 		ArrayList<Noeud> listeF = a.racine.listeFils;
-		ArrayList<Pion> cj=getCoupsJouerAd(g);
-		ArrayList<Pion> cMachine=getCoupsJouerM(g);
+		ArrayList<Pion> cj=getCoupsJouerAd(g,c);
+		ArrayList<Pion> cMachine=getCoupsJouerM(g,c);
  		ArrayList<Pion> cjHumain=new ArrayList<Pion>();
 		ArrayList<Pion> cjMachine=new ArrayList<Pion>();
 		System.out.println(cj.size());
@@ -706,62 +711,7 @@ public class Jeu {
 	}
 
 	
-	/**
-	 * 
-	 * @param g
-	 * @param pion
-	 * @return
-	 */
-	/*private static Point voisinExistantDeliberteMin(Grille g, Pion pion) {
 		
-		ArrayList<Pion> Listevoisins=DeterminerVoisins(g, pion);
-		int min = 1;
-		Point p=null;
-		if(Listevoisins.size()>1){
-			Listevoisins.remove(pion);
-			System.out.println(Listevoisins.size());
-		for(Pion pl:Listevoisins){
-			if((getLiberte(g, pl.position, pl.couleur)>0)&&(!existN(g, pl.position.x, pl.position.y, Pion.Couleur.BLANC))&&(!existN(g, pl.position.x, pl.position.y, Pion.Couleur.NOIR))&&(pl.position.x>0)){
-				min=getLiberte(g, new Point(pl.position.x-1,pl.position.y), pl.couleur);
-				p=new Point(pl.position.x-1,pl.position.y);
-			}
-			if((getLiberte(g, pl.position, pl.couleur)>0)&&(!existS(g, pl.position.x, pl.position.y, Pion.Couleur.BLANC))&&(!existS(g, pl.position.x, pl.position.y, Pion.Couleur.NOIR))&&(pl.position.x<8))
-				if(min>getLiberte(g, new Point(pl.position.x+1,pl.position.y), pl.couleur)){
-					min=getLiberte(g, new Point(pl.position.x+1,pl.position.y), pl.couleur);
-					p=new Point(pl.position.x,pl.position.y);
-				}
-			if((getLiberte(g, pl.position, pl.couleur)>0)&&(!existO(g, pl.position.x, pl.position.y, Pion.Couleur.BLANC))&&(!existO(g, pl.position.x, pl.position.y, Pion.Couleur.NOIR))&&(pl.position.y>0));
-				if(min>getLiberte(g, new Point(pl.position.x,pl.position.y-1), pl.couleur)){
-					min=getLiberte(g, new Point(pl.position.x,pl.position.y-1), pl.couleur);
-					p=new Point(pl.position.x,pl.position.y-1);
-					
-				}
-			
-			if((getLiberte(g, pl.position, pl.couleur)>0)&&(!existE(g, pl.position.x, pl.position.y, Pion.Couleur.BLANC))&&(!existE(g, pl.position.x, pl.position.y, Pion.Couleur.NOIR))&&(pl.position.y<8));
-				if(min>getLiberte(g, new Point(pl.position.x,pl.position.y+1), pl.couleur)){
-					min=getLiberte(g, new Point(pl.position.x,pl.position.y+1), pl.couleur);
-					p=new Point(pl.position.x,pl.position.y+1);
-					
-				}
-			
-		}
-	}
-		else
-			if(pion.position.x>0)
-				p=new Point(pion.position.x-1,pion.position.y);
-			else 
-				if(pion.position.x<8)
-					p=new Point(pion.position.x+1,pion.position.y);
-				else
-					if(pion.position.y<8)
-						p=new Point(pion.position.x,pion.position.y+1);
-					else
-						p=new Point(pion.position.x,pion.position.y-1);
-		return p;
-	}
-
-*/
-	
 	/**
 	 * 
 	 * @param g
@@ -801,6 +751,8 @@ public class Jeu {
 	
 
 	
+	
+	
 	public static ArrayList<Pion> LpionsCapture=new ArrayList<Pion>();
 	public static void DeterminerVoisinsG(Grille g,Pion p){
 		if(!(LpionsCapture.contains(p))){
@@ -823,13 +775,18 @@ public class Jeu {
 	
 	
 	
-	public static ArrayList<Pion> getCoupsJouerAd(Grille g){
+	public static ArrayList<Pion> getCoupsJouerAd(Grille g,Pion.Couleur c){
 
 	//	System.out.println("Appelé");
+		Pion.Couleur cPrime;
+		if(c.equals(Pion.Couleur.NOIR))
+			cPrime=Pion.Couleur.BLANC;
+		else
+			cPrime=Pion.Couleur.NOIR;
 		ArrayList<Pion> cj = new ArrayList<Pion>();
 		for(int i=0;i<9;i++) 
        	 for(int j=0;j<9;j++) {
-       		if((g.Contenu[i][j].couleur.equals(Couleur.NOIR))) {
+       		if((g.Contenu[i][j].couleur.equals(cPrime))) {
        			cj.add(g.Contenu[i][j]); 
        		System.out.println("Coup jouer : "+g.Contenu[i][j].position);}
        	 }
@@ -839,12 +796,12 @@ public class Jeu {
 	}
 
 	
-	public static ArrayList<Pion> getCoupsJouerM(Grille g){
+	public static ArrayList<Pion> getCoupsJouerM(Grille g,Pion.Couleur c){
 		//	System.out.println("Appelé");
 			ArrayList<Pion> cj = new ArrayList<Pion>();
 			for(int i=0;i<9;i++) 
 	       	 for(int j=0;j<9;j++) {
-	       		if((g.Contenu[i][j].couleur.equals(Couleur.BLANC))) {
+	       		if((g.Contenu[i][j].couleur.equals(c))) {
 	       			cj.add(g.Contenu[i][j]); 
 	       		System.out.println("Coup jouer : "+g.Contenu[i][j].position);}
 	       	 }
@@ -868,17 +825,17 @@ public class Jeu {
 	
 
 	public static Grille miseAjourGrilleApresCapture(Grille g){
-		LpionsCapture = new ArrayList<Pion>();
+		LpionsCapture=new ArrayList<Pion>();
 		DeterminerVoisinsG(g, pionCapture);
 
 		Grille other = new Grille();
 		for(int i=0;i<9;i++){
 			for(int j=0;j<9;j++){
-				other.Contenu[i][j] = g.Contenu[i][j];
+				other.Contenu[i][j]=g.Contenu[i][j];
 			}
 		}
 		for (Pion pion:LpionsCapture){
-			other.Contenu[pion.position.x][pion.position.y] = new Pion(pion.position);
+			other.Contenu[pion.position.x][pion.position.y]=new Pion(pion.position);
 		}
 		//il resque a mettre la grille aprés capture icis
 		return other;
