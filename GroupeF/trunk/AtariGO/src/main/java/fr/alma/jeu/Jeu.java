@@ -606,7 +606,7 @@ public class Jeu {
 		ArrayList<Pion> cMachine=getCoupsJouerM(g,c);
  		ArrayList<Pion> cjHumain=new ArrayList<Pion>();
 		ArrayList<Pion> cjMachine=new ArrayList<Pion>();
-		if(cj.size()==0){
+		if(cj.size()!=0){
 		System.out.println(cj.size());
 		
 			if (cj.size()<30){
