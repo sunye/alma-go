@@ -801,8 +801,6 @@ public class Jeu {
 	
 
 	
-	
-	
 	public static ArrayList<Pion> LpionsCapture=new ArrayList<Pion>();
 	public static void DeterminerVoisinsG(Grille g,Pion p){
 		if(!(LpionsCapture.contains(p))){
@@ -870,17 +868,17 @@ public class Jeu {
 	
 
 	public static Grille miseAjourGrilleApresCapture(Grille g){
-		LpionsCapture=new ArrayList<Pion>();
+		LpionsCapture = new ArrayList<Pion>();
 		DeterminerVoisinsG(g, pionCapture);
 
 		Grille other = new Grille();
 		for(int i=0;i<9;i++){
 			for(int j=0;j<9;j++){
-				other.Contenu[i][j]=g.Contenu[i][j];
+				other.Contenu[i][j] = g.Contenu[i][j];
 			}
 		}
 		for (Pion pion:LpionsCapture){
-			other.Contenu[pion.position.x][pion.position.y]=new Pion(pion.position);
+			other.Contenu[pion.position.x][pion.position.y] = new Pion(pion.position);
 		}
 		//il resque a mettre la grille aprés capture icis
 		return other;

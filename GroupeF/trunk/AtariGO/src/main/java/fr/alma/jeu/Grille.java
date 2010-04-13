@@ -15,7 +15,7 @@ import java.awt.Point;
                    
          public Grille() { 
                   
-                 Contenu = new Pion[9][9]; 
+                Contenu = new Pion[9][9]; 
                   
                 for(int i=0;i<9;i++) 
                 	 for(int j=0;j<9;j++) 

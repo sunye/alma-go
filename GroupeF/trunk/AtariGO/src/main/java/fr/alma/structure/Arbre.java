@@ -35,13 +35,17 @@ public class Arbre {
 	}
 	
 	
-	public Point  remplirArbre(){
+	public Point remplirArbre(){
 		
 		Point p = null;
 		getCoupsNonJouer();
 		int prof = getProfMax(cnj);
+		//-----------
+		//for(Pion each : cnj);
+		//---------
 		racine = ajouterTousLesfils(racine, cnj, prof);
 		System.out.println("Nombre de noeuds total : "+compteur);
+		System.out.println("note remonté : "+racine.getNote());
 		p=racine.getCoup().position;
 		return p;
 	}
@@ -68,7 +72,7 @@ public class Arbre {
 	}
 	private int getProfMax(ArrayList<Pion> liste){
 		
-		return liste.size()-2;
+		return liste.size()-1;
 		
 	}
 	@SuppressWarnings("unchecked")
@@ -77,8 +81,7 @@ public class Arbre {
 	 */
 	private Noeud ajouterTousLesfils(Noeud noeud, ArrayList<Pion> coups, int prof) {
 		ArrayList<Pion> temp;
-		
-		
+				
 		//--------
 		Noeud nc = new Noeud(new Pion(null));
 			
@@ -108,18 +111,16 @@ public class Arbre {
 				noeud.setNote(nc.getNote());
 				
 			}else {
-				int value = Ia.fonctionEvaluation(getGrilleFromList(cj));
+				int value = i;//Ia.fonctionEvaluation(getGrilleFromList(cj));
 				n.setNote(value);
-				System.out.println("Valeur de fonction = "+value);
+				//System.out.println("Valeur de fonction = "+value);
 				temp = (ArrayList<Pion>) coups.clone();
 				//-------------------------------------
 				if(i==0) nc.setNote(value);
 				else nc = remonterValeur(parit,nc, n);
 			}
-			
-			
+						
 			cj.remove(coups.get(i));
-			
 		}
 		return noeud;//nc.getCoup().position;
 	}
