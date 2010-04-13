@@ -1,7 +1,6 @@
 package fr.alma.test;
 
-import java.util.LinkedList;
-
+import fr.alma.atarigo.AtariGo;
 import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Goban;
 import fr.alma.atarigo.Position;
@@ -21,9 +20,11 @@ public class TestGoban extends TestCase {
 	
 	public void testGobanGoban() {
 		Goban goban = new Goban(3,3);
-		goban.writeCell(new Position(0,0), Stone.BLACK);
-		goban.writeCell(new Position(2,0), Stone.WHITE);
-		goban.writeCell(new Position(1,2), Stone.BLACK);
+		AtariGo atariGo = new AtariGo(3, 3);
+		
+		goban.writeCell(atariGo, new Position(0,0), Stone.BLACK, false);
+		goban.writeCell(atariGo, new Position(2,0), Stone.WHITE, false);
+		goban.writeCell(atariGo, new Position(1,2), Stone.BLACK, false);
 		
 		Goban gobanCopie = new Goban(goban);
 		assertEquals(gobanCopie.readCell(new Position(0,0)),Stone.BLACK);
@@ -62,14 +63,16 @@ public class TestGoban extends TestCase {
 	
 	public void testEcrireCase() {
 		Goban goban = new Goban(3,3);
-		goban.writeCell(new Position(0,0), Stone.BLACK);
+		AtariGo atariGo = new AtariGo(3,3);
+		goban.writeCell(atariGo,new Position(0,0), Stone.BLACK,false);
 		
 		assertEquals(goban.readCell(new Position(0,0)),Stone.BLACK);
 	}
 	
 	public void testViderCase() {
 		Goban goban = new Goban(3,3);
-		goban.writeCell(new Position(0,0), Stone.BLACK);
+		AtariGo atariGo = new AtariGo(3,3);
+		goban.writeCell(atariGo,new Position(0,0), Stone.BLACK,false);
 		goban.emptyCell(new Position(0,0));
 		
 		assertEquals(goban.readCell(new Position(0,0)),Stone.EMPTY);
@@ -89,10 +92,12 @@ public class TestGoban extends TestCase {
 	 */
 	public void testEstSuicide() {
 		Goban goban = new Goban(3,3);
-		goban.writeCell(new Position(1,0), Stone.BLACK);
-		goban.writeCell(new Position(1,2), Stone.BLACK);
-		goban.writeCell(new Position(0,1), Stone.BLACK);
-		goban.writeCell(new Position(2,1), Stone.BLACK);
+		AtariGo atariGo = new AtariGo(3,3);
+		
+		goban.writeCell(atariGo,new Position(1,0), Stone.BLACK,false);
+		goban.writeCell(atariGo,new Position(1,2), Stone.BLACK,false);
+		goban.writeCell(atariGo,new Position(0,1), Stone.BLACK,false);
+		goban.writeCell(atariGo,new Position(2,1), Stone.BLACK,false);
 		
 		assertFalse(goban.isSuicidal(new Position(1,1), Stone.WHITE));
 		assertFalse(goban.isSuicidal(new Position(2,0), Stone.WHITE));
@@ -107,13 +112,15 @@ public class TestGoban extends TestCase {
 	
 	public void testLireLibertes() {
 		Goban goban = new Goban(3,3);
-		goban.writeCell(new Position(0,0), Stone.BLACK);
+		AtariGo atariGo = new AtariGo(3,3);
+		
+		goban.writeCell(atariGo,new Position(0,0), Stone.BLACK,false);
 		assertEquals(goban.getLiberty(new Position(0,0)),2);
-		goban.writeCell(new Position(0,1), Stone.WHITE);
+		goban.writeCell(atariGo,new Position(0,1), Stone.WHITE,false);
 		assertEquals(goban.getLiberty(new Position(0,0)),1);
 		
 		Goban goban2 = new Goban(6,6);
-		goban2.writeCell(new Position(2,3), Stone.BLACK);
+		goban2.writeCell(atariGo,new Position(2,3), Stone.BLACK,false);
 		assertEquals(goban2.getLiberty(new Position(2,3)),4);
 	}
 	
@@ -125,19 +132,22 @@ public class TestGoban extends TestCase {
 		Goban goban = new Goban(2,2);
 		assertEquals(goban.emptyCells().size(),4);
 		
-		goban.writeCell(new Position(1,0), Stone.BLACK);
-		goban.writeCell(new Position(1,1), Stone.WHITE);
+		AtariGo atariGo = new AtariGo(2,2);
+		
+		goban.writeCell(atariGo,new Position(1,0), Stone.BLACK,false);
+		goban.writeCell(atariGo,new Position(1,1), Stone.WHITE,false);
 		
 		assertEquals(goban.emptyCells().size(),2);
 	}
 	
 	public void testGetCases() {
 		Goban goban = new Goban(2,2);
+		AtariGo atariGo = new AtariGo(2,2);
 		assertEquals(goban.getCells(Stone.EMPTY).size(),4);
 		
-		goban.writeCell(new Position(1,0), Stone.BLACK);
-		goban.writeCell(new Position(1,1), Stone.WHITE);
-		goban.writeCell(new Position(0,1), Stone.WHITE);
+		goban.writeCell(atariGo,new Position(1,0), Stone.BLACK,false);
+		goban.writeCell(atariGo,new Position(1,1), Stone.WHITE,false);
+		goban.writeCell(atariGo,new Position(0,1), Stone.WHITE,false);
 		
 		assertEquals(goban.getCells(Stone.BLACK).size(),1);
 		assertEquals(goban.getCells(Stone.WHITE).size(),2);
@@ -145,20 +155,20 @@ public class TestGoban extends TestCase {
 	
 	public void testGenererCoups() {
 		Goban goban = new Goban(2,2);
-		assertEquals(goban.computeMoves(Stone.BLACK).size(),4);
-		goban.writeCell(new Position(0,0), Stone.BLACK);
-		assertEquals(goban.computeMoves(Stone.BLACK).size(),3);
+		assertEquals(goban.computeMoves(null, Stone.BLACK, null).size(),4);
+		goban.writeCell(null, new Position(0,0), Stone.BLACK, false);
+		assertEquals(goban.computeMoves(null, Stone.BLACK, null).size(),3);
 	}
 	
 	public void testLiberte() {
 		Goban goban = new Goban(3,3);
-		goban.writeCell(new Position(0,0), Stone.BLACK);
+		goban.writeCell(null, new Position(0,0), Stone.BLACK, false);
 		assertEquals(goban.liberty(new Position(0,0)),2);
-		goban.writeCell(new Position(0,1), Stone.WHITE);
+		goban.writeCell(null, new Position(0,1), Stone.WHITE, false);
 		assertEquals(goban.liberty(new Position(0,0)),1);
 		
 		Goban goban2 = new Goban(6,6);
-		goban2.writeCell(new Position(2,3), Stone.BLACK);
+		goban2.writeCell(null, new Position(2,3), Stone.BLACK, false);
 		assertEquals(goban2.liberty(new Position(2,3)),4);
 	}
 	
