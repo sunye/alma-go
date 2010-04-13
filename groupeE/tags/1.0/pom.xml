@@ -4,7 +4,7 @@
     <groupId>fr.alma</groupId>
     <artifactId>atarigo</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>atarigo</name>
     <url>http://maven.apache.org</url>
     <build>
