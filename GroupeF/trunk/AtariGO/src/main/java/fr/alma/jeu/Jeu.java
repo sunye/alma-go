@@ -592,8 +592,7 @@ public class Jeu {
 	 * @return
 	 */
 	
-
-	public static Point jouerMachine(Grille g, Tour t) {
+	public static Point jouerMachine(Grille g,Ihm.Tour t) {
 		
 	System.out.println("dans jouermachine");
 		Pion.Couleur c;
@@ -601,86 +600,95 @@ public class Jeu {
 			c=Pion.Couleur.BLANC;
 		else 
 			c=Pion.Couleur.NOIR;
-		Arbre a = Ia.constuireArbre(g);
-		Point p = a.remplirArbre();
-		ArrayList<Noeud> listeF = a.racine.listeFils;
+		
+		Point p=new Point();
 		ArrayList<Pion> cj=getCoupsJouerAd(g,c);
 		ArrayList<Pion> cMachine=getCoupsJouerM(g,c);
  		ArrayList<Pion> cjHumain=new ArrayList<Pion>();
 		ArrayList<Pion> cjMachine=new ArrayList<Pion>();
+		if(cj.size()==0){
 		System.out.println(cj.size());
-		if (cj.size()<30){
-			//int min=getLiberte(g, cj.get(0).position, cj.get(0).couleur);
-			setVoisins(new ArrayList<Pion>());
-			System.out.println("initialisation des voisins");
-			for(Pion pion:cj){
-				if((getLiberteFixe(g, pion.position)>0))
-					cjHumain.add(pion);
-			}
-			for(Pion pion:cMachine){
-				if((getLiberteFixe(g, pion.position)>0))
-					cjMachine.add(pion);
-			}
-			System.out.println(cjHumain.size());
-			min=getLiberteFixe(g,cjHumain.get(0).position);System.out.println(min);
-			for(Pion pion:cjHumain){
-				if(getLiberteFixe(g,pion.position)<=min){
-					min=getLiberteFixe(g,pion.position);
-					if(pion.position.x>0)
-						if((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
-							p=new Point(pion.position.x-1,pion.position.y);
-					if(pion.position.x<8)
-						if((g.Contenu[pion.position.x+1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
-							p=new Point(pion.position.x+1,pion.position.y);
-					if(pion.position.y>0)
-						if((g.Contenu[pion.position.x][pion.position.y-1]).couleur.equals(Pion.Couleur.NULL))
-							p=new Point(pion.position.x,pion.position.y-1);
-					if(pion.position.y<8)
-						if((g.Contenu[pion.position.x][pion.position.y+1]).couleur.equals(Pion.Couleur.NULL))
-							p=new Point(pion.position.x,pion.position.y+1);
+		
+			if (cj.size()<30){
+				//int min=getLiberte(g, cj.get(0).position, cj.get(0).couleur);
+				setVoisins(new ArrayList<Pion>());
+				System.out.println("initialisation des voisins");
+				for(Pion pion:cj){
+					if((getLiberteFixe(g, pion.position)>0))
+						cjHumain.add(pion);
+				}
+				for(Pion pion:cMachine){
+					if((getLiberteFixe(g, pion.position)>0))
+						cjMachine.add(pion);
+				}
+				System.out.println(cjHumain.size());
+				min=getLiberteFixe(g,cjHumain.get(0).position);System.out.println(min);
+				for(Pion pion:cjHumain){
+					if(getLiberteFixe(g,pion.position)<=min){
+						min=getLiberteFixe(g,pion.position);
+						if(pion.position.x>0)
+							if((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
+								p=new Point(pion.position.x-1,pion.position.y);
+						if(pion.position.x<8)
+							if((g.Contenu[pion.position.x+1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
+								p=new Point(pion.position.x+1,pion.position.y);
+						if(pion.position.y>0)
+							if((g.Contenu[pion.position.x][pion.position.y-1]).couleur.equals(Pion.Couleur.NULL))
+								p=new Point(pion.position.x,pion.position.y-1);
+						if(pion.position.y<8)
+							if((g.Contenu[pion.position.x][pion.position.y+1]).couleur.equals(Pion.Couleur.NULL))
+								p=new Point(pion.position.x,pion.position.y+1);
+						
+					}
 					
+					
+						
+				}
+				
+				for(Pion pion:cjMachine){
+					if(getLiberteFixe(g,pion.position)<min){
+						min=getLiberteFixe(g,pion.position);
+						if(pion.position.x>0)
+							if((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
+								p=new Point(pion.position.x-1,pion.position.y);
+						if(pion.position.x<8)
+							if((g.Contenu[pion.position.x+1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
+								p=new Point(pion.position.x+1,pion.position.y);
+						if(pion.position.y>0)
+							if((g.Contenu[pion.position.x][pion.position.y-1]).couleur.equals(Pion.Couleur.NULL))
+								p=new Point(pion.position.x,pion.position.y-1);
+						if(pion.position.y<8)
+							if((g.Contenu[pion.position.x][pion.position.y+1]).couleur.equals(Pion.Couleur.NULL))
+								p=new Point(pion.position.x,pion.position.y+1);
+						
+					}
+					
+					
+						
 				}
 				
 				
-					
+				
+				
 			}
-			
-			for(Pion pion:cjMachine){
-				if(getLiberteFixe(g,pion.position)<min){
-					min=getLiberteFixe(g,pion.position);
-					if(pion.position.x>0)
-						if((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
-							p=new Point(pion.position.x-1,pion.position.y);
-					if(pion.position.x<8)
-						if((g.Contenu[pion.position.x+1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
-							p=new Point(pion.position.x+1,pion.position.y);
-					if(pion.position.y>0)
-						if((g.Contenu[pion.position.x][pion.position.y-1]).couleur.equals(Pion.Couleur.NULL))
-							p=new Point(pion.position.x,pion.position.y-1);
-					if(pion.position.y<8)
-						if((g.Contenu[pion.position.x][pion.position.y+1]).couleur.equals(Pion.Couleur.NULL))
-							p=new Point(pion.position.x,pion.position.y+1);
+			else{
+				
+				Arbre a = Ia.constuireArbre(g);
+				p = a.remplirArbre();
+				ArrayList<Noeud> listeF = a.racine.listeFils;
+
+			for(Noeud n:listeF){
+				System.out.println(n.getNote());
+				for(Pion pion:cj){
+					if((EstVoisin(n.getCoup(),pion))&& (n.getNote()==a.racine.getNote())&&(pion.couleur.equals(Pion.Couleur.BLANC)));
+							p = n.getCoup().position;
 					
 				}
-				
-				
-					
-			}
-			
-			
-			
-			
-		}
-		else{
-		for(Noeud n:listeF){
-			System.out.println(n.getNote());
-			for(Pion pion:cj){
-				if((EstVoisin(n.getCoup(),pion))&& (n.getNote()==a.racine.getNote())&&(pion.couleur.equals(Pion.Couleur.BLANC)));
-						p = n.getCoup().position;
-				
 			}
 		}
-	}
+		}
+		else
+			p=new Point(((int)Math.random()*100000000)%9,((int)Math.random()*10000000)%9);
 		return p;
 	}
 	
@@ -811,7 +819,7 @@ public class Jeu {
 	
 	private static boolean EstVoisin(Pion coup, Pion pion) {
 		
-		return ((coup.position.x+1 == pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x-1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y+1==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y-1==pion.position.y));
+		return ((coup.position.x+1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x-1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y+1==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y-1==pion.position.y));
 	}
 
 
