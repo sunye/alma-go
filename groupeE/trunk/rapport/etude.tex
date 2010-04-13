@@ -162,14 +162,14 @@
 
 				\begin{figure}[hbt]
 					\begin{center}
-						\includegraphics[width=1.2\textwidth]{./IA_1J.png}
+						\includegraphics[width=1.1\textwidth]{./IA_1J.png}
 					\end{center}
 					\caption{Partie à un joueur}
 					\label{oneplayer}
 				\end{figure}
 
 
-				Nous pouvons y distinguer des grands éléments de notre application~: La fenêtre principale, le contrôleur --- GameManager, le plateau graphique --- GobanPanel, le jeu en lui même, et la partie IA, soit l'algorithme $\alpha\beta$. L'algorithme $\alpha\beta$ a été décrit dans la section \ref{alphab}. Le jeu en lui même sera décrit dans la section \ref{howgame}.
+				Nous pouvons y distinguer des grands éléments de notre application~: La fenêtre principale, le contrôleur --- GameManager, le plateau graphique --- GobanPanel, le jeu en lui même, et la partie IA, soit l'algorithme $\alpha\beta$. L'algorithme $\alpha\beta$ a été décrit dans la section \ref{alphab}. Le jeu en lui même sera décrit dans la section \ref{howgame}. Pour lancer une partie, le joueur doit cliquer sur le bouton idoine. S'il a choisi une partie à un joueur, l'application lui demande la couleur qu'il veut jouer. Une fois la couleur choisie, on alternera les coups joués par l'ordinateur et les coups joués par le joueur.
 
 			\subsubsection{Partie à deux joueurs}
 
@@ -177,20 +177,65 @@
 
 				\begin{figure}[hbt]
 					\begin{center}
-						\includegraphics[width=1.2\textwidth]{./IA_2J.png}
+						\includegraphics[width=1.1\textwidth]{./IA_2J.png}
 					\end{center}
 					\caption{Partie à deux joueurs}
 					\label{twoplayers}
 				\end{figure}
 
+				Si le joueur demande une partie à deux joueurs, on attendra chaque événement de clic sur le jeu et on appliquera le coup.
 
-		\subsection{Le jeu : la classe Game}
+		\subsection{Le jeu : la classe Game}\label{howgame}
+
+
+			\subsubsection{Game et Goban}
 
 			Le centre de l'application est ici la classe Game. Elle représente une partie d'atari go. Elle contient le goban courant --- état du plateau, un arbre de déroulement de la partie --- prévu pour pouvoir annuler un coup, des informations sur les groupes, leurs libertés, etc.
 
-			Le diagramme de classes décrit par la figure \ref{classes} montre l'agencement des différents élément composant un jeu.
+			Le diagramme de classes décrit par la figure \ref{classes} montre l'agencement des différents éléments composant un jeu.
 
 
+				\begin{figure}[hbt]
+					\begin{center}
+						\includegraphics[width=1.1\textwidth]{./classes.png}
+					\end{center}
+					\caption{Diagramme de classes : Game}
+					\label{classes}
+				\end{figure}
+
+			Ce diagramme est incomplet. Néanmoins, il permet de repérer les différents éléments d'un jeu. La classe Game en elle même ne contient qu'une méthode utile pour un joueur~: \emph{playAt}. Les autres méthodes publiques servent pour la fonction d'évaluation et l'algorithme $\alpha\beta$. La classe Goban est une classe métier. Elle contient le plateau tel que représenté logiquement, ainsi que des méthodes d'accès basiques, sans vérification, ainsi que des méthodes de récupération des voisins ou des libertés de pions.
+
+
+			\subsubsection{L'historique}
+
+				L'historique joue un rôle important dans le jeu. Prévu pour suivre le déroulement du jeu, et pouvoir revenir en arrière si besoin, il contient les informations de groupes, de fin de jeu, de modifications à chaque coup du jeu.
+
+				Le diagramme de la figure \ref{history} décrit sa composition.
+
+					\begin{figure}[hbt]
+						\begin{center}
+							\includegraphics[width=\textwidth]{./history.png}
+						\end{center}
+						\caption{Diagramme de classes : Historique}
+						\label{history}
+					\end{figure}
+
+				La partie Historique n'est qu'une structure d'arbre chainé. La partie importante ici est la notion de PlayMove. C'est cette classe qui contient tous les changements engendrés par le coup qui vient d'être joué. On y trouve~:
+				\begin{itemize}
+					\item les groupes du moment~;
+					\item les changements sur le goban --- ajout/suppression de pierres~;
+					\item un booléen en cas de prise, appelé end dans notre cas~;
+				\end{itemize}
+
+				Les groupes sont des ensembles de pierres. Ils sont décris dans la section \ref{groupes}. Les changements --- décrits par des objets Modif, représentent un diff du goban avant et après le coup. Modif contient des coordonnées, ainsi que la valeur à ces coordonnées avant et après le coup. On ne peut avoir que des couples (RIEN,NOIR), (RIEN,BLANC), (BLANC,RIEN) et (NOIR,RIEN).
+
+
+
+			\subsubsection{Les groupes}\label{groupes}
+
+				Les groupes sont des ensembles de pions --- ici Stone. Tous les groupes d'un PlayMove forment une partition de l'ensemble des pierres présentes sur un plateau. Chaque pierre est dans un unique groupe, et n'y est qu'en un seul exemplaire. Nous utilisons ici l'interface Set, et son implémentation HashSet. Les codes de hashage des objets Stone sont étudiés pour être uniques. Un groupe ne contient évidemment que des pierres de même couleur. Le choix de l'implémentation est justifié par le fait que les opérations de recherche, ajout et supression d'éléments dans un HashSet sont faites en $O(1)$, tant que leurs hashCodes sont vraiment uniques.
+
+	\section*{Conclusion}
 
 
 \end{document}
