@@ -1,7 +1,7 @@
 package fr.alma.test;
 
 import java.lang.reflect.Field;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import fr.alma.atarigo.Goban;
 import fr.alma.ia.Tree;
@@ -9,6 +9,7 @@ import junit.framework.TestCase;
 
 public class TestTree extends TestCase {
 
+	@SuppressWarnings("unchecked")
 	public void testAddChild() {
 		Goban goban = new Goban(1,1);
 		Tree tree = new Tree(goban);
@@ -22,7 +23,7 @@ public class TestTree extends TestCase {
 			//L'attribut étant privé, on le rend lisible
 			field.setAccessible(true);
 			//On récupère la pile devant être modifiée durant l'exécution
-			LinkedList<Tree> list = (LinkedList<Tree>) field.get(tree);
+			ArrayList<Tree> list = (ArrayList<Tree>) field.get(tree);
 			
 			assertEquals(list.size(),1);
 		}catch (Exception e){
