@@ -592,7 +592,8 @@ public class Jeu {
 	 * @return
 	 */
 	
-	public static Point jouerMachine(Grille g,Ihm.Tour t) {
+
+	public static Point jouerMachine(Grille g, Tour t) {
 		
 	System.out.println("dans jouermachine");
 		Pion.Couleur c;
@@ -810,7 +811,7 @@ public class Jeu {
 	
 	private static boolean EstVoisin(Pion coup, Pion pion) {
 		
-		return ((coup.position.x+1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x-1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y+1==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y-1==pion.position.y));
+		return ((coup.position.x+1 == pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x-1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y+1==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y-1==pion.position.y));
 	}
 
 
