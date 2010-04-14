@@ -26,11 +26,11 @@ public class Jeu {
 	private static Pion pionCapture;
 			
 	/**
-	 * 
-	 * @param grille
-	 * @param p
-	 * @param t
-	 * @return
+	 * methode principale de gestion des regles de jeu. détermine si un éventuel coup sur la grille est valable ou pas.
+	 * @param grille: la grille en cours 
+	 * @param p: le point où devrait être posé le pion sur le goban
+	 * @param t: celui qui a la main.
+	 * @return : une valeur déterminant si le coup devant etre joué est valide, est invalide, génere une capture ou un suicide
 	 */
 	public static int SimulerJeu(Grille grille,Point p,Tour t){
 		Pion pion;
@@ -319,10 +319,10 @@ public class Jeu {
 	}
 		
 	/**
-	 * 
-	 * @param g
-	 * @param c
-	 * @return
+	 * determine la liste des coups joués par l'adversaire sur la grille courante.
+	 * @param g: grille courante
+	 * @param c:de la couleur des pions de l'adversaire
+	 * @return: retourne l'ensemble de tours les pions posés par l'adversaire sur la grille.
 	 */
 	public static ArrayList<Pion> getCoupsJouerAd(Grille g,Couleur c){
 
@@ -342,10 +342,10 @@ public class Jeu {
     }
 	
 	/**
-	 * 
-	 * @param g
-	 * @param c
-	 * @return
+	 * determine la liste des coups joués par la machine sur la grille courante.
+	 * @param g: grille courante
+	 * @param c: de la couleur des pions de la machine
+	 * @return: retourne l'ensemble de tous les pions posés par la machine sur la grille.
 	 */
 	public static ArrayList<Pion> getCoupsJouerM(Grille g,Couleur c){
 		
