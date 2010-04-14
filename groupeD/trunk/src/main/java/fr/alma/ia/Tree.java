@@ -1,7 +1,6 @@
 package fr.alma.ia;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import fr.alma.atarigo.AtariGo;
 import fr.alma.atarigo.Stone;
@@ -29,7 +28,7 @@ import fr.alma.atarigo.Goban;
  * 
  */
 
-public class Tree {
+public class Tree implements ITree {
 	private Goban goban_;
 	private Tree parent_;
 	private ArrayList<Tree> children_;
