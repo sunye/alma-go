@@ -140,9 +140,7 @@ public class Goban {
 				}
 			}
 			else{
-				System.out.println("is caught !!");
-				System.out.println("printing gList");
-				groupsList.print();
+				//groupsList.print();
 				this.emptyCell(position);
 				return Move.INVALID;
 			}
@@ -163,7 +161,6 @@ public class Goban {
 					return Move.WIN;
 				}
 			}
-			System.out.println(stone.toString()+" has won");
 		}
 	}
 	else{

@@ -63,7 +63,6 @@ public class AtariGo {
  public Move playMove(Stone player, Position position) {
 	// these conditions don't need to change the goban stateto know if the move is possible
 	if (! goban.isValid(position) || goban.readCell(position) != Stone.EMPTY ) {
-		System.out.println("bad move");
 	    return Move.INVALID;
 	}
 	//write on the goban necessary to test the suicide made by a group
@@ -82,7 +81,6 @@ public boolean canPlayMove(Stone player){
 	int j = 0;
 	Position postest;
 	while(!fini){
-		System.out.println("test sur "+i+","+j);
 		postest = new Position(i,j);
 		atariGoTest = new AtariGo(this);		
 		if(atariGoTest.playMove(player,postest) != Move.INVALID){
