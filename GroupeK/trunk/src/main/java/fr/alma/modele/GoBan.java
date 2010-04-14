@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
-
+/*$Author$ 
+ * $Date$ 
+ * $Revision$ */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud

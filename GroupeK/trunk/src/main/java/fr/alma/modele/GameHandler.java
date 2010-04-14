@@ -4,7 +4,9 @@ package fr.alma.modele;
 import fr.alma.controler.Controler;
 import fr.alma.modele.intelligence.Difficulte;
 import fr.alma.modele.intelligence.SunTsu;
-
+/*$Author$ 
+ * $Date$ 
+ * $Revision$ */
 /**
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
  * Class use to handle the game, to manage the AI when needed

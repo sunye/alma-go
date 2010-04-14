@@ -7,6 +7,10 @@ import fr.alma.modele.CouleurPion;
 import fr.alma.modele.GameHandler;
 import fr.alma.modele.Pion;
 
+
+/*$Author$ 
+ * $Date$ 
+ * $Revision$ */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud 

@@ -1,5 +1,7 @@
 package fr.alma.modele;
-
+/*$Author$ 
+ * $Date$ 
+ * $Revision$ */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud

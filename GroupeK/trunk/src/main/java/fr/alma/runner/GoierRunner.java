@@ -1,6 +1,9 @@
 package fr.alma.runner;
 
 import fr.alma.controler.Controler;
+/*$Author$ 
+ * $Date$ 
+ * $Revision$ */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud

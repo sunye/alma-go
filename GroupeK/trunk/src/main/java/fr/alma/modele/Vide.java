@@ -2,7 +2,9 @@ package fr.alma.modele;
 
 import java.util.HashSet;
 
-
+/*$Author$ 
+ * $Date$ 
+ * $Revision$ */
 /**
  * Class used to represent group of empty cell
  */

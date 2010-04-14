@@ -6,7 +6,9 @@ import javax.swing.*;
 import fr.alma.controler.Controler;
 import fr.alma.modele.CouleurPion;
 
-
+/*$Author$ 
+ * $Date$
+ * $Revision$ */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
