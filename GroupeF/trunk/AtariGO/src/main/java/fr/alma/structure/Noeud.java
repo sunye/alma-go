@@ -84,5 +84,9 @@ public class Noeud {
 		return note;
 	}
 
-			
+	public boolean existeFils(){
+		return this.listeFils.size()!= 0;
+	}
+	
+	
 }

@@ -16,8 +16,9 @@ public class Arbre {
 	
 	public Noeud racine;
 	public Grille grille;
+	public int prof;
 	
-	public ArrayList<Pion> coupsJouer;
+	private ArrayList<Pion> coupsJouer;
 	private ArrayList<Pion> coupsNonJouer;
 	
 	int compteur = 0;
@@ -28,24 +29,19 @@ public class Arbre {
 		this.racine = new Noeud(new Pion(null,new Point(-1,-1)));
 		this.grille = grille;
 		getCoupsJouer();
-		//System.out.println("Taille coup jouer : "+cj.size());
-		
+		prof = getProfMax(coupsNonJouer);
+		getCoupsNonJouer();
 	}
 	
 	
 	public Point remplirArbre(){
 		
 		Point p = null;
-		getCoupsNonJouer();
-		int prof = getProfMax(coupsNonJouer);
-		//-----------
-		//for(Pion each : cnj);
-		//---------
-		//racine = ajouterTousLesfils(racine, cnj, prof);
+				
+		racine = ajouterTousLesfils(racine, coupsNonJouer, prof);
 		System.out.println((ajouterTousLesfils(new Noeud(null), coupsNonJouer, prof)).getNote());
 		System.out.println("Nombre de noeuds total : "+compteur);
-		System.out.println("note remonté : "+racine.getNote());
-		p=racine.getCoup().position;
+		
 		return p;
 	}
 	
@@ -55,20 +51,19 @@ public class Arbre {
 	 * @return
 	 */
 	private int getProfMax(ArrayList<Pion> liste){
+		//Le nombre de coups restants max pour que l'odinateur joue le mieux possible : 7
 		
-		return liste.size()-2;
+		return liste.size()-11;
 		
 	}
 	@SuppressWarnings("unchecked")
 	/**
-	 * Méthode qui permet de contruire l'arbe et d'atribué les notes
+	 * Méthode qui permet de contruire l'arbe.
 	 */
 	private Noeud ajouterTousLesfils(Noeud noeud, ArrayList<Pion> coups, int prof) {
-		ArrayList<Pion> temp;
-		//--------
-					
-		int longeur = coups.size();
 		
+		ArrayList<Pion> temp;
+		int longeur = coups.size();
 		temp = (ArrayList<Pion>) coups.clone();
 		
 		for(int i=0;i<longeur;i++){
@@ -81,53 +76,37 @@ public class Arbre {
 			temp.remove(coups.get(i));
 			
 			if(temp.size()>prof){
+								
 				ajouterTousLesfils(n,temp, prof);
 							
 			}else {
 				temp = (ArrayList<Pion>) coups.clone();
-				//-------------------------------------
-				int value = i;//Ia.fonctionEvaluation(getGrilleFromList(coupsJouer));
-				n.setNote(value);
-				//System.out.println("Valeur de fonction = "+value);
+				
 			}
-						
 			coupsJouer.remove(coups.get(i));
 		}
 		return noeud;
 	}
 
-	/**
-	 * Retourne la grille a partir de la liste des coups joués
-	 * @param arrpion la liste des coups jouer
-	 * @return la grille
-	 */
-	private Grille getGrilleFromList(ArrayList <Pion> arrpion){
-		
-		Grille g = new Grille();
-		
-		for(Pion each : arrpion){
-			g.Contenu[each.position.x][each.position.y] = each;
-			
-		}
-		
-		return g;
-	}
+	
+	
 	
 	/**
 	 * Retoune les coups non jouer de la grille
 	 */
-	private void getCoupsNonJouer(){
+	public ArrayList<Pion> getCoupsNonJouer(){
 		coupsNonJouer = new ArrayList<Pion>();
 		 for(int i=0;i<9;i++) 
         	 for(int j=0;j<9;j++) 
-                 if(grille.Contenu[i][j].couleur == Couleur.NULL) coupsNonJouer.add(new Pion(Couleur.NULL,new Point(i,j))); 
+                 if(grille.Contenu[i][j].couleur == Couleur.NULL) coupsNonJouer.add(new Pion(Couleur.NULL,new Point(i,j)));
+		return coupsNonJouer; 
 		  		 
 	 }
 	
 	/**
 	 * Retourne les coups jouer
 	 */
-	public void getCoupsJouer(){
+	public ArrayList<Pion> getCoupsJouer(){
 		
 		coupsJouer = new ArrayList<Pion>();
 		for(int i=0;i<9;i++) 
@@ -137,7 +116,7 @@ public class Arbre {
        		
        		}
        	 }
+		return coupsJouer;
       		 
 	}
-		
 }
