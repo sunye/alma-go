@@ -25,32 +25,32 @@ import java.util.Vector;
  * 
  * */
 /**
- * 
- * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
  * Class that represent a goban board and is rules
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
+ * 
  */
 public class GoBan {
 
 	/**
 	 * The current board 
 	 */
-	private Pion[][] goban;
+	private Stone[][] goban;
 	
 	/**
 	 * the color of the current player
 	 */
-	private CouleurPion tour;
+	private StoneColor turn;
 	
 	
 	/**
 	 * The groups of stone
 	 */
-	private HashSet<Groupe> group;
+	private HashSet<Group> group;
 	
 	/**
 	 * special group for empty slot
 	 */
-	private Groupe groupeVide;
+	private Group emptyStoneGroup;
 	
 	/**
 	 * Array with 1 and -1 used to move in the matrix 
@@ -60,27 +60,27 @@ public class GoBan {
 	/**
 	 * Size of the board
 	 */
-	public static int TAILLE_GO_BAN=9;
+	public static int GO_BAN_SIZE=9;
 	
 	/**
 	 * Number of black token captured by the white
 	 */
-	private int ptsBlanc=0;
+	private int whiteScore=0;
 	
 	/**
 	 * Number of white token captured by the black
 	 */
-	private int ptsNoir=0;
+	private int blackScore=0;
 
 	/**
 	 * Simple constructor that (re)set the game to an initial stat
 	 */
 	public GoBan() {
-		this.goban = new Pion[9][9];
-		this.group= new HashSet<Groupe>();
-		this.groupeVide=new Groupe(CouleurPion.EMPTY);
-		this.tour= CouleurPion.NOIR;
-		this.remiseZero();
+		this.goban = new Stone[9][9];
+		this.group= new HashSet<Group>();
+		this.emptyStoneGroup=new Group(StoneColor.EMPTY);
+		this.turn= StoneColor.BLACK;
+		this.reset();
 	}
 	
 	
@@ -88,104 +88,104 @@ public class GoBan {
 	/**
 	 * Reset the game stat
 	 */
-	public void remiseZero(){
+	public void reset(){
 		this.group.clear();
-		groupeVide= new Groupe(CouleurPion.EMPTY);
+		emptyStoneGroup= new Group(StoneColor.EMPTY);
 		for (int i=0; i<9; i++){
 			for (int k=0; k<9; k++) {
-				goban[i][k] = new Pion(i,k,CouleurPion.EMPTY);
-				goban[i][k].setGroupe(groupeVide);
-				groupeVide.addPion(goban[i][k]);
+				goban[i][k] = new Stone(i,k,StoneColor.EMPTY);
+				goban[i][k].setGroup(emptyStoneGroup);
+				emptyStoneGroup.addPion(goban[i][k]);
 			}
 		}
-		this.ptsBlanc=0;
-		this.ptsNoir=0;
-		this.tour= CouleurPion.NOIR;
+		this.whiteScore=0;
+		this.blackScore=0;
+		this.turn= StoneColor.BLACK;
 	}
 	
 	
 	/**
 	 * @param tour the tour to set
 	 */
-	public void setTour(CouleurPion tour) {
-		this.tour = tour;
+	public void setTurn(StoneColor tour) {
+		this.turn = tour;
 	}
 
 	/**
 	 * @return the tour
 	 */
-	public CouleurPion getTour() {
-		return tour;
+	public StoneColor getTurn() {
+		return turn;
 	}
 
 	/**
 	 * @return the goban
 	 */
-	public Pion[][] getGoban() {
+	public Stone[][] getGoban() {
 		return goban;
 	}
 
 	/**
 	 * @param goban the goban to set
 	 */
-	public void setGoban(Pion[][] goban) {
+	public void setGoban(Stone[][] goban) {
 		this.goban = goban;
 	}
 
 	/**
 	 * @return the group
 	 */
-	public HashSet<Groupe> getGroup() {
+	public HashSet<Group> getGroup() {
 		return group;
 	}
 
 	/**
 	 * @param group the group to set
 	 */
-	public void setGroup(HashSet<Groupe> group) {
+	public void setGroup(HashSet<Group> group) {
 		this.group = group;
 	}
 
 	/**
 	 * @return the groupeVide
 	 */
-	public Groupe getGroupeVide() {
-		return groupeVide;
+	public Group getEmptyStoneGroup() {
+		return emptyStoneGroup;
 	}
 
 	/**
 	 * @param groupeVide the groupeVide to set
 	 */
-	public void setGroupeVide(Groupe groupeVide) {
-		this.groupeVide = groupeVide;
+	public void setEmptyStoneGroup(Group groupeVide) {
+		this.emptyStoneGroup = groupeVide;
 	}
 
 	/**
 	 * @return the ptsBlanc
 	 */
-	public int getPtsBlanc() {
-		return ptsBlanc;
+	public int getWhiteScore() {
+		return whiteScore;
 	}
 
 	/**
 	 * @param ptsBlanc the ptsBlanc to set
 	 */
-	public void setPtsBlanc(int ptsBlanc) {
-		this.ptsBlanc = ptsBlanc;
+	public void setWhiteScore(int ptsBlanc) {
+		this.whiteScore = ptsBlanc;
 	}
 
 	/**
 	 * @return the ptsNoir
 	 */
-	public int getPtsNoir() {
-		return ptsNoir;
+	public int getBlackScore() {
+		return blackScore;
 	}
 
 	/**
 	 * @param ptsNoir the ptsNoir to set
 	 */
-	public void setPtsNoir(int ptsNoir) {
-		this.ptsNoir = ptsNoir;
+	public void setBlackScore(int ptsNoir) {
+		this.blackScore = ptsNoir;
 	}
 	
 	// Utils methods
@@ -194,36 +194,36 @@ public class GoBan {
 	 * Calculate if the move is allowed
 	 * @return the type of move: Valid, NonValid, Prise
 	 */
-	public TypeCoup isMoveAllowed(Coordonnee cood, CouleurPion coul) {
+	public MoveType isMoveAllowed(Coordinate cood, StoneColor coul) {
 		
-		if( !cood.isValid(GoBan.TAILLE_GO_BAN)){
-			return TypeCoup.NONVALID;
+		if( !cood.isValid(GoBan.GO_BAN_SIZE)){
+			return MoveType.NONVALID;
 		}
 			
-		Pion pi=goban[cood.getX()][cood.getY()];
+		Stone pi=goban[cood.getX()][cood.getY()];
 		
-		if (pi.getCouleur()!=CouleurPion.EMPTY){
-			return TypeCoup.NONVALID;
+		if (pi.getColor()!=StoneColor.EMPTY){
+			return MoveType.NONVALID;
 		}
 		
-		List<Pion> voisin= getVoisin(pi);
+		List<Stone> voisin= getNeigbors(pi);
 
-		for (Pion v:voisin){
-			if( v.getCouleur()==CouleurPion.oppose(coul)){
-				if (v.getGroupe().getNbLiberty()==1){
-					return TypeCoup.PRISE;
+		for (Stone v:voisin){
+			if( v.getColor()==StoneColor.oppose(coul)){
+				if (v.getGroup().getNbLiberty()==1){
+					return MoveType.CAPTURE;
 				}
-			} else if (v.getCouleur()==coul){
-				if( v.getGroupe().getNbLiberty()!=1){
-					return TypeCoup.VALID;
+			} else if (v.getColor()==coul){
+				if( v.getGroup().getNbLiberty()!=1){
+					return MoveType.VALID;
 				}
-			}else if (v.getCouleur()==CouleurPion.EMPTY){
-				return TypeCoup.VALID;
+			}else if (v.getColor()==StoneColor.EMPTY){
+				return MoveType.VALID;
 			} 
 		}
 		voisin.clear();
 		
-		return TypeCoup.NONVALID;
+		return MoveType.NONVALID;
 	}
 
 	/**
@@ -231,13 +231,13 @@ public class GoBan {
 	 * @param pi the stone
 	 * @return list of his liberty
 	 */
-	public List<Coordonnee> calculPionLiberte(Pion pi){
-		List<Coordonnee> result= new Vector<Coordonnee>();
+	public List<Coordinate> calculStoneLiberty(Stone pi){
+		List<Coordinate> result= new Vector<Coordinate>();
 				
-		List<Pion> voisin= getVoisin(pi);
+		List<Stone> voisin= getNeigbors(pi);
 		
-		for (Pion v:voisin){
-			if( v.getCouleur()==CouleurPion.EMPTY){
+		for (Stone v:voisin){
+			if( v.getColor()==StoneColor.EMPTY){
 				result.add(v.getPosition());
 			}
 		}
@@ -251,20 +251,20 @@ public class GoBan {
 	 * @param pi
 	 * @return list of the neighbors
 	 */ 
-	public List<Pion> getVoisin(Pion pi){
-		List<Pion> listVoisin= new Vector<Pion>();
+	public List<Stone> getNeigbors(Stone pi){
+		List<Stone> listVoisin= new Vector<Stone>();
 		int x=pi.getPosition().getX();
 		int y=pi.getPosition().getY();
 				
 		for (int i=0; i<modifier.length;i++){
-			Coordonnee coordtemp=new Coordonnee(x+modifier[i], y);
-			if (coordtemp.isValid(GoBan.TAILLE_GO_BAN)){
+			Coordinate coordtemp=new Coordinate(x+modifier[i], y);
+			if (coordtemp.isValid(GoBan.GO_BAN_SIZE)){
 				listVoisin.add(goban[coordtemp.getX()][coordtemp.getY()]);
 			}
 		}
 		for (int i=0; i<modifier.length;i++){
-			Coordonnee coordtemp=new Coordonnee(x, y+modifier[i]);
-			if (coordtemp.isValid(GoBan.TAILLE_GO_BAN)){
+			Coordinate coordtemp=new Coordinate(x, y+modifier[i]);
+			if (coordtemp.isValid(GoBan.GO_BAN_SIZE)){
 				listVoisin.add(goban[coordtemp.getX()][coordtemp.getY()]);
 			}
 		}
@@ -281,12 +281,12 @@ public class GoBan {
 	 * @param cood the coordinate
 	 * @return if the stone where add
 	 */
-	public boolean addPion(Coordonnee cood){
+	public boolean addPion(Coordinate cood){
 		
 		
-		boolean jouer=isMoveAllowed(cood, tour)!=TypeCoup.NONVALID;
+		boolean jouer=isMoveAllowed(cood, turn)!=MoveType.NONVALID;
 		if (jouer){
-			this.addPion(cood, tour, true);
+			this.addPion(cood, turn, true);
 			
 		}
 		
@@ -299,8 +299,8 @@ public class GoBan {
 	 * @param cc the coolor
 	 * @return if the stone where add
 	 */
-	public boolean addPion(Coordonnee cood, CouleurPion cc){
-		boolean jouer =isMoveAllowed(cood, cc)!=TypeCoup.NONVALID;
+	public boolean addPion(Coordinate cood, StoneColor cc){
+		boolean jouer =isMoveAllowed(cood, cc)!=MoveType.NONVALID;
 		if (jouer){
 		this.addPion(cood, cc, false);
 		}
@@ -312,8 +312,8 @@ public class GoBan {
 	 * @param cood the coordinate of the stone
 	 * @param coul the color	
 	 */
-	public void retirerPion(Coordonnee cood, CouleurPion coul){
-		removePion(goban[cood.getX()][cood.getY()]);
+	public void removeStone(Coordinate cood, StoneColor coul){
+		removeStone(goban[cood.getX()][cood.getY()]);
 	}
 
 	//end of Goban pion(stone) public management method
@@ -324,108 +324,108 @@ public class GoBan {
 	 * @param coul the color of the stone to add
 	 * @param enlevement if captured stone has to be remove
 	 */
-	private void addPion(Coordonnee coord, CouleurPion coul, boolean enlevement){
+	private void addPion(Coordinate coord, StoneColor coul, boolean enlevement){
 	
-		Pion pi=goban[coord.getX()][coord.getY()];
-		groupeVide.removePion(pi);
+		Stone pi=goban[coord.getX()][coord.getY()];
+		emptyStoneGroup.removeStone(pi);
 		
-		pi.setCouleur(coul);
-		pi.setGroupe(new Groupe(coul));
-		pi.getGroupe().addPion(pi);
-		List<Pion> voisin= getVoisin(pi);
+		pi.setColor(coul);
+		pi.setGroup(new Group(coul));
+		pi.getGroup().addPion(pi);
+		List<Stone> voisin= getNeigbors(pi);
 			
-		for (Pion v:voisin){
-			if (v.getCouleur()==CouleurPion.EMPTY){
-				pi.getGroupe().addLiberty(v.getPosition());
+		for (Stone v:voisin){
+			if (v.getColor()==StoneColor.EMPTY){
+				pi.getGroup().addLiberty(v.getPosition());
 			}else if( 
-				v.getCouleur()== CouleurPion.oppose(pi.getCouleur())){
-				v.getGroupe().removeLiberty(pi.getPosition());
-			}else if(v.getCouleur()== pi.getCouleur()){
-				group.remove(v.getGroupe());
-				pi.getGroupe().fusionGroup(v.getGroupe());
-				pi.getGroupe().removeLiberty(pi.getPosition());
+				v.getColor()== StoneColor.oppose(pi.getColor())){
+				v.getGroup().removeLiberty(pi.getPosition());
+			}else if(v.getColor()== pi.getColor()){
+				group.remove(v.getGroup());
+				pi.getGroup().fusionGroup(v.getGroup());
+				pi.getGroup().removeLiberty(pi.getPosition());
 			}
 		}
 
-		group.add(pi.getGroupe());
+		group.add(pi.getGroup());
 		
 		
 		if (enlevement){
-			for (Pion v : voisin) {
-				if ((v.getCouleur() == CouleurPion.oppose(pi.getCouleur()))
-						&& (v.getGroupe().getNbLiberty() == 0)) {
-					removePionAndGroupe(v.getGroupe());
+			for (Stone v : voisin) {
+				if ((v.getColor() == StoneColor.oppose(pi.getColor()))
+						&& (v.getGroup().getNbLiberty() == 0)) {
+					removeStoneAndGroup(v.getGroup());
 				}
 			}
 		}
 		
 		voisin.clear();
-		tour= CouleurPion.oppose(tour);
+		turn= StoneColor.oppose(turn);
 	}
 	
 	/**
 	 * remove a stone from the board (not capture, just remove a move) 
 	 * @param pi
 	 */
-	private void removePion(Pion pi){
+	private void removeStone(Stone pi){
 		int x=pi.getPosition().getX();
 		int y=pi.getPosition().getY();
 		
-		CouleurPion coulinitial=pi.getCouleur();
-		Groupe groupInitial=goban[x][y].getGroupe();
+		StoneColor coulinitial=pi.getColor();
+		Group groupInitial=goban[x][y].getGroup();
 		
-		goban[x][y].getGroupe().removePion(goban[x][y]);
+		goban[x][y].getGroup().removeStone(goban[x][y]);
 		group.remove(groupInitial);
 		
 		
-		goban[x][y].setCouleur(CouleurPion.EMPTY); 
-		goban[x][y].setGroupe(groupeVide);
-		groupeVide.addPion(goban[x][y]);
+		goban[x][y].setColor(StoneColor.EMPTY); 
+		goban[x][y].setGroup(emptyStoneGroup);
+		emptyStoneGroup.addPion(goban[x][y]);
 		
 		
-		List<Pion> voisin= getVoisin(pi);
-		for (Pion v:voisin){
-			if( v.getCouleur()== CouleurPion.oppose(coulinitial)){
-				v.getGroupe().addLiberty(pi.getPosition());
-			}else if(v.getCouleur()== coulinitial){
-				Groupe newGroup= new Groupe(v.getCouleur());
+		List<Stone> voisin= getNeigbors(pi);
+		for (Stone v:voisin){
+			if( v.getColor()== StoneColor.oppose(coulinitial)){
+				v.getGroup().addLiberty(pi.getPosition());
+			}else if(v.getColor()== coulinitial){
+				Group newGroup= new Group(v.getColor());
 				group.add(newGroup);
-				reformeGroup(newGroup, v);
+				reformGroup(newGroup, v);
 			}else{
 				
 			}
 		}
 		
 		voisin.clear();
-		tour= CouleurPion.oppose(tour);
+		turn= StoneColor.oppose(turn);
 	}
 	
 	/**
 	 * remove a group that is captured
 	 * @param grop
 	 */
-	private void removePionAndGroupe(Groupe grop){
+	private void removeStoneAndGroup(Group grop){
 		this.group.remove(grop);
 		
-		if (grop.getCouleur()==CouleurPion.BLANC){
-			ptsNoir+=grop.getNbPions();
+		if (grop.getGroupColor()==StoneColor.WHITE){
+			blackScore+=grop.getStoneNumber();
 		}else{
-			ptsBlanc+=grop.getNbPions();
+			whiteScore+=grop.getStoneNumber();
 		}
 		
 		
-		Collection<Pion> list= grop.getPions();
-		for (Pion v:list){
-			v.setGroupe(groupeVide);
-			v.setCouleur(CouleurPion.EMPTY);
-			groupeVide.addPion(v);
+		Collection<Stone> list= grop.getStones();
+		for (Stone v:list){
+			v.setGroup(emptyStoneGroup);
+			v.setColor(StoneColor.EMPTY);
+			emptyStoneGroup.addPion(v);
 		}
 		
-		for(Pion v: list){
-			Collection<Pion> voisinVoisin=getVoisin(v);
-			for (Pion capt: voisinVoisin){
-				Collection <Coordonnee> libertes=calculPionLiberte(capt);
-				capt.getGroupe().addLibertys(libertes);
+		for(Stone v: list){
+			Collection<Stone> voisinVoisin=getNeigbors(v);
+			for (Stone capt: voisinVoisin){
+				Collection <Coordinate> libertes=calculStoneLiberty(capt);
+				capt.getGroup().addLibertys(libertes);
 				libertes.clear();
 			}
 		}
@@ -438,31 +438,31 @@ public class GoBan {
 	 * @param grop the new group for the stone
 	 * @param pi the stone
 	 */
-	private void reformeGroup(Groupe grop, Pion pi){
-		if( pi.getCouleur()==grop.getCouleur()){
-			pi.setGroupe(grop);
+	private void reformGroup(Group grop, Stone pi){
+		if( pi.getColor()==grop.getGroupColor()){
+			pi.setGroup(grop);
 			grop.addPion(pi);
-			Collection<Coordonnee> libert=calculPionLiberte(pi);
+			Collection<Coordinate> libert=calculStoneLiberty(pi);
 			grop.addLibertys(libert);
 			libert.clear();
 			
 			int x=pi.getPosition().getX();
 			int y=pi.getPosition().getY();
-			Pion avisiter=null;
+			Stone avisiter=null;
 			
 			for (int i=0; i<modifier.length;i++){
-					Coordonnee coordtemp=new Coordonnee(x+modifier[i], y);
-					if (coordtemp.isValid(GoBan.TAILLE_GO_BAN)){
+					Coordinate coordtemp=new Coordinate(x+modifier[i], y);
+					if (coordtemp.isValid(GoBan.GO_BAN_SIZE)){
 						avisiter=goban[coordtemp.getX()][coordtemp.getY()];
-						reformationGroup(grop, avisiter, modifier[i]*-1, 0);
+						reformGroupBackTrackEnd(grop, avisiter, modifier[i]*-1, 0);
 					}
 				
 			}
 			for (int i=0; i<modifier.length;i++){
-				Coordonnee coordtemp=new Coordonnee(x, y+modifier[i]);
-				if (coordtemp.isValid(GoBan.TAILLE_GO_BAN)){
+				Coordinate coordtemp=new Coordinate(x, y+modifier[i]);
+				if (coordtemp.isValid(GoBan.GO_BAN_SIZE)){
 					avisiter=goban[coordtemp.getX()][coordtemp.getY()];
-					reformationGroup(grop, avisiter, 0, modifier[i]*-1);
+					reformGroupBackTrackEnd(grop, avisiter, 0, modifier[i]*-1);
 				}
 			}
 		}
@@ -475,35 +475,35 @@ public class GoBan {
 	 * @param intmodifierx
 	 * @param intmodifiery
 	 */
-	private void reformationGroup(Groupe grop, Pion pi, int intmodifierx, int intmodifiery){
+	private void reformGroupBackTrackEnd(Group grop, Stone pi, int intmodifierx, int intmodifiery){
 		
-		if( pi.getCouleur()==grop.getCouleur()){
-			pi.setGroupe(grop);
+		if( pi.getColor()==grop.getGroupColor()){
+			pi.setGroup(grop);
 			grop.addPion(pi);
 			
-			Collection<Coordonnee> libert=calculPionLiberte(pi);
+			Collection<Coordinate> libert=calculStoneLiberty(pi);
 			grop.addLibertys(libert);
 			libert.clear();
 			
 			int x=pi.getPosition().getX();
 			int y=pi.getPosition().getY();
-			Pion avisiter=null;
+			Stone avisiter=null;
 			
 			for (int i=0; i<modifier.length;i++){
 				if(intmodifierx!= modifier[i]){
-					Coordonnee coordtemp=new Coordonnee(x+modifier[i], y);
-					if (coordtemp.isValid(GoBan.TAILLE_GO_BAN)){
+					Coordinate coordtemp=new Coordinate(x+modifier[i], y);
+					if (coordtemp.isValid(GoBan.GO_BAN_SIZE)){
 						avisiter=goban[coordtemp.getX()][coordtemp.getY()];
-						reformationGroup(grop, avisiter, modifier[i]*-1, 0);
+						reformGroupBackTrackEnd(grop, avisiter, modifier[i]*-1, 0);
 					}
 				}
 			}
 			for (int i=0; i<modifier.length;i++){
 				if(intmodifiery!= modifier[i]){
-					Coordonnee coordtemp=new Coordonnee(x, y+modifier[i]);
-					if (coordtemp.isValid(GoBan.TAILLE_GO_BAN)){
+					Coordinate coordtemp=new Coordinate(x, y+modifier[i]);
+					if (coordtemp.isValid(GoBan.GO_BAN_SIZE)){
 						avisiter=goban[coordtemp.getX()][coordtemp.getY()];
-						reformationGroup(grop, avisiter, 0, modifier[i]*-1);
+						reformGroupBackTrackEnd(grop, avisiter, 0, modifier[i]*-1);
 					}
 				}
 			}

@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import fr.alma.controler.Controler;
-import fr.alma.modele.CouleurPion;
+import fr.alma.modele.StoneColor;
 
 /*$Author$ 
  * $Date$
@@ -27,11 +27,11 @@ import fr.alma.modele.CouleurPion;
  * 
  * */
 /**
- * 
- * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
  * The main class of the UI.
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
+ * 
  */
-public class Fenetre extends JFrame{
+public class MainFrame extends JFrame{
 	
 	
 	private static final long serialVersionUID = 1L;
@@ -39,7 +39,7 @@ public class Fenetre extends JFrame{
 	/**
 	 * The panel that containt the representation of the board
 	 */
-	private GobanPanel Pan;
+	private GobanPanel goPanel;
 	
 	/**
 	 * The controler.
@@ -50,7 +50,7 @@ public class Fenetre extends JFrame{
 	 * Constructor with the controler.
 	 * @param control the controler
 	 */
-	public Fenetre(Controler control){
+	public MainFrame(Controler control){
 		super("Le jeu de Go qu'il est bien");
 		setSize(440,490);
 		this.controler=control;
@@ -89,27 +89,27 @@ public class Fenetre extends JFrame{
 	
 		this.setJMenuBar(barreMenu); 
 		
-		quikafait.addActionListener(control.getFactory().AfficheAPropos());
-		nouv.addActionListener(control.getFactory().afficheDiagNewGame());
-		quitter.addActionListener(control.getFactory().quitterListener());
+		quikafait.addActionListener(control.getFactory().getShowAboutListener());
+		nouv.addActionListener(control.getFactory().getShowDiagNewGameListener());
+		quitter.addActionListener(control.getFactory().getQuitListener());
 		/**
          * Creation du panel contenant le goban
          */
 
-		Pan=new GobanPanel(control);
-		Pan.setBorder(BorderFactory.createLineBorder(Color.black));
+		goPanel=new GobanPanel(control);
+		goPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 			
 		/**
          * On ajoute le GobanPanel dans la fenetre principale
          */
-		add(Pan);
+		add(goPanel);
 	}
 	
 	/**
 	 * Show the winner
 	 * @param coul the color of the winner
 	 */
-	public void affichageVainqueur(CouleurPion coul) {
+	public void showWinner(StoneColor coul) {
 		JOptionPane.showMessageDialog(this,"Les "+coul+"S ont gagnés!");
 	}
 	
@@ -117,7 +117,7 @@ public class Fenetre extends JFrame{
 	 * Show a wonderfull message in a Jdialog
 	 * @param aWonderFullMessage 
 	 */
-	public void affichageMessage(String aWonderFullMessage) {
+	public void showMessage(String aWonderFullMessage) {
 		
 		JOptionPane.showMessageDialog(this,aWonderFullMessage);
 		
@@ -128,7 +128,7 @@ public class Fenetre extends JFrame{
 	 * @return the col size
 	 */
 	public int getColSize() {
-		return Pan.getColSize();
+		return goPanel.getColSize();
 	}
 
 	/**
@@ -136,14 +136,14 @@ public class Fenetre extends JFrame{
 	 * @return the row size
 	 */
 	public int getRowSize() {
-		return Pan.getRowSize();
+		return goPanel.getRowSize();
 	}
 	
 	/**
 	 * repaint the board
 	 */
 	public void repaintBoard(){
-		Pan.repaint();
+		goPanel.repaint();
 	}
 
 	/**

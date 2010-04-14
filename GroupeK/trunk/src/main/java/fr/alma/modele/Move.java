@@ -20,24 +20,24 @@ package fr.alma.modele;
  * 
  * */
 /**
- * 
- * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
  * Class that represent a move and is mark
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
+ *
  */
-public class Coup {
+public class Move {
 /**
  * Color of the move
  */
-private CouleurPion coulp;
+private StoneColor color;
 /**
  * The coordinate of the move
  */
-private Coordonnee position;
+private Coordinate position;
 
 /**
  * the mark of the move
  */
-private Integer note;
+private Integer mark;
 
 /**
  * Construct a move
@@ -45,52 +45,52 @@ private Integer note;
  * @param y y coordinate
  * @param coulp the color
  */
-public Coup(Integer x, Integer y, CouleurPion coulp) {
-	this.position=new Coordonnee(x, y);
-	this.coulp = coulp;
-	this.note=0;
+public Move(Integer x, Integer y, StoneColor coulp) {
+	this.position=new Coordinate(x, y);
+	this.color = coulp;
+	this.mark=0;
 }
 
 /**
  * @return the coulp
  */
-public CouleurPion getCoulp() {
-	return coulp;
+public StoneColor getCoulp() {
+	return color;
 }
 
 /**
  * @param coulp the coulp to set
  */
-public void setCoulp(CouleurPion coulp) {
-	this.coulp = coulp;
+public void setCoulp(StoneColor coulp) {
+	this.color = coulp;
 }
 
 /**
  * @return the position
  */
-public Coordonnee getPosition() {
+public Coordinate getPosition() {
 	return position;
 }
 
 /**
  * @param position the position to set
  */
-public void setPosition(Coordonnee position) {
+public void setPosition(Coordinate position) {
 	this.position = position;
 }
 
 /**
  * @return the note
  */
-public Integer getNote() {
-	return note;
+public Integer getMark() {
+	return mark;
 }
 
 /**
  * @param note the note to set
  */
-public void setNote(Integer note) {
-	this.note = note;
+public void setMark(Integer note) {
+	this.mark = note;
 }
 
 

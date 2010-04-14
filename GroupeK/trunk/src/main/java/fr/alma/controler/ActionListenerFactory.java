@@ -28,9 +28,9 @@ import java.awt.event.MouseEvent;
 
 
 /**
- * 
+ * Class used to get action listener
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
- *	Class used to get action listener
+ *	
  *
  */
 public class ActionListenerFactory {
@@ -50,7 +50,7 @@ public class ActionListenerFactory {
 
 
 	
-	public ActionListener newGameListener(){
+	public ActionListener getNewGameListener(){
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				controler.newGame();
@@ -60,7 +60,7 @@ public class ActionListenerFactory {
 	}
 	
 	
-	public ActionListener quitterListener(){
+	public ActionListener getQuitListener(){
 		return new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -71,7 +71,7 @@ public class ActionListenerFactory {
 
 
 
-	public MouseAdapter clicBoardListener() {
+	public MouseAdapter getClicBoardListener() {
 		
 		return  new MouseAdapter() {
 			 public void mouseClicked(MouseEvent e) {
@@ -80,30 +80,30 @@ public class ActionListenerFactory {
 		};
 	}
 	
-	public ActionListener forcerCoup(){
+	public ActionListener getForcePlayListener(){
 		
 		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controler.forcerJouer();
+				controler.forceToPlay();
 				
 			}
 		};
 	}
 	
-	public ActionListener AfficheAPropos(){
+	public ActionListener getShowAboutListener(){
 		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controler.afficheMessage("Super Goban de la mort qui tue deux fois, \n developpé par Anthony Caillaud et Manoël Fortun");
+				controler.showMessage("Super Goban de la mort qui tue deux fois, \n developpé par Anthony Caillaud et Manoël Fortun");
 				
 			}
 		};
 	}
 	
-	public ActionListener enableChoiceIa(){
+	public ActionListener getEnableChoiceAiListener(){
 		return new ActionListener() {
 			
 			@Override
@@ -114,7 +114,7 @@ public class ActionListenerFactory {
 	}
 	
 	
-	public ActionListener disableChoiceIa(){
+	public ActionListener getDisableChoiceAiListener(){
 		return new ActionListener() {
 			
 			@Override
@@ -124,24 +124,24 @@ public class ActionListenerFactory {
 		};
 	}
 	
-	public ActionListener afficheDiagNewGame(){
+	public ActionListener getShowDiagNewGameListener(){
 		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controler.afficheNouvellePartie(true);
+				controler.showNewGameDial(true);
 				
 			}
 		};
 	}
 	
 	
-	public ActionListener desAfficheDiagNewGame(){
+	public ActionListener getUnshowDiagNewGameListener(){
 		return new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controler.afficheNouvellePartie(false);
+				controler.showNewGameDial(false);
 				
 			}
 		};

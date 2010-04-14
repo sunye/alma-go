@@ -29,9 +29,9 @@ import fr.alma.controler.Controler;
  * 
  * */
 /**
- * 
- * @author Manoël Fortun et Anthony "Bambinôme" Caillaud 
  * A dialog with a progress bar to indicate that something is in progress
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud 
+ * 
  */
 public class Loadeur extends JDialog {
 
@@ -47,7 +47,7 @@ public class Loadeur extends JDialog {
 	 * @param owner the windows that own the loadeur
 	 * @param ctrl the controler
 	 */
-	public Loadeur(Fenetre owner, Controler ctrl) {
+	public Loadeur(MainFrame owner, Controler ctrl) {
 		super(owner, "", true);
 
 		this.prog = new JProgressBar(0, 100);
@@ -63,8 +63,8 @@ public class Loadeur extends JDialog {
 			
 		JButton forcerJouer= new JButton("Forcer à jouer");
 
-		quitterUrgence.addActionListener(ctrl.getFactory().quitterListener());
-		forcerJouer.addActionListener(ctrl.getFactory().forcerCoup());
+		quitterUrgence.addActionListener(ctrl.getFactory().getQuitListener());
+		forcerJouer.addActionListener(ctrl.getFactory().getForcePlayListener());
 		
 		this.add(new JLabel("Coup en cours de calcul"));
 		this.add(prog);

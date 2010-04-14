@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import fr.alma.controler.Controler;
-import fr.alma.modele.Pion;
+import fr.alma.modele.Stone;
 /*$Author$ 
  * $Date$ 
  * $Revision$ 
@@ -29,9 +29,9 @@ import fr.alma.modele.Pion;
  * 
  * */
 /**
- * 
- * @author Manoël Fortun et Anthony "Bambinôme" Caillaud 
  * The class that represent the panel of the board
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud 
+ * 
  */
 public class GobanPanel extends JPanel {
 
@@ -43,14 +43,14 @@ public class GobanPanel extends JPanel {
 	private ImageIcon goban;
 
 	/**
-	 * the image for the black token
-	 */
-	private ImageIcon pionB;
-
-	/**
 	 * the image for the white token
 	 */
-	private ImageIcon pionN;
+	private ImageIcon whiteStoneImg;
+
+	/**
+	 * the image for the black token
+	 */
+	private ImageIcon blackStoneImg;
 	// tous les points du Goban
 
 	// largeur d'une colonne et hauteur d'une ligne
@@ -87,7 +87,7 @@ public class GobanPanel extends JPanel {
 		 * Creation de l'image du goban grâce à l'URL donné
 		 */
 
-		java.net.URL gobanURL = Fenetre.class.getResource("images/Goban.png");
+		java.net.URL gobanURL = MainFrame.class.getResource("images/Goban.png");
 		// vérification de l'existence de l'image
 		if (gobanURL != null) {
 			goban = new ImageIcon(gobanURL);
@@ -100,29 +100,29 @@ public class GobanPanel extends JPanel {
 		 * Creation de l'image du pion blanc
 		 */
 
-		java.net.URL pionB_URL = Fenetre.class
+		java.net.URL pionB_URL = MainFrame.class
 				.getResource("images/Pion_blanc.png");
 		// vérification de l'existence de l'image
 		if (pionB_URL != null) {
-			pionB = new ImageIcon(pionB_URL);
+			whiteStoneImg = new ImageIcon(pionB_URL);
 		}
 
 		/**
 		 * Creation de l'image du pion noir
 		 */
 
-		java.net.URL pionN_URL = Fenetre.class
+		java.net.URL pionN_URL = MainFrame.class
 				.getResource("images/Pion_noir.png");
 		// vérification de l'existence de l'image
 		if (pionN_URL != null) {
-			pionN = new ImageIcon(pionN_URL);
+			blackStoneImg = new ImageIcon(pionN_URL);
 		}
 
 		/**
 		 * Creation de la matrice de pions
 		 */
 
-		addMouseListener(contrler.getFactory().clicBoardListener());
+		addMouseListener(contrler.getFactory().getClicBoardListener());
 		repaint();
 	}
 
@@ -134,17 +134,17 @@ public class GobanPanel extends JPanel {
 		// Affichage du goban
 		g.drawImage(goban.getImage(), 0, 0, this);
 		// Affichage de tout les pions en parcourant la matrice
-		int tailleMatrice = controler.tailleMatrice();
-		Pion[][] matrice = controler.getMatricePlateau();
+		int tailleMatrice = controler.getMatrixSize();
+		Stone[][] matrice = controler.getMatrix();
 		for (int i = 0; i < tailleMatrice; i++) {
 			for (int j = 0; j < tailleMatrice; j++) {
-				switch (matrice[i][j].getCouleur()) {
-				case NOIR:
-					g.drawImage(pionN.getImage(), (i * colSize), (j * rowSize),
+				switch (matrice[i][j].getColor()) {
+				case BLACK:
+					g.drawImage(blackStoneImg.getImage(), (i * colSize), (j * rowSize),
 							this);
 					break;
-				case BLANC:
-					g.drawImage(pionB.getImage(), (i * colSize), (j * rowSize),
+				case WHITE:
+					g.drawImage(whiteStoneImg.getImage(), (i * colSize), (j * rowSize),
 							this);
 					break;
 				case EMPTY:

@@ -6,15 +6,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import fr.alma.modele.Coordonnee;
-import fr.alma.modele.CoordonneeIA;
-import fr.alma.modele.CouleurPion;
-import fr.alma.modele.Coup;
+import fr.alma.modele.Coordinate;
+import fr.alma.modele.CoordinateAI;
+import fr.alma.modele.StoneColor;
+import fr.alma.modele.Move;
 import fr.alma.modele.GoBan;
-import fr.alma.modele.Groupe;
-import fr.alma.modele.Pion;
-import fr.alma.modele.TypeCoup;
-import fr.alma.modele.Vide;
+import fr.alma.modele.Group;
+import fr.alma.modele.Stone;
+import fr.alma.modele.MoveType;
+import fr.alma.modele.EmptyGroup;
 /*$Author$ 
  * $Date$ 
  * $Revision$ 
@@ -36,21 +36,21 @@ import fr.alma.modele.Vide;
  * 
  * */
 /**
- * 
- * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
  * Our awesome Ai class
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
+ * 
  */
 public class SunTsu {
 
 	/**
 	 * The actual color for the AI
 	 */
-	private CouleurPion coul;
+	private StoneColor coul;
 	
 	/**
 	 * the actual difficulty
 	 */
-	private Difficulte diff;
+	private Difficulty diff;
 	
 	/**
 	 * The gale board
@@ -65,12 +65,12 @@ public class SunTsu {
 	/**
 	 * calculated position for the next move
 	 */
-	private CoordonneeIA play;
+	private CoordinateAI play;
 	
 	/**
 	 * collection that contain temporary move played by the SunTsu Ai
 	 */
-	private HashSet<Coup> coupJouer;
+	private HashSet<Move> movePlayed;
 	
 	/**
 	 * 
@@ -78,9 +78,9 @@ public class SunTsu {
 	 */
 	public SunTsu(GoBan goier){
 		this.situation=goier;
-		this.diff=Difficulte.Debutant;
-		this.coupJouer= new HashSet<Coup>();
-		play= new CoordonneeIA(null,null);
+		this.diff=Difficulty.EASY;
+		this.movePlayed= new HashSet<Move>();
+		play= new CoordinateAI(null,null);
 		
 		
 	}
@@ -89,14 +89,14 @@ public class SunTsu {
 	 * 
 	 * @return the difficulty
 	 */
-	public Difficulte getDiff() {
+	public Difficulty getDiff() {
 		return diff;
 	}
 	/**
 	 * set the difficulty
 	 * @param diff
 	 */
-	public void setDiff(Difficulte diff) {
+	public void setDiff(Difficulty diff) {
 		this.diff = diff;
 	}
 	
@@ -105,19 +105,19 @@ public class SunTsu {
 	 * prepare the next move for the color
 	 * @param coulp
 	 */
-	public void prepareNextMove(CouleurPion coulp){
+	public void prepareNextMove(StoneColor coulp){
 		this.coul=coulp;
-		coupJouer.clear();
+		movePlayed.clear();
 		synchronized (play) {
 			play.setTermine(false);
-			play.setCoordinate(new Coordonnee(null, null));
+			play.setCoordinate(new Coordinate(null, null));
 		}
 		
 		//calcul profondeur en fonction de la difficulté
 		//modulé difficulté par le nombre de pion sur le plateau ?
 		int profondeur= diff.ordinal()+1*2;
 
-		Coordonnee temp= alphaBeta(profondeur,profondeur, null, coul).getPosition();
+		Coordinate temp= alphaBeta(profondeur,profondeur, null, coul).getPosition();
 		
 		synchronized (play) {
 			play.setCoordinate(temp);
@@ -137,7 +137,7 @@ public class SunTsu {
 	 * this is a waiting method it block until a solution calculated by the method(prepareNextMove) or if the move is force by terminerTraitement
 	 * @return the next move to play 
 	 */
-	public Coordonnee getPlay() {
+	public Coordinate getPlay() {
 		synchronized (play) {
 			
 			if (!play.isTermine()) {
@@ -148,7 +148,7 @@ public class SunTsu {
 					e.printStackTrace();
 				}
 			}
-			Coordonnee result= new Coordonnee(play.getX(), play.getY());
+			Coordinate result= new Coordinate(play.getX(), play.getY());
 			System.out.println(result.getX()+" "+result.getY());
 			play.setTermine(false);
 			return result;
@@ -158,12 +158,12 @@ public class SunTsu {
 	/**
 	 * Force the calcultation to end
 	 */
-	public void terminerTraitement(){
+	public void endWithTheAlphaBeta(){
 		
 		
 		synchronized (situation) {
-			for (Coup cp: coupJouer){
-				situation.retirerPion(cp.getPosition(), cp.getCoulp());
+			for (Move cp: movePlayed){
+				situation.removeStone(cp.getPosition(), cp.getCoulp());
 			}
 		}
 		
@@ -181,40 +181,40 @@ public class SunTsu {
 	 * @param ajouer the turn color
 	 * @return a good move
 	 */
-	private Coup alphaBeta(int profondeurmarx, int profondeur, Coup precedentResult, CouleurPion ajouer){
-		Coup temporaire=null;
-		Coup result=null;
-		for (int i=0; i<GoBan.TAILLE_GO_BAN; i++){
-			for (int j=0;j<GoBan.TAILLE_GO_BAN;j++){
-				Coordonnee coodCoup=new Coordonnee(i, j);
-				Coup coupActuel= new Coup(i, j,ajouer);
-				TypeCoup typ=situation.isMoveAllowed(coodCoup, ajouer);
-				if(typ==TypeCoup.PRISE&&ajouer==this.coul){
-					coupActuel.setNote(-50000);
+	private Move alphaBeta(int profondeurmarx, int profondeur, Move precedentResult, StoneColor ajouer){
+		Move temporaire=null;
+		Move result=null;
+		for (int i=0; i<GoBan.GO_BAN_SIZE; i++){
+			for (int j=0;j<GoBan.GO_BAN_SIZE;j++){
+				Coordinate coodCoup=new Coordinate(i, j);
+				Move coupActuel= new Move(i, j,ajouer);
+				MoveType typ=situation.isMoveAllowed(coodCoup, ajouer);
+				if(typ==MoveType.CAPTURE&&ajouer==this.coul){
+					coupActuel.setMark(-50000);
 					return coupActuel;
 				}
-				if(typ!=TypeCoup.NONVALID){
+				if(typ!=MoveType.NONVALID){
 					situation.addPion(coodCoup, ajouer);
 					if( play.isCoordinateNotEmpty() && ajouer==coul){
 						play.setCoordinate(coodCoup);
 					}
-					coupJouer.add(coupActuel);
+					movePlayed.add(coupActuel);
 					if ( profondeur ==1){
 										
-						coupActuel.setNote(this.goBanEvaluation());
+						coupActuel.setMark(this.goBanEvaluation());
 						
 						if (coul==ajouer){
-							result= result==null?coupActuel:(result.getNote()<coupActuel.getNote()?result:coupActuel);
-							if ( precedentResult!=null&& precedentResult.getNote() > result.getNote()){
-								situation.retirerPion(coodCoup, ajouer);
-								coupJouer.remove(coupActuel);
+							result= result==null?coupActuel:(result.getMark()<coupActuel.getMark()?result:coupActuel);
+							if ( precedentResult!=null&& precedentResult.getMark() > result.getMark()){
+								situation.removeStone(coodCoup, ajouer);
+								movePlayed.remove(coupActuel);
 								return result;
 							}
 						}else{
-								result= result==null?coupActuel:(result.getNote()>coupActuel.getNote()?result:coupActuel);
-								if ( precedentResult!=null&& precedentResult.getNote() < result.getNote()){
-									situation.retirerPion(coodCoup, ajouer);
-									coupJouer.remove(coupActuel);
+								result= result==null?coupActuel:(result.getMark()>coupActuel.getMark()?result:coupActuel);
+								if ( precedentResult!=null&& precedentResult.getMark() < result.getMark()){
+									situation.removeStone(coodCoup, ajouer);
+									movePlayed.remove(coupActuel);
 									return result;
 								}
 						}
@@ -237,12 +237,12 @@ public class SunTsu {
 					//si
 						
 						//FIXME change here
-					temporaire=alphaBeta(profondeurmarx,profondeur-1, result, CouleurPion.oppose(ajouer));
-					coupActuel.setNote(temporaire.getNote());
+					temporaire=alphaBeta(profondeurmarx,profondeur-1, result, StoneColor.oppose(ajouer));
+					coupActuel.setMark(temporaire.getMark());
 					if (coul==ajouer){
-						result=result==null?coupActuel:result.getNote()<coupActuel.getNote()?result:coupActuel;
+						result=result==null?coupActuel:result.getMark()<coupActuel.getMark()?result:coupActuel;
 					}else{
-						result=result==null?coupActuel:result.getNote()>coupActuel.getNote()?result:coupActuel;
+						result=result==null?coupActuel:result.getMark()>coupActuel.getMark()?result:coupActuel;
 					}
 					if( profondeur== profondeurmarx){
 						this.play.setCoordinate(result.getPosition());
@@ -254,8 +254,8 @@ public class SunTsu {
 					
 						
 					}
-					situation.retirerPion(coodCoup, ajouer);
-					coupJouer.remove(coupActuel);
+					situation.removeStone(coodCoup, ajouer);
+					movePlayed.remove(coupActuel);
 				}
 			}
 		}
@@ -286,19 +286,19 @@ public class SunTsu {
 	 * @param coord the coordinate of the actuel cell
 	 * @return the group complete with all neigbours
 	 */
-	private Vide backtrackingEmptyCell(Pion[][] goban, Vide groupVide, Coordonnee coord){
-		if( coord.isValid(GoBan.TAILLE_GO_BAN)){
-			Pion itere=goban[coord.getX()][coord.getY()];
-			if( itere.getCouleur()!=CouleurPion.EMPTY){
-				groupVide.addGroup(itere.getGroupe());
+	private EmptyGroup backtrackingEmptyCell(Stone[][] goban, EmptyGroup groupVide, Coordinate coord){
+		if( coord.isValid(GoBan.GO_BAN_SIZE)){
+			Stone itere=goban[coord.getX()][coord.getY()];
+			if( itere.getColor()!=StoneColor.EMPTY){
+				groupVide.addGroup(itere.getGroup());
 			}else{
 				itere.setMarque(true);
 				if( groupVide.addPion(itere)){
 					for (int i=0; i<modifier.length;i++){
-						groupVide=backtrackingEmptyCell(goban, groupVide, new Coordonnee(coord.getX()+modifier[i], coord.getY()));
+						groupVide=backtrackingEmptyCell(goban, groupVide, new Coordinate(coord.getX()+modifier[i], coord.getY()));
 					}
 					for (int i=0; i<modifier.length;i++){
-						groupVide=backtrackingEmptyCell(goban, groupVide, new Coordonnee(coord.getX(), coord.getY()+modifier[i]));
+						groupVide=backtrackingEmptyCell(goban, groupVide, new Coordinate(coord.getX(), coord.getY()+modifier[i]));
 					}	
 				}
 			}
@@ -313,25 +313,25 @@ public class SunTsu {
 	 * @return a mark for the actual situation
 	 */
 	private Integer goBanEvaluation(){
-		Pion[][] matrice= situation.getGoban();
-		HashSet<Coordonnee> caseVide=new HashSet<Coordonnee>();
-		HashSet<Groupe> groupeNoir= new HashSet<Groupe>();
-		HashSet<Groupe> groupeBlanc= new HashSet<Groupe>();
+		Stone[][] matrice= situation.getGoban();
+		HashSet<Coordinate> caseVide=new HashSet<Coordinate>();
+		HashSet<Group> groupeNoir= new HashSet<Group>();
+		HashSet<Group> groupeBlanc= new HashSet<Group>();
 		int scoreBlanc=0;
 		int scoreNoir=0;
 		//on récupère toutes les cases vides
 		//et tous les groupes de pions
 		
 		
-		for (Pion vide :situation.getGroupeVide().getPions()){
+		for (Stone vide :situation.getEmptyStoneGroup().getStones()){
 			vide.setMarque(false);
 			caseVide.add(vide.getPosition());
 			
 		}
 			
 		
-		for (Groupe g: situation.getGroup()){
-			if( g.getCouleur()==CouleurPion.BLANC){
+		for (Group g: situation.getGroup()){
+			if( g.getGroupColor()==StoneColor.WHITE){
 				groupeBlanc.add(g);
 			}else{
 				groupeNoir.add(g);
@@ -346,19 +346,19 @@ public class SunTsu {
 		 * Parcours du set contenant les cases vides pour constitué des groupes de cases vides
 		 * pour pouvoir calculer les yeux etc.
 		 */
-		Iterator<Coordonnee> ite= caseVide.iterator();
-		LinkedList<Vide> groupsVide= new LinkedList<Vide>();
+		Iterator<Coordinate> ite= caseVide.iterator();
+		LinkedList<EmptyGroup> groupsVide= new LinkedList<EmptyGroup>();
 		
 		while (ite.hasNext()){
-			Coordonnee temp= ite.next();
+			Coordinate temp= ite.next();
 			if(!matrice[temp.getX()][temp.getY()].isMarque()){
-				groupsVide.add(backtrackingEmptyCell(matrice, new Vide(), temp));
+				groupsVide.add(backtrackingEmptyCell(matrice, new EmptyGroup(), temp));
 			}
 		}
 		
 		
-		HashMap<Vide, Integer> mapScoreOeilBlanc= new HashMap<Vide, Integer>();
-		HashMap<Vide, Integer> mapScoreOeilNoir= new HashMap<Vide, Integer>();
+		HashMap<EmptyGroup, Integer> mapScoreOeilBlanc= new HashMap<EmptyGroup, Integer>();
+		HashMap<EmptyGroup, Integer> mapScoreOeilNoir= new HashMap<EmptyGroup, Integer>();
 		
 		int nbYeuxNoir=0;
 		int nbOeilNoir=0;
@@ -367,11 +367,11 @@ public class SunTsu {
 		int nbOeilBlanc=0;
 		int nbBorgneBlanc=0;
 		
-		Iterator<Vide> emptyIterator= groupsVide.iterator();
+		Iterator<EmptyGroup> emptyIterator= groupsVide.iterator();
 		while (ite.hasNext()){
-			Vide emptTemp=emptyIterator.next();
-			if (emptTemp.getGroupeVoisin().size()==1){
-				if (((Groupe) emptTemp.getGroupeVoisin().toArray()[0]).getCouleur()==CouleurPion.NOIR){
+			EmptyGroup emptTemp=emptyIterator.next();
+			if (emptTemp.getNeigborsGroup().size()==1){
+				if (((Group) emptTemp.getNeigborsGroup().toArray()[0]).getGroupColor()==StoneColor.BLACK){
 					mapScoreOeilNoir.put(emptTemp,mapScoreOeilNoir.containsKey(emptTemp)?mapScoreOeilNoir.get(emptTemp)+1:new Integer(1) );											
 				}else{
 					mapScoreOeilBlanc.put(emptTemp,mapScoreOeilBlanc.containsKey(emptTemp)?mapScoreOeilBlanc.get(emptTemp)+1:new Integer(1) );
@@ -380,13 +380,13 @@ public class SunTsu {
 		}
 		
 		
-		Iterator<Vide> iterVideNoir=mapScoreOeilNoir.keySet().iterator();
-		Iterator<Vide> iterVideBlanc=mapScoreOeilBlanc.keySet().iterator();
-		Vide tempiter=null;
+		Iterator<EmptyGroup> iterVideNoir=mapScoreOeilNoir.keySet().iterator();
+		Iterator<EmptyGroup> iterVideBlanc=mapScoreOeilBlanc.keySet().iterator();
+		EmptyGroup tempiter=null;
 		while (iterVideNoir.hasNext()){
 			tempiter=iterVideNoir.next();
 			if( mapScoreOeilNoir.get(tempiter)==1){
-				if (tempiter.getPionVides().size()==1){
+				if (tempiter.getEmptyStones().size()==1){
 					nbBorgneNoir++;
 				}else{
 					nbOeilNoir++;
@@ -399,7 +399,7 @@ public class SunTsu {
 		while (iterVideBlanc.hasNext()){
 			tempiter=iterVideBlanc.next();
 			if( mapScoreOeilBlanc.get(tempiter)==1){
-				if (tempiter.getPionVides().size()==1){
+				if (tempiter.getEmptyStones().size()==1){
 					nbBorgneBlanc++;
 				}else{
 					nbOeilBlanc++;
@@ -411,7 +411,7 @@ public class SunTsu {
 		}
 		
 	
-		for (Groupe gblanc: groupeBlanc){
+		for (Group gblanc: groupeBlanc){
 			if( gblanc.getNbLiberty()==0){
 				scoreBlanc+=-100;
 			}else{
@@ -420,7 +420,7 @@ public class SunTsu {
 		}
 		
 		
-		for (Groupe gNoir: groupeNoir){
+		for (Group gNoir: groupeNoir){
 			if( gNoir.getNbLiberty()==0){
 				scoreNoir+=-100;
 			}else{
@@ -430,7 +430,7 @@ public class SunTsu {
 	
 		 
 		int score=0;
-		if (coul==CouleurPion.BLANC){
+		if (coul==StoneColor.WHITE){
 			scoreNoir=scoreNoir*-1;
 			score= scoreBlanc-scoreNoir+nbBorgneBlanc*100+nbBorgneNoir*-100+nbOeilBlanc*-50+nbOeilNoir*50+nbYeuxBlanc*-50+nbYeuxNoir*50;
 			

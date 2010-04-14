@@ -24,35 +24,35 @@ import java.util.HashSet;
  * 
  * */
 /**
- * 
- * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
  * Class that represent stone group's and their liberty
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
+ * 
  */
-public class Groupe {
+public class Group {
 
 	/**
 	 * Color of the group
 	 */
-	private CouleurPion couleur;
+	private StoneColor groupColor;
 
 	/**
 	 * The stone of the group
 	 */
-	private HashSet<Pion> pions;
+	private HashSet<Stone> stones;
 
 	/**
 	 * Coordinate of the group's liberty
 	 */
-	private HashSet<Coordonnee>  libertes;
+	private HashSet<Coordinate>  libertys;
 
 	/**
 	 * constructor
 	 * @param coul the color of the group
 	 */
-	public Groupe(CouleurPion coul) {
-		this.couleur = coul;
-		pions = new HashSet<Pion>();
-		libertes = new HashSet<Coordonnee>();
+	public Group(StoneColor coul) {
+		this.groupColor = coul;
+		stones = new HashSet<Stone>();
+		libertys = new HashSet<Coordinate>();
 	}
 	
 	/**
@@ -60,57 +60,57 @@ public class Groupe {
 	 * @return the number of liberty
 	 */
 	public int getNbLiberty() {
-		return libertes.size();
+		return libertys.size();
 	}
 
 	/**
 	 * 
 	 * @return the number of stone composed by the group
 	 */
-	public int getNbPions() {
-		return pions.size();
+	public int getStoneNumber() {
+		return stones.size();
 	}
 
 	/**
 	 * @return the corlor
 	 */
-	public CouleurPion getCouleur() {
-		return couleur;
+	public StoneColor getGroupColor() {
+		return groupColor;
 	}
 
 	/**
 	 * @param couleur the color to set
 	 */
-	public void setCouleur(CouleurPion couleur) {
-		this.couleur = couleur;
+	public void setGroupColor(StoneColor couleur) {
+		this.groupColor = couleur;
 	}
 
 	/**
 	 * @return the pions
 	 */
-	public HashSet<Pion> getPions() {
-		return pions;
+	public HashSet<Stone> getStones() {
+		return stones;
 	}
 
 	/**
 	 * @param pions the pions to set
 	 */
-	public void setPions(HashSet<Pion> pions) {
-		this.pions = pions;
+	public void setStones(HashSet<Stone> pions) {
+		this.stones = pions;
 	}
 
 	/**
 	 * @return the libertes
 	 */
-	public HashSet<Coordonnee> getLibertes() {
-		return libertes;
+	public HashSet<Coordinate> getLibertys() {
+		return libertys;
 	}
 
 	/**
 	 * @param libertes the libertes to set
 	 */
-	public void setLibertes(HashSet<Coordonnee> libertes) {
-		this.libertes = libertes;
+	public void setLibertys(HashSet<Coordinate> libertes) {
+		this.libertys = libertes;
 	}
 
 	/**
@@ -118,8 +118,8 @@ public class Groupe {
 	 * @param cood the coordinate of the liberty
 	 * @return if the coordinate is add (typically if the liberty where not already in the set)
 	 */
-	public boolean addLiberty(Coordonnee cood){
-		return this.libertes.add(cood);
+	public boolean addLiberty(Coordinate cood){
+		return this.libertys.add(cood);
 	}
 	
 	/**
@@ -127,8 +127,8 @@ public class Groupe {
 	 * @param cood
 	 * @return if the coordinate where removed (typically if the liberty where in the set)
 	 */
-	public boolean removeLiberty(Coordonnee cood){
-		return libertes.remove(cood);
+	public boolean removeLiberty(Coordinate cood){
+		return libertys.remove(cood);
 	}
 	
 	/**
@@ -136,8 +136,8 @@ public class Groupe {
 	 * @param cood
 	 * @return
 	 */
-	public boolean isALiberty(Coordonnee cood){
-		return libertes.contains(cood);
+	public boolean isALiberty(Coordinate cood){
+		return libertys.contains(cood);
 	}
 	
 	/**
@@ -145,8 +145,8 @@ public class Groupe {
 	 * @param pi
 	 * @return if the stone where removed (typically if the stone where in the set)
 	 */
-	public boolean removePion(Pion pi){
-		return this.pions.remove(pi);
+	public boolean removeStone(Stone pi){
+		return this.stones.remove(pi);
 	}
 	
 	/**
@@ -154,8 +154,8 @@ public class Groupe {
 	 * @param pi
 	 * @return if the stone where removed (typically if the stone where not already in the set)
 	 */
-	public boolean addPion(Pion pi){
-		return pions.add(pi);
+	public boolean addPion(Stone pi){
+		return stones.add(pi);
 	}
 	
 	/**
@@ -163,24 +163,24 @@ public class Groupe {
 	 * @param pi
 	 * @return if the stone is in the group
 	 */
-	public boolean containPion(Pion pi){
-		return pions.contains(pi);
+	public boolean containStone(Stone pi){
+		return stones.contains(pi);
 	}
 	
 	/**
 	 * Add a collection of liberty to the group
 	 * @param calculPionLiberte
 	 */
-	public void addLibertys(Collection<Coordonnee> calculPionLiberte) {
-		this.libertes.addAll(calculPionLiberte);
+	public void addLibertys(Collection<Coordinate> calculPionLiberte) {
+		this.libertys.addAll(calculPionLiberte);
 	}
 
 	/**
 	 * remove a collection of liberty to the group
 	 * @param toRemove
 	 */
-	public void removeLibertys(Collection<Coordonnee> toRemove) {
-		this.libertes.removeAll(toRemove);
+	public void removeLibertys(Collection<Coordinate> toRemove) {
+		this.libertys.removeAll(toRemove);
 	}
 	
 	/**
@@ -189,18 +189,18 @@ public class Groupe {
 	 * @param group the other group to fusion with
 	 * @return the fusioned group 
 	 */
-	public Groupe fusionGroup(Groupe group){
-		Groupe result=this;
+	public Group fusionGroup(Group group){
+		Group result=this;
 		
-		if(group.getNbPions()>result.getNbPions()){
+		if(group.getStoneNumber()>result.getStoneNumber()){
 			result=group;
 			group=this;
 		}
 		
-		result.addLibertys(group.getLibertes());
+		result.addLibertys(group.getLibertys());
 		
-		for( Pion pi: group.getPions()){
-			pi.setGroupe(result);
+		for( Stone pi: group.getStones()){
+			pi.setGroup(result);
 			result.addPion(pi);
 		}
 
@@ -218,8 +218,8 @@ public class Groupe {
 	 * clear the group liberty and stone
 	 */
 	public void clear(){
-		this.libertes.clear();
-		this.pions.clear();
+		this.libertys.clear();
+		this.stones.clear();
 	}
 	
 	

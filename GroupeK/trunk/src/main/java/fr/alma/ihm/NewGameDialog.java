@@ -32,10 +32,11 @@ import fr.alma.controler.Controler;
  * 
  * */
 /**
+ * Class that represent the option dialog
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
- * Class that represent the option dialog 
+ *  
  */
-public class NouvellePartieDialog extends JDialog {
+public class NewGameDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -85,7 +86,7 @@ public class NouvellePartieDialog extends JDialog {
 	 * @param owner the owner
 	 * @param ctrl the controler
 	 */
-	public NouvellePartieDialog(Fenetre owner, Controler ctrl) {
+	public NewGameDialog(MainFrame owner, Controler ctrl) {
 		super(owner, "Le choix des options", true);
 
 		JButton cancel = new JButton("Annuler");
@@ -146,11 +147,11 @@ public class NouvellePartieDialog extends JDialog {
 		panel.add(cancel);
 
 		this.radioHumanHuman.addActionListener(ctrl.getFactory()
-				.disableChoiceIa());
-		this.radioAiHuman.addActionListener(ctrl.getFactory().enableChoiceIa());
+				.getDisableChoiceAiListener());
+		this.radioAiHuman.addActionListener(ctrl.getFactory().getEnableChoiceAiListener());
 
-		cancel.addActionListener(ctrl.getFactory().desAfficheDiagNewGame());
-		okButton.addActionListener(ctrl.getFactory().newGameListener());
+		cancel.addActionListener(ctrl.getFactory().getUnshowDiagNewGameListener());
+		okButton.addActionListener(ctrl.getFactory().getNewGameListener());
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.setSize(190, 295);
 		this.setResizable(false);
@@ -172,7 +173,7 @@ public class NouvellePartieDialog extends JDialog {
 	 * Get the capture goal selected 
 	 * @return goal number
 	 */
-	public int getNbObjectifSelected() {
+	public int getGoalNumberSelected() {
 		if (radionCapttrois.isSelected()) {
 			return 3;
 		} else if (radionCaptcinq.isSelected()) {
@@ -185,7 +186,7 @@ public class NouvellePartieDialog extends JDialog {
 	 * Get the difficulty selected
 	 * @return 1 easy, 2 medium, 3 hard
 	 */
-	public int getDifficulte() {
+	public int getDifficulty() {
 		if (radioMoyen.isSelected()) {
 			return 1;
 		} else if (radioDur.isSelected()) {
@@ -207,7 +208,7 @@ public class NouvellePartieDialog extends JDialog {
 	 * enable or disable the choice of the Ai difficulty
 	 * @param enab 
 	 */
-	public void enableChoiceDifficulte(boolean enab) {
+	public void enableChoiceDifficulty(boolean enab) {
 		radioFacile.setEnabled(enab);
 		radioMoyen.setEnabled(enab);
 		radioDur.setEnabled(enab);
@@ -228,6 +229,6 @@ public class NouvellePartieDialog extends JDialog {
 		radionCapttrois.setSelected(false);
 		radionCaptun.setSelected(true);
 		radionCaptcinq.setSelected(false);
-		this.enableChoiceDifficulte(false);
+		this.enableChoiceDifficulty(false);
 	}
 }
