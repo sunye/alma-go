@@ -26,11 +26,11 @@ public class Jeu {
 	private static Pion pionCapture;
 			
 	/**
-	 * methode principale de gestion des regles de jeu. détermine si un éventuel coup sur la grille est valable ou pas.
-	 * @param grille: la grille en cours 
-	 * @param p: le point où devrait être posé le pion sur le goban
-	 * @param t: celui qui a la main.
-	 * @return : une valeur déterminant si le coup devant etre joué est valide, est invalide, génere une capture ou un suicide
+	 * Méthhode principale de gestion des regles de jeu. détermine si un éventuel coup sur la grille est valable ou pas.
+	 * @param grille la grille en cours 
+	 * @param p le point où devrait être posé le pion sur le goban
+	 * @param t celui qui a la main.
+	 * @return une valeur déterminant si le coup devant etre joué est valide, est invalide, génere une capture ou un suicide
 	 */
 	public static int SimulerJeu(Grille grille,Point p,Tour t){
 		Pion pion;
@@ -49,28 +49,22 @@ public class Jeu {
 		else{			
 					
 			if (grille.Contenu[x][y].equals(new Pion(new Point(x,y)))){
-				//grille.Contenu[x][y]=pion;
-				/*
-				 * si la case est vide trois situations se prï¿½sentent soit: 
-				 * une prise
-				 * un suicide
-				 * rien, une pose simple du pion*/
-				
+								
 				boolean prise=false;
-				int a=getLiberte(grille,new Point(x, y), pion.couleur);//System.out.println(a);
+				int a=getLiberte(grille,new Point(x, y), pion.couleur);
 				if (a==0){	
 				
 				// test de la situation de prise pour le cas de prise avec suicide
 					if((existN(grille,x, y,pion.couleur)))
 						if((!pion.couleur.equals(grille.Contenu[x-1][y].couleur))){
-							System.out.println("test si prise au nord");
+							
 						voisins=new ArrayList<Pion>();
 						voisins.add(grille.Contenu[x][y]);
 						int b=(getLiberte(grille,new Point(x-1, y), grille.Contenu[x-1][y].couleur));
-						System.out.println("lib au nord="+b);
+						
 						if(b==0){
 						  prise=true;
-							System.out.println("Prise au Nord de ["+x+","+y+"]");
+							
 							pionCapture=grille.Contenu[x-1][y];
 						}
 	
@@ -78,76 +72,70 @@ public class Jeu {
 					
 					if((existS(grille,x, y,pion.couleur)))
 						if((!pion.couleur.equals(grille.Contenu[x+1][y].couleur))){
-							System.out.println("test si prise au Sud");
+							
 						voisins=new ArrayList<Pion>();
 						voisins.add(grille.Contenu[x][y]);
 						int b=getLiberte(grille,new Point(x+1, y), grille.Contenu[x+1][y].couleur);
-						System.out.println("lib au sud="+b);
+						
 						if(b==0){
 							prise=true;
-							System.out.println("Prise au sud de ["+x+","+y+"]");
+							
 							pionCapture=grille.Contenu[x+1][y];
 						}
 					}
 					
 					if((existE(grille,x, y,pion.couleur)))
 						if((!pion.couleur.equals(grille.Contenu[x][y+1].couleur))){
-							System.out.println("test si prise a Est");
+							
 						voisins=new ArrayList<Pion>();
 						voisins.add(grille.Contenu[x][y]);
 						int b=(getLiberte(grille,new Point(x, y+1), grille.Contenu[x][y+1].couleur));
-						System.out.println("a l'est b="+b);
+						
 						if(b==0){
 							prise=true;
-							System.out.println("Prise -> l'est de ["+x+" , "+y+"]");
+							
 							pionCapture=grille.Contenu[x][y+1];
 						}
 					}
 										
 					if((existO(grille,x, y,pion.couleur)))
 						if(!(pion.couleur.equals(grille.Contenu[x][y-1].couleur))){
-							System.out.println("test si prise a l'ouest");
+							
 						voisins=new ArrayList<Pion>();
 						voisins.add(grille.Contenu[x][y]);
 						int b=getLiberte(grille,new Point(x, y-1), grille.Contenu[x][y-1].couleur);
-						System.out.println("à l'ouest sa lib:"+b);
+						
 						if(b==0){
 							prise=true;
-							//System.out.println("Prise -> l'ouest de ["+x+" , "+y+"]");
 							pionCapture=grille.Contenu[x][y-1];
 						}
 					}
 					
-				     /*si suicide arreter le jeu
-				      * sinon c'est une situation de suicide*/
-					
+				     
 					setVoisins(new ArrayList<Pion>());
 					if (prise){
-						//grille.Contenu[x][y]=pion;
-						System.out.println("prise");
+					
 						return CAPTURE;
 					}
 					else{
-						//System.out.println("Situation de suicide interdite!!!!");
+						
 						return SUICIDE;
 					}
 					
 			}
 			else{
 				
-				/*si la libertï¿½ de la case [x,y] dans la matrice est non nulle
-				 * on teste d'abors s'il y'a une prise 
-				 *  sinon on pose simplement le pion sur le goban*/
+				
 				if((existN(grille,x, y,pion.couleur))){
 					if(!((pion.couleur.equals(grille.Contenu[x-1][y].couleur)))){
-						//System.out.println("test si prise au nord");
+					
 					voisins=new ArrayList<Pion>();
 					voisins.add(grille.Contenu[x][y]);
 					int b=getLiberte(grille,new Point(x-1, y), grille.Contenu[x-1][y].couleur);
-					//System.out.println("au nord sa lib="+b);
+				
 					if(b==0){
 					  prise=true;
-						//System.out.println("Prise au Nord de ["+x+","+y+"]");
+						
 					  	pionCapture=grille.Contenu[x-1][y];
 					}
 	
@@ -156,55 +144,54 @@ public class Jeu {
 				
 				if(existS(grille,x, y,pion.couleur))
 						if(!(pion.couleur.equals(grille.Contenu[x+1][y].couleur))){
-							//System.out.println("test si prise au Sud");
+							
 					voisins=new ArrayList<Pion>();
 					voisins.add(grille.Contenu[x][y]);
 					int b=getLiberte(grille,new Point(x+1, y), grille.Contenu[x+1][y].couleur);
-					//System.out.println("au sud"+b);
+					
 					if(b==0){
 						prise=true;
-						//System.out.println("Prise au sud de ["+x+","+y+"]");
+					
 						pionCapture=grille.Contenu[x+1][y];
 					}
 				}
 				
 				if((existE(grille, x, y,pion.couleur)))
 					if((!(pion.couleur.equals(grille.Contenu[x][y+1].couleur)))){
-						//System.out.println("test si prise a L'Est");
+						
 					voisins=new ArrayList<Pion>();
 					voisins.add(grille.Contenu[x][y]);
 					int b=getLiberte(grille, new Point(x, y+1), grille.Contenu[x][y+1].couleur);
-					//System.out.println("à l'est lib="+b);
+				
 					if((b==0)){
 						prise=true;
-						//System.out.println("Prise -> l'est de ["+x+" , "+y+"]");
+						
 						pionCapture=grille.Contenu[x][y+1];
 					}
 				}
 								
 				if((existO(grille, x, y,pion.couleur)))
 					if(!(pion.couleur.equals(grille.Contenu[x][y-1].couleur))){
-						//System.out.println("test si prise a O");
+						
 					voisins=new ArrayList<Pion>();
 					voisins.add(grille.Contenu[x][y]);
 					int b=getLiberte(grille, new Point(x, y-1), grille.Contenu[x][y-1].couleur);
-					//System.out.println("à l'oeust lib="+b);
+				
 					if((b==0)){
 						prise=true;
-						//System.out.println("Prise -> l'ouest de ["+x+" , "+y+"]");
+						
 						pionCapture=grille.Contenu[x][y-1];
 					}
 				}
 				setVoisins(new ArrayList<Pion>());
 				if (prise){
-					//grille.Contenu[x][y]=pion;
-					//System.out.println("Prise");
+					
 					return CAPTURE;
 				}
 					
 				
 				else{
-					//grille.Contenu[x][y]=pion;
+					
 					return VALIDE;
 					}
 				}
@@ -213,9 +200,8 @@ public class Jeu {
 			
 			
 			else{
-				System.out.println("erreur");
-				setVoisins(new ArrayList<Pion>());
 				
+				setVoisins(new ArrayList<Pion>());
 				return INVALIDE;
 				
 				}
@@ -223,8 +209,8 @@ public class Jeu {
 	}
 
 	/**
-	 * 
-	 * @param g
+	 * Méthode pour le joup joué par la machine
+	 * @param g etat de la grille
 	 * @return
 	 */
 	public static Point jouerMachine(Grille g,Tour t) {
@@ -239,12 +225,12 @@ public class Jeu {
  		ArrayList<Pion> cjHumain=new ArrayList<Pion>();
 		ArrayList<Pion> cjMachine=new ArrayList<Pion>();
 		if(cj.size()!=0){
-		System.out.println(cj.size());
 		
-			if (cj.size()<30){
+		
+			if (cj.size()<40){
 				
 				setVoisins(new ArrayList<Pion>());
-				System.out.println("initialisation des voisins");
+				
 				for(Pion pion:cj){
 					if((getLiberteFixe(g, pion.position)>0))
 						cjHumain.add(pion);
@@ -254,9 +240,8 @@ public class Jeu {
 						cjMachine.add(pion);
 				}
 				
-				System.out.println(cjHumain.size());
 				
-				min=getLiberteFixe(g,cjHumain.get(0).position);System.out.println(min);
+				min=getLiberteFixe(g,cjHumain.get(0).position);
 				for(Pion pion:cjMachine){
 					if((getLiberteFixe(g,pion.position)<min)&&(SimulerJeu(g, pion.position, t)!=SUICIDE)){
 						min=getLiberteFixe(g,pion.position);
@@ -298,12 +283,12 @@ public class Jeu {
 			else{
 				
 				Arbre a = new Arbre(g);
-				p = a.remplirArbre();
+				a.remplirArbre();
 				MinMax.execute(a);
 				ArrayList<Noeud> listeF = a.racine.listeFils;
 
 			for(Noeud n:listeF){
-				System.out.println(n.getNote());
+				
 				for(Pion pion:cj){
 					if((EstVoisin(n.getCoup(),pion))&& (n.getNote()==a.racine.getNote())&&(pion.couleur.equals(Couleur.BLANC)));
 							p = n.getCoup().position;
@@ -336,7 +321,7 @@ public class Jeu {
        	 for(int j=0;j<9;j++) {
        		if((g.Contenu[i][j].couleur.equals(cPrime))) {
        			cj.add(g.Contenu[i][j]); 
-       		System.out.println("Coup jouer : "+g.Contenu[i][j].position);}
+       		}
        	 }
 		return cj;
     }
@@ -354,7 +339,7 @@ public class Jeu {
 	       	 for(int j=0;j<9;j++) {
 	       		if((g.Contenu[i][j].couleur.equals(c))) {
 	       			cj.add(g.Contenu[i][j]); 
-	       		System.out.println("Coup jouer : "+g.Contenu[i][j].position);}
+	       		}
 	       	 }
 			return cj;
 		}

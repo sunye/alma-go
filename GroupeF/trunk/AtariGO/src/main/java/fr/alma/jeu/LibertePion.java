@@ -15,7 +15,7 @@ public class LibertePion {
 	
 	/**
 	 * Getter
-	 * @return
+	 * @return retourne les voisins
 	 */
 	public static ArrayList<Pion> getVoisins() {
 		return voisins;
@@ -23,17 +23,17 @@ public class LibertePion {
 
 	/**
 	 *Setter
-	 * @param voisins
+	 * @param voisins spécifie les voisisn
 	 */
 	public static void setVoisins(ArrayList<Pion> voisins) {
 		LibertePion.voisins = voisins;
 	}
 	
 	/**
-	 *Determine la liberté fixe d'un pion( nombre de case non occupée autour d'elle
-	 * @param g: grille courante
-	 * @param position: la position du pion sur la grille 
-	 * @return :le nombre de liberté(entre 0et 4)
+	 * Determine la liberté fixe d'un pion( nombre de case non occupée autour d'elle
+	 * @param g grille courante
+	 * @param position la position du pion sur la grille 
+	 * @return le nombre de liberté(entre 0et 4)
 	 */
 	public static int getLiberteFixe(Grille g, Point position) {
 		
@@ -55,10 +55,10 @@ public class LibertePion {
 	
 	/**
 	 * Détermine la liberté d'un groupe de pions par simple connaissance d'un représentant du groupe et de la grille courante. 
-	 * @param grille: la grille courante
-	 * @param p: la position du représentant sur la grille
-	 * @param c: la couleur du groupe
-	 * @return : le nombre de liberté aux frontières du groupe
+	 * @param grille la grille courante
+	 * @param p la position du représentant sur la grille
+	 * @param c la couleur du groupe
+	 * @return le nombre de liberté aux frontières du groupe
 	 */
 	public static int getLiberte(Grille grille, Point p,Couleur c){ 
 		

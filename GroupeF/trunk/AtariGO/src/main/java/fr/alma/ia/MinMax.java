@@ -19,7 +19,7 @@ public class MinMax {
 	
 	/**
 	 * Execute le minMax
-	 * @param a
+	 * @param a l'arbre a evaluer
 	 * @return le min ou max
 	 */
 	public static int execute(Arbre a){
@@ -57,10 +57,8 @@ public class MinMax {
 							
 			}else {
 				temp = (ArrayList<Pion>) coups.clone();
-				//-------------------------------------
-				valeur = Ia.fonctionEvaluation(getGrilleFromList(coupsJouer));
 				
-				//System.out.println("Valeur de fonction = "+value);
+				valeur = Ia.fonctionEvaluation(getGrilleFromList(coupsJouer));
 			}
 						
 			coupsJouer.remove(coups.get(i));
@@ -69,7 +67,7 @@ public class MinMax {
 	}
 	
 	/**
-	 * retourne le min
+	 * Retourne le min
 	 * @param n noeud concerné
 	 * @param temp l'etat du jeu
 	 * @param prof la profondeur
@@ -90,9 +88,8 @@ public class MinMax {
 		
 	}
 
-
 	/**
-	 * retourne le max
+	 * Retourne le max
 	 * @param n le noeud concerné
 	 * @param temp l'etat du jeu
 	 * @param prof la profondeur
