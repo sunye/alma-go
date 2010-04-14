@@ -155,8 +155,8 @@ public class Game {
                     return false;
                 }
             }
-            System.out.println(groupes);
-            System.out.println(goban);
+//            System.out.println(groupes);
+//            System.out.println(goban);
             return true;
         } else {
             return false;
