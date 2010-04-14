@@ -19,7 +19,7 @@ package fr.alma.atarigo;
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-public abstract class Player {
+public abstract class AbstractPlayer {
 
 	/** Color of the player (black or white) */
 	public Stone color;
@@ -31,7 +31,7 @@ public abstract class Player {
 	 * @param color color of the stones played by the player
 	 * @param name name of the player (not used yet)
 	 */
-	public Player(Stone color, String name){
+	public AbstractPlayer(Stone color, String name){
 		this.color = color;
 		this.name = name;
 	}

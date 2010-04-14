@@ -18,7 +18,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
-import fr.alma.atarigo.Player;
+import fr.alma.atarigo.AbstractPlayer;
 import fr.alma.atarigo.HumanPlayer;
 import fr.alma.atarigo.IAPlayer;
 import fr.alma.atarigo.Stone;
@@ -171,8 +171,8 @@ public class NewGameDialog extends JDialog {
      * @throws InterruptedException
      */
     public void startGame() throws InterruptedException {
-    	Player player1;
-    	Player player2;
+    	AbstractPlayer player1;
+    	AbstractPlayer player2;
     	if(combo1.getSelectedItem().toString().equals("Humain")){
     		player1 = new HumanPlayer(Stone.BLACK,"bob");
     		myApp.panInfos.rmBlackDif();

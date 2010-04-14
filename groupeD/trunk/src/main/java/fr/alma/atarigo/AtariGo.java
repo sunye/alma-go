@@ -48,11 +48,11 @@ public class AtariGo {
  /** Objective of captured stones to win the game */
  public int captureObjective;
  /** currentPlayer is player1 or player2. Depends on who got the turn. */
- public Player currentPlayer;
+ public AbstractPlayer currentPlayer;
  /** the player1 (black stones) */
- public Player player1;
+ public AbstractPlayer player1;
  /** the player2 (white stones) */
- public Player player2;
+ public AbstractPlayer player2;
 
  /**
   * Play a move and return the result. If necessary, calculates new groups and caught stones.
@@ -128,7 +128,7 @@ public boolean canPlayMove(Stone player){
   * @param player1 type of the player (human or AI)
   * @param player2 type of the player (humain or AI)
   */
- public AtariGo(int lines, int columns,Player player1,Player player2) {
+ public AtariGo(int lines, int columns,AbstractPlayer player1,AbstractPlayer player2) {
 		goban = new Goban(lines, columns);
 		end = false;
 		totalMoves=0;
