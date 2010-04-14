@@ -8,7 +8,7 @@ import java.util.Vector;
  * $Date$ 
  * $Revision$  
  *  
- * $license$
+ * license
  * 
  * */
 /**

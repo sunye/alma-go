@@ -3,7 +3,7 @@ package fr.alma.modele.intelligence;
  * $Date$ 
  * $Revision$ 
  *  
- * $license$
+ * license
  * 
  * */
 /**

@@ -10,7 +10,7 @@ import fr.alma.modele.CouleurPion;
  * $Date$
  * $Revision$ 
  * 
- * $license$
+ * license
  * 
  * */
 /**

@@ -8,7 +8,7 @@ import fr.alma.modele.intelligence.SunTsu;
  * $Date$ 
  * $Revision$  
  *  
- * $license$
+ * license
  * 
  * */
 /**

@@ -19,7 +19,7 @@ import fr.alma.modele.Vide;
  * $Date$ 
  * $Revision$ 
  *  
- * $license$
+ * license
  * 
  * */
 /**

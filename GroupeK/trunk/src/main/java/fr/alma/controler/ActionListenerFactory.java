@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
  * $Date$ 
  * $Revision$ 
  * 
- * $license$
+ * license
  * 
  * */
 
