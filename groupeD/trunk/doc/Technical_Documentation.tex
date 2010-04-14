@@ -45,6 +45,7 @@ captionpos=b,%
 
 \usepackage{url} 
 \usepackage{fancyhdr}
+\usepackage{caption}
 \pagestyle{fancy}
 \renewcommand{\headrulewidth}{0pt}
 \fancyhead{}
@@ -176,6 +177,42 @@ Here is an activity diagram representing the inter-component articulation :
 \caption{Activity diagram of the evaluation}
 \label{activity_diagram}
 \end{figure}
+
+\chapter*{Implementation}
+\addcontentsline{toc}{chapter}{Implementation}
+
+\section{Architecture Program}
+
+\subsection{Package Diagram}
+
+\begin{center}
+	\includegraphics[scale=0.70]{package_diag}
+	\captionof{figure}{Package diagram of Obigo}
+\end{center}
+
+    Our program is organized in three packages. "fr.alma.atarigo" which represents the rules and mechanisms of atarigo then, the package "fr.alma.ia" which is responsible for calculations of artificial intelligence and finally, the package "fr.alma.ui" representing the user interface which communicate with the game.
+
+\subsection{Class Diagram}
+
+\subsubsection{AtariGo}
+
+\begin{center}
+	\includegraphics[scale=0.70]{class_diag}
+	\captionof{figure}{Class diagram of AtariGo}
+\end{center}
+
+    Here is a view of classes interactions in the Atarigo Package. We can see that the class Atarigo is at the center of the package.It has the method "playMovie" that does all the mechanisms created by the move of a pawn.
+    When calling this method, there put a stone on the board and return the type of move. This type is defined in the enumerated class Move. If INVALID, the move is not playable, if WIN at least once captured a pawn and, finally, if it is NEUTRAL, the move is playable without causing catch.
+The algorithm returning these statements makes all the possible checks on the position played and especially with the method called by the class writeCell Goban.
+
+\subsubsection{Goban}
+
+
+	The class contains the board game and owns several methods for the analysis of Goban. It contains a square matrix of the type listed STONE. This type is either BLACK to represent a box containing a black stone, WHITE for a white stone or EMPTY for an empty square. As can be seen in the class diagram, class STONE is also used to set the color played by a player or the color of a group of stones.
+
+Position and Direction classes are classes facilitating access to positions of Goban.
+
+    The class also has an instance of GroupsList. This class represents a list of all groups of stones from the game. A group is a set of stones of the same color connected to another one vertically and horizontally. It is necessary to store the list of groups to keep a clear view of the state.
 
 \chapter*{Optimizing AI}
 \addcontentsline{toc}{chapter}{Optimizing AI}
