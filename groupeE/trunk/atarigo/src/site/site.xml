@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Alma Go">
+  <publishDate position="none" />
+  <version position="none" />
+  <body>
+    <menu name="Common">
+      <item name="Introduction" href="index.html" />
+      <item name="Project structure" href="structure.html" />
+    </menu>
+    <menu name="Project documentation">
+      <item name="Informations" href="informations.html" collapse="true">
+        <item name="Project abstract" href="project-summary.html"/>
+        <item name="Project team" href="team-list.html"/>
+        <item name="Dependencies" href="dependencies.html"/>
+        <item name="Project plugins" href="plugins.html"/>
+      </item>
+      <item name="Reports" href="rapports.html" collapse="true">
+        <item name="JavaDocs" href="apidocs/index.html"/>
+        <item name="Tests JavaDocs" href="testapidocs/index.html"/>
+        <item name="Unit Tests" href="surefire-report.html"/>
+        <item name="Unit Tests Coverage" href="cobertura/index.html"/>
+        <item name="Checkstyle" href="checkstyle.html"/>
+      </item>
+    </menu>
+  </body>
+</project>
