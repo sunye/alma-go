@@ -12,8 +12,8 @@ import junit.framework.TestCase;
 public class TestAtarigo extends TestCase {
 
         private AtariGo atarigo;
-        private Player j1;
-        private Player j2;
+        private AbstractPlayer j1;
+        private AbstractPlayer j2;
         
     protected void setUp() {
         atarigo = new AtariGo(9,9);
