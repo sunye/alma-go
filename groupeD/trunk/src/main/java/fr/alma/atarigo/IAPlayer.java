@@ -19,7 +19,7 @@ package fr.alma.atarigo;
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-public class IAPlayer extends Player{
+public class IAPlayer extends AbstractPlayer{
 
 	/** the bestmove kept by an AI player. */
 	public Position bestMove;

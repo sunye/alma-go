@@ -13,7 +13,7 @@ import javax.swing.JToolBar;
 import javax.swing.JMenu;
 
 import fr.alma.atarigo.AtariGo;
-import fr.alma.atarigo.Player;
+import fr.alma.atarigo.AbstractPlayer;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -105,7 +105,7 @@ class MyApplication extends JFrame {
   * @param player2 the type of player human or AI
   * @throws InterruptedException
   */
- public void startGame(Player player1, Player player2,int challengeNb) throws InterruptedException{
+ public void startGame(AbstractPlayer player1, AbstractPlayer player2,int challengeNb) throws InterruptedException{
 	 atarigo.end=true;
 	 atarigo = new AtariGo(9,9,player1,player2);
 	 atarigo.captureObjective=challengeNb;

@@ -19,7 +19,7 @@ package fr.alma.atarigo;
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-public class HumanPlayer extends Player{
+public class HumanPlayer extends AbstractPlayer{
 
 	/**
 	 * Logic contructor
