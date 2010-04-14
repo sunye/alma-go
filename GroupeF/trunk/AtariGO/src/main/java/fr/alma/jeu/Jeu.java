@@ -5,16 +5,15 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import fr.alma.ia.MinMax;
-import fr.alma.ihm.Tour;
 import fr.alma.structure.Arbre;
 import fr.alma.structure.Noeud;
 import static fr.alma.jeu.LibertePion.*;
 import static fr.alma.jeu.OutilsJEU.*;
 
 /**
- * @author landryngassa
- * @author lahuidi
- * 
+ * Classe qui gere le jeu et la stratégie
+ * @author Hubert Ngassa
+ *
  */
 public class Jeu {
 	
@@ -24,6 +23,7 @@ public class Jeu {
 	public static final int CAPTURE = 3;
 	
 	public static int min = 0;
+	private static Pion pionCapture;
 			
 	/**
 	 * 
@@ -32,15 +32,14 @@ public class Jeu {
 	 * @param t
 	 * @return
 	 */
-	private static Pion pionCapture;
 	public static int SimulerJeu(Grille grille,Point p,Tour t){
 		Pion pion;
 		
 		int x = p.x;
 		int y = p.y;
 		
-		if(t == Tour.BLANC) pion=new Pion(Pion.Couleur.BLANC,new Point(x,y));
-		else pion=new Pion(Pion.Couleur.NOIR,new Point(x,y));
+		if(t == Tour.BLANC) pion=new Pion(Couleur.BLANC,new Point(x,y));
+		else pion=new Pion(Couleur.NOIR,new Point(x,y));
 			
 		if((x<0)||(x>8)||(y<0)||(y>8)){
 			
@@ -231,9 +230,9 @@ public class Jeu {
 	public static Point jouerMachine(Grille g,Tour t) {
 		
 		Point p=new Point();
-		Pion.Couleur c;
-		if(t==Tour.BLANC) c = Pion.Couleur.BLANC;
-		else c = Pion.Couleur.NOIR;
+		Couleur c;
+		if(t==Tour.BLANC) c = Couleur.BLANC;
+		else c = Couleur.NOIR;
 				
 		ArrayList<Pion> cj=getCoupsJouerAd(g,c);
 		ArrayList<Pion> cMachine=getCoupsJouerM(g,c);
@@ -262,16 +261,16 @@ public class Jeu {
 					if((getLiberteFixe(g,pion.position)<min)&&(SimulerJeu(g, pion.position, t)!=SUICIDE)){
 						min=getLiberteFixe(g,pion.position);
 						if(pion.position.x>0)
-							if(((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Pion.Couleur.NULL)))
+							if(((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Couleur.NULL)))
 								p=new Point(pion.position.x-1,pion.position.y);
 						if(pion.position.x<8)
-							if((g.Contenu[pion.position.x+1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
+							if((g.Contenu[pion.position.x+1][pion.position.y]).couleur.equals(Couleur.NULL))
 								p=new Point(pion.position.x+1,pion.position.y);
 						if(pion.position.y>0)
-							if((g.Contenu[pion.position.x][pion.position.y-1]).couleur.equals(Pion.Couleur.NULL))
+							if((g.Contenu[pion.position.x][pion.position.y-1]).couleur.equals(Couleur.NULL))
 								p=new Point(pion.position.x,pion.position.y-1);
 						if(pion.position.y<8)
-							if((g.Contenu[pion.position.x][pion.position.y+1]).couleur.equals(Pion.Couleur.NULL))
+							if((g.Contenu[pion.position.x][pion.position.y+1]).couleur.equals(Couleur.NULL))
 								p=new Point(pion.position.x,pion.position.y+1);
 						
 					}
@@ -281,16 +280,16 @@ public class Jeu {
 					if((getLiberteFixe(g,pion.position)<=min)&&(SimulerJeu(g, pion.position, t)!=SUICIDE)){
 						min=getLiberteFixe(g,pion.position);
 						if(pion.position.x>0)
-							if((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
+							if((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Couleur.NULL))
 								p=new Point(pion.position.x-1,pion.position.y);
 						if(pion.position.x<8)
-							if((g.Contenu[pion.position.x+1][pion.position.y]).couleur.equals(Pion.Couleur.NULL))
+							if((g.Contenu[pion.position.x+1][pion.position.y]).couleur.equals(Couleur.NULL))
 								p=new Point(pion.position.x+1,pion.position.y);
 						if(pion.position.y>0)
-							if((g.Contenu[pion.position.x][pion.position.y-1]).couleur.equals(Pion.Couleur.NULL))
+							if((g.Contenu[pion.position.x][pion.position.y-1]).couleur.equals(Couleur.NULL))
 								p=new Point(pion.position.x,pion.position.y-1);
 						if(pion.position.y<8)
-							if((g.Contenu[pion.position.x][pion.position.y+1]).couleur.equals(Pion.Couleur.NULL))
+							if((g.Contenu[pion.position.x][pion.position.y+1]).couleur.equals(Couleur.NULL))
 								p=new Point(pion.position.x,pion.position.y+1);
 					}
 				}
@@ -306,7 +305,7 @@ public class Jeu {
 			for(Noeud n:listeF){
 				System.out.println(n.getNote());
 				for(Pion pion:cj){
-					if((EstVoisin(n.getCoup(),pion))&& (n.getNote()==a.racine.getNote())&&(pion.couleur.equals(Pion.Couleur.BLANC)));
+					if((EstVoisin(n.getCoup(),pion))&& (n.getNote()==a.racine.getNote())&&(pion.couleur.equals(Couleur.BLANC)));
 							p = n.getCoup().position;
 				}
 			}
@@ -325,13 +324,13 @@ public class Jeu {
 	 * @param c
 	 * @return
 	 */
-	public static ArrayList<Pion> getCoupsJouerAd(Grille g,Pion.Couleur c){
+	public static ArrayList<Pion> getCoupsJouerAd(Grille g,Couleur c){
 
-		Pion.Couleur cPrime;
-		if(c.equals(Pion.Couleur.NOIR))
-			cPrime=Pion.Couleur.BLANC;
+		Couleur cPrime;
+		if(c.equals(Couleur.NOIR))
+			cPrime=Couleur.BLANC;
 		else
-			cPrime=Pion.Couleur.NOIR;
+			cPrime=Couleur.NOIR;
 		ArrayList<Pion> cj = new ArrayList<Pion>();
 		for(int i=0;i<9;i++) 
        	 for(int j=0;j<9;j++) {
@@ -348,7 +347,7 @@ public class Jeu {
 	 * @param c
 	 * @return
 	 */
-	public static ArrayList<Pion> getCoupsJouerM(Grille g,Pion.Couleur c){
+	public static ArrayList<Pion> getCoupsJouerM(Grille g,Couleur c){
 		
 			ArrayList<Pion> cj = new ArrayList<Pion>();
 			for(int i=0;i<9;i++) 

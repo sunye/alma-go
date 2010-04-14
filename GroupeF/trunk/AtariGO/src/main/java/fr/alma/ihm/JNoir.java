@@ -4,7 +4,7 @@ import javax.swing.JLabel;
 
 /**
  * Classe qui permet de cloner un Pion noir.
- * @author lahuidi
+ * @author ZERBITA Mohamed El Hadi
  *
  */
 public class JNoir extends JLabel implements Cloneable {
@@ -33,7 +33,7 @@ public class JNoir extends JLabel implements Cloneable {
 			cl = (JNoir)super.clone();
 						
 		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
           

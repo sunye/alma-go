@@ -14,9 +14,9 @@ public class Ia {
 			
 			
 	/**
-	 * 
-	 * @param g
-	 * @return
+	 * La fonction d'evaluation de la grille
+	 * @param g la grille à evaluer
+	 * @return la note de cette grille
 	 */
 	public static int fonctionEvaluation(Grille g){
 		int minB,minN;

@@ -3,6 +3,11 @@ package fr.alma.jeu;
 import java.awt.Point;
 import java.util.ArrayList;
 
+/**
+ * Méthodes utile dans la classe jeu
+ * @author Ngassa Hubert
+ *
+ */
 public class OutilsJEU {
 
 		
@@ -16,11 +21,11 @@ public class OutilsJEU {
 	 * @param c
 	 * @return
 	 */
-	public static boolean existN(Grille grille,int x,int y,Pion.Couleur c){
+	public static boolean existN(Grille grille,int x,int y,Couleur c){
 		
 		if (x>0){
-			if(c.equals(Pion.Couleur.BLANC)) return ((grille.Contenu[x-1][y]).equals(new Pion(Pion.Couleur.NOIR,new Point(x-1,y))));
-			else return ((grille.Contenu[x-1][y]).equals(new Pion(Pion.Couleur.BLANC,new Point(x-1,y))));
+			if(c.equals(Couleur.BLANC)) return ((grille.Contenu[x-1][y]).equals(new Pion(Couleur.NOIR,new Point(x-1,y))));
+			else return ((grille.Contenu[x-1][y]).equals(new Pion(Couleur.BLANC,new Point(x-1,y))));
 		}else return false;
 	}
 
@@ -32,10 +37,10 @@ public class OutilsJEU {
 	 * @param c
 	 * @return
 	 */
-	public static boolean existS(Grille grille,int x,int y,Pion.Couleur c){
+	public static boolean existS(Grille grille,int x,int y,Couleur c){
 		if (x<8){
-			if(c.equals(Pion.Couleur.BLANC)) return ((grille.Contenu[x+1][y]).equals(new Pion(Pion.Couleur.NOIR,new Point(x+1,y))));
-			else return ((grille.Contenu[x+1][y]).equals(new Pion(Pion.Couleur.BLANC,new Point(x+1,y))));
+			if(c.equals(Couleur.BLANC)) return ((grille.Contenu[x+1][y]).equals(new Pion(Couleur.NOIR,new Point(x+1,y))));
+			else return ((grille.Contenu[x+1][y]).equals(new Pion(Couleur.BLANC,new Point(x+1,y))));
 		}else return false;
 	}
 
@@ -47,10 +52,10 @@ public class OutilsJEU {
 	 * @param c
 	 * @return
 	 */
-	public static boolean existE(Grille grille,int x,int y,Pion.Couleur c){
+	public static boolean existE(Grille grille,int x,int y,Couleur c){
 		if (y<8){
-			if(c.equals(Pion.Couleur.BLANC)) return ((grille.Contenu[x][y+1]).equals(new Pion(Pion.Couleur.NOIR,new Point(x,y+1))));
-			else return ((grille.Contenu[x][y+1]).equals(new Pion(Pion.Couleur.BLANC,new Point(x,y+1))));
+			if(c.equals(Couleur.BLANC)) return ((grille.Contenu[x][y+1]).equals(new Pion(Couleur.NOIR,new Point(x,y+1))));
+			else return ((grille.Contenu[x][y+1]).equals(new Pion(Couleur.BLANC,new Point(x,y+1))));
 		}else return false;
 	}
 
@@ -62,10 +67,10 @@ public class OutilsJEU {
 	 * @param c
 	 * @return
 	 */
-	public static boolean existO(Grille grille,int x,int y,Pion.Couleur c){
+	public static boolean existO(Grille grille,int x,int y,Couleur c){
 		if (y>0){
-			if(c.equals(Pion.Couleur.BLANC)) return ((grille.Contenu[x][y-1]).equals(new Pion(Pion.Couleur.NOIR,new Point(x,y-1))));
-			else return ((grille.Contenu[x][y-1]).equals(new Pion(Pion.Couleur.BLANC,new Point(x,y-1))));
+			if(c.equals(Couleur.BLANC)) return ((grille.Contenu[x][y-1]).equals(new Pion(Couleur.NOIR,new Point(x,y-1))));
+			else return ((grille.Contenu[x][y-1]).equals(new Pion(Couleur.BLANC,new Point(x,y-1))));
 		}else return false;
 	}
 

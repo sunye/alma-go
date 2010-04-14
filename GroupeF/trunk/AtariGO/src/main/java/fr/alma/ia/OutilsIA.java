@@ -4,10 +4,15 @@ import static fr.alma.jeu.LibertePion.getLiberte;
 
 import java.awt.Point;
 import java.util.ArrayList;
-
+import fr.alma.jeu.Couleur;
 import fr.alma.jeu.Grille;
 import fr.alma.jeu.Pion;
 
+/**
+ * Méthode utile pour la classe IA
+ * @author Ngassa Hubert
+ *
+ */
 public class OutilsIA {
 	
 	public static ArrayList<Point> voisins = new ArrayList<Point>();
@@ -15,10 +20,10 @@ public class OutilsIA {
 	/**
 	 * 
 	 */
-	public static boolean existN(Grille grille,int x,int y,Pion.Couleur c){
+	public static boolean existN(Grille grille,int x,int y,Couleur c){
 		if (x>0){
-			if(c.equals(Pion.Couleur.BLANC)) return ((grille.Contenu[x-1][y]).equals(Pion.Couleur.BLANC));
-			else if(c.equals(Pion.Couleur.NOIR)) return ((grille.Contenu[x-1][y]).equals(Pion.Couleur.NOIR));
+			if(c.equals(Couleur.BLANC)) return ((grille.Contenu[x-1][y]).equals(Couleur.BLANC));
+			else if(c.equals(Couleur.NOIR)) return ((grille.Contenu[x-1][y]).equals(Couleur.NOIR));
 				else return false;
 		}else return false;
 	}
@@ -31,10 +36,10 @@ public class OutilsIA {
 	 * @param c
 	 * @return
 	 */
-	public static boolean existS(Grille grille,int x,int y,Pion.Couleur c){
+	public static boolean existS(Grille grille,int x,int y,Couleur c){
 		if (x<8){
-			if(c.equals(Pion.Couleur.BLANC)) return ((grille.Contenu[x+1][y]).equals(Pion.Couleur.BLANC));
-			else if(c.equals(Pion.Couleur.NOIR)) return ((grille.Contenu[x+1][y]).equals(Pion.Couleur.NOIR));
+			if(c.equals(Couleur.BLANC)) return ((grille.Contenu[x+1][y]).equals(Couleur.BLANC));
+			else if(c.equals(Couleur.NOIR)) return ((grille.Contenu[x+1][y]).equals(Couleur.NOIR));
 				else return false;
 			
 		}else return false;
@@ -48,10 +53,10 @@ public class OutilsIA {
 	 * @param c
 	 * @return
 	 */
-	public static boolean existE(Grille grille,int x,int y,Pion.Couleur c){
+	public static boolean existE(Grille grille,int x,int y,Couleur c){
 		if (y<8){
-			if(c.equals(Pion.Couleur.BLANC)) return ((grille.Contenu[x][y+1]).equals(Pion.Couleur.BLANC));
-			else if(c.equals(Pion.Couleur.NOIR)) return ((grille.Contenu[x][y+1]).equals(Pion.Couleur.NOIR));
+			if(c.equals(Couleur.BLANC)) return ((grille.Contenu[x][y+1]).equals(Couleur.BLANC));
+			else if(c.equals(Couleur.NOIR)) return ((grille.Contenu[x][y+1]).equals(Couleur.NOIR));
 				else return false;
 		}
 					
@@ -66,11 +71,11 @@ public class OutilsIA {
 	 * @param c
 	 * @return
 	 */
-	public static boolean existO(Grille grille,int x,int y,Pion.Couleur c){
+	public static boolean existO(Grille grille,int x,int y,Couleur c){
 
 		if (y>0){
-			if(c.equals(Pion.Couleur.BLANC)) return ((grille.Contenu[x][y-1]).couleur.equals(c));
-			else if(c.equals(Pion.Couleur.NOIR))	return ((grille.Contenu[x][y-1]).equals(new Pion(Pion.Couleur.NOIR,new Point(x,y-1))));
+			if(c.equals(Couleur.BLANC)) return ((grille.Contenu[x][y-1]).couleur.equals(c));
+			else if(c.equals(Couleur.NOIR))	return ((grille.Contenu[x][y-1]).equals(new Pion(Couleur.NOIR,new Point(x,y-1))));
 				else return false;
 			
 		}
@@ -108,7 +113,7 @@ public class OutilsIA {
 		ArrayList<Point> listeG=new ArrayList<Point>();
 		for(int i=0;i<9;i++)
 			for(int j=0;j<9;j++){
-				if(g.Contenu[i][j].couleur.equals(Pion.Couleur.BLANC)){
+				if(g.Contenu[i][j].couleur.equals(Couleur.BLANC)){
 					voisins = new ArrayList<Point>();
 					DeterminerVoisins(g, new Point(i,j));
 					boolean groupeExistant = false;
@@ -135,7 +140,7 @@ public class OutilsIA {
 		
 		for(int i=0;i<9;i++)
 			for(int j=0;j<9;j++){
-				if(g.Contenu[i][j].couleur.equals(Pion.Couleur.NOIR)){
+				if(g.Contenu[i][j].couleur.equals(Couleur.NOIR)){
 					voisins = new ArrayList<Point> ();
 					DeterminerVoisins(g, new Point(i,j));
 					boolean groupeExistant = false;

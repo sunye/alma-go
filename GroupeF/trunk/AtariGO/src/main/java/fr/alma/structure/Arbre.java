@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 import fr.alma.jeu.Grille;
 import fr.alma.jeu.Pion;
-import fr.alma.jeu.Pion.Couleur;
+import fr.alma.jeu.Couleur;
 
 /**
  * Classe de l'arbre
- * @author lahuidi
+ * @author ZERBITA Mohamed El Hadi
  *
  */
 public class Arbre {
@@ -24,7 +24,10 @@ public class Arbre {
 	int compteur = 0;
 	
 	//--------------------------
-			
+	
+	/**
+	 * Le constructeur de la classe
+	 */
 	public Arbre(Grille grille){
 		this.racine = new Noeud(new Pion(null,new Point(-1,-1)));
 		this.grille = grille;
@@ -33,7 +36,10 @@ public class Arbre {
 		getCoupsNonJouer();
 	}
 	
-	
+	/**
+	 * Méthode pour remplir l'arbre
+	 * @return
+	 */
 	public Point remplirArbre(){
 		
 		Point p = null;
@@ -46,13 +52,12 @@ public class Arbre {
 	}
 	
 	/**
-	 * 
+	 * Retourne la profondeur max qu'on veux traiter
 	 * @param liste
 	 * @return
 	 */
 	private int getProfMax(ArrayList<Pion> liste){
 		//Le nombre de coups restants max pour que l'odinateur joue le mieux possible : 7
-		
 		return liste.size()-11;
 		
 	}

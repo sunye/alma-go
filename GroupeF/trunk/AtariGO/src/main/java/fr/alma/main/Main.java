@@ -3,8 +3,8 @@
  * Master 1 ALMA
  * 
  * Projet de IA
- * @author lahuidi
- * @author landryngassa 
+ * @author ZERBITA Mohamed El Hadi
+ * @author Ngassa Hubert 
  * 
  * Copyright © 2010 ZERBITA Mohamed El Hadi & Ngassa Hubert, Tous droits réservés
  */
