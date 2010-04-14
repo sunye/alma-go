@@ -1,4 +1,7 @@
-package fr.alma.modele;
+package fr.alma.modele.intelligence;
+
+import fr.alma.modele.Coordinate;
+
 /*$Author$ 
  * $Date$ 
  * $Revision$ 

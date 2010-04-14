@@ -7,14 +7,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import fr.alma.modele.Coordinate;
-import fr.alma.modele.CoordinateAI;
 import fr.alma.modele.StoneColor;
-import fr.alma.modele.Move;
 import fr.alma.modele.GoBan;
 import fr.alma.modele.Group;
 import fr.alma.modele.Stone;
 import fr.alma.modele.MoveType;
-import fr.alma.modele.EmptyGroup;
 /*$Author$ 
  * $Date$ 
  * $Revision$ 
