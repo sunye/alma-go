@@ -5,17 +5,16 @@ import java.util.List;
 
 public class NoeudsFils {
 
-    /* le support de notre structure -> un vecteur de type liste chainee
-     */
-    private List<Noeud_LA> alNoeuds;
+
+    private List<Noeud_LA> alNoeuds; //le support de notre structure -> un vecteur de type liste chainee
     private int arite;  		
     boolean ascendent;
 
-    /*
-     * @param  1) arite = nombre maximal des elements dans la structure;
-     *         2) ascendent = vrai si les valeurs sont maintenues dans la liste dans ordre croissant et faux si
-     *              elles sont dans ordre decroissant
-     * @return  Une nouvelle structure NoeudFils = le constructeur
+    /**
+     * Constructor of the class
+     * 
+     * @param arite Arity = maximal number of elements in the structure
+     * @param ascendent Ascendent  = true if the values are kept in the list in increasing order and false if they are in a decreasing order 
      */
     NoeudsFils(int arite, boolean ascendent) {
 
@@ -24,9 +23,10 @@ public class NoeudsFils {
         this.ascendent = ascendent;
     }
 
-    /*
-     * @param  index = l'index de l'element qu'on souhaite recuperer
-     * @return  l'element situe a� l'index cherche
+    /**
+     * Getter of Noeud_LA with its index
+     * @param index Index of the element we want to get
+     * @return Researched Element
      */
     public Noeud_LA get(int index) {
 
@@ -38,9 +38,11 @@ public class NoeudsFils {
         return alNoeuds.get(index);
     }
 
-    /*
-     * @param  index = l'index du l'element qu'on souhaite supprimer
-     * @return  l'element supprime a� l'index demande
+    /**
+     * Get and element and delete it with its index 
+     * 
+     * @param index Index of the element we want to delete
+     * @return Deleted element at the index
      */
     public Noeud_LA remove(int index) {
         if(index < 0 || index >= alNoeuds.size()) {
@@ -51,17 +53,18 @@ public class NoeudsFils {
         return alNoeuds.remove(index);
     }
 
-    /*
-     * @param vide
-     * @return la taille actuelle de la structure
+    /**
+     * Get the size of the List
+     * @return current size of the structure
      */
     public int size() {
         return this.alNoeuds.size();
     }
 
-    /*
-     * @param   nla = l'element a� ajouter dans la liste
-     * @param   un booleen vrai si l'element a ete ajoute ou faux sinon
+    /**
+     * Add an element in the list
+     * @param nla Element to add in the list
+     * @return True if the element has been added, otherwise, return false
      */
     public boolean addFils(Noeud_LA nla) {
         boolean insere = false;
@@ -90,10 +93,10 @@ public class NoeudsFils {
         return insere;
     }
 
-    /*
-     * @param   	nla = le noeud dont on veut l'index à inserer dans la liste, en gardant l'ordonencement
-     * @return    	l'index qui peut être positif ou -1 si l'element ne doit pas se trouver dans la liste
-     * description : methode privee
+    /**
+     * Get an index with and element
+     * @param nla Node from which we want the index in the list, keeping the  
+     * @return Index of the element, or -1 if not found in the list
      */
     private int getIndex(Noeud_LA nla) {
         int index = -1, ind;

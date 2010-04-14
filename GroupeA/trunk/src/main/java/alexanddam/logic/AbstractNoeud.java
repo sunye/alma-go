@@ -1,9 +1,18 @@
 package main.java.alexanddam.logic;
 
-abstract class AbstractNoeud {
-		
-	int[] vOrdi;				// les differences de l'ordinateur
-	int[] vAdver;				// les differences de l'adversaire
+public abstract class AbstractNoeud {
+	
+	/**
+	 * the differences of the computer
+	 */
+	int[] vOrdi;
+	/**
+	 * The differences of the human adversary
+	 */
+	int[] vAdver;
+	/**
+	 * Value of the node
+	 */
 	int valeur;
 
 }

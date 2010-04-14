@@ -77,7 +77,7 @@ public class UI extends JFrame {
 				@Override
 				public void mousePressed(MouseEvent mEvt){
 					 if (tourAdversair){
-                         //modification du curseur en sablier si le jeux est lance
+                         //we set the cursor a "waiting", while the system computes
 						 jPanel.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 					 }
 
@@ -106,8 +106,7 @@ public class UI extends JFrame {
 								jeuFini(0);
 							}
 							if(!ajoutGobanEtVerifie(prochainCoup[0], prochainCoup[1], 1)) { return; }
-						}
-						else {
+						} else {
 							coupsAleatoires ++;
 							int rand1 = -1, rand2 = -1;
 							while(rand1==-1 || rand2==-1 || main.java.alexanddam.logic.FonctionEvaluation.getGobanValue(3 + rand1%4, 3 + rand2%4)!=0
@@ -125,7 +124,7 @@ public class UI extends JFrame {
 						tourAdversair = true;
 					}
 					
-					//on remet le curseur en pointer
+					//we set back the normal cursor
 					jPanel.setCursor(Cursor.getPredefinedCursor(DEFAULT_CURSOR));
 				}
 
@@ -137,6 +136,10 @@ public class UI extends JFrame {
 		return jPanel;
 	}
 
+	/**
+	 * Set the winner
+	 * @param type integer corresponding to a winner's move
+	 */
 	void recupererGagnant(int type) {
 		int loser;
 
@@ -153,7 +156,11 @@ public class UI extends JFrame {
         jPanel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
 	}
-
+	
+	/**
+	 * Informe the user that the game ended and display the winner
+	 * @param int winner
+	 */
 	void jeuFini(int gagnant) {
 		String str = "";
 
@@ -174,6 +181,13 @@ public class UI extends JFrame {
 		JOptionPane.showMessageDialog(this, str, "Jeu fini", JOptionPane.INFORMATION_MESSAGE);
 	}
 
+	/**
+	 * Add a stone in the goban and check it
+	 * @param coordX x coordonnate of the stone
+	 * @param coordY y coordonnate of the stone
+	 * @param type type of stone
+	 * @return boolean true if added; false if not
+	 */
 	boolean ajoutGobanEtVerifie(int coordX, int coordY, int type) {
 		switch(type) {
 		case 1:
@@ -199,7 +213,13 @@ public class UI extends JFrame {
 
 		return true;
 	}
-
+	
+	/**
+	 * Add a white stone in the goban
+	 * @param coordX x coordonnate of the stone
+	 * @param coordY y coordonnate of the stone
+	 * @param type type of stone
+	 */
 	void ajoutDansBlanc(int coordX, int coordY, int type) {
 
 		float coordX2 = coordX / diam2 - Board.diametreBile/2, coordY2 = coordY / diam1 - Board.diametreBile/2;
@@ -211,6 +231,12 @@ public class UI extends JFrame {
 
 	}
 
+	/**
+	 * Add a black stone in the goban
+	 * @param coordX x coordonnate of the stone
+	 * @param coordY y coordonnate of the stone
+	 * @param type type of stone
+	 */
 	void ajoutDansNoire(int coordX, int coordY, int type) {
 
 		float coordX2 = coordX / diam2 - Board.diametreBile/2, coordY2 = coordY / diam1 - Board.diametreBile/2;
@@ -402,7 +428,11 @@ public class UI extends JFrame {
 		}
 		return jButtonPlay;
 	}
-
+	
+	/**
+	 * set the exponantial and the depth 
+	 * @param level level of difficulty chosen by the player
+	 */
 	void reglerExpEtProf(String level) {
 		int exp = 10, prof = 5;
 
@@ -421,6 +451,7 @@ public class UI extends JFrame {
 	}
 
 	/**
+	 * Main function of the software
 	 * @param args
 	 */
 	public static void main(String[] args) {
