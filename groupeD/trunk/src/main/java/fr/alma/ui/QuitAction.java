@@ -20,7 +20,7 @@ class QuitAction extends MyAction {
  */
  public QuitAction(MyApplication myApplication) {
 	super("Quitter", 
-	      new ImageIcon(ImageIcon.class.getClassLoader().getSystemResource("resources/images/quitter.png")),
+	      new ImageIcon(ImageIcon.class.getClassLoader().getSystemResource("images/quitter.png")),
 	      "Quitter",
 	      KeyEvent.VK_Q,
 	      KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK),
