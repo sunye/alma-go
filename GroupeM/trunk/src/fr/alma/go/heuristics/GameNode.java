@@ -7,10 +7,6 @@ public class GameNode {
 	private Place place;
 
 	private int note;
-	
-	public GameNode(){
-		note=-1;
-	}
 
 	public void setCoords(int a, int o) {
 		place = new Place(a, o);
