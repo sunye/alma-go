@@ -195,6 +195,11 @@ public class AlphaBeta {
      * @return the min move to play
      */
     private PlayMove min(FakeGame tests, int prof, int alpha, int beta) {
+        if(prof == 2 && lastBest.getPutStone() == null){
+            tests.getCurrentMove().setEval(0);
+            updateLastBest(tests.getCurrentMove());
+        }
+
         PlayMove betadep = new PlayMove();
         int indexMin = 0;
         betadep.setEval(INFINI); // équivaut à Beta(p)
