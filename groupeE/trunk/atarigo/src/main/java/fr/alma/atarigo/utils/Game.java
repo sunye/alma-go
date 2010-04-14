@@ -141,6 +141,7 @@ public class Game {
         if (goban.nbLibertes(new Stone(pionVal, line, column)) == 0) {
             // No liberty ? Let's check if we are killing a ennemy group.
             Set<Groupe> groupes = getSurroundingGroups(new Stone(pionVal, line, column));
+            
             int i = 0;
             for (Groupe gr : groupes) {
                 ++i;
@@ -154,6 +155,8 @@ public class Game {
                     return false;
                 }
             }
+            System.out.println(groupes);
+            System.out.println(goban);
             return true;
         } else {
             return false;
