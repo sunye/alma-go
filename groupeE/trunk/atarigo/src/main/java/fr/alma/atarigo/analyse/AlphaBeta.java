@@ -196,7 +196,6 @@ public class AlphaBeta {
      */
     private PlayMove min(FakeGame tests, int prof, int alpha, int beta) {
         if(prof == 2 && lastBest.getPutStone() == null){
-            tests.getCurrentMove().setEval(0);
             updateLastBest(tests.getCurrentMove());
         }
 
