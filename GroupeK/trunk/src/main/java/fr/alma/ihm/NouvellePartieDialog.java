@@ -15,7 +15,7 @@ import fr.alma.controler.Controler;
  * $Date$ 
  * $Revision$  
  * 
- * $license$
+ * license
  * 
  * */
 /**

@@ -7,7 +7,7 @@ import java.util.HashSet;
  * $Date$ 
  * $Revision$ 
  *  
- * $license$
+ * license
  * 
  * */
 /**

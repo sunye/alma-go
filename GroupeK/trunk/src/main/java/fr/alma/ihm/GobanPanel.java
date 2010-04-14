@@ -12,7 +12,7 @@ import fr.alma.modele.Pion;
  * $Date$ 
  * $Revision$ 
  * 
- * $license$
+ * license
  * 
  * */
 /**

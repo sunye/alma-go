@@ -7,7 +7,7 @@ import junit.framework.TestSuite;
  * $Date$ 
  * $Revision$ 
  *  
- * $license$
+ * license
  * 
  * */
 /**

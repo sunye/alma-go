@@ -4,7 +4,7 @@ package fr.alma.modele;
  * $Date$ 
  * $Revision$  
  *  
- * $license$
+ * license
  * 
  * */
 /**
