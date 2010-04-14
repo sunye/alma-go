@@ -20,11 +20,11 @@ package fr.alma.modele;
  * 
  * */
 /**
- * 
- * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
  * special class used by the AI to synchronised thread
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
+ * 
  */
-public class CoordonneeIA extends Coordonnee {
+public class CoordinateAI extends Coordinate {
 
 	/**
 	 * An indicator to set is the search is over
@@ -36,7 +36,7 @@ public class CoordonneeIA extends Coordonnee {
 	 * @param x
 	 * @param y
 	 */
-	public CoordonneeIA(Integer x, Integer y) {
+	public CoordinateAI(Integer x, Integer y) {
 		super(x, y);
 		setTermine(false);
 	}
@@ -61,7 +61,7 @@ public class CoordonneeIA extends Coordonnee {
 	 * set the attribute from a super class
 	 * @param coord
 	 */
-	public void setCoordinate(Coordonnee coord){
+	public void setCoordinate(Coordinate coord){
 		this.setX(coord.getX());
 		this.setY(coord.getY());
 	}
@@ -70,8 +70,8 @@ public class CoordonneeIA extends Coordonnee {
 	 * the equivalent with a super class
 	 * @return equivalent
 	 */
-	public Coordonnee convert(){
-		return new Coordonnee(getX(), getY());
+	public Coordinate convert(){
+		return new Coordinate(getX(), getY());
 	}
 	
 }

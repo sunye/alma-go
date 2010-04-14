@@ -1,11 +1,11 @@
 package fr.alma.controler;
 
-import fr.alma.ihm.Fenetre;
+import fr.alma.ihm.MainFrame;
 import fr.alma.ihm.Loadeur;
-import fr.alma.ihm.NouvellePartieDialog;
-import fr.alma.modele.CouleurPion;
+import fr.alma.ihm.NewGameDialog;
+import fr.alma.modele.StoneColor;
 import fr.alma.modele.GameHandler;
-import fr.alma.modele.Pion;
+import fr.alma.modele.Stone;
 
 
 /*$Author$ 
@@ -29,18 +29,19 @@ import fr.alma.modele.Pion;
  * 
  * */
 /**
+ * The controler for the game. He knows all class from the UI and from the
+ * modele All transaction between the view and the model pass threw this
+ * controler.
  * 
- * @author Manoël Fortun et Anthony "Bambinôme" Caillaud 
- * The controler for the game.
- * He knows all class from the UI and from the modele All
- * transaction between the view and the model pass threw this controler.
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
+ * 
  */
 public class Controler {
 
 	/**
 	 * The model of the game
 	 */
-	private GameHandler gm;
+	private GameHandler gameMaster;
 
 	/**
 	 * the action listener's Factory
@@ -50,31 +51,31 @@ public class Controler {
 	/**
 	 * The main frame of the game
 	 */
-	private Fenetre jeu;
+	private MainFrame frame;
 
 	/**
 	 * Frame when the game is loading and think about the
 	 */
-	private Loadeur chargement;
+	private Loadeur loaderDialog;
 
 	/**
 	 * Frame use to choose the game option
 	 */
-	private NouvellePartieDialog fenetreNewGame;
+	private NewGameDialog newGameDialog;
 
 	/**
 	 * Constructor that initialize all the game
 	 */
 	public Controler() {
-		this.gm = new GameHandler(this);
+		this.gameMaster = new GameHandler(this);
 		this.factory = new ActionListenerFactory(this);
-		this.jeu = new Fenetre(this);
-		this.chargement = new Loadeur(jeu, this);
-		this.fenetreNewGame = new NouvellePartieDialog(jeu, this);
+		this.frame = new MainFrame(this);
+		this.loaderDialog = new Loadeur(frame, this);
+		this.newGameDialog = new NewGameDialog(frame, this);
 	}
 
 	public GameHandler getGm() {
-		return gm;
+		return gameMaster;
 	}
 
 	public ActionListenerFactory getFactory() {
@@ -86,8 +87,8 @@ public class Controler {
 	 * 
 	 * @return the matrix size that contain the pion
 	 */
-	public int tailleMatrice() {
-		return gm.tailleMatrice();
+	public int getMatrixSize() {
+		return gameMaster.getMatrixSize();
 	}
 
 	/**
@@ -95,34 +96,34 @@ public class Controler {
 	 * 
 	 * @return the matrix
 	 */
-	public Pion[][] getMatricePlateau() {
+	public Stone[][] getMatrix() {
 
-		return gm.getMatricePlateau();
+		return gameMaster.getMatrixBoard();
 	}
 
 	/**
 	 * Launch the game
 	 */
-	public void GO() {
-		this.jeu.setVisible(true);
+	public void launchTheGame() {
+		this.frame.setVisible(true);
 	}
 
 	/**
 	 * Prepare a new board with the option selected by the player
 	 */
 	public void newGame() {
-		gm.remiseZero();
-		jeu.repaintBoard();
+		gameMaster.reset();
+		frame.repaintBoard();
 
-		fenetreNewGame.setVisible(false);
-		if (fenetreNewGame.isAiVsHuman()) {
-			gm.setModeAiVsHuman();
+		newGameDialog.setVisible(false);
+		if (newGameDialog.isAiVsHuman()) {
+			gameMaster.setModeAiVsHuman();
 		} else {
-			gm.setModeHumanVsHuman();
+			gameMaster.setModeHumanVsHuman();
 		}
 
-		gm.setObjectif(fenetreNewGame.getNbObjectifSelected());
-		gm.setDifficulte(fenetreNewGame.getDifficulte());
+		gameMaster.setGoal(newGameDialog.getGoalNumberSelected());
+		gameMaster.setDifficulty(newGameDialog.getDifficulty());
 
 	}
 
@@ -132,8 +133,8 @@ public class Controler {
 	 * @param coul
 	 *            the winner
 	 */
-	public void afficheGagnant(CouleurPion coul) {
-		jeu.affichageVainqueur(coul);
+	public void showWinner(StoneColor coul) {
+		frame.showWinner(coul);
 	}
 
 	
@@ -148,16 +149,16 @@ public class Controler {
 	 * @return if the move is playable and played
 	 */
 	public void clicBoard(int x, int y) {
-		gm.ajouterPion(x / jeu.getColSize(), y / jeu.getRowSize());
+		gameMaster.addStone(x / frame.getColSize(), y / frame.getRowSize());
 		
 	}
 
 	/**
 	 * Used to force to play
 	 */
-	public void forcerJouer() {
-		gm.forcerCoup();
-		afficheLoader(false);
+	public void forceToPlay() {
+		gameMaster.forceToPlay();
+		showLoader(false);
 
 	}
 
@@ -165,9 +166,9 @@ public class Controler {
 	 * Show the loader (frame when the ai is thinking)
 	 * @param affiche true of false 
 	 */
-	public void afficheLoader(boolean affiche) {
+	public void showLoader(boolean affiche) {
 		if (affiche) {
-			chargement.setVisible(true);
+			loaderDialog.setVisible(true);
 			/*
 			 * affichageLoader = new Thread() { public void run() {
 			 * 
@@ -175,7 +176,7 @@ public class Controler {
 			 */
 		} else {
 			// affichageLoader.interrupt();
-			chargement.setVisible(false);
+			loaderDialog.setVisible(false);
 		}
 	}
 
@@ -184,15 +185,15 @@ public class Controler {
 	 */
 	public void repaintBoard() {
 		
-		jeu.repaintBoard();
+		frame.repaintBoard();
 	}
 
 	/**
 	 * Show a message in a JDialog
 	 * @param string the message
 	 */
-	public void afficheMessage(String string) {
-		jeu.affichageMessage(string);
+	public void showMessage(String string) {
+		frame.showMessage(string);
 	}
 
 	/**
@@ -200,15 +201,15 @@ public class Controler {
 	 * @param b
 	 */
 	public void enableAiChoice(boolean b) {
-		this.fenetreNewGame.enableChoiceDifficulte(b);
+		this.newGameDialog.enableChoiceDifficulty(b);
 	}
 
 	/**
 	 * Show or not the Dialog of the game's option
 	 * @param b 
 	 */
-	public void afficheNouvellePartie(boolean b) {
-		this.fenetreNewGame.affichage(b);
+	public void showNewGameDial(boolean b) {
+		this.newGameDialog.affichage(b);
 	}
 
 }

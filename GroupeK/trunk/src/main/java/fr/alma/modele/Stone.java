@@ -21,26 +21,26 @@ package fr.alma.modele;
  * 
  * */
 /**
- * 
- * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
  * Class used to represent a stone.
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
+ * 
  */
-public class Pion {
+public class Stone {
 
 	/**
 	 * The color of the stone
 	 */
-	private CouleurPion couleur;
+	private StoneColor color;
 	
 	
 	/**
 	 * The coordinate of the stone
 	 */
-	private Coordonnee position;	
+	private Coordinate position;	
 	/**
 	 * The group owner of the stone
 	 */
-	private Groupe groupe;
+	private Group group;
 	
 	/**
 	 * Boolean used by the AI, Usefull for some method
@@ -53,52 +53,52 @@ public class Pion {
 	 * @param y the y coordinate
 	 * @param couleur
 	 */
-	public Pion(Integer x, Integer y, CouleurPion couleur) {
-		this.position= new Coordonnee(x, y);
-		this.couleur = couleur;
+	public Stone(Integer x, Integer y, StoneColor couleur) {
+		this.position= new Coordinate(x, y);
+		this.color = couleur;
 		
 	}
 
 	/**
 	 * @return the couleur
 	 */
-	public CouleurPion getCouleur() {
-		return couleur;
+	public StoneColor getColor() {
+		return color;
 	}
 
 	/**
 	 * @param couleur the couleur to set
 	 */
-	public void setCouleur(CouleurPion couleur) {
-		this.couleur = couleur;
+	public void setColor(StoneColor couleur) {
+		this.color = couleur;
 	}
 
 	/**
 	 * @return the position
 	 */
-	public Coordonnee getPosition() {
+	public Coordinate getPosition() {
 		return position;
 	}
 
 	/**
 	 * @param position the position to set
 	 */
-	public void setPosition(Coordonnee position) {
+	public void setPosition(Coordinate position) {
 		this.position = position;
 	}
 
 	/**
 	 * @return the groupe
 	 */
-	public Groupe getGroupe() {
-		return groupe;
+	public Group getGroup() {
+		return group;
 	}
 
 	/**
 	 * @param groupe the groupe to set
 	 */
-	public void setGroupe(Groupe groupe) {
-		this.groupe = groupe;
+	public void setGroup(Group groupe) {
+		this.group = groupe;
 	}
 
 	/**

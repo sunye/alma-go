@@ -22,15 +22,15 @@ import fr.alma.controler.Controler;
  * 
  * */
 /**
- * 
- * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
  * Class that launch the game.
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
+ * 
  */
 public class GoierRunner {
 
 	public static void main(String[] args) {
 		
 		Controler ctrl= new Controler();
-		ctrl.GO();
+		ctrl.launchTheGame();
 	}
 }

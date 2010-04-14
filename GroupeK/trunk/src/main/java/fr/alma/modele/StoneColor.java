@@ -1,4 +1,4 @@
-package fr.alma.modele.intelligence;
+package fr.alma.modele;
 /*$Author$ 
  * $Date$ 
  * $Revision$ 
@@ -20,14 +20,26 @@ package fr.alma.modele.intelligence;
  * 
  * */
 /**
- * 
+ * Used to represent the color of the stone
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
- * Class that represent difficulty of the game
+ * 
  */
-public enum Difficulte {
 
-	Debutant,
-	Moyen,
-	Difficile
+public enum StoneColor {
+
+	BLACK,
+	WHITE,
+	EMPTY;
+	
+	/**
+	 * get the opposite color
+	 * @param coul
+	 * @return Empty-> Empty, Black-> White, White->Black
+	 */
+	public static StoneColor oppose(StoneColor coul){
+		return coul==EMPTY?EMPTY:coul==BLACK?WHITE:BLACK;
+	}
 	
 }
+ 
+

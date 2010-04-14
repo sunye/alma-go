@@ -20,15 +20,15 @@ package fr.alma.modele;
  * 
  * */
 /**
- * 
- * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
  * Class that the validity of a move
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
+ * 
  */
-public enum TypeCoup {
+public enum MoveType {
 
 	VALID,
 	NONVALID,
-	PRISE;
+	CAPTURE;
 	
 	
 }

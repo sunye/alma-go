@@ -24,30 +24,32 @@ import java.util.HashSet;
  * */
 /**
  * Class used to represent group of empty cell
+ * 
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
  */
-public class Vide {
+public class EmptyGroup {
 
 	/**
 	 * The neighbors of the empty group
 	 */
-	private HashSet<Groupe> groupeVoisin;
+	private HashSet<Group> neigborsGroup;
 	
 	/**
 	 * empty stone composed by this group
 	 * 
 	 */
-	private HashSet<Pion> pionVides;
+	private HashSet<Stone> emptyStone;
 	
-	public Vide() {
-		groupeVoisin=new HashSet<Groupe>();
-		pionVides=new HashSet<Pion>();
+	public EmptyGroup() {
+		neigborsGroup=new HashSet<Group>();
+		emptyStone=new HashSet<Stone>();
 	}
 
 	/**
 	 * @return the groupeVoisin
 	 */
-	public HashSet<Groupe> getGroupeVoisin() {
-		return groupeVoisin;
+	public HashSet<Group> getNeigborsGroup() {
+		return neigborsGroup;
 	}
 
 
@@ -56,30 +58,30 @@ public class Vide {
 	/**
 	 * @param groupeVoisin the groupeVoisin to set
 	 */
-	public void setGroupeVoisin(HashSet<Groupe> groupeVoisin) {
-		this.groupeVoisin = groupeVoisin;
+	public void setNeigborsGroup(HashSet<Group> groupeVoisin) {
+		this.neigborsGroup = groupeVoisin;
 	}
 
 	/**
 	 * @return the pionVides
 	 */
-	public HashSet<Pion> getPionVides() {
-		return pionVides;
+	public HashSet<Stone> getEmptyStones() {
+		return emptyStone;
 	}
 
 	/**
 	 * @param pionVides the pionVides to set
 	 */
-	public void setPionVides(HashSet<Pion> pionVides) {
-		this.pionVides = pionVides;
+	public void setEmptyStones(HashSet<Stone> pionVides) {
+		this.emptyStone = pionVides;
 	}
 
 	/**
 	 * Add a group to the neighbors
 	 * @param g
 	 */
-	public void addGroup(Groupe g){
-		this.groupeVoisin.add(g);
+	public void addGroup(Group g){
+		this.neigborsGroup.add(g);
 	}
 	
 	/**
@@ -87,8 +89,8 @@ public class Vide {
 	 * @param p
 	 * @return
 	 */
-	public boolean addPion(Pion p){
-		return pionVides.add(p);
+	public boolean addPion(Stone p){
+		return emptyStone.add(p);
 	}
 	
 	

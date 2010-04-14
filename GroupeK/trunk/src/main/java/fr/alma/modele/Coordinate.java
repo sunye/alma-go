@@ -20,11 +20,11 @@ package fr.alma.modele;
  * 
  * */
 /**
- * 
- * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
  * Class that represent a coordinate on the board
+ * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
+ * 
  */
-public class Coordonnee {
+public class Coordinate {
 	/**
 	 * the x coordinate
 	 */
@@ -69,7 +69,7 @@ public class Coordonnee {
 	 * @param x
 	 * @param y
 	 */
-	public Coordonnee(Integer x, Integer y) {
+	public Coordinate(Integer x, Integer y) {
 		this.x = x;
 		this.y = y;
 	}
