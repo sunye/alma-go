@@ -9,7 +9,7 @@ import fr.alma.structure.Noeud;
 
 /**
  * Classe de l'algorithme de min max
- * @author lahuidi
+ * @author ZERBITA Mohamed El Hadi
  *
  */
 public class MinMax {

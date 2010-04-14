@@ -26,8 +26,6 @@ import fr.alma.ihm.Ihm;
 	public static void main(String[] args) {
 				
 		new Ihm();
-			 
-		 
 	}
 
 }

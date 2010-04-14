@@ -7,7 +7,7 @@ import fr.alma.jeu.Grille;
  
 /**
  * Clase de gestion de l'intélligence artificielle
- * @author lahuidi
+ * @author ZERBITA Mohamed El Hadi
  *
  */
 public class Ia {
