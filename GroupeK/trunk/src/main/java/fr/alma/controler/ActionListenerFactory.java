@@ -9,7 +9,14 @@ import java.awt.event.MouseEvent;
 
 /*$Author$ 
  * $Date$ 
- * $Revision$ */
+ * $Revision$ 
+ * 
+ * $license$
+ * 
+ * */
+
+
+
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud

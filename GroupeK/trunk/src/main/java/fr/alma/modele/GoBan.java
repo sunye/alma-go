@@ -6,7 +6,11 @@ import java.util.List;
 import java.util.Vector;
 /*$Author$ 
  * $Date$ 
- * $Revision$ */
+ * $Revision$  
+ *  
+ * $license$
+ * 
+ * */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
