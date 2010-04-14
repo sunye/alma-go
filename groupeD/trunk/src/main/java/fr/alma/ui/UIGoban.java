@@ -108,7 +108,6 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 		nbMove=0;
 		while(!atariGo.currentPlayer.isHuman() && !atariGo.isOver()){
 			if(!atariGo.canPlayMove(atariGo.currentPlayer.color)){
-				System.out.println("ABANDON!");
 				atariGo.shutDown();
 			    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" ne peut plus jouer ! "+atariGo.currentPlayer.color.opponent()+" a gagné !", "Information", JOptionPane.INFORMATION_MESSAGE);
 			}
@@ -125,12 +124,10 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 					e.printStackTrace();
 				}
 			}else{
-				System.out.println("random");
 				plv.goban_ = RandomMove.play(atariGo,atariGo.goban,atariGo.currentPlayer.color);
 			}
 			nbMove++;
 			putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn());					
-			System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+" meilleur score = "+plv.evaluation_);
 			repaint();
 		}		
 		repaint();
@@ -171,7 +168,6 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 			if(atariGo.currentPlayer.isHuman()){
 				//test if the current player can make a move, if not, game is over
 				if(!atariGo.canPlayMove(atariGo.currentPlayer.color)){
-					System.out.println("ABANDON!");
 					atariGo.shutDown();
 				    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" ne peut plus jouer ! "+atariGo.currentPlayer.color.opponent()+" a gagné !", "Information", JOptionPane.INFORMATION_MESSAGE);
 				}
@@ -192,7 +188,6 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 			      {
 						if(!atariGo.currentPlayer.isHuman()){
 							if(!atariGo.canPlayMove(atariGo.currentPlayer.color)){
-								System.out.println("ABANDON!");
 								atariGo.shutDown();
 							    myApplication.message.showMessageDialog(null, "Le joueur "+atariGo.currentPlayer.color+" ne peut plus jouer ! "+atariGo.currentPlayer.color.opponent()+" a gagné !", "Information", JOptionPane.INFORMATION_MESSAGE);
 							}
@@ -202,18 +197,15 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 								AlphaBeta.init(atariGo.currentPlayer.getDifficulty(),atariGo.goban,atariGo.currentPlayer.color);
 								plv = AlphaBeta.value(0, jeu, InitialEvaluation.VERYGOOD,atariGo.currentPlayer.color,atariGo,new Position(0,0));
 							}else{
-								System.out.println("random");
 								plv.goban_ = RandomMove.play(atariGo,atariGo.goban,atariGo.currentPlayer.color);
 							}
 							nbMove++;
 							
 							
 							if(putStone(atariGo.goban.getDifference(plv.goban_).getLine(),atariGo.goban.getDifference(plv.goban_).getColumn())==Move.INVALID){
-								System.out.println(atariGo.goban.getDifference(plv.goban_).toString());		
 							}
 							
 							
-							System.out.println("--------> nombre de noeuds parcourus = "+AlphaBeta.totalNodes+" meilleur score = "+plv.evaluation_);
 							uiGo.addMouseListener(uiGo);
 							repaint();
 					}
@@ -240,7 +232,6 @@ public class UIGoban extends JPanel implements MouseListener,MouseMotionListener
 	    atariGo.currentPlayer = atariGo.currentPlayer == atariGo.player2 ? atariGo.player1 : atariGo.player2;
 	    myApplication.panInfos.setBlackLife(atariGo.captureObjective-atariGo.caughtBlack);
 	    myApplication.panInfos.setWhiteLife(atariGo.captureObjective-atariGo.caughtWhite);
-		System.out.println("onpasse au joueur"+atariGo.currentPlayer.toString());
 		nbMove++;
 		return Move.NEUTRAL;
 	    default:
