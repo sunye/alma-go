@@ -274,8 +274,8 @@ public class AlphaBeta {
             try {
                 tests.fakePosePion(stone.getLine(), stone.getColumn(), tests.getCurrentPlayer());
             } catch (BadPlaceException ex) {
-                Logger.getAnonymousLogger().log(Level.SEVERE, ex.getMessage());
-                Logger.getAnonymousLogger().log(Level.INFO, tests.getGoban().toString());
+//                Logger.getAnonymousLogger().log(Level.SEVERE, ex.getMessage());
+//                Logger.getAnonymousLogger().log(Level.INFO, tests.getGoban().toString());
             }
         }
     }
