@@ -2,7 +2,7 @@ package fr.alma.test;
 
 import fr.alma.atarigo.AtariGo;
 import fr.alma.atarigo.IAPlayer;
-import fr.alma.atarigo.Player;
+import fr.alma.atarigo.AbstractPlayer;
 import fr.alma.atarigo.HumanPlayer;
 import fr.alma.atarigo.Stone;
 import fr.alma.atarigo.Position;
