@@ -8,7 +8,7 @@ import fr.alma.structure.Arbre;
 import fr.alma.structure.Noeud;
 
 /**
- * Classe du min max
+ * Classe de l'algorithme de min max
  * @author lahuidi
  *
  */
@@ -27,11 +27,11 @@ public class MinMax {
 	}
 	
 	/**
-	 * Test MinMax
-	 * @param noeud
-	 * @param coups
-	 * @param prof
-	 * @return
+	 * Algorithme de MinMax
+	 * @param noeud noeud à traiter
+	 * @param coups etat du jeu
+	 * @param prof la profondeur max
+	 * @return la meilleur note
 	 */
 	@SuppressWarnings("unchecked")
 	private static int valeurMinMax(Noeud noeud, ArrayList<Pion> coups, int prof) {
@@ -70,11 +70,12 @@ public class MinMax {
 	
 	/**
 	 * retourne le min
-	 * @param n
-	 * @param temp
-	 * @param prof
+	 * @param n noeud concerné
+	 * @param temp l'etat du jeu
+	 * @param prof la profondeur
+	 * @return le min
 	 */
-	private static void valeurMin(Noeud n, ArrayList<Pion> temp, int prof) {
+	private static int valeurMin(Noeud n, ArrayList<Pion> temp, int prof) {
 		int min = 100;
 		int valeur = 0;
 		
@@ -85,17 +86,17 @@ public class MinMax {
 			
 			if(valeur<min) min = valeur;
 		}
-			
+		return min;	
 		
 	}
 
 
 	/**
 	 * retourne le max
-	 * @param n
-	 * @param temp
-	 * @param prof
-	 * @return
+	 * @param n le noeud concerné
+	 * @param temp l'etat du jeu
+	 * @param prof la profondeur
+	 * @return le max
 	 */
 	private static int valeurMax(Noeud n , ArrayList<Pion> temp, int prof) {
 		int max = -100;

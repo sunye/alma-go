@@ -3,6 +3,11 @@ package fr.alma.jeu;
 import java.awt.Point;
 import java.util.ArrayList;
 
+/**
+ * Classe pour gérer les libertés des pions
+ * @author Ngassa Hubert
+ *
+ */
 public class LibertePion {
 	
 
@@ -34,16 +39,16 @@ public class LibertePion {
 		
 		int lib = 0;
 		if(position.x>0)
-			if((g.Contenu[position.x-1][position.y]).couleur.equals(Pion.Couleur.NULL))
+			if((g.Contenu[position.x-1][position.y]).couleur.equals(Couleur.NULL))
 				lib++;
 		if(position.x<8)
-			if((g.Contenu[position.x+1][position.y]).couleur.equals(Pion.Couleur.NULL))
+			if((g.Contenu[position.x+1][position.y]).couleur.equals(Couleur.NULL))
 				lib++;
 		if(position.y>0)
-			if((g.Contenu[position.x][position.y-1]).couleur.equals(Pion.Couleur.NULL))
+			if((g.Contenu[position.x][position.y-1]).couleur.equals(Couleur.NULL))
 				lib++;
 		if(position.y<8)
-			if((g.Contenu[position.x][position.y+1]).couleur.equals(Pion.Couleur.NULL))
+			if((g.Contenu[position.x][position.y+1]).couleur.equals(Couleur.NULL))
 				lib++;
 		return lib;
 	}
@@ -55,7 +60,7 @@ public class LibertePion {
 	 * @param c
 	 * @return
 	 */
-	public static int getLiberte(Grille grille, Point p,Pion.Couleur c){ 
+	public static int getLiberte(Grille grille, Point p,Couleur c){ 
 		
 		int x = p.x;
 		int y = p.y;

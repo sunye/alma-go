@@ -20,8 +20,10 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JButton;
-import fr.alma.jeu.Pion.Couleur;
+import fr.alma.jeu.Couleur;
 import fr.alma.jeu.Grille;
+import fr.alma.jeu.Tour;
+
 import javax.swing.JDialog;
 import java.awt.Rectangle;
 import javax.swing.JComboBox;

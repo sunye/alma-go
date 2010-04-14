@@ -9,13 +9,12 @@ import javax.swing.JLabel;
 
 import fr.alma.ihm.JBlanc;
 import fr.alma.ihm.JNoir;
-import fr.alma.ihm.Tour;
-import fr.alma.jeu.Pion.Couleur;
+import fr.alma.jeu.Couleur;
 
   
   /** 
   * Classe qui contien la grille du jeu et le positionnement des pions. 
-  * @author lahuidi 
+  * @author ZERBITA Mohamed El Hadi 
   * 
   */ 
  public class Grille { 
