@@ -83,7 +83,7 @@ public class GameManager {
     }
 
 
-    private PlayMove threadizeAB(){
+    /*private PlayMove threadizeAB(){
 //        AlphaBeta alphabeta = new AlphaBeta(3, iaColor);
         
         thread = new ABThread(3, iaColor, game);
@@ -97,7 +97,7 @@ public class GameManager {
         PlayMove retour = thread.getCurrentBest();
         thread.interrupt();
         return retour;
-    }
+    }*/
 
     /**
      * The computer plays.
@@ -105,7 +105,9 @@ public class GameManager {
     private void coupIA() {
         gobanPanel.desactivateMouse();
         PlayMove coup;
-        coup = threadizeAB();
+//        coup = threadizeAB();
+        AlphaBeta alphabeta = new AlphaBeta(3, iaColor);
+        coup = alphabeta.init(game, 15000);
         game.playAt(coup.getPutStone().getLine(), coup.getPutStone().getColumn());
         gobanPanel.repaint();
         gobanPanel.activateMouse();

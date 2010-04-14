@@ -99,10 +99,23 @@ public class GobanTest extends TestCase {
         System.out.println("getVoisins");
         Stone pion = new Stone(PionVal.NOIR, 0, 0);
         Goban instance = new Goban();
-        List expResult = new ArrayList();
-        List result = instance.getVoisins(pion);
+        List<Stone> expResult = new ArrayList();
+        List<Stone> result = instance.getVoisins(pion);
         assertEquals(expResult, result);
         assertEquals(0, result.size());
+
+
+        instance.setCase(0, 1, PionVal.BLANC);
+        instance.setCase(2, 1, PionVal.BLANC);
+        instance.setCase(1, 0, PionVal.NOIR);
+        instance.setCase(0, 0, PionVal.NOIR);
+        pion = new Stone(PionVal.BLANC, 1,1);
+        expResult.add(new Stone(PionVal.BLANC, 2, 1));
+        expResult.add(new Stone(PionVal.BLANC, 0, 1));
+        expResult.add(new Stone(PionVal.NOIR, 1, 0));
+        result = instance.getVoisins(pion);
+        assertEquals(expResult, result);
+
     }
 
     /**

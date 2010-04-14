@@ -23,7 +23,6 @@
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of this program.
  */
-
 package fr.alma.atarigo.analyse;
 
 import fr.alma.atarigo.utils.Game;
@@ -100,23 +99,22 @@ public final class FakeGame extends Game {
                     goban.setCase(line, column, PionVal.RIEN);
 
                 } else {
-                    throw new BadPlaceException("This move is a suicide, I cannot let you do that !");
+                    throw new BadPlaceException("(" + line + ", " + column + ", " + color + ") This move is a suicide, I cannot let you do that !");
                 }
             } else {
-                throw new BadPlaceException("Already a stone here ("+line+","+column+","+color.toString()+")");
+                throw new BadPlaceException("Already a stone here (" + line + "," + column + "," + color.toString() + ")");
             }
         } else {
             throw new BadPlaceException("It is actually better to play on the board");
         }
-//        System.out.print(goban.toString());
     }
 
-    private void fakeStartMove(PlayMove currentMove) {
+    private void fakeStartMove(PlayMove currPM) {
 
         //prepare the group modifications
-        currentMove.setGroups((ArrayList<Groupe>) getCurrentMove().getGroups().clone());
+        currPM.setGroups((ArrayList<Groupe>) getCurrentMove().getGroups().clone());
 
-        Node<PlayMove> newMove = new Node<PlayMove>(currentMove);
+        Node<PlayMove> newMove = new Node<PlayMove>(currPM);
         lastMove.addChild(newMove);
         fakeLastMove = newMove;
     }
@@ -164,23 +162,29 @@ public final class FakeGame extends Game {
         }
     }
 
-    public HashSet<Groupe> fakeGetGroupsFromPions(List<Stone> pions) {
+    public Set<Groupe> fakeGetGroupsFromPions(List<Stone> pions) {
         HashSet<Groupe> groups = new HashSet<Groupe>(4);
         for (Stone pi : pions) {
             Groupe containing = getFakeCurrentMove().getGroupeContaining(pi);
-//            if (containing == null) {
-//                Logger.getAnonymousLogger().log(Level.WARNING, "containing null, pion : " + pi);
-//            } else {
+            if (containing == null) {
+//                Logger.getAnonymousLogger().log(Level.SEVERE, "Containing null, pion : " + pi);
+//                Logger.getAnonymousLogger().log(Level.SEVERE,goban.toString());
+            } else {
                 groups.add(containing);
-//            }
+            }
         }
         return groups;
     }
 
-    public HashSet<Groupe> fakeGetSurroundingGroups(Stone pion) {
+    public Set<Groupe> fakeGetSurroundingGroups(Stone pion) {
         // Get the (<= 4) neighbours groups of the current stone.
-        List<Stone> pions = goban.getVoisins(pion);
-        return fakeGetGroupsFromPions(pions);
+        List<Stone> neighbourList = goban.getVoisins(pion);
+        if (neighbourList.isEmpty()) {
+//            Logger.getAnonymousLogger().log(Level.INFO, "Empty list");
+            return null;
+        } else {
+            return fakeGetGroupsFromPions(neighbourList);
+        }
     }
 
     protected Set<Groupe> fakeCalculateGroups(Stone last) {
@@ -191,22 +195,25 @@ public final class FakeGame extends Game {
         } catch (BadCouleurException e) {
         }
 
-        List<Groupe> groupes = getFakeCurrentMove().getGroups();
+        List<Groupe> currentGroups = getFakeCurrentMove().getGroups();
 
         Set<Groupe> surroundingGroups = fakeGetSurroundingGroups(last);
-        Set<Groupe> others = new HashSet<Groupe>(4);
+        Set<Groupe> ennemyGroups = new HashSet<Groupe>(4);
 
-        for (Groupe groupe : surroundingGroups) {
-            if (groupe.getCouleur() == last.getCouleur()) {
-                lastAdded.addAll(groupe);
-                groupes.remove(groupe);
-            } else {
-                others.add(groupe);
+        if (surroundingGroups != null) {
+            for (Groupe groupe : surroundingGroups) {
+                if (groupe.getCouleur() == last.getCouleur()) {
+                    lastAdded.addAll(groupe);
+                    currentGroups.remove(groupe);
+                } else {
+                    ennemyGroups.add(groupe);
+                }
             }
         }
-        groupes.add(lastAdded);
+
+        currentGroups.add(lastAdded);
         lastAdded.setLiberties(getGroupLiberties(lastAdded));
-        return others;
+        return ennemyGroups;
     }
 
     private PlayMove getFakeCurrentMove() {
@@ -222,6 +229,7 @@ public final class FakeGame extends Game {
         Boolean ok = super.apply(numChild);
         if (ok) {
             ++depth;
+            this.fakeLastMove = null;
         }
         return ok;
     }

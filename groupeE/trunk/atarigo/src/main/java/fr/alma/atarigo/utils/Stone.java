@@ -95,7 +95,7 @@ public class Stone {
 
     @Override
     public String toString() {
-        return "Pion(x:" + column + ",y:" + line + ",c:" + couleur + ")";
+        return "Stone(line:" + line + ",col:" + column + ",c:" + couleur + ")";
     }
 
     public PionVal getCouleur() {

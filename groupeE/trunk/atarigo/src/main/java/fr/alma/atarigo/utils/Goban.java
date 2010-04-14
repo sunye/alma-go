@@ -26,6 +26,8 @@ package fr.alma.atarigo.utils;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Describes the Goban, and more than that, the whole game.
@@ -83,21 +85,27 @@ public class Goban {
     public List<Stone> getVoisins(Stone pion) {
         ArrayList<Stone> pions = new ArrayList<Stone>(4);
 
-        if (bonneCoords(pion.getLine() + 1, pion.getColumn()) && (goban[pion.getLine() + 1][pion.getColumn()] != PionVal.RIEN)) {
-            pions.add(new Stone(goban[pion.getLine() + 1][pion.getColumn()], pion.getLine() + 1, pion.getColumn()));
-        }
+//        Logger.getAnonymousLogger().log(Level.INFO, "Getting neighbours of "+pion);
 
-        if (bonneCoords(pion.getLine() - 1, pion.getColumn()) && (goban[pion.getLine() - 1][pion.getColumn()] != PionVal.RIEN)) {
-            pions.add(new Stone(goban[pion.getLine() - 1][pion.getColumn()], pion.getLine() - 1, pion.getColumn()));
-        }
+        if (pion != null) {
+            if (bonneCoords(pion.getLine() + 1, pion.getColumn()) && (goban[pion.getLine() + 1][pion.getColumn()] != PionVal.RIEN)) {
+                pions.add(new Stone(goban[pion.getLine() + 1][pion.getColumn()], pion.getLine() + 1, pion.getColumn()));
+            }
 
-        if (bonneCoords(pion.getLine(), pion.getColumn() + 1) && (goban[pion.getLine()][pion.getColumn() + 1] != PionVal.RIEN)) {
-            pions.add(new Stone(goban[pion.getLine()][pion.getColumn() + 1], pion.getLine(), pion.getColumn() + 1));
-        }
+            if (bonneCoords(pion.getLine() - 1, pion.getColumn()) && (goban[pion.getLine() - 1][pion.getColumn()] != PionVal.RIEN)) {
+                pions.add(new Stone(goban[pion.getLine() - 1][pion.getColumn()], pion.getLine() - 1, pion.getColumn()));
+            }
 
-        if (bonneCoords(pion.getLine(), pion.getColumn() - 1) && (goban[pion.getLine()][pion.getColumn() - 1] != PionVal.RIEN)) {
-            pions.add(new Stone(goban[pion.getLine()][pion.getColumn() - 1], pion.getLine(), pion.getColumn() - 1));
+            if (bonneCoords(pion.getLine(), pion.getColumn() + 1) && (goban[pion.getLine()][pion.getColumn() + 1] != PionVal.RIEN)) {
+                pions.add(new Stone(goban[pion.getLine()][pion.getColumn() + 1], pion.getLine(), pion.getColumn() + 1));
+            }
+
+            if (bonneCoords(pion.getLine(), pion.getColumn() - 1) && (goban[pion.getLine()][pion.getColumn() - 1] != PionVal.RIEN)) {
+                pions.add(new Stone(goban[pion.getLine()][pion.getColumn() - 1], pion.getLine(), pion.getColumn() - 1));
+            }
         }
+//        Logger.getAnonymousLogger().log(Level.INFO, "Got "+pions);
+
 
         return pions;
     }
@@ -162,20 +170,19 @@ public class Goban {
     @Override
     public Goban clone() {
         Goban autre = new Goban();
-        autre.goban = this.goban.clone();
+        for (int line = 0; line < getTaille(); ++line) {
+            for (int col = 0; col < getTaille(); ++col) {
+                autre.goban[line][col] = this.goban[line][col];
+            }
+        }
         return autre;
     }
 
     @Override
     public String toString() {
         StringBuilder sortie = new StringBuilder();
-        sortie.append("Goban :\n");
-        //Affichage du plateau :
-//        for (int i = 0; i < taille; ++i) {
-//            sortie.append('-');
-//        }
+        sortie.append("Goban :\n\n");
 
-        sortie.append("\n");
         for (int lin = 0; lin < taille; ++lin) {
             for (int col = 0; col < taille; ++col) {
                 switch (this.getCase(lin, col)) {
@@ -193,18 +200,15 @@ public class Goban {
                 }
             }
             sortie.append("\n ");
-            if(lin != taille-1){
-                for (int col = 0; col < taille; ++col){
+            if (lin != taille - 1) {
+                for (int col = 0; col < taille; ++col) {
                     sortie.append("|  ");
                 }
             }
             sortie.append('\n');
         }
-//        sortie.append("+");
-//        for (int i = 0; i < taille; ++i) {
-//            sortie.append('-');
-//        }
-        sortie.append("\n");
+
+        sortie.append('\n');
         return sortie.toString();
     }
 }

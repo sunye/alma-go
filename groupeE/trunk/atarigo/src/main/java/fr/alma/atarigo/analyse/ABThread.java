@@ -51,8 +51,7 @@ public class ABThread extends Thread {
 
     @Override
     public void run(){
-        best = alphabeta.init(game);
-        
+        best = alphabeta.init(game, 10000);
     }
 
     /**

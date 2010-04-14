@@ -48,7 +48,7 @@ public class Game {
     protected Tree<PlayMove> history;
     // Last move played (faster backtracking).
     protected Node<PlayMove> lastMove;
-    protected  PionVal currentPlayer;
+    protected PionVal currentPlayer;
     protected Set<Stone> freePlaces;
 
     public Game() {
@@ -71,7 +71,6 @@ public class Game {
             posePion(line, column, currentPlayer);
 
             changeCurrentPlayer();
-            freePlaces.remove(new Stone(PionVal.RIEN, line, column));
             return true;
         } catch (BadPlaceException ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, ex.getMessage());
@@ -105,7 +104,7 @@ public class Game {
 
                     //Let's modify the goban !
                     goban.setCase(line, column, color);
-//                    freePlaces.remove(new Stone(PionVal.RIEN, line, column));
+                    freePlaces.remove(new Stone(PionVal.RIEN, line, column));
 
                     //Calculates the new groups
                     Set<Groupe> ennemies = calculateGroups(current);
@@ -141,7 +140,7 @@ public class Game {
         if (goban.nbLibertes(new Stone(pionVal, line, column)) == 0) {
             // No liberty ? Let's check if we are killing a ennemy group.
             Set<Groupe> groupes = getSurroundingGroups(new Stone(pionVal, line, column));
-            
+
             int i = 0;
             for (Groupe gr : groupes) {
                 ++i;
@@ -224,7 +223,7 @@ public class Game {
      * @param groupe
      * @return
      */
-    protected  Set<Stone> getGroupLiberties(Groupe groupe) {
+    protected Set<Stone> getGroupLiberties(Groupe groupe) {
         HashSet<Stone> libertes = new HashSet<Stone>(groupe.size() * 2 + 2);
 
         for (Stone pion : groupe.getStones()) {

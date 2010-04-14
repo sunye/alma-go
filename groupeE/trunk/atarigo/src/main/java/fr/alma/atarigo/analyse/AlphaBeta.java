@@ -23,7 +23,6 @@
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of this program.
  */
-
 package fr.alma.atarigo.analyse;
 
 import fr.alma.atarigo.utils.Game;
@@ -33,6 +32,8 @@ import fr.alma.atarigo.utils.PionVal;
 import fr.alma.atarigo.utils.PlayMove;
 import fr.alma.atarigo.utils.Stone;
 import fr.alma.atarigo.utils.exceptions.BadPlaceException;
+import java.security.Timestamp;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,6 +53,8 @@ public class AlphaBeta {
     private final static int BEGINLIMIT = 8;
     private PionVal couleur;
     private final PlayMove lastBest;
+    private int timer;
+    private long beginTime;
 
     /**
      * Constructor
@@ -69,7 +72,9 @@ public class AlphaBeta {
      * @param jeu : State of the game
      * @return the best move to play
      */
-    public PlayMove init(Game jeu) {
+    public PlayMove init(Game jeu, int timer) {
+        this.timer = timer;
+        this.beginTime = System.currentTimeMillis();
         FakeGame tests = new FakeGame(jeu);
         PlayMove aJouer = alphaBeta(tests, 0, -INFINI, +INFINI);
         Logger.getAnonymousLogger().log(Level.INFO, "Fini ! coup renvoyé : " + aJouer);
@@ -88,7 +93,7 @@ public class AlphaBeta {
         if (prof < profondeurMax && !tests.isEnd()) {
             this.generateMoves(tests);
         }
-        if (prof == profondeurMax || tests.isInLeaf()) {
+        if (tests.isInLeaf() || prof == profondeurMax) {
             int coef = (profondeurMax - prof) + (((profondeurMax - prof) % 2) + 1);
 
             tests.getCurrentMove().setEval((coef) * EvalFunc.evaluate(tests, couleur, tests.getDepth() <= BEGINLIMIT));
@@ -159,12 +164,11 @@ public class AlphaBeta {
         for (int i = 0; i < tests.getChildrenMove().size(); ++i) {
             tests.apply(i);
             PlayMove valFils = alphaBeta(tests, prof, Math.max(alpha, alphadep.getEval()), beta);
-            if(tests.isEnd()){
-                tests.revert();
+            tests.revert();
+            if (valFils.isEnd()) {
                 tests.keepChildAt(i);
                 return valFils;
             }
-            tests.revert();
 
             if (valFils.getEval() > alphadep.getEval()) {
                 alphadep = valFils;
@@ -177,6 +181,10 @@ public class AlphaBeta {
                     updateLastBest(alphadep);
                 }
                 return alphadep; // coupure beta
+            }
+
+            if(System.currentTimeMillis() - this.beginTime > this.timer){
+                return alphadep;
             }
         }
         tests.keepChildAt(indexMax);
@@ -195,7 +203,7 @@ public class AlphaBeta {
      * @return the min move to play
      */
     private PlayMove min(FakeGame tests, int prof, int alpha, int beta) {
-        if(prof == 2 && lastBest.getPutStone() == null){
+        if (prof == 2 && lastBest.getPutStone() == null) {
             updateLastBest(tests.getCurrentMove());
         }
 
@@ -205,12 +213,12 @@ public class AlphaBeta {
         for (int i = 0; i < tests.getChildrenMove().size(); ++i) {
             tests.apply(i);
             PlayMove valFils = alphaBeta(tests, prof, alpha, Math.min(beta, betadep.getEval()));
-            if(tests.isEnd()){
-                tests.revert();
+            tests.revert();
+            if (valFils.isEnd()) {
                 tests.keepChildAt(i);
                 return valFils;
             }
-            tests.revert();
+
             if (valFils.getEval() < betadep.getEval()) {
                 betadep = valFils;
                 indexMin = i;
@@ -218,6 +226,9 @@ public class AlphaBeta {
             if (alpha >= betadep.getEval()) {
                 tests.keepChildAt(i);
                 return betadep; // coupure alpha
+            }
+            if(System.currentTimeMillis() - this.beginTime > this.timer){
+                return betadep;
             }
         }
         tests.keepChildAt(indexMin);
@@ -231,6 +242,7 @@ public class AlphaBeta {
     private void generateMoves(FakeGame tests) {
         Set<Stone> freeToTry = new HashSet<Stone>(tests.getFreePlaces());
         List<Stone> listToTry = null;
+
 
         if (tests.getDepth() <= BEGINLIMIT) {
             freeToTry.retainAll(generateFreePlaces(MILIEU, MILIEU, Goban.getTaille() - MILIEU, Goban.getTaille() - MILIEU));
@@ -268,14 +280,13 @@ public class AlphaBeta {
             listToTry = new LinkedList<Stone>(firstFreeToTry);
             listToTry.addAll(freeToTry);
         }
-//        Logger.getAnonymousLogger().log(Level.INFO, new StringBuilder("Dispos : ").append(freeToTry.toString()).toString());
 
         for (Stone stone : listToTry) {
             try {
                 tests.fakePosePion(stone.getLine(), stone.getColumn(), tests.getCurrentPlayer());
             } catch (BadPlaceException ex) {
-//                Logger.getAnonymousLogger().log(Level.SEVERE, ex.getMessage());
-//                Logger.getAnonymousLogger().log(Level.INFO, tests.getGoban().toString());
+                Logger.getAnonymousLogger().log(Level.SEVERE, ex.getMessage());
+                Logger.getAnonymousLogger().log(Level.INFO, tests.getGoban().toString());
             }
         }
     }
