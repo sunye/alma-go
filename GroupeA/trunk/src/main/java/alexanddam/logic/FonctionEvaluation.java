@@ -22,9 +22,9 @@ public class FonctionEvaluation {
 	private static  int[] cSuivant;				// coup suivant, composé de deux entiers
 	private static  boolean liberteZero;      	// vrai si le jeu est fini, faux sinon
 
-	/**.
-	 * methode qui est appele dans le constructeur de FonctionEvaluation et chaque fois
-	 * que l'utilisateur desire commencer un nouveau jeu = typiquement, lors d'appui de boutton "New Game"
+	/**
+	 * This method is called by the constructor of FonctionEvaluation and each time the user wants to start a new game;
+	 * concritely when he presses "New Game" 
 	 */
 	public static  void jeuNeu() {
 
@@ -53,22 +53,21 @@ public class FonctionEvaluation {
 		liberteZero = false;
 	}
 
-	/**.
-	 * Getter de la valeur du goban a un point specifique
-	 * 
-	 * @param  les deux entiers coordonees de la matrice de goban
-	 * @return  la valeur du goban dans ce point specifique <=> 0 = vide, 1 = ordinateur, 2 = adversair humain
+	/**
+	 * Getter of the specific point of the goban
+	 * @param coordX X coordinate of the goban
+	 * @param coordY Y coordinate of the goban
+	 * @return value at this point - 0 = empty, 1 = computer and 2 = adversary
 	 */
 	public static  int getGobanValue(int coordX, int coordY) {
 		return goban[coordX][coordY];
 	}
 
-	/**.
-	 * la valeur du goban a l'endroit specifie est modifie, si cette valeur fournie est entre 0 et 2, y compris
-	 * 
-	 * @param  les deux entiers coordonees de la matrice de goban et la valeur qu'on veut etablir
-	 * @return  void
-	 * 
+	/**
+	 * Set the value of a speciafic case of the area, if comprised between 0 and 2
+	 * @param coordX X coordinate of the goban
+	 * @param coordY Y coordinate of the goban
+	 * @param val the value to set
 	 */
 	public static  void setGobanValue(int coordX, int coordY, int val) {
 		if(val<0 || val>2 || goban[coordX][coordY]!=0) {  // atari go, pas go
@@ -78,44 +77,41 @@ public class FonctionEvaluation {
 		goban[coordX][coordY] = val;
 	}
 
-	/**.
-	 * incrementation du nombre de pierres d'ordinateur sur le goban
+	/**
+	 * Increment of the number of stones in the goban
 	 */
 	public static  void incPO() {
 		cOrdinateur++;
 	}
 
-	/**.
-	 * incrementation de nombre de pierres adversair humain sur le goban
+	/**
+	 * Increment the number of human adversary's stones in the goban
 	 */
 	public static  void incPA() {
 		cHumain++;
 	}
 
-	/**.
-	 * le seul constructeur de la classe FonctionEvaluation = initialisation des donnees pour un nouveau jeu
+	/**
+	 * The only constructor of the FonctionEvaluation class; initialize the data of the new game
 	 */
 	public FonctionEvaluation() {
 		jeuNeu();
 	}
 
-	/**.
-	 * methode qui reinitialise la matrice des cases deja� evaluees lors d'un calcul de libertes d'une pierre
+	/**
+	 * Method which reinitialize the matrix of the already evaluated cases during a calculation of a stone's liberty
 	 */
 	static void reinitialiserDE() {
 
 		dejaEvalue = new boolean[goban.length][goban[0].length]; // false
 	}
 
-	/**.
-	 * on a besoin de cette fonction afin de reinitialiser a faux les cases vides dans le goban,
-	 * entre deux appels de la fonction de libertes de pierres, puisque les libertes peuvent etre
-	 * partagees entre plusieures chaines de pierres
-	 * 
-	 * @param  la matrice dont les positions correspondant aux cases vides seront initialises
-	 *         dans la matrice des evaluations de cases
-	 * @return void
-	 * 
+	/**
+	 * Reinitialize at false the all the goban
+	 * this method is used between two calls of the fonction of stones' liberty, since the liberties can be shared
+	 * between several chains of stones
+	 *  
+	 * @param mat goban of the game
 	 */
 	static void reinitialiserVideDE(int[][] mat) {
 
@@ -128,14 +124,12 @@ public class FonctionEvaluation {
 		}
 	}
 
-	/**.
-	 * fonction recursive qui calcule le nombre de libertes d'une pierre de type defini
-	 * attention: avant l'appel de cette methode, il faut pas oublier reinitialiserDE
+	/**
 	 * 
-	 * @param  les coordonnes de la pierre à calculer ses libertes et l'adresse de la matrice pour
-	 *          laquelle on calcule 
-	 * @return  le nombre de libertes de la pierre sur cette position
-	 * 
+	 * @param coordX x coordinate of the stone to calculate
+	 * @param coordY y coordinate of the stone to calculate
+	 * @param mat matrix that we compute
+	 * @return number of liberties of the stone at this position
 	 */
 	static int libertes(int coordX, int coordY, int[][] mat) {
 
@@ -187,9 +181,9 @@ public class FonctionEvaluation {
 		return nbLib;
 	}
 
-	/**.
-	 * calcule des libertes de l'etat du jeu qui se trouve dans la racine de l'arbre min-max
-	 * par ailleurs, on n'a pas besoin des 2 vecteurs de coups, parce qu'ils sont vides à la racine
+	/**
+	 * Calculates the liberties of the actual game which is in the root of the min-max tree
+	 * we dont need 2 vectors of moves, because they are empty at the root
 	 */
 	static void calculerLibertes() {
 
@@ -218,8 +212,8 @@ public class FonctionEvaluation {
 		}
 	}
 
-	/**.
-	 * l'evaluation en racine de l'arbre min-max; le resultat est retenu dans la variable globale 'points'
+	/**
+	 * Evaluates the root of the min-max tree; the result is saved in the global variable "points"
 	 */
 	static void evaluation() {
 
@@ -236,12 +230,12 @@ public class FonctionEvaluation {
 		}
 	}
 
-	/**.
-	 * evaluation incrementale, utilisee pour les feuilles de l'arbre
-	 * 
-	 * @param les deux vecteurs de coups -ordinateur et humain respectivement-
-	 * @return  l'evaluation de l'etat dans ce noeud particulier du devellopement de l'arbre, comme entier
-	 * 
+		
+	/**
+	 * Incremental evaluation, used for the tree's leaves 
+	 * @param vOrdi moves vector of the computer
+	 * @param vAdver moves vector of the adversary
+	 * @return evaluation of the state in a node, particularly in the tree's development, as integer 
 	 */
 	static int evaluationInc(int[] vOrdi, int[] vAdver) {
 
@@ -263,15 +257,11 @@ public class FonctionEvaluation {
 		return pointsV;
 	}
 
-	/**.
-	 * on aura un resultat positif si le nombre de libertes est superieur a 3 et que le joueur est l'ordinateur =
-	 * sign -1 ou si le nombre de libertes est inferieur ou egal a 3 et que le joueur est l'adversair humain;
-	 * tous les autres cas correspondent aux resultats negatifs
+	/**
 	 * 
-	 * @param  le nombre de libertes et le sign = -1 si on veut les points gagnes par l'ordinateur
-	 *         dans ce cas là ou 1 si on veut les points gagnes dans la même situation, par l'adversair humain
-	 * @return  le nombre de points associes
-	 * 
+	 * @param libertes number of liberties 
+	 * @param sign sign = -1 if we need computer's won points, or sign = 1 if we need won points of the human adversary 
+	 * @return number of associated points 
 	 */
 	static int pointsPercase(int libertes, int sign) {
 		int result = 0;
@@ -287,13 +277,11 @@ public class FonctionEvaluation {
 		return result;
 	}
 
-	/**.
-	 * actualise dans la matrice libInc les libertes correspondantes a l'etat du jeu dans
-	 * la racine et les coups representes par les deux vecteurs
+	/**
+	 * Actualize the libInc matrix, the corresponding liberties at the actual game in the root and the moves reprensented by the two vectors
 	 * 
-	 * @param  les deux vecteurs de coups ordinateur et adversair humain
-	 * @return  void
-	 * 
+	 * @param vOrdi moves vertor of the computer
+	 * @param vAdver moves vertor of the human adversary
 	 */
 	private static  void calculerLibertesInc(int[] vOrdi, int[] vAdver) {
 		int opt;		// variables pour optimisation
@@ -321,31 +309,25 @@ public class FonctionEvaluation {
 		actualiserLibertes(vAdver, 2);  // actualise les libertes affectes par le vecteur de coups d'adversair humain
 	}
 
-	/**.
-	 * fonction qui est appele depuis la classe interface du jeu et etabli si le jeu est fini
-	 * 
-	 * @param  void
-	 * @return  vrai si on a une prise et le jeu est fini, faux sinon
-	 * 
+	/**
+	 * Function called from the interface class of the game and indicates if the game is ended 
+	 * @return true if we have a catch and then the game ends, otherwise false
 	 */
 	public static  boolean jeuFini() {
 		evaluation();    
 		return liberteZero;
 	}
 
-	/**.
-	 * Retourne les pierres prises en cas de defaite.
+	/**
+	 * Returns the taken stones in case of defeat
 	 * 
-	 * @param  l'entier correspondant a un coup de joueur gagnant
-	 * @return  le Vector des pierres prises du joueur perdant
+	 * @param type integer corresponding to a player's move
+	 * @return Vector of taken stones of the loosing player
 	 */
-
 	public static AbstractList<Point> pierresPrises(int type) {
 		boolean trouve = false;
 		Vector<Point> point = new Vector<Point>();
 		reinitialiserDE();
-
-		//afficheGobanLibertes();
 
 		for(int i = 0; i < goban.length; i++) {
 			for(int j=0; j < goban.length; j++) {
@@ -368,12 +350,11 @@ public class FonctionEvaluation {
 		return point;
 	}
 
-	/**.
-	 * Actualisation incrementale de libertes affectees par un des deux vecteurs de coups
+	/**
+	 * Incremental actualization of the affected liberties from one of the two moves vectors 
 	 * 
-	 * @param int[], int : le vecteur de coups et le type selon cette ordinateur ou adversair humain
-	 * @return  void
-	 * 
+	 * @param vCoup Moves vector 
+	 * @param type either the computer or human adversary
 	 */
 	private static  void actualiserLibertes(int[] vCoup, int type) {
 		int iInc = 0, coupX, coupY;
@@ -402,12 +383,10 @@ public class FonctionEvaluation {
 		}
 	}
 
-	/**.
-	 * calcul des libertes d'une case particuliere le resultat est retenu dans la matrice libInc
-	 * 
-	 * @param  int, int : les deux coordonnes de la case
-	 * @return  void
-	 * 
+	/**
+	 * Calculates the liberties of a particular case. The result is saved in teh libInc matrix 
+	 * @param coordX x coordinate of the case
+	 * @param coordY y coordinate of the case
 	 */
 	private static  void modifierLibertesInc(int coordX, int coordY) {
 		int aux;
@@ -420,13 +399,12 @@ public class FonctionEvaluation {
 		}
 	}
 
-	/**.
-	 * on copie le goban et on profite du fait qu'on a deja calcule des libertes
-	 * dans l'evaluation de la racine et que certaines chaines qui ne seront pas influences par vo et va
+	/**
 	 * 
-	 * @param  adresses goban source et goban destination et matrice de libertes source et destination
-	 * @return void
-	 * 
+	 * @param gDest address of the source goban
+	 * @param gSource address of the destination goban
+	 * @param lDest source of matrix of the liberties
+	 * @param lSource destination of matrix of the liberties
 	 */
 	private static  void copierLibertesEtGoban(int[][] gDest, int[][] gSource, int[][] lDest, int[][] lSource) {
 
@@ -443,24 +421,23 @@ public class FonctionEvaluation {
 		}
 	}
 
-	/**.
-	 * Getter des points calcules par la fonction d'evaluation de la racine, non-incrementale
-	 * @return int Point calcules par la fonction d'evaluation
-	 * 
+	/**
+	 * Get the calculated points by the evaluation function of the root, non-incremental
+	 * @return Calculated points by the evaluation function
 	 */
 	public  int getPoints() {
 		return points;
 	}
+	
 
-
-	/**.
-	 * fonction qui etablie si l'on peut inserer dans une case vide une pierre
-	 * par exemple, on ne peut pas se suicider; cependant, on peut gagner si l'autre n'a plus de libertes
+	/**
+	 * Function which set if we can play a stone in an empty case ; for instance we can not suicide
+	 * Moreover we can win if the other one does not have liberties anymore 
 	 * 
-	 * @param  le tour de la personne a jouer et les coordonnes de la case pour laquelle on veut savoir
-	 *         si il est permis d'y inserer une pierre
-	 * @return  vrai si il est permis ou faux sinon
-	 * int[]
+	 * @param tour Go the game of the person
+	 * @param coordX x coordinate of the case
+	 * @param coordY y coordinate of the case
+	 * @return true if acceptable, otherwise false.
 	 */
 	public static  boolean permissible(int tour, int coordX, int coordY) {
 		/* si il y au moins une place libre autour de lui, c'est permissible
@@ -485,13 +462,15 @@ public class FonctionEvaluation {
 		return true;
 	}
 
-	/**.
-	 * la version incrementale de la fonction de permission d'inserer une pierre dans une case vide
+	/**
+	 * Incremental version of the permissible() function
 	 * 
-	 * @param  premiers 3 arguments les memes que ceux de la version non-incrementale et
-	 *         les adresses des matrices goban et libertes
-	 * @return  vrai si il est permis ou faux sinon
-	 * 
+	 * @param tour Go the game of the person
+	 * @param coordX x coordinate of the case
+	 * @param coordY y coordinate of the case
+	 * @param matGob address of the goban's matrix
+	 * @param matLib address of the liberties' matrix
+	 * @return true if acceptable, otherwise false.
 	 */
 	public static  boolean permissibleInc(int tour, int coordX, int coordY, int[][] matGob, int[][] matLib) {
 		if((coordX > 0 && matGob[coordX-1][coordY]==0) || (coordX < matGob.length - 1 && matGob[coordX+1][coordY]==0) ||
@@ -508,14 +487,12 @@ public class FonctionEvaluation {
 		return true;
 	}
 
-	/**.
-	 * on developpe l'arbre alpha-beta, en employant la fonction d'evaluation incrementale,
-	 * puis on retourne les coordonnes entiers x et y du coup suivant de l'ordinateur
-	 * les noeuds interieurs et non-feuilles seront eux-memes evalues, afin d'en choisir les meilleurs pour le
-	 * developpement de l'arbre min-max
+	/**
+	 * We develop the alpha-beta tree, with the incremental evaluation function.
+	 * Then we return the X, Y coordinates of the computer's next move.
+	 * The internal and non-leaf nodes are themselves evaluated, in order to chose the bests for the min-max tree's development  
 	 * 
-	 * @return  le vecteur de 2 elements entiers qui representent les coordonnes du coup suivant de l'ordinateur
-	 * 
+	 * @return Vector of the two elements which reprents the coordonates of the computer's next move
 	 */
 	public static  int[] coupSuivant() {
 		int jParc, nProf;
@@ -547,15 +524,13 @@ public class FonctionEvaluation {
 		return cpCSuivant;
 	}
 
-
-	/**.
-	 * copie apra�s l'exploration des noeuds fils d'un noeud de tous les fils choisis,
-	 * dans la file parcourue en algorithme BFS - breadth first search
-	 * 
-	 * @param  la structure qui contient les meilleurs noeuds fils, le noeud parent et
-	 *         la file dans laquelle on va mettre les noeuds de la structure
-	 * @return  void
-	 * 
+	/**
+	 * Copy after the exploration of the son nodes of all chosen nodes,
+	 * in the explorated queue in  BFS algorithm - breadth first search
+	 *
+	 * @param noeudFils Best nodes structure
+	 * @param parent Parent's node
+	 * @param fileNoeuds Queue where we will put the node from the structure
 	 */
 	private static  void copyNoeudsFils(NoeudsFils noeudFils, Noeud_LA parent, Queue<Noeud_LA> fileNoeuds) {
 		while(noeudFils.size() > 0) {
@@ -565,14 +540,14 @@ public class FonctionEvaluation {
 		}
 	}
 
-	/**.
-	 * l'exploration d'un noeud afin de trouver les meilleurs fils a developper
+	/**
+	 * Exploration of a node in order to find the best sons to develop
 	 * 
-	 * @param  entier profondeur, noeud parent a developper, structure qui retiendra les
-	 *         meilleurs noeuds et la file dans laquelle on va mettre les fils trouves, a la fin
-	 *         d'etape d'exploration
-	 * @return  le nombre de noeuds fils a explorer pour le noeud parent nc; typiquement, ce nombre
-	 *          est egal
+	 * @param prof Depth
+	 * @param noeud Parent node to develop
+	 * @param noeudFils Strutures which will save the best nodes
+	 * @param fileNoeuds Queue in which we will put the found sons, at the end of the exploration step
+	 * @return Number of son nodes to explorate for the parent node nc, concretely this number is equal
 	 */
 	private static  int parcoursProfondeur(int prof, Noeud_LA noeud, NoeudsFils noeudFils, Queue<Noeud_LA> fileNoeuds) {
 		int nProfSuivant;
@@ -617,14 +592,12 @@ public class FonctionEvaluation {
 		return nProfSuivant;
 	}
 
-	/**.
-	 * cette fonction va changer la valeur de la racine lorsqu'on a remonte une valeur meilleure
-	 * et va changer selon le coup qui a permi l'obtention de cette valeur le vecteur retourne par
-	 * la fonction coupSuivant
+	/**
+	 * This function will change the value of the root when we "raise" a value better and 
+	 * will change according to the move which permited the obtaining of this value the vector returned
+	 * from the coupSuivant function.  
 	 * 
-	 * @param  un noued qui sera le noeud racine
-	 * @return  void
-	 * 
+	 * @param noeud Node which will become the root node
 	 */
 	private static  void changerValeurRacine(Noeud_LA noeud) {
 		noeud.pere.valeur = noeud.valeur;
@@ -632,14 +605,14 @@ public class FonctionEvaluation {
 		cSuivant[1] = noeud.vOrdi[1];
 	}
 
-	/**.
-	 * cette fonction recursive va essayer de remonter la valeur trouvee dans la feuille jusqu'a la racine;
-	 * si on reussi ou si on ne peux plus remonter a partir d'un profondeur, on va retourner faux,
-	 * puisqu'on a pas eu raccourci alpha-beta; si le test alpha-beta reussi, on retourne vrai
+	/**
+	 * This recursive function will try to raise up the found value in the leaf to the root.
+	 * If we success or if we ca not raise it up from a depth, we return false.
+	 * Because we dont have an alpha-beta shortpath. If the test successes, we return true
 	 * 
-	 * @param  le noeud feuille a remonte et la parite du profondeur dans lequel il se trouve
-	 * @return  vrai si on a un raccourci alpha-beta et faux sinon
-	 * 
+	 * @param noeud The leaf node to "raise" 
+	 * @param parite Parity of the depth in which it is
+	 * @return true we have an alpha-beta shortpath, otherwise, false 
 	 */
 	private static  boolean remonterRacine(Noeud_LA noeud, int parite) {
 		noeud.valeurPresent = true;
@@ -679,21 +652,19 @@ public class FonctionEvaluation {
 		return false;
 	}
 
-	/**.
-	 * Getter de l'exponentielle choisie ou l'arite maximale de chaque noeud
-	 * 
-	 * @param  void
-	 * @return  l'exponentielle choisie ou l'arite maximale de chaque noeud
+	/**
+	 * Getter of the exponantional or the maximal arity of each node
+	 *  
+	 * @return Chosen exponentional or maximal arity of each node
 	 */
 	public  int getExp() {
 		return exponentielle;
 	}
 
-	/**.
-	 * Setter de l'exponentielle choisie ou l'arite maximale de chaque noeud
+	/**
+	 * Setter of the exponantional or the maximal arity of each node
 	 * 
-	 * @param  l'exponentielle souhaitee ou l'arite maximale de chaque noeud
-	 * @return  void
+	 * @param exp Chosen exponentional or maximal arity of each node
 	 */
 	public static  void setExp(int exp) {
 
@@ -709,21 +680,19 @@ public class FonctionEvaluation {
 		exponentielle = exp;
 	}
 
-	/**.
-	 * Getter de le profondeur du developpement de l'arbre min-max
+	/**
+	 * Getter of the min-max development depth
 	 * 
-	 * @param  void
-	 * @return  le profondeur du developpement de l'arbre min-max
+	 * @return The min-max development depth
 	 */
 	public  int getProfondeur() {
 		return profondeur;
 	}
 
-	/**.
-	 * Setter de le profondeur souhaite de l'arbre min-max
+	/**
+	 * Setter of the min-max development depth
 	 * 
-	 * @param  le profondeur souhaite de l'arbre min-max
-	 * @return  void
+	 * @param prof The min-max development depth
 	 */
 	public static  void setProfondeur(int prof) {
 		if(prof < 2 || prof > 10) {

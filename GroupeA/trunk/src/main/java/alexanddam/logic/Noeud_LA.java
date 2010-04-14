@@ -12,6 +12,9 @@ public class Noeud_LA extends AbstractNoeud {
 	public boolean valeurPresent;
 	//n'a pas besoin ni de la valeur etiquette ni de position	
 	
+	/**
+	 * Constructor setting fields
+	 */
 	public Noeud_LA(int tour, int coordX, int coordY, int[] voProp, int[] vaProp) {
 		
 		int iVect = 0;
@@ -80,7 +83,11 @@ public class Noeud_LA extends AbstractNoeud {
 		}		
 		
 	}	
-	
+	/**
+	 * Constructor setting its value
+	 * 
+	 * @param val Value of the node
+	 */
 	public Noeud_LA(int val){
 		this.valeur = val;
 		this.liste_fils = new LinkedList<Noeud_LA>();
@@ -90,6 +97,12 @@ public class Noeud_LA extends AbstractNoeud {
 		this.vAdver = new int[0];
 	}
 	
+	/**
+	 * Get a node from its value
+	 * 
+	 * @param val Value of the node to find
+	 * @return The found node
+	 */
 	public Noeud_LA node(int val){
 		
 		if(val==valeur){// on se trouve dans le bon noeud
@@ -108,6 +121,9 @@ public class Noeud_LA extends AbstractNoeud {
 		return null;
 	}
 	
+	/**
+	 * Override of the equals function
+	 */
 	@Override
 	public boolean equals(Object obj) {
 				
@@ -120,25 +136,40 @@ public class Noeud_LA extends AbstractNoeud {
 			
 	}
 	
-	// ajoute le noeud f en tant que fils, ne marche que si la liste n'est pas pleine
+	/**
+	 * Add the node f as son if the list is not full
+	 * 
+	 * @param fils Node we want to add
+	 * @return true if added, otherwise, false 
+	 */
 	public boolean ajouterFils(AbstractNoeud fils){
 		((Noeud_LA) fils).pere = this;
 		liste_fils.add(((Noeud_LA)fils));
 		return true;		
 	}
 	
-	//supprimer le noeud et donc son arborescence
+	/**
+	 * Delete the node and its arborescence
+	 */
 	public void supprimer() {
 		this.pere.liste_fils.remove(this.position());
 		this.pere = null;
 	}
 	
-	//position du noeud parmi ses freres
+	/**
+	 * Get the position of the node between his brothers
+	 * @return position the position of the node between his brothers
+	 */
 	public int position() {
 		return this.pere.liste_fils.indexOf(this);
 	}
 
-	// accede au i-ieme fils du noeud
+	/**
+	 * Get the nth son of the node
+	 * 
+	 * @param ieme nth son as integer 
+	 * @return nth son as Node
+	 */
 	public AbstractNoeud ieme(int ieme){
 		try{
 			return liste_fils.get(ieme);
@@ -149,6 +180,9 @@ public class Noeud_LA extends AbstractNoeud {
 		
 	}
 	
+	/**
+	 * Display the tree
+	 */
 	public void affichageLA(){
 		String str = new String();
 		Iterator<Noeud_LA> iter = liste_fils.iterator(); // On paramètre Iterator par le type des éléments de la collection qui sera parcourue
@@ -163,6 +197,9 @@ public class Noeud_LA extends AbstractNoeud {
 		}
 	}
 	
+	/**
+	 * Display the tree
+	 */
 	public void affichageNA(){
 		String str = new String();
 		Iterator<Noeud_LA> iter = liste_fils.iterator(); // On paramètre Iterator par le type des éléments de la collection qui sera parcourue

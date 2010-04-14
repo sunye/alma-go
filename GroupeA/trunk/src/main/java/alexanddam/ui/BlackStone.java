@@ -12,6 +12,9 @@ public class BlackStone extends Canvas{
 
 	String img = "black.gif";
 	
+	/**
+	 * Constructor of the black stone
+	 */
 	public BlackStone() {
 		MediaTracker media = new MediaTracker(this);
 		image = Toolkit.getDefaultToolkit().getImage(img);
@@ -21,7 +24,10 @@ public class BlackStone extends Canvas{
 		}
 		catch (Exception e) {}
 	}
-	
+
+	/**
+	 * draw the black stone
+	 */
 	public void paint(Graphics grap) {
 		grap.drawImage(image, 0,0, this);
 	}

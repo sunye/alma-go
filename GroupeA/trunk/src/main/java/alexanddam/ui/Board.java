@@ -9,7 +9,7 @@ import java.awt.Point;
 import java.util.Collection;
 import java.util.Vector;
 
-class Board extends Canvas {
+public class Board extends Canvas {
 	private static final long serialVersionUID = 1L;
 
 	int width = 300;
@@ -28,6 +28,9 @@ class Board extends Canvas {
 	private WhiteStone wStone;
 	private BlackStone bStone;
 
+	/**
+	 * Reset the goban, delete all stones
+	 */
 	public void resetTable() {
 		whitePoints.clear();
 		blackPoints.clear();
@@ -35,62 +38,124 @@ class Board extends Canvas {
 		this.repaint();
 	}
 	
+	/**
+	 * Set the loosing stones to display
+	 * 
+	 * @param loo Collection of loosing stones
+	 */
 	public void updateLoosers(Collection<Point> loo){
 		vLoosers.addAll(loo);
 	}
 
+	/**
+	 * Get the black stones
+	 * 
+	 * @return black stones
+	 */
 	public Collection<Point> getvPoints2() {
 		return blackPoints;
 	}
 
+	/**
+	 * Add a black stone
+	 * 
+	 * @param point the black stone to add
+	 */
 	public void setBlack(Point point) {
 		this.blackPoints.add(point);
 	}
 
+	/**
+	 * Get the width of the goban 
+	 * 
+	 * @return width of the goban
+	 */
 	public int getWidth() {
 		return width;
 	}
-
+	
+	/**
+	 * Set the width of the goban
+	 * 
+	 * @param width width of the goban
+	 */
 	void setWidth(int width) {
 		this.width = width;
 	}
 
+	/**
+	 * Get the height of the goban 
+	 * 
+	 * @return height of the goban
+	 */
 	public int getHeight() {
 		return height;
 	}
-
+	/**
+	 * Set the height of the goban
+	 * 
+	 * @param height width of the goban
+	 */
 	void setHeight(int height) {
 		this.height = height;
 	}
-
+	
+	/**
+	 * Get the number of cases
+	 * 
+	 * @return cases
+	 */
 	public int getNbCases() {
 		return nbCases;
 	}
-
+	
+	/**
+	 * Set the number of cases
+	 * 
+	 * @param nbCases
+	 */
 	void setNbCases(int nbCases) {
 		this.nbCases = nbCases;
 	}
 
+
+	/**
+	 * Get the white stones
+	 * 
+	 * @return white stones
+	 */
 	public Collection<Point> getV() {
 		return whitePoints;
 	}
 
+	/**
+	 * Add a white stone
+	 * 
+	 * @param whitePoint the white stone to add
+	 */
 	public void setWhite(Point whitePoint) {
 		this.whitePoints.add(whitePoint);
 	}
 
+	/**
+	 * Default constructor 
+	 */
 	public Board() {
 		nbC = ((Board) this).getNbCases();
 		diam1 = nbC / (float)(this.width - 2 * Board.space);
 		diam2 = nbC / (float)(this.height - 2 * Board.space);
 	}
 
+	/**
+	 * Draw the goban
+	 */
 	@Override
 	public void paint(Graphics graph) {
 		graph.setColor(new Color(139, 69, 19));
 		graph.fillRect(0, 0, width, height);
 		graph.setColor(new Color(0, 0, 0));
-
+		
+		// Draw the Goban
 		for (int i = 0; i <= this.nbCases ; i++) {
 
 			graph.drawLine(i * (this.width - 2*space) / this.nbCases + space, space,
@@ -101,21 +166,21 @@ class Board extends Canvas {
 
 		}
 
-		// Dessins des points noirs
+		// Draw the black stones
 		graph.setColor(new Color(0, 0, 0));
 		for(Point v:whitePoints){
 			wStone = new WhiteStone();
 			graph.drawImage(wStone.image, v.x, v.y, wStone);
 		}
 
-		// Dessins des points blancs
+		// Draw the white stones
 		graph.setColor(new Color(255, 255, 255));
 		for(Point v2:blackPoints) {
 			bStone = new BlackStone();
 			graph.drawImage(bStone.image, v2.x, v2.y, bStone);
 		}
 
-		// Dessins des pierres perdantes
+		// Draw the loosing stones
 		Graphics2D graph2 = (Graphics2D) graph;
 			graph2.setColor(new Color(0, 204 , 255));
 			float dash1[] = {5.0f};

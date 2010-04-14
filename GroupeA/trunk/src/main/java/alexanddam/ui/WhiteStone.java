@@ -11,6 +11,9 @@ public class WhiteStone extends Canvas{
 	Image image;
 	String img = "white.gif";
 	
+	/**
+	 * Constructor of the black stone
+	 */
 	public WhiteStone() {
 		
 		MediaTracker media = new MediaTracker(this);
@@ -21,7 +24,10 @@ public class WhiteStone extends Canvas{
 		}
 		catch (Exception e) {}
 	}
-
+	
+	/**
+	 * draw the white stones
+	 */
 	public void paint(Graphics grap) {
 		grap.drawImage(image, 0,0, this);
 	}
