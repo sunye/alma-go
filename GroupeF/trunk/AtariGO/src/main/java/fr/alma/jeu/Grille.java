@@ -76,7 +76,7 @@ import fr.alma.jeu.Couleur;
     	public void mettrePionBlanc(JLabel LGrille,JBlanc Blanc,Point position) {
     		JLabel blanc = (JLabel) Blanc.clone();
     		LGrille.add(blanc);
-    		blanc.setLocation(ghmp.get(position).x-15,ghmp.get(position).y-15);
+    		blanc.setLocation(ghmp.get(position).x-13,ghmp.get(position).y-15);
     		blanc.setVisible(true);
     	}
     	
@@ -88,7 +88,7 @@ import fr.alma.jeu.Couleur;
     		JLabel noir = (JLabel) Noir.clone();
     		LGrille.add(noir);
     		
-    		noir.setLocation(ghmp.get(position).x-15,ghmp.get(position).y-15);
+    		noir.setLocation(ghmp.get(position).x-13,ghmp.get(position).y-15);
     		noir.setVisible(true);
     	}
     	
