@@ -3,8 +3,7 @@ package fr.alma.ia;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import fr.alma.jeu.Grille;
-import fr.alma.structure.Arbre; 
+import fr.alma.jeu.Grille; 
  
 /**
  * Clase de gestion de l'intélligence artificielle
@@ -13,17 +12,7 @@ import fr.alma.structure.Arbre;
  */
 public class Ia {
 			
-	/**
-	 * Construit l'arbre a partir d'une grille
-	 * @param grille la grille a traité
-	 * @return Arbre construit
-	 */
-	public static Arbre constuireArbre(Grille grille){
-		
-		Arbre a = new Arbre(grille);
-		return a;
-	}
-		
+			
 	/**
 	 * 
 	 * @param g
