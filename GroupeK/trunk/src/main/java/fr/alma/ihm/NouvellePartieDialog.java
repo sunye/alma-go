@@ -11,7 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import fr.alma.controler.Controler;
-
+/*$Author$ 
+ * $Date$ 
+ * $Revision$ */
 /**
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
  * Class that represent the option dialog 

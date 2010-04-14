@@ -1,12 +1,16 @@
 package fr.alma.ihm;
 
 import java.awt.FlowLayout;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
 import fr.alma.controler.Controler;
+/*$Author$ 
+ * $Date$ 
+ * $Revision$ */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud 

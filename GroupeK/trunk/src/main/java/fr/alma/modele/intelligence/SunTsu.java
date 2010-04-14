@@ -15,7 +15,9 @@ import fr.alma.modele.Groupe;
 import fr.alma.modele.Pion;
 import fr.alma.modele.TypeCoup;
 import fr.alma.modele.Vide;
-
+/*$Author$ 
+ * $Date$ 
+ * $Revision$ */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud

@@ -3,7 +3,9 @@ package fr.alma;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
+/*$Author$ 
+ * $Date$ 
+ * $Revision$ */
 /**
  * Unit test for simple App.
  */

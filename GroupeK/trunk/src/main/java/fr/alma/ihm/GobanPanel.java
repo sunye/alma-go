@@ -8,7 +8,9 @@ import javax.swing.JPanel;
 
 import fr.alma.controler.Controler;
 import fr.alma.modele.Pion;
-
+/*$Author$ 
+ * $Date$ 
+ * $Revision$ */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud 

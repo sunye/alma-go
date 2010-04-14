@@ -1,7 +1,11 @@
 package fr.alma.modele;
 
 import java.util.Collection;
+
 import java.util.HashSet;
+/*$Author$ 
+ * $Date$ 
+ * $Revision$ */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
