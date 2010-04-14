@@ -181,9 +181,11 @@ Here is an activity diagram representing the inter-component articulation :
 \chapter*{Implementation}
 \addcontentsline{toc}{chapter}{Implementation}
 
-\section{Architecture Program}
+\section*{Program Architecture}
+\addcontentsline{toc}{section}{Program Architecture}
 
-\subsection{Package Diagram}
+\subsection*{Package Diagram}
+\addcontentsline{toc}{section}{Package Architecture}
 
 \begin{center}
 	\includegraphics[scale=0.70]{package_diag}
@@ -192,9 +194,13 @@ Here is an activity diagram representing the inter-component articulation :
 
     Our program is organized in three packages. "fr.alma.atarigo" which represents the rules and mechanisms of atarigo then, the package "fr.alma.ia" which is responsible for calculations of artificial intelligence and finally, the package "fr.alma.ui" representing the user interface which communicate with the game.
 
-\subsection{Class Diagram}
+\subsection*{Class Diagram}
+\addcontentsline{toc}{subsection}{Class Diagram}
 
-\subsubsection{AtariGo}
+
+\subsubsection*{AtariGo}
+\addcontentsline{toc}{subsubsection}{AtariGo}
+
 
 \begin{center}
 	\includegraphics[scale=0.70]{class_diag}
@@ -205,12 +211,13 @@ Here is an activity diagram representing the inter-component articulation :
     When calling this method, there put a stone on the board and return the type of move. This type is defined in the enumerated class Move. If INVALID, the move is not playable, if WIN at least once captured a pawn and, finally, if it is NEUTRAL, the move is playable without causing catch.
 The algorithm returning these statements makes all the possible checks on the position played and especially with the method called by the class writeCell Goban.
 
-\subsubsection{Goban}
+\subsubsection*{Goban}
+\addcontentsline{toc}{subsubsection}{Goban}
 
 
-	The class contains the board game and owns several methods for the analysis of Goban. It contains a square matrix of the type listed STONE. This type is either BLACK to represent a box containing a black stone, WHITE for a white stone or EMPTY for an empty square. As can be seen in the class diagram, class STONE is also used to set the color played by a player or the color of a group of stones.
+	The class contains the board game and owns several methods for the analysis of Goban. It contains a square matrix of the type listed STONE. This type is either BLACK to represent a box containing a black stone, WHITE for a white stone or EMPTY for an empty square. As can be seen in the class diagram, class STONE is also used to set the color played by a player or the color of a group of stones.\\
 
-Position and Direction classes are classes facilitating access to positions of Goban.
+Position and Direction classes are classes facilitating access to positions of Goban.\\
 
     The class also has an instance of GroupsList. This class represents a list of all groups of stones from the game. A group is a set of stones of the same color connected to another one vertically and horizontally. It is necessary to store the list of groups to keep a clear view of the state.
 
