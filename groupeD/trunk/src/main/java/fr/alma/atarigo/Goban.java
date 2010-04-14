@@ -423,7 +423,6 @@ public boolean canPlay(Stone color){
 	int j = 0;
 	Position postest;
 	while(!fini){
-		System.out.println("test sur "+i+","+j);
 		postest = new Position(i,j);		gobanTest = new Goban(this);
 
 		if(i==8){
