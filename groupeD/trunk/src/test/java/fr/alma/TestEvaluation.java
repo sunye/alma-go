@@ -3,7 +3,7 @@ package fr.alma.test;
 import fr.alma.atarigo.Goban;
 import fr.alma.atarigo.Position;
 import fr.alma.atarigo.Stone;
-import fr.alma.ia.Evaluation;
+import fr.alma.ia.InitialEvaluation;
 import junit.framework.TestCase;
 
 public class TestEvaluation extends TestCase {
@@ -17,7 +17,7 @@ public class TestEvaluation extends TestCase {
 		goban.writeCell(null, new Position(3,4), Stone.BLACK, false);
 		goban.writeCell(null, new Position(4,4), Stone.WHITE, false);
 		
-		assertEquals(Evaluation.commonBorder(goban,new Position(4,4),Stone.BLACK),-1);
+		assertEquals(InitialEvaluation.commonBorder(goban,new Position(4,4),Stone.BLACK),-1);
 	}
 
 	public void testHasCaught() {
@@ -26,8 +26,8 @@ public class TestEvaluation extends TestCase {
 		goban.writeCell(null, new Position(0,0), Stone.WHITE, false);
 		goban.writeCell(null, new Position(1,0), Stone.BLACK, false);
 				
-		assertEquals(Evaluation.hasCaught(goban,new Position(0,1),Stone.BLACK),1);
-		assertEquals(Evaluation.hasCaught(goban,new Position(0,1),Stone.WHITE),-1);
+		assertEquals(InitialEvaluation.hasCaught(goban,new Position(0,1),Stone.BLACK),1);
+		assertEquals(InitialEvaluation.hasCaught(goban,new Position(0,1),Stone.WHITE),-1);
 	}
 
 	public void testUnderNGroups() {
@@ -36,8 +36,8 @@ public class TestEvaluation extends TestCase {
 		goban.writeCell(null, new Position(0,0), Stone.WHITE, false);
 		goban.writeCell(null, new Position(5,0), Stone.BLACK, false);
 		
-		assertEquals(Evaluation.underNGroups(goban,Stone.BLACK,2),-1);
-		assertEquals(Evaluation.underNGroups(goban,Stone.WHITE,2),0);
+		assertEquals(InitialEvaluation.underNGroups(goban,Stone.BLACK,2),-1);
+		assertEquals(InitialEvaluation.underNGroups(goban,Stone.WHITE,2),0);
 
 		
 	}

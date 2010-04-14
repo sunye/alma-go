@@ -17,8 +17,8 @@ import fr.alma.atarigo.Goban;
  * @author      Adrien GUILLE
  * @author      Vincent FERREIRA
  * 
- * 
- *   This program is free software: you can redistribute it and/or modify
+ */ 
+ /*   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
@@ -78,7 +78,8 @@ public class MinMax {
 				return min(level, stateOfGame, stone, atariGo, position);
 			}
 		}else{
-			return Evaluation.evaluate(stateOfGame.getGoban(), initialGoban, stone, position);
+			IEvaluation evaluation = (IEvaluation)new InitialEvaluation();
+			return evaluation.evaluate(stateOfGame.getGoban(), initialGoban, stone, position);
 		}
 	}
 

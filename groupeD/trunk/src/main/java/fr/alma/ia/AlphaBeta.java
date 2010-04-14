@@ -77,7 +77,8 @@ public class AlphaBeta {
 				return min(level, stateOfGame, currentExtremum, stone, atariGo, position);
 			}
 		}else{
-			return Evaluation.evaluate(stateOfGame.getGoban(), initialGoban, stone, position);
+			IEvaluation evaluation = (IEvaluation)new InitialEvaluation();
+			return evaluation.evaluate(stateOfGame.getGoban(), initialGoban, stone, position);
 		}
 	}
 
