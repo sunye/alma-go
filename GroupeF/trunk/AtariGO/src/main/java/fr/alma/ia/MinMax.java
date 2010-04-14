@@ -14,7 +14,7 @@ import fr.alma.structure.Noeud;
  */
 public class MinMax {
 
-	private ArrayList<Pion> coupsJouer;
+	private static ArrayList<Pion> coupsJouer;
 	int valeur = 0;
 	
 	/**
@@ -22,7 +22,7 @@ public class MinMax {
 	 * @param a
 	 * @return le min ou max
 	 */
-	public int execute(Arbre a){
+	public static int execute(Arbre a){
 		return valeurMinMax(a.racine, a.getCoupsNonJouer(), a.prof);
 	}
 	
@@ -34,7 +34,7 @@ public class MinMax {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private int valeurMinMax(Noeud noeud, ArrayList<Pion> coups, int prof) {
+	private static int valeurMinMax(Noeud noeud, ArrayList<Pion> coups, int prof) {
 		
 		ArrayList<Pion> temp;
 		int longeur = coups.size();
@@ -74,7 +74,7 @@ public class MinMax {
 	 * @param temp
 	 * @param prof
 	 */
-	private void valeurMin(Noeud n, ArrayList<Pion> temp, int prof) {
+	private static void valeurMin(Noeud n, ArrayList<Pion> temp, int prof) {
 		int min = 100;
 		int valeur = 0;
 		
@@ -97,7 +97,7 @@ public class MinMax {
 	 * @param prof
 	 * @return
 	 */
-	private int valeurMax(Noeud n , ArrayList<Pion> temp, int prof) {
+	private static int valeurMax(Noeud n , ArrayList<Pion> temp, int prof) {
 		int max = -100;
 		int valeur = 0;
 		
@@ -118,7 +118,7 @@ public class MinMax {
 	 * @param arrpion la liste des coups jouer
 	 * @return la grille
 	 */
-	private Grille getGrilleFromList(ArrayList <Pion> arrpion){
+	private static Grille getGrilleFromList(ArrayList <Pion> arrpion){
 		
 		Grille g = new Grille();
 		

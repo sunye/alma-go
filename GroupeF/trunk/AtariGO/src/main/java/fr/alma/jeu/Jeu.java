@@ -3,7 +3,8 @@ package fr.alma.jeu;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
-import fr.alma.ia.Ia;
+
+import fr.alma.ia.MinMax;
 import fr.alma.ihm.Tour;
 import fr.alma.structure.Arbre;
 import fr.alma.structure.Noeud;
@@ -297,8 +298,9 @@ public class Jeu {
 			}
 			else{
 				
-				Arbre a = Ia.constuireArbre(g);
+				Arbre a = new Arbre(g);
 				p = a.remplirArbre();
+				MinMax.execute(a);
 				ArrayList<Noeud> listeF = a.racine.listeFils;
 
 			for(Noeud n:listeF){
