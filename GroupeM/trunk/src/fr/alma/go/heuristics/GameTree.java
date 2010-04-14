@@ -14,16 +14,7 @@ public class GameTree {
 
 	private final static int INFINITE = Integer.MAX_VALUE;
 
-	public GameTree() {
-		root = new GameNode();
-		sons = new ArrayList<GameTree>();
-		int[][] cfs = { { 0, 1, 1, 1, 1, 1, 1, 1, 0 },
-				{ 1, 1, 2, 2, 2, 2, 2, 1, 1 }, { 1, 2, 3, 3, 2, 3, 3, 2, 1 },
-				{ 1, 2, 3, 2, 2, 2, 3, 2, 1 }, { 1, 2, 2, 2, 1, 2, 2, 2, 1 },
-				{ 1, 2, 3, 2, 2, 2, 3, 2, 1 }, { 1, 2, 3, 3, 2, 3, 3, 2, 1 },
-				{ 1, 1, 2, 2, 2, 2, 2, 1, 1 }, { 0, 1, 1, 1, 1, 1, 1, 1, 0 } };
-		coeffs = cfs;
-	} // GameTree()
+	private static int count = 0;
 
 	public ArrayList<GameTree> getSons() {
 		return sons;
@@ -34,69 +25,65 @@ public class GameTree {
 	} // GameNode getRoot()
 
 	private int alphaBeta(int alpha, int beta, int deepness) {
+		count++;
 		if (this.isLeaf()) {
+			System.out.println("Leaf : " + count);
+			return root.getNote();
+		} else if (deepness % 2 == 0) {
+			System.out.println("Max : " + count);
+			int note = -INFINITE;
+			for (GameTree son : sons) {
+				note = Math.max(note, son.alphaBeta(alpha, beta, deepness + 1));
+				if (note >= beta) {
+					root.setNote(note + note);
+					return root.getNote();
+				}
+				alpha = Math.max(alpha, note);
+			} // for
+			root.setNote(root.getNote() + note);
 			return root.getNote();
 		} else {
-			if (deepness % 2 == 0) {
-				int note = -INFINITE;
-				for (GameTree son : sons) {
-					note = Math.max(note, son
-							.alphaBeta(alpha, beta, deepness++));
-					if (note >= beta) {
-						root.setNote(note);
-						return note;
-					}
-					alpha = Math.max(alpha, note);
-				} // for
-				root.setNote(note);
-				return note;
-			} else {
-				int note = INFINITE;
-				for (GameTree son : sons) {
-					note = Math.min(note, son
-							.alphaBeta(alpha, beta, deepness++));
-					if (note <= alpha) {
-						root.setNote(note);
-						return note;
-					}
-					beta = Math.min(beta, note);
-				} // for
-				root.setNote(note);
-				return note;
-			} // if
+			System.out.println("Min : " + count);
+			int note = INFINITE;
+			for (GameTree son : sons) {
+				note = Math.min(note, son.alphaBeta(alpha, beta, deepness + 1));
+				if (note <= alpha) {
+					root.setNote(note + note);
+					return root.getNote();
+				}
+				beta = Math.min(beta, note);
+			} // for
+			root.setNote(root.getNote() + note);
+			return root.getNote();
 		} // if
 	} // int alphaBeta(int,int,int)
 
 	private void alphaBetaPruning() {
-		for(GameTree son: sons){
-			son.alphaBeta(INFINITE, -INFINITE, 1);
+		for (GameTree son : sons) {
+			son.alphaBeta(-INFINITE, INFINITE, 1);
 		} // for
 	} // void alphaBetaPruning()
-
-	public Place alphaBetaGetPlace(Goban goban, boolean color) {
-		this.generateTree(goban, color, 3);
-		this.alphaBetaPruning();
-		return this.pickPlace();
-	} // Place alphaBetaGetPlace(Goban)
 
 	private Place pickPlace() {
 		int max = -INFINITE;
 		ArrayList<Place> places = new ArrayList<Place>();
 		for (GameTree son : sons) {
-			if (son.getRoot().getNote() >= max) {
-				if (son.getRoot().getNote() > max) {
+			int note = son.getRoot().getNote();
+			if (note >= max) {
+				if (note > max) {
+					max = note;
 					places.clear();
 				} // if
 				places.add(son.getRoot().getPlace());
 			} // if
 		} // for
-		return places.get((int) Math.random() * places.size());
-	}
+		return places.get((int) (Math.random() * places.size()));
+	} // Place pickPlace()
 
 	public void generateTree(Goban goban, boolean color, int deepness) {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-				Goban tmp = goban;
+				Goban tmp = (Goban) goban.clone();
 				if (color ? tmp.play(i, j, 'b') : tmp.play(i, j, 'w')) {
 					GameTree son = new GameTree();
 					son.root.setCoords(i, j);
@@ -108,10 +95,53 @@ public class GameTree {
 				} // if
 			} // for
 		} // for
-	} // void generateTree(DummyGoban,boolean,int)
+	} // void generateTree(Goban,boolean,int)
 
-	public boolean isLeaf() {
+	private boolean isLeaf() {
 		return sons.isEmpty();
 	} // boolean isLeaf()
+
+	public GameTree() {
+		root = new GameNode();
+		sons = new ArrayList<GameTree>();
+		int[][] cfs = { { 0, 1, 1, 1, 1, 1, 1, 1, 0 },
+				{ 1, 1, 2, 2, 2, 2, 2, 1, 1 }, { 1, 2, 3, 3, 2, 3, 3, 2, 1 },
+				{ 1, 2, 3, 2, 2, 2, 3, 2, 1 }, { 1, 2, 2, 2, 1, 2, 2, 2, 1 },
+				{ 1, 2, 3, 2, 2, 2, 3, 2, 1 }, { 1, 2, 3, 3, 2, 3, 3, 2, 1 },
+				{ 1, 1, 2, 2, 2, 2, 2, 1, 1 }, { 0, 1, 1, 1, 1, 1, 1, 1, 0 } };
+		coeffs = cfs;
+	} // GameTree()
+
+	public Place alphaBetaGetPlace(Goban goban, boolean color) {
+		this.generateTree(goban, color, 1); // Beyond 1, you can take a coffee
+		// this.print("", true);
+		this.alphaBetaPruning();
+		// this.print("", true);
+		return this.pickPlace();
+	} // Place alphaBetaGetPlace(Goban)
+
+	public int countZeroLeaves() {
+		if (this.isLeaf()) {
+			if (root.getNote() == 0) {
+				return 1;
+			} // if
+		} else {
+			int result = 0;
+			for (GameTree son : sons) {
+				result += son.countZeroLeaves();
+			} // for
+			return result;
+		} // if
+		return 0;
+	} // int countZeroLeaves()
+
+	private void print(String prefix, boolean first) {
+		System.out.println(prefix + root.getNote());
+		for (GameTree son : sons) {
+			son.print(prefix + "| ", false);
+			if (first)
+				break;
+		} // for
+	} // void print(String)
 
 } // class GameTree

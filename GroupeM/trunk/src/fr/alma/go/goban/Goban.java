@@ -2,7 +2,7 @@ package fr.alma.go.goban;
 
 import java.util.ArrayList;
 
-public class Goban {
+public class Goban implements Cloneable {
 
 	private Stone[][] plate;
 
@@ -285,8 +285,51 @@ public class Goban {
 		return plate;
 	}
 
+	public boolean isEmpty() {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (!plate[i][j].isUndefined()) {
+					return false;
+				} // if
+			} // for
+		} // for
+		return true;
+	} // boolean isEmpty()
+
 	// public boolean testGroups(){
 	// return (whiteGroups.size()==1 && blackGroups.size()==2);
 	// }
+	
+	@Override
+	public Goban clone(){
+		Goban goban=new Goban();
+		goban.plate=new Stone[9][9];
+		for(int i=0;i<9;i++){
+			for(int j=0;j<9;j++){
+				goban.plate[i][j]=new Stone(plate[i][j].getColor());
+			} // for
+		} // for
+		goban.whiteGroups=new ArrayList<StonesGroup>();
+		for(StonesGroup group:whiteGroups){
+			StonesGroup newGroup=new StonesGroup();
+			ArrayList<Stone> list=group.getGroup();
+			for(Stone stone:list){
+				newGroup.add(new Stone(stone.getColor()));
+			} // for
+			goban.whiteGroups.add(newGroup);
+		} // for
+		goban.blackGroups=new ArrayList<StonesGroup>();
+		for(StonesGroup group:blackGroups){
+			StonesGroup newGroup=new StonesGroup();
+			ArrayList<Stone> list=group.getGroup();
+			for(Stone stone:list){
+				newGroup.add(new Stone(stone.getColor()));
+			} // for
+			goban.blackGroups.add(newGroup);
+		} // for
+		goban.whiteTaken=whiteTaken;
+		goban.blackTaken=blackTaken;
+		return goban;
+	}
 
 } // class Goban

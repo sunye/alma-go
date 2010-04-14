@@ -22,5 +22,9 @@ public class Place {
 	public boolean equals(Place place) {
 		return (this.abs == place.abs && this.ord == place.ord);
 	}
+	
+	public String toString(){
+		return abs+","+ord;
+	}
 
 }
