@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import fr.alma.jeu.Pion;
 
-
-
 /**
  * Classe du noeud de l'arbre
  * @author ZERBITA Mohamed El Hadi
