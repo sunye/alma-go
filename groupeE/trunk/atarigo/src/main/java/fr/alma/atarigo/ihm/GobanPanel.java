@@ -112,22 +112,29 @@ public final class GobanPanel extends JPanel {
 
     private void processMouseClicked(MouseEvent evt) {
 
+        // We clic on (x, y). On the goban, it equals (x-debutX)
+        // We get what remains after dividing by coteCase.
         int resteX = Math.max((evt.getX() - debutX) % coteCase, 0);
-        int col = Math.max(evt.getX() - debutX, 0) / coteCase; // On récupère
+        // col is the quotient of x-debutX by coteCase.
+        int col = Math.max(evt.getX() - debutX, 0) / coteCase;
 
+
+        // Let's make some adjustments
         if (resteX > ((precision - 1) * coteCase / precision)) {
             col += (col == Goban.getTaille() - 1) ? 0 : 1;
-        } else if (resteX > (coteCase / 3)) {
+        } else if (resteX > (coteCase / precision)) {
+            // If out of the goban, return
             return;
         }
 
 
         int resteY = Math.max((evt.getY() - debutY) % coteCase, 0);
-        int lin = Math.max(evt.getY() - debutY, 0) / coteCase; // On récupère
+        int lin = Math.max(evt.getY() - debutY, 0) / coteCase;
 
         if (resteY > ((precision - 1) * coteCase / precision)) {
             lin += (lin == Goban.getTaille() - 1) ? 0 : 1;
-        } else if (resteY > (coteCase / 3)) {
+        } else if (resteY > (coteCase / precision)) {
+            // If out of the goban, return
             return;
         }
 
@@ -138,7 +145,6 @@ public final class GobanPanel extends JPanel {
          * At a certain point, the game will end. At this point, we need to stop the listener.
          */
         if (controleur.isEnd()) {
-            // TODO: display the winner.
             removeMouseListener(mouseL);
             controleur.dialogueFinJeu();
         }
