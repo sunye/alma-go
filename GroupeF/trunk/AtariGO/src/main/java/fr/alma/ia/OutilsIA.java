@@ -18,24 +18,33 @@ public class OutilsIA {
 	public static ArrayList<Point> voisins = new ArrayList<Point>();
 	
 	/**
-	 * 
+	 * Détermine si le voisin Nord du  pion(x,y) existe et est de la même couleur que celui-ci
+	 * x:abscissse
+	 * y:ordonnné
+	 * c:couleur à teter
+	 * g: coulreur corresponadante 
 	 */
 	public static boolean existN(Grille grille,int x,int y,Couleur c){
 		if (x>0){
-			if(c.equals(Couleur.BLANC)) return ((grille.Contenu[x-1][y]).equals(Couleur.BLANC));
-			else if(c.equals(Couleur.NOIR)) return ((grille.Contenu[x-1][y]).equals(Couleur.NOIR));
-				else return false;
-		}else return false;
+			if(c.equals(Couleur.BLANC)) 
+				return ((grille.Contenu[x-1][y]).equals(Couleur.BLANC));
+			else 
+				if(c.equals(Couleur.NOIR)) 
+					return ((grille.Contenu[x-1][y]).equals(Couleur.NOIR));
+				else
+					return false;
+		}else 
+			return false;
 	}
 
 	/**
-	 * 
-	 * @param grille
-	 * @param x
-	 * @param y
-	 * @param c
-	 * @return
+	 * Détermine si le voisin SUD du  pion(x,y) existe et est de la même couleur que celui-ci
+	 * x:abscissse
+	 * y:ordonnné
+	 * c:couleur à teter
+	 * g: coulreur corresponadante 
 	 */
+	
 	public static boolean existS(Grille grille,int x,int y,Couleur c){
 		if (x<8){
 			if(c.equals(Couleur.BLANC)) return ((grille.Contenu[x+1][y]).equals(Couleur.BLANC));
@@ -46,13 +55,15 @@ public class OutilsIA {
 	}
 
 	/**
-	 * 
-	 * @param grille
-	 * @param x
-	 * @param y
-	 * @param c
-	 * @return
+	 * Détermine si le voisin Est du  pion(x,y) existe et est de la même couleur que celui-ci
+	 * x:abscissse
+	 * y:ordonnné
+	 * c:couleur à teter
+	 * g:goban 
 	 */
+	
+	
+	
 	public static boolean existE(Grille grille,int x,int y,Couleur c){
 		if (y<8){
 			if(c.equals(Couleur.BLANC)) return ((grille.Contenu[x][y+1]).equals(Couleur.BLANC));
@@ -64,12 +75,11 @@ public class OutilsIA {
 	}
 
 	/**
-	 * 
-	 * @param grille
-	 * @param x
-	 * @param y
-	 * @param c
-	 * @return
+	 * Détermine si le voisin OUEST du  pion(x,y) existe et est de la même couleur que celui-ci
+	 * x:abscissse
+	 * y:ordonnné
+	 * c:couleur à teter
+	 * g: goban 
 	 */
 	public static boolean existO(Grille grille,int x,int y,Couleur c){
 
@@ -83,9 +93,9 @@ public class OutilsIA {
 	}
 
 	/**
-	 * 
-	 * @param g
-	 * @param p
+	 * elle détermine un groupe de pions (voisins directs, ou par transition. on a donc besoin: 
+	 *@param g: du goban
+	 * @param : du point à partir duquel on veut déterminer les voisins
 	 */
 	public static void DeterminerVoisins(Grille g,Point p){
 		
@@ -105,9 +115,10 @@ public class OutilsIA {
 	}
 	
 	/**
-	 * 
-	 * @param g
-	 * @return
+	 * elle détermine un ensemble de représentant des différents groupe de pions de couleur blanche sur le goban
+	 * @param g: le goban
+	 * @return : et retourne donc une liste de pions représentants les diférents groupes de pionsblancs sur la grille.
+	 * il est à noter que le fait de disposer d'un seul representant par groupe est suffisant car avec DeterminerVoisins on peut reconstruire le groupe entier 
 	 */
 	public static ArrayList<Point> determinerGroupesBlanc(Grille g){
 		ArrayList<Point> listeG=new ArrayList<Point>();
@@ -131,7 +142,7 @@ public class OutilsIA {
 	}
 	
 	/**
-	 * 
+	 *  Pareil que la précédente mais avec des pions de couleur Noir
 	 * @param g
 	 * @return
 	 */
