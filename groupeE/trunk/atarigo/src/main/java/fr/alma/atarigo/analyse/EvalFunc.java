@@ -110,7 +110,7 @@ public class EvalFunc {
         if (nbKeima(game, putStone) > 0) {
             score += TRESTRESIMPORTANT;
         }
-        //calculateEyes(game);
+//        calculateEyes(game);
         score += checkEyes(game);
         return score;
     }
