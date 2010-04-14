@@ -14,23 +14,18 @@ public class GameTree {
 
 	private final static int INFINITE = Integer.MAX_VALUE;
 
-	private static int count = 0;
-
 	public ArrayList<GameTree> getSons() {
 		return sons;
 	} // ArrayList<GameTree> getSons()
 
-	public GameNode getRoot() {
+	private GameNode getRoot() {
 		return root;
 	} // GameNode getRoot()
 
 	private int alphaBeta(int alpha, int beta, int deepness) {
-		count++;
 		if (this.isLeaf()) {
-			System.out.println("Leaf : " + count);
 			return root.getNote();
 		} else if (deepness % 2 == 0) {
-			System.out.println("Max : " + count);
 			int note = -INFINITE;
 			for (GameTree son : sons) {
 				note = Math.max(note, son.alphaBeta(alpha, beta, deepness + 1));
@@ -43,7 +38,6 @@ public class GameTree {
 			root.setNote(root.getNote() + note);
 			return root.getNote();
 		} else {
-			System.out.println("Min : " + count);
 			int note = INFINITE;
 			for (GameTree son : sons) {
 				note = Math.min(note, son.alphaBeta(alpha, beta, deepness + 1));
@@ -80,7 +74,7 @@ public class GameTree {
 		return places.get((int) (Math.random() * places.size()));
 	} // Place pickPlace()
 
-	public void generateTree(Goban goban, boolean color, int deepness) {
+	private void generateTree(Goban goban, boolean color, int deepness) {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				Goban tmp = (Goban) goban.clone();
@@ -120,28 +114,13 @@ public class GameTree {
 		return this.pickPlace();
 	} // Place alphaBetaGetPlace(Goban)
 
-	public int countZeroLeaves() {
-		if (this.isLeaf()) {
-			if (root.getNote() == 0) {
-				return 1;
-			} // if
-		} else {
-			int result = 0;
-			for (GameTree son : sons) {
-				result += son.countZeroLeaves();
-			} // for
-			return result;
-		} // if
-		return 0;
-	} // int countZeroLeaves()
-
-	private void print(String prefix, boolean first) {
-		System.out.println(prefix + root.getNote());
-		for (GameTree son : sons) {
-			son.print(prefix + "| ", false);
-			if (first)
-				break;
-		} // for
-	} // void print(String)
+//	private void print(String prefix, boolean first) {
+//		System.out.println(prefix + root.getNote());
+//		for (GameTree son : sons) {
+//			son.print(prefix + "| ", false);
+//			if (first)
+//				break;
+//		} // for
+//	} // void print(String)
 
 } // class GameTree
