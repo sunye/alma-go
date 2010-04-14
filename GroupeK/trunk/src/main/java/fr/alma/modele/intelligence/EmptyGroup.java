@@ -1,6 +1,9 @@
-package fr.alma.modele;
+package fr.alma.modele.intelligence;
 
 import java.util.HashSet;
+
+import fr.alma.modele.Group;
+import fr.alma.modele.Stone;
 
 /*$Author$ 
  * $Date$ 

@@ -1,4 +1,8 @@
-package fr.alma.modele;
+package fr.alma.modele.intelligence;
+
+import fr.alma.modele.Coordinate;
+import fr.alma.modele.StoneColor;
+
 /*$Author$ 
  * $Date$ 
  * $Revision$ 
