@@ -6,11 +6,18 @@ import junit.framework.TestCase;
 
 public class GameTreeTest extends TestCase {
 	
-	public void testGenerateTree(){
+//	public void testGenerateTree(){
+//		Goban goban=new Goban();
+//		GameTree tree=new GameTree();
+//		tree.generateTree(goban, true, 0);
+//		assertTrue(tree.getSons().get(0).isLeaf());
+//	}
+	
+	public void test(){
 		Goban goban=new Goban();
 		GameTree tree=new GameTree();
-		tree.generateTree(goban, true, 0);
-		assertTrue(tree.getSons().get(0).isLeaf());
+		System.out.println(tree.alphaBetaGetPlace(goban, true));
+		assertTrue(true);
 	}
 	
 }
