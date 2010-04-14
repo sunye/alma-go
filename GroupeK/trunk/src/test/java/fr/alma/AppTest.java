@@ -5,7 +5,11 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 /*$Author$ 
  * $Date$ 
- * $Revision$ */
+ * $Revision$ 
+ *  
+ * $license$
+ * 
+ * */
 /**
  * Unit test for simple App.
  */

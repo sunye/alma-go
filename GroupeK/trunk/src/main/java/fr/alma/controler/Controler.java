@@ -10,7 +10,11 @@ import fr.alma.modele.Pion;
 
 /*$Author$ 
  * $Date$ 
- * $Revision$ */
+ * $Revision$ 
+ * 
+ * $license$
+ * 
+ * */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud 

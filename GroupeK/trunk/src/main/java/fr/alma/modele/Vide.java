@@ -4,7 +4,11 @@ import java.util.HashSet;
 
 /*$Author$ 
  * $Date$ 
- * $Revision$ */
+ * $Revision$ 
+ *  
+ * $license$
+ * 
+ * */
 /**
  * Class used to represent group of empty cell
  */

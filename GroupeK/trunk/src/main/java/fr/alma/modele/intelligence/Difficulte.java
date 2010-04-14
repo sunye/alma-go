@@ -1,7 +1,11 @@
 package fr.alma.modele.intelligence;
 /*$Author$ 
  * $Date$ 
- * $Revision$ */
+ * $Revision$ 
+ *  
+ * $license$
+ * 
+ * */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud

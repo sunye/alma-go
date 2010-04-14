@@ -5,7 +5,11 @@ import java.util.Collection;
 import java.util.HashSet;
 /*$Author$ 
  * $Date$ 
- * $Revision$ */
+ * $Revision$ 
+ *  
+ * $license$
+ * 
+ * */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud

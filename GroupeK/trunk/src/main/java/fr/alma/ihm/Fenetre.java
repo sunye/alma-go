@@ -8,7 +8,11 @@ import fr.alma.modele.CouleurPion;
 
 /*$Author$ 
  * $Date$
- * $Revision$ */
+ * $Revision$ 
+ * 
+ * $license$
+ * 
+ * */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud

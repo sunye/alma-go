@@ -17,7 +17,11 @@ import fr.alma.modele.TypeCoup;
 import fr.alma.modele.Vide;
 /*$Author$ 
  * $Date$ 
- * $Revision$ */
+ * $Revision$ 
+ *  
+ * $license$
+ * 
+ * */
 /**
  * 
  * @author Manoël Fortun et Anthony "Bambinôme" Caillaud
