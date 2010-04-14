@@ -167,10 +167,10 @@ public class OutilsIA {
 	}
 	
 	/**
-	 * 
-	 * @param g
-	 * @param listeG
-	 * @return
+	 * elle détermine pour une grille le groupe de pions qui a la liberté minimale 
+	 * @param g: la grille courante
+	 * @param listeG: la liste des pions representant les différents groupes de pions du goban d'une couleur donnée.
+	 * @return : un entier qui représente cette valeur minimale.
 	 */
 	public static int determineMin(Grille g,ArrayList<Point> listeG){
 		int min = getLiberte(g, listeG.get(0), g.Contenu[listeG.get(0).x][listeG.get(0).y].couleur);
