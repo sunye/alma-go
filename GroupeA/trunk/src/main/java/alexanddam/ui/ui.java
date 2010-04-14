@@ -13,7 +13,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import java.util.AbstractList;
-import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -74,6 +73,7 @@ public class UI extends JFrame {
 
 			board.addMouseListener(new MouseAdapter(){
 
+				@SuppressWarnings("deprecation")
 				@Override
 				public void mousePressed(MouseEvent mEvt){
 					 if (tourAdversair){
