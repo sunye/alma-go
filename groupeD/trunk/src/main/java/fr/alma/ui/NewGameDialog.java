@@ -67,8 +67,8 @@ public class NewGameDialog extends JDialog {
 		jpan1.setLayout(gridLayout1);
 		labelBlack.setVerticalTextPosition(JLabel.NORTH);
 		labelBlack.setHorizontalTextPosition(JLabel.CENTER);
-		labelBlack.setIcon(new ImageIcon(ImageIcon.class.getClassLoader().getSystemResource("resources/images/black-stone.gif")));
-		labelWhite.setIcon(new ImageIcon(ImageIcon.class.getClassLoader().getSystemResource("resources/images/white-stone.gif")));
+		labelBlack.setIcon(new ImageIcon(ImageIcon.class.getClassLoader().getSystemResource("images/black-stone.gif")));
+		labelWhite.setIcon(new ImageIcon(ImageIcon.class.getClassLoader().getSystemResource("images/white-stone.gif")));
 		labelWhite.setVerticalTextPosition(JLabel.NORTH);
 		labelWhite.setHorizontalTextPosition(JLabel.CENTER);
 		combo1.addItem("Ordinateur");

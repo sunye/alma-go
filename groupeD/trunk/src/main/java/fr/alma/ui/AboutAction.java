@@ -20,7 +20,7 @@ class AboutAction extends MyAction {
   */
  public AboutAction(MyApplication myApplication) {
 	super("A propos de ...", 
-	      new ImageIcon(ImageIcon.class.getClassLoader().getSystemResource("resources/images/a-propos.png")),
+	      new ImageIcon(ImageIcon.class.getClassLoader().getSystemResource("images/a-propos.png")),
 	      "Presente la version et l'auteur",
 	      KeyEvent.VK_P,
 	      KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK),
