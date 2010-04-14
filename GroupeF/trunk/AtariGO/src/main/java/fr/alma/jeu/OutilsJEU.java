@@ -15,10 +15,10 @@ public class OutilsJEU {
 	
 	/**
 	 * Détermine si le voisin Nord du  pion(x,y) existe et est de la même couleur que celui-ci
-	 * x:abscissse
-	 * y:ordonnné
-	 * c:couleur à tester
-	 * g:la grille courante
+	 * x abscissse
+	 * y ordonnné
+	 * c couleur à tester
+	 * g la grille courante
 	 */
 	public static boolean existN(Grille grille,int x,int y,Couleur c){
 		
@@ -30,10 +30,10 @@ public class OutilsJEU {
 
 	/**
 	 * Détermine si le voisin SUD du  pion(x,y) existe et est de la même couleur que celui-ci
-	 * x:abscissse
-	 * y:ordonnné
-	 * c:couleur à tester
-	 * g: coulreur corresponadante 
+	 * x abscissse
+	 * y ordonnné
+	 * c couleur à tester
+	 * g coulreur corresponadante 
 	 */
 	public static boolean existS(Grille grille,int x,int y,Couleur c){
 		if (x<8){
@@ -44,10 +44,10 @@ public class OutilsJEU {
 
 	/**
 	 * Détermine si le voisin EST du  pion(x,y) existe et est de la même couleur que celui-ci
-	 * x:abscissse
-	 * y:ordonnné
-	 * c:couleur à teter
-	 * g: coulreur corresponadante 
+	 * x abscissse
+	 * y ordonnné
+	 * c couleur à teter
+	 * g coulreur corresponadante 
 	 */
 	public static boolean existE(Grille grille,int x,int y,Couleur c){
 		if (y<8){
@@ -58,10 +58,10 @@ public class OutilsJEU {
 
 	/**
 	 * Détermine si le voisin OUEST du  pion(x,y) existe et est de la même couleur que celui-ci
-	 * x:abscissse
-	 * y:ordonnné
-	 * c:couleur à tester
-	 * g: coulreur corresponadante 
+	 * x abscissse
+	 * y ordonnné
+	 * c couleur à tester
+	 * g coulreur corresponadante 
 	 */
 	public static boolean existO(Grille grille,int x,int y,Couleur c){
 		if (y>0){
@@ -72,8 +72,8 @@ public class OutilsJEU {
 
 	/**
 	 * methode utilisée pour récuperer un ensemble de pions capturés.
-	 * @param g : la grille courante.
-	 * @param p : le pion à partir duquel s'éffectue la capture.
+	 * @param g la grille courante.
+	 * @param p le pion à partir duquel s'éffectue la capture.
 	 */
 	public static void DeterminerVoisinsG(Grille g,Pion p){
 		if(!(LpionsCapture.contains(p))){
@@ -96,9 +96,9 @@ public class OutilsJEU {
 	
 	/**
 	 * détermine si deux pions donnés sont voisins directs sur le goban.
-	 * @param coup: le 1er pion
-	 * @param pion: le deuxiemepions
-	 * @return : vrai si les deux pions sont voisins faux sinon
+	 * @param coup le 1er pion
+	 * @param pion le deuxiemepions
+	 * @return vrai si les deux pions sont voisins faux sinon
 	 */
 	public static boolean EstVoisin(Pion coup, Pion pion) {
 		return ((coup.position.x+1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x-1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y+1==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y-1==pion.position.y));

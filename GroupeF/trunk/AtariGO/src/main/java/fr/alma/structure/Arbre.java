@@ -22,9 +22,7 @@ public class Arbre {
 	private ArrayList<Pion> coupsNonJouer;
 	
 	int compteur = 0;
-	
-	//--------------------------
-	
+		
 	/**
 	 * Le constructeur de la classe
 	 */
@@ -40,15 +38,9 @@ public class Arbre {
 	 * Méthode pour remplir l'arbre
 	 * @return
 	 */
-	public Point remplirArbre(){
-		
-		Point p = null;
-				
+	public void remplirArbre(){
 		racine = ajouterTousLesfils(racine, coupsNonJouer, prof);
-		System.out.println((ajouterTousLesfils(new Noeud(null), coupsNonJouer, prof)).getNote());
-		System.out.println("Nombre de noeuds total : "+compteur);
 		
-		return p;
 	}
 	
 	/**
@@ -92,9 +84,6 @@ public class Arbre {
 		}
 		return noeud;
 	}
-
-	
-	
 	
 	/**
 	 * Retoune les coups non jouer de la grille

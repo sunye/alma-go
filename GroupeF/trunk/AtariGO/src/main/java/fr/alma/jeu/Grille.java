@@ -25,13 +25,11 @@ import fr.alma.jeu.Couleur;
          public Grille() { 
                   
                 Contenu = new Pion[9][9]; 
-                int count = 0;  
+                
                 for(int i=0;i<9;i++) 
                 	 for(int j=0;j<9;j++){
                 		 Contenu[i][j] = new Pion(new Point(i,j)); 
-                		 if(count<74) Contenu[i][j].couleur = Couleur.NOIR; 
-                		 count++;
-                	 }
+                	}
                          
               
                 initHashMap();

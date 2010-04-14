@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import fr.alma.jeu.Grille; 
  
 /**
- * Clase de gestion de l'intélligence artificielle
- * @author ZERBITA Mohamed El Hadi
+ * Classe de gestion de l'intélligence artificielle
+ * @author Huebert Ngassa
  *
  */
 public class Ia {
