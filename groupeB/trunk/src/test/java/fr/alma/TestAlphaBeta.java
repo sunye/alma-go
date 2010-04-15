@@ -52,13 +52,18 @@ public class TestAlphaBeta {
 		// Configuration.BLACK, 0
 		ParamGame param = new ParamGame();
 		param.setSizeGoban(2);
+		context.setParamGame(param);
 				
 		stateGame = new StateGame(context);
 		computer = new Computer("computer", context);
-		player = new Player("adversaire", Configuration.WHITE, null, stateGame);	
+		player = new Player("adversaire", Configuration.WHITE, null, stateGame);
+		context.setPlayer(player);
+		context.setComputer(computer);
+		context.setStateGame(stateGame);
 		stateGame.play(0, 0, player.getColor());
 		evaluation = new TestEvaluation();
 		ruleManager = Factory.getRuleManager(context);
+		context.setRuleManager(ruleManager);
 		
 		coordinator = new ICoordinator() {
 

@@ -22,7 +22,6 @@ import org.junit.Test;
 
 import fr.alma.client.action.Context;
 import fr.alma.client.action.GameLoader;
-import fr.alma.client.action.ParamGame;
 import fr.alma.server.core.Computer;
 import fr.alma.server.core.Location;
 import fr.alma.server.core.Factory;
@@ -70,7 +69,6 @@ public class TestCapture {
 		computer = new Computer("computer", context);
 		player = new Player("adversaire", Configuration.WHITE, null, stateGame);
 
-		//evaluation = new Evaluation(computer, player);
 		ruleManager = Factory.getRuleManager(context);	
 	}
 
@@ -78,8 +76,20 @@ public class TestCapture {
 	public void testCapture() {
 		FreedomDegrees.showGobanOnConsole(stateGame);
 		emplacement = new Location(1, 0);
-		StatusCheck status = ruleManager.checkAfter(stateGame, emplacement, player);
-		//System.out.println(status.isGameOver());
+		
+		StatusCheck status = null;
+
+		status = ruleManager.checkBefore(stateGame, emplacement, player);
+		assertTrue(status.isGameOver());
+		
+		try {
+			stateGame.play(emplacement.getCol(), emplacement.getRow(), player.getColor());
+		} catch (Exception e) {
+			
+			fail(e.getMessage());
+		}
+
+		status = ruleManager.checkAfter(stateGame, emplacement, player);
 		assertTrue(status.isGameOver());
 	}
 
