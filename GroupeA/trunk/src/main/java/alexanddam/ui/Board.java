@@ -9,6 +9,12 @@ import java.awt.Point;
 import java.util.Collection;
 import java.util.Vector;
 
+/** This is a Java Canvas, which draws the Goban, the "played" stones and frame the loosing stones at the end of the game.
+* @author Damien Chaillou
+* @version 1.0
+* @see Canvas
+* @since 15 april 2010
+*/
 public class Board extends Canvas {
 	private static final long serialVersionUID = 1L;
 

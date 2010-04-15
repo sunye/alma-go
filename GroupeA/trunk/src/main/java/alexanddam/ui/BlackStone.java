@@ -6,6 +6,12 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
 
+/** This class represents the black stones and also extends the Java Canvas.
+* @author Damien Chaillou
+* @version 1.0
+* @see Canvas
+* @since 15 april 2010
+*/
 public class BlackStone extends Canvas{
 	private static final long serialVersionUID = 1L;
 	Image image;

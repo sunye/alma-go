@@ -4,6 +4,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+/** The class Noeud_LA is the concrete implementation of the abstract class AbstractNoeud.
+* @author Alexandru Schiaucu
+* @version 1.0
+* @since  15 april 2010
+* @see main.java.alexanddam.logic.AbstractNoeud
+*/
 public class Noeud_LA extends AbstractNoeud {
 
 	public List<Noeud_LA> liste_fils;

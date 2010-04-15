@@ -6,6 +6,13 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
 
+/** This class represents the white stones of the Atari-Go game, and extends the Java Canvas.
+* @author Damien Chaillou
+* @version 1.0
+* @see Canvas
+* @since 15 april 2010
+*/
+
 public class WhiteStone extends Canvas{
 	private static final long serialVersionUID = 1L;
 	Image image;
