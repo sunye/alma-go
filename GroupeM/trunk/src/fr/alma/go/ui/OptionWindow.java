@@ -38,6 +38,12 @@ import javax.swing.JOptionPane;
 public class OptionWindow extends JDialog {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
+	/**
      * Constructor
      * @param owner
      * @param title

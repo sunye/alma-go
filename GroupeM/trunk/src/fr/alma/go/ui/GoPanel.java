@@ -1,13 +1,9 @@
 package fr.alma.go.ui;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
+
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -20,10 +16,6 @@ public final class GoPanel extends JPanel {
 	private ImageIcon goban;
 	private ImageIcon pionB;
 	private ImageIcon pionN;
-	// The game engine
-	// coordonnées propres au Goban
-	private int gobanX;
-	private int gobanY;
 	private final int cotePion;
 	private final int debutX = 45;
 	private final int debutY = 45;
