@@ -27,22 +27,52 @@ public class GameNode {
 
 	private int note;
 
+	/**
+	 * Set place coordinates
+	 * 
+	 * @param a
+	 *            Place absciss
+	 * @param o
+	 *            Place ordinate
+	 */
 	public void setCoords(int a, int o) {
 		place = new Place(a, o);
 	} // void setCoords(int,int)
 
+	/**
+	 * Set place
+	 * 
+	 * @param pl
+	 *            Place to set
+	 */
 	public void setPlace(Place pl) {
 		place = pl;
 	} // void setCoords(int,int)
 
+	/**
+	 * Set note
+	 * 
+	 * @param n
+	 *            Note to set
+	 */
 	public void setNote(int n) {
 		note = n;
 	} // void setNote(int)
 
+	/**
+	 * Get place
+	 * 
+	 * @return Place
+	 */
 	public Place getPlace() {
 		return place;
 	} // int getAbs()
 
+	/**
+	 * Get note
+	 * 
+	 * @return Note
+	 */
 	public int getNote() {
 		return note;
 	} // int getNote()

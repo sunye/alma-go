@@ -33,21 +33,42 @@ public class GameTree {
 
 	private final static int INFINITE = Integer.MAX_VALUE;
 
+	/**
+	 * Get root's sons
+	 * 
+	 * @return List of root's sons
+	 */
 	public ArrayList<GameTree> getSons() {
 		return sons;
 	} // ArrayList<GameTree> getSons()
 
+	/**
+	 * Get root
+	 * 
+	 * @return Root
+	 */
 	public GameNode getRoot() {
 		return root;
 	} // GameNode getRoot()
 
-	public int alphaBeta(int alpha, int beta, int deepness) {
+	/**
+	 * Alpha-Beta Pruning
+	 * 
+	 * @param alpha
+	 *            Alpha value
+	 * @param beta
+	 *            Beta value
+	 * @param depth
+	 *            Depth to apply pruning
+	 * @return Min or max value, depending on depth
+	 */
+	public int alphaBeta(int alpha, int beta, int depth) {
 		if (this.isLeaf()) {
 			return root.getNote();
-		} else if (deepness % 2 == 0) {
+		} else if (depth % 2 == 0) {
 			int note = -INFINITE;
 			for (GameTree son : sons) {
-				note = Math.max(note, son.alphaBeta(alpha, beta, deepness + 1));
+				note = Math.max(note, son.alphaBeta(alpha, beta, depth + 1));
 				if (note >= beta) {
 					root.setNote(note + note);
 					return root.getNote();
@@ -59,7 +80,7 @@ public class GameTree {
 		} else {
 			int note = INFINITE;
 			for (GameTree son : sons) {
-				note = Math.min(note, son.alphaBeta(alpha, beta, deepness + 1));
+				note = Math.min(note, son.alphaBeta(alpha, beta, depth + 1));
 				if (note <= alpha) {
 					root.setNote(note + note);
 					return root.getNote();
@@ -71,12 +92,20 @@ public class GameTree {
 		} // if
 	} // int alphaBeta(int,int,int)
 
+	/**
+	 * Alpha-Beta pruning on root
+	 */
 	private void alphaBetaPruning() {
 		for (GameTree son : sons) {
 			son.alphaBeta(-INFINITE, INFINITE, 1);
 		} // for
 	} // void alphaBetaPruning()
 
+	/**
+	 * Get a place to play
+	 * 
+	 * @return A random place among all top rated places
+	 */
 	private Place pickPlace() {
 		int max = -INFINITE;
 		ArrayList<Place> places = new ArrayList<Place>();
@@ -93,7 +122,17 @@ public class GameTree {
 		return places.get((int) (Math.random() * places.size()));
 	} // Place pickPlace()
 
-	private void generateTree(Goban goban, boolean color, int deepness) {
+	/**
+	 * Generate game tree for alpha-beta pruning
+	 * 
+	 * @param goban
+	 *            Actual state of the goban
+	 * @param color
+	 *            CPU color
+	 * @param depth
+	 *            Depth of generated tree
+	 */
+	private void generateTree(Goban goban, boolean color, int depth) {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				Goban tmp = (Goban) goban.clone();
@@ -101,8 +140,8 @@ public class GameTree {
 					GameTree son = new GameTree();
 					son.root.setCoords(i, j);
 					son.root.setNote(coeffs[i][j]);
-					if (deepness > 0) {
-						son.generateTree(tmp, !color, deepness - 1);
+					if (depth > 0) {
+						son.generateTree(tmp, !color, depth - 1);
 					} // if
 					sons.add(son);
 				} // if
@@ -110,10 +149,18 @@ public class GameTree {
 		} // for
 	} // void generateTree(Goban,boolean,int)
 
+	/**
+	 * True if tree is leaf
+	 * 
+	 * @return True if tree has no son
+	 */
 	private boolean isLeaf() {
 		return sons.isEmpty();
 	} // boolean isLeaf()
 
+	/**
+	 * Default Constructor
+	 */
 	public GameTree() {
 		root = new GameNode();
 		sons = new ArrayList<GameTree>();
@@ -125,6 +172,15 @@ public class GameTree {
 		coeffs = cfs;
 	} // GameTree()
 
+	/**
+	 * Get place by applying alpha-beta pruning
+	 * 
+	 * @param goban
+	 *            Actual state of the goban
+	 * @param color
+	 *            CPU color
+	 * @return Place to play
+	 */
 	public Place alphaBetaGetPlace(Goban goban, boolean color) {
 		this.generateTree(goban, color, 1); // Beyond 1, you can take a coffee
 		// this.print("", true);

@@ -25,22 +25,51 @@ public class StonesGroup {
 
 	private ArrayList<Stone> group;
 
+	/**
+	 * Constructor
+	 */
 	public StonesGroup() {
 		group = new ArrayList<Stone>();
 	} // StonesGroup()
 
+	/**
+	 * Add stone to group
+	 * 
+	 * @param stone
+	 *            Stone to add
+	 * @return True if stone was correctly added
+	 */
 	public boolean add(Stone stone) {
 		return group.add(stone);
 	} // boolean add(Stone)
-	
+
+	/**
+	 * Remove stone from group
+	 * 
+	 * @param stone
+	 *            Stone to remove
+	 * @return True if stone was correctly removed
+	 */
 	public boolean remove(Stone stone) {
 		return group.remove(stone);
 	} // boolean remove(Stone)
-	
-	public ArrayList<Stone> getGroup(){
-		return group;
-	}
 
+	/**
+	 * Get group's stones
+	 * 
+	 * @return List of group's stones
+	 */
+	public ArrayList<Stone> getGroup() {
+		return group;
+	} // ArrayList<Stone> getGroup()
+
+	/**
+	 * True if group contains stone
+	 * 
+	 * @param stone
+	 *            Stone to check
+	 * @return True if group contains stone
+	 */
 	public boolean contains(Stone stone) {
 		for (Stone innerStone : group) {
 			if (innerStone == stone) {
@@ -50,8 +79,13 @@ public class StonesGroup {
 		return false;
 	} // boolean contains(stone)
 
+	/**
+	 * Get group's size
+	 * 
+	 * @return Group's size
+	 */
 	public int size() {
 		return group.size();
-	}
+	} // int size()
 
 }

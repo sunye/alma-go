@@ -6,6 +6,9 @@ import fr.alma.go.interfaces.IHeuristics;
 
 public class Beginner implements IHeuristics {
 
+	/**
+	 * Get the best place to play among heuristics
+	 */
 	public Place getBestPlace(Goban goban, boolean color) {
 		GameTree tree = new GameTree();
 		return tree.alphaBetaGetPlace(goban,color);

@@ -24,6 +24,9 @@ import fr.alma.go.goban.Place;
 
 public interface IHeuristics {
 
+	/**
+	 * Get the best place to play among heuristics
+	 */
 	public Place getBestPlace(Goban goban, boolean color);
 	
 } // interface IHeuristics

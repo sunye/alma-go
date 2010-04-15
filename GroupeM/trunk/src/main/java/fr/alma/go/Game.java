@@ -35,12 +35,23 @@ public class Game {
 	private Computer cpu;
 	private char actualColor;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param gp
+	 * 			Panel containing goban
+	 * @param frm
+	 * 			Frame containing panel
+	 */
 	public Game(GoPanel gp, GoFrame frm) {
 		this.goPan = gp;
 		this.frame = frm;
 		this.actualColor = 'b';
 	}
 
+	/**
+	 * Switch color between 'b' (black) and 'w' (white)
+	 */
 	public void switchColor() {
 		if (actualColor == 'b') {
 			actualColor = 'w';
@@ -69,7 +80,7 @@ public class Game {
 	 * Begin a one-player game
 	 * 
 	 * @param couleur
-	 *            : color of the stone player
+	 *            color of the stone player
 	 */
 	public void onePlayer(char color) {
 		init();
@@ -98,9 +109,9 @@ public class Game {
 	 * Do a move (and display it)
 	 * 
 	 * @param abs
-	 *            : line of the move
+	 *            line of the move
 	 * @param ord
-	 *            : column of the move
+	 *            column of the move
 	 */
 	public void appliqueCoup(int ord, int abs) {
 		if (goban.play(abs, ord, actualColor)) {

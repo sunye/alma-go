@@ -25,6 +25,9 @@ import fr.alma.go.interfaces.IHeuristics;
 
 public class Medium implements IHeuristics {
 
+	/**
+	 * Get the best place to play among heuristics
+	 */
 	public Place getBestPlace(Goban goban,boolean color) {
 		// TODO Auto-generated method stub
 		return null;
