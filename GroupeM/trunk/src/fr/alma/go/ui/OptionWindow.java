@@ -26,7 +26,7 @@
 
 package fr.alma.go.ui;
 
-import fr.alma.go.GameManager;
+import fr.alma.go.Game;
 import java.awt.Frame;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -43,7 +43,7 @@ public class OptionWindow extends JDialog {
      * @param title
      * @param modal
      */
-    public OptionWindow(Frame owner, String title, boolean modal, GameManager gaman) {
+    public OptionWindow(Frame owner, String title, boolean modal, Game gaman) {
         super(owner, title, modal);
         this.setSize(200, 80);
         this.setLocationRelativeTo(null);
@@ -56,7 +56,7 @@ public class OptionWindow extends JDialog {
     /**
      * Initialise le contenu de la boite
      */
-    private void choixCouleur(GameManager gaman) {
+    private void choixCouleur(Game gaman) {
         String[] pion = {"Take the black pill", "Take the white pill"};
         //JOptionPane jop = new JOptionPane();
         int choix = JOptionPane.showOptionDialog(null,

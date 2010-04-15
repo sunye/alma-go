@@ -6,7 +6,7 @@ import fr.alma.go.heuristics.Computer;
 import fr.alma.go.ui.GoFrame;
 import fr.alma.go.ui.GoPanel;
 
-public class GameManager {
+public class Game {
 
 	private Goban goban;
 	private GoPanel goPan;
@@ -16,7 +16,7 @@ public class GameManager {
 	private Computer cpu;
 	private char actualColor;
 
-	public GameManager(GoPanel gp, GoFrame frm) {
+	public Game(GoPanel gp, GoFrame frm) {
 		this.goPan = gp;
 		this.frame = frm;
 		this.actualColor = 'b';
