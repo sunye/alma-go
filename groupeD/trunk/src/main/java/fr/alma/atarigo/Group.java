@@ -1,14 +1,4 @@
-package fr.alma.atarigo;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.ListIterator;
-/**
- * Group.java represents a group of stones from the same color.
- * @author VINCENT FERREIRA, ADRIEN GUILLE 
- * @version 1.0
- * 
- *   This program is free software: you can redistribute it and/or modify
+/*   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
@@ -20,6 +10,20 @@ import java.util.ListIterator;
  *
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
+
+package fr.alma.atarigo;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.ListIterator;
+/**
+ * Group.java represents a group of stones from the same color.
+ * @author VINCENT FERREIRA, ADRIEN GUILLE 
+ * @version 1.0
+ * 
+ * revision $Revision$
  * 
  */
 public class Group implements Cloneable{

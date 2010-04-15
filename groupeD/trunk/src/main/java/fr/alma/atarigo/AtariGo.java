@@ -1,14 +1,4 @@
-package fr.alma.atarigo;
-
-import java.io.*;
-import java.util.*;
-
-/**
- * AtariGo.java contains the game rules and mechanisms of Atarigo.
- * @author VINCENT FERREIRA, ADRIEN GUILLE
- * @version 1.0
- * 
- *   This program is free software: you can redistribute it and/or modify
+/*   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
@@ -22,6 +12,20 @@ import java.util.*;
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
+
+package fr.alma.atarigo;
+
+import java.io.*;
+import java.util.*;
+
+/**
+ * AtariGo.java contains the game rules and mechanisms of Atarigo.
+ * @author VINCENT FERREIRA, ADRIEN GUILLE
+ * @version 1.0
+ * 
+ * revision $Revision$
+ */
+
 public class AtariGo {
 
 	/**
