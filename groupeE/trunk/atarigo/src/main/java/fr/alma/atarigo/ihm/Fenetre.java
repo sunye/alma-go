@@ -28,44 +28,88 @@ package fr.alma.atarigo.ihm;
  * This file has been originaly writen by Anthony Caillaud.
  * Thanks to him for sharing.
  */
-
 import fr.alma.atarigo.GameManager;
-import fr.alma.atarigo.utils.PionVal;
+import fr.alma.atarigo.utils.StoneVal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 /**
- * This class describes the main window of the application. It defines main buttons and actions.
- * 
+ * This class describes the main window of the application.
+ * It defines main buttons and actions.
  * @author judu
  */
 public class Fenetre extends JFrame {
 
+    /**
+     * Constant = serialVersionUID.
+     */
     private static final long serialVersionUID = 1L;
+    /**
+     * Constant = Width of the goban.
+     */
+    private static final int GWIDTH = 750;
+    /**
+     * Constant = Height of the goban.
+     */
+    private static final int GHEIGHT = 680;
+    /**
+     * The menu bar.
+     */
     private JMenuBar barreMenu = new JMenuBar();
+    /**
+     * Menu "Jeu".
+     */
     private JMenu jeu = new JMenu("Jeu");
-    private JMenu a_propos = new JMenu("À Propos");
+    /**
+     * Menu "À propos".
+     */
+    private JMenu aPropos = new JMenu("À Propos");
+    /**
+     * Menu "Nouvelle partie".
+     */
     private JMenu nouv = new JMenu("Nouvelle partie");
+    /**
+     * Menu Item "1 joueur" to run a one-player game.
+     */
     private JMenuItem item1 = new JMenuItem("1 joueur");
+    /**
+     * Menu Item "2 joueurs" to run a two-players game.
+     */
     private JMenuItem item2 = new JMenuItem("2 joueurs");
+    /**
+     * Menu Item "?" to know more about this program.
+     */
     private JMenuItem propos = new JMenuItem("?");
+    /**
+     * Menu Item "Quitter" to close the game.
+     */
     private JMenuItem quitter = new JMenuItem("Quitter");
+    /**
+     * Option Window to choose the color of the stone.
+     */
     private OptionWindow options;
-    //Panel représentant le goban
+    /**
+     * Panel representing the goban.
+     */
     private GobanPanel pan;
-    private boolean sendData;
+    /**
+     * The controller of the game.
+     */
     private GameManager controleur;
 
     /**
-     * Open a window with the goban and a menu
-     * @param s : Title of the window
+     * Open a window with the goban and a menu.
+     * @param s : Title of the window.
      */
-    public Fenetre(String s) {
+    public Fenetre(final String s) {
 
         super(s);
-        setSize(750, 680);
+        setSize(GWIDTH, GHEIGHT);
         this.setLocationRelativeTo(null);
 
 
@@ -84,8 +128,10 @@ public class Fenetre extends JFrame {
         //Un joueur :
         item1.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent arg0) {
-                OptionWindow ow = new OptionWindow(null, "Choisissez votre couleur !", true, controleur);
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                options = new OptionWindow(null,
+                        "Choisissez votre couleur !", true, controleur);
             }
         });
         this.nouv.add(item1);
@@ -93,7 +139,8 @@ public class Fenetre extends JFrame {
         //Deux joueurs :
         item2.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent arg0) {
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
                 controleur.twoPlayers();
             }
         });
@@ -105,7 +152,8 @@ public class Fenetre extends JFrame {
         //Quitter :
         quitter.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent arg0) {
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
                 System.exit(0);
             }
         });
@@ -117,13 +165,16 @@ public class Fenetre extends JFrame {
         //A propos :
         propos.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent arg0) {
-                JOptionPane jop = new JOptionPane();
-                jop.showMessageDialog(null, "Jeu de Go, version Atari, par Julien Durillon et Clotilde Massot.", "À propos", JOptionPane.INFORMATION_MESSAGE);
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                JOptionPane.showMessageDialog(null,
+                        "Jeu de Go, version Atari, "
+                        + "par Julien Durillon et Clotilde Massot.",
+                        "À propos", JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        this.a_propos.add(propos);
-        this.barreMenu.add(a_propos);
+        this.aPropos.add(propos);
+        this.barreMenu.add(aPropos);
 
 
 
@@ -141,14 +192,15 @@ public class Fenetre extends JFrame {
     /**
      * Opens a window to announce the winner of the game.
      */
-    public void finJeu() {
-        JOptionPane jop = new JOptionPane();
-            StringBuilder strb = new StringBuilder();
-            strb.append("Le grand gagnant de cette partie est : Joueur ");
-            if (controleur.getGame().getCurrentPlayer() == PionVal.BLANC)
-                strb.append("Noir !");
-            else
-                strb.append("Blanc !");
-            jop.showMessageDialog(null, strb, "Partie terminée !", JOptionPane.INFORMATION_MESSAGE);
+    public final void finJeu() {
+        StringBuilder strb = new StringBuilder();
+        strb.append("Le grand gagnant de cette partie est : Joueur ");
+        if (controleur.getGame().getCurrentPlayer() == StoneVal.WHITE) {
+            strb.append("Noir !");
+        } else {
+            strb.append("Blanc !");
+        }
+        JOptionPane.showMessageDialog(null, strb, "Partie terminée !",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 }

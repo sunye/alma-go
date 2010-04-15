@@ -17,18 +17,16 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * along with this program;
  *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of this program.
  */
-
 package fr.alma.atarigo.ihm;
 
 import fr.alma.atarigo.GameManager;
 
-import fr.alma.atarigo.utils.PionVal;
+import fr.alma.atarigo.utils.StoneVal;
 import java.awt.Frame;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -40,25 +38,36 @@ import javax.swing.JOptionPane;
 public class OptionWindow extends JDialog {
 
     /**
-     * Constructor
-     * @param owner
-     * @param title
-     * @param modal
+     * Constant = Width of the window.
      */
-    public OptionWindow(Frame owner, String title, boolean modal, GameManager gaman) {
+    private static final int WWIDTH = 200;
+    /**
+     * Constant = Height of the window.
+     */
+    private static final int WHEIGHT = 80;
+
+    /**
+     * Constructor.
+     * @param owner : Frame owner.
+     * @param title : Title of the window.
+     * @param modal : Boolean.
+     * @param gaman : The controller of the game.
+     */
+    public OptionWindow(final Frame owner, final String title,
+            final boolean modal, final GameManager gaman) {
         super(owner, title, modal);
-        this.setSize(200, 80);
+        this.setSize(WWIDTH, WHEIGHT);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         this.choixCouleur(gaman);
     }
 
-
     /**
-     * Initialise le contenu de la boite
+     * Initialize the popup and run a game depending of the choice made.
+     * @param gaman : The controller of the game.
      */
-    private void choixCouleur(GameManager gaman) {
+    private void choixCouleur(final GameManager gaman) {
         String[] pion = {"Noir", "Blanc"};
         //JOptionPane jop = new JOptionPane();
         int choix = JOptionPane.showOptionDialog(null,
@@ -70,9 +79,9 @@ public class OptionWindow extends JDialog {
                 pion,
                 pion[1]);
         if (pion[choix].equals("Noir")) {
-            gaman.onePlayer(PionVal.BLANC);
+            gaman.onePlayer(StoneVal.WHITE);
         } else {
-            gaman.onePlayer(PionVal.NOIR);
+            gaman.onePlayer(StoneVal.BLACK);
         }
     }
 }

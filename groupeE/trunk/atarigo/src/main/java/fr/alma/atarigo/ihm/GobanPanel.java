@@ -17,22 +17,22 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * along with this program;
  *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of this program.
  */
 
 /*
- * This class was originaly developed by Anthony Caillaud. Thanks to him for sharing.
+ * This class was originaly developed by Anthony Caillaud.
+ * Thanks to him for sharing.
  */
 package fr.alma.atarigo.ihm;
 
 import fr.alma.atarigo.GameManager;
 import fr.alma.atarigo.utils.Game;
 import fr.alma.atarigo.utils.Goban;
-import fr.alma.atarigo.utils.PionVal;
+import fr.alma.atarigo.utils.StoneVal;
 import fr.alma.atarigo.utils.exceptions.BadPlaceException;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -49,24 +49,65 @@ import javax.swing.JPanel;
  */
 public final class GobanPanel extends JPanel {
 
+    /**
+     * Constant = serialVersionUID.
+     */
     private static final long serialVersionUID = 1L;
+    /**
+     * Constant = 10.
+     */
+    private static final int TEN = 10;
+    /**
+     * Constant = 20.
+     */
+    private static final int TWENTY = 20;
+    /**
+     * Constant = 40.
+     */
+    private static final int FORTY = 40;
+    /**
+     * Image of the goban.
+     */
     private ImageIcon goban;
+    /**
+     * Icon of a white stone.
+     */
     private ImageIcon pionB;
+    /**
+     * Icon of a black stone.
+     */
     private ImageIcon pionN;
-    //The game engine
-    //coordonnées propres au Goban
-    private int gobanX;
-    private int gobanY;
+    /**
+     * Size of a stone.
+     */
     private final int cotePion;
+    /**
+     * Constant = X beginning.
+     */
     private final int debutX = 45;
+    /**
+     * Constant = Y beginning.
+     */
     private final int debutY = 45;
+    /**
+     * Constant = Size of a box.
+     */
     private final int coteCase = 67;
+    /**
+     * Constant = Precision, for some adjustments.
+     */
     private final int precision = 4;
+    /**
+     * Mouse Adapter.
+     */
     private MouseAdapter mouseL;
+    /**
+     * The controller of the game.
+     */
     private GameManager controleur;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public GobanPanel() {
         super();
@@ -83,19 +124,20 @@ public final class GobanPanel extends JPanel {
         /**
          * Creation de l'image du pion blanc
          */
-        java.net.URL pionB_URL = Fenetre.class.getResource("images/blanc.png");
+        java.net.URL pionBlancURL =
+                Fenetre.class.getResource("images/blanc.png");
         //vérification de l'existence de l'image
-        if (pionB_URL != null) {
-            pionB = new ImageIcon(pionB_URL);
+        if (pionBlancURL != null) {
+            pionB = new ImageIcon(pionBlancURL);
         }
 
         /**
          * Creation de l'image du pion noir
          */
-        java.net.URL pionN_URL = Fenetre.class.getResource("images/noir.png");
+        java.net.URL pionNoirURL = Fenetre.class.getResource("images/noir.png");
         //vérification de l'existence de l'image
-        if (pionN_URL != null) {
-            pionN = new ImageIcon(pionN_URL);
+        if (pionNoirURL != null) {
+            pionN = new ImageIcon(pionNoirURL);
         }
 
         cotePion = pionB.getIconWidth();
@@ -104,13 +146,18 @@ public final class GobanPanel extends JPanel {
         mouseL = new MouseAdapter() {
 
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(final MouseEvent e) {
                 processMouseClicked(e);
             }
         };
     }
 
-    private void processMouseClicked(MouseEvent evt) {
+    /**
+     * What happens when the player clics on the Goban.
+     * (Apply a move).
+     * @param evt : clic of the mouse.
+     */
+    private void processMouseClicked(final MouseEvent evt) {
 
         // We clic on (x, y). On the goban, it equals (x-debutX)
         // We get what remains after dividing by coteCase.
@@ -142,7 +189,8 @@ public final class GobanPanel extends JPanel {
 
         repaint();
         /**
-         * At a certain point, the game will end. At this point, we need to stop the listener.
+         * At a certain point, the game will end.
+         * At this point, we need to stop the listener.
          */
         if (controleur.isEnd()) {
             removeMouseListener(mouseL);
@@ -151,7 +199,7 @@ public final class GobanPanel extends JPanel {
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    public void paintComponent(final Graphics g) {
         super.paintComponent(g);
         //Affichage du goban
         g.drawImage(goban.getImage(), 0, 0, this);
@@ -162,34 +210,42 @@ public final class GobanPanel extends JPanel {
                 for (int i = 0; i < Goban.getTaille(); ++i) {
                     for (int j = 0; j < Goban.getTaille(); ++j) {
                         try {
-                            //System.out.println(goban_tab.getGoban()[i][j].getCouleur());
-                            /* Ok, now, let's calculate the coordinates of the image */
+                            /* Ok, now,
+                             let's calculate the coordinates of the image */
                             int xPion;
                             int yPion;
                             xPion = i * coteCase + debutX - (cotePion / 2);
                             yPion = j * coteCase + debutY - (cotePion / 2);
 
                             switch (game2.getStone(j, i).getCouleur()) {
-                                case NOIR:
-                                    g.drawImage(pionN.getImage(), xPion, yPion, this);
+                                case BLACK:
+                                    g.drawImage(pionN.getImage(),
+                                            xPion, yPion, this);
                                     break;
-                                case BLANC:
-                                    g.drawImage(pionB.getImage(), xPion, yPion, this);
+                                case WHITE:
+                                    g.drawImage(pionB.getImage(),
+                                            xPion, yPion, this);
                                     break;
-                                case RIEN:
+                                default:
                                     break;
                             }
                         } catch (BadPlaceException ex) {
-                            Logger.getLogger(GobanPanel.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(GobanPanel.class.
+                                    getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 }
                 //Affichage joueur courant :
-                g.drawString("Joueur en cours :", goban.getImage().getWidth(this) + 10, 20);
-                if (game2.getCurrentPlayer() == PionVal.BLANC) {
-                    g.drawImage(pionB.getImage(), goban.getImage().getWidth(this) + 20, 40, this);
+                g.drawString("Joueur en cours :",
+                        goban.getImage().getWidth(this) + TEN, TWENTY);
+                if (game2.getCurrentPlayer() == StoneVal.WHITE) {
+                    g.drawImage(pionB.getImage(),
+                            goban.getImage().getWidth(this) + TWENTY,
+                            FORTY, this);
                 } else {
-                    g.drawImage(pionN.getImage(), goban.getImage().getWidth(this) + 20, 40, this);
+                    g.drawImage(pionN.getImage(),
+                            goban.getImage().getWidth(this) + TWENTY,
+                            FORTY, this);
                 }
 
             }
@@ -197,24 +253,35 @@ public final class GobanPanel extends JPanel {
     }
 
     @Override
-    public void update(Graphics g) {
+    public void update(final Graphics g) {
         paintComponent(g);
     }
 
+    /**
+     * Activate the mouse, as its name says !
+     */
     public void activateMouse() {
         addMouseListener(mouseL = new MouseAdapter() {
 
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(final MouseEvent e) {
                 processMouseClicked(e);
             }
         });
     }
 
+    /**
+     * Desactivate the mouse, as its name says !
+     */
     public void desactivateMouse() {
         removeMouseListener(mouseL);
     }
 
+    /**
+     * Start a game !
+     * @param gm : Controller of the game.
+     * @param curGame : Current game.
+     */
     public void startGame(final GameManager gm, final Game curGame) {
         activateMouse();
         this.controleur = gm;

@@ -26,8 +26,8 @@ package fr.alma.atarigo.analyse;
 
 import fr.alma.atarigo.utils.Game;
 import fr.alma.atarigo.utils.Goban;
-import fr.alma.atarigo.utils.Groupe;
-import fr.alma.atarigo.utils.PionVal;
+import fr.alma.atarigo.utils.Group;
+import fr.alma.atarigo.utils.StoneVal;
 import fr.alma.atarigo.utils.PlayMove;
 import fr.alma.atarigo.utils.Stone;
 import fr.alma.atarigo.utils.exceptions.BadPlaceException;
@@ -67,7 +67,7 @@ public final class AlphaBeta {
    /**
     * Color played by the AI.
     */
-   private PionVal aiColor;
+   private StoneVal aiColor;
    /**
     * Last best move calculated.
     */
@@ -86,7 +86,7 @@ public final class AlphaBeta {
     * @param profondeurMax : Maximum depth to attain
     * @param couleur : color of the stone starting AlphaBeta
     */
-   public AlphaBeta(final int profondeurMax, final PionVal couleur) {
+   public AlphaBeta(final int profondeurMax, final StoneVal couleur) {
       this.maxDepth = profondeurMax;
       this.aiColor = couleur;
       this.lastBest = new PlayMove();
@@ -313,7 +313,7 @@ public final class AlphaBeta {
           */
          Set<Stone> firstFreeToTry = new HashSet<Stone>(freeToTry);
 
-         Stone lastPut = new Stone(PionVal.RIEN,
+         Stone lastPut = new Stone(StoneVal.EMPTY,
                  tests.getCurrentMove().getPutStone().getLine(),
                  tests.getCurrentMove().getPutStone().getColumn());
 
@@ -332,7 +332,7 @@ public final class AlphaBeta {
          int lastLine = 0;
          int lastCol = 0;
 
-         for (Groupe groupe : tests.getCurrentMove().getGroups()) {
+         for (Group groupe : tests.getCurrentMove().getGroups()) {
             for (Stone stone : groupe.getStones()) {
                firstLine = Math.min(firstLine, stone.getLine());
                firstCol = Math.min(firstCol, stone.getColumn());
@@ -377,7 +377,7 @@ public final class AlphaBeta {
       Set<Stone> retour = new HashSet<Stone>();
       for (int l = linBeg; l <= linEnd; ++l) {
          for (int c = colBeg; c <= colEnd; ++c) {
-            retour.add(new Stone(PionVal.RIEN, l, c));
+            retour.add(new Stone(StoneVal.EMPTY, l, c));
          }
       }
       return retour;

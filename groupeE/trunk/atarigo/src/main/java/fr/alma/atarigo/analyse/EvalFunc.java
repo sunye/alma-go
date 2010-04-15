@@ -26,9 +26,9 @@ package fr.alma.atarigo.analyse;
 
 import fr.alma.atarigo.utils.Game;
 import fr.alma.atarigo.utils.Goban;
-import fr.alma.atarigo.utils.Groupe;
+import fr.alma.atarigo.utils.Group;
 import fr.alma.atarigo.utils.Stone;
-import fr.alma.atarigo.utils.PionVal;
+import fr.alma.atarigo.utils.StoneVal;
 import fr.alma.atarigo.utils.PlayMove;
 import fr.alma.atarigo.utils.exceptions.BadPlaceException;
 import java.util.List;
@@ -86,7 +86,7 @@ public final class EvalFunc {
     * @param beginning true if we have not played enough moves.
     * @return the score calculated by the evaluation
     */
-   public static int evaluate(final FakeGame game, final PionVal color,
+   public static int evaluate(final FakeGame game, final StoneVal color,
            final boolean beginning) {
       final int coef = 6;
       if (game.isEnd()) {
@@ -130,7 +130,7 @@ public final class EvalFunc {
 
       score += evaluateGroupsLiberties(game, MEAN);
 
-      Groupe containing = pm.getGroupeContaining(
+      Group containing = pm.getGroupeContaining(
               new Stone(putStone.getCouleur(),
               putStone.getLine(),
               putStone.getColumn()));
@@ -173,7 +173,7 @@ public final class EvalFunc {
     * @param groupe the suspected group.
     * @return A local score.
     */
-   private static int checkShicho(final Game game, final Groupe groupe) {
+   private static int checkShicho(final Game game, final Group groupe) {
       int score = 0;
       int diff;
 
@@ -215,12 +215,12 @@ public final class EvalFunc {
 
       final int minBonnePlace = 2;
       final int maxBonnePlace = Goban.getTaille() - minBonnePlace;
-      final PionVal curColor = game.getCurrentMove().getPutStone().
+      final StoneVal curColor = game.getCurrentMove().getPutStone().
               getNewStone().getCouleur();
 
       int score = 0;
 
-      for (Groupe groupe : game.getCurrentMove().getGroups()) {
+      for (Group groupe : game.getCurrentMove().getGroups()) {
          for (Stone stone : groupe.getStones()) {
             if (stone.getLine() >= minBonnePlace
                     && stone.getLine() <= maxBonnePlace
@@ -259,14 +259,14 @@ public final class EvalFunc {
       final int coef = 4;
       int score = 0;
 
-      Groupe minLibMySide = null;
-      Groupe minLibOtherSide = null;
+      Group minLibMySide = null;
+      Group minLibOtherSide = null;
 
-      PionVal curColor = game.getCurrentMove().getPutStone().
+      StoneVal curColor = game.getCurrentMove().getPutStone().
               getNewStone().getCouleur();
 
       // First, get each side's group with a minimum of liberties
-      for (Groupe groupe : game.getCurrentMove().getGroups()) {
+      for (Group groupe : game.getCurrentMove().getGroups()) {
 
          // Calculate in both side the group with the least liberties
          if (groupe.getCouleur() == curColor) {
@@ -359,10 +359,10 @@ public final class EvalFunc {
          for (int col = 0; col < Goban.getTaille(); ++col) {
             try {
                Stone spot = game.getStone(ligne, col);
-               if (spot.getCouleur() == PionVal.RIEN) {
+               if (spot.getCouleur() == StoneVal.EMPTY) {
                   // If empty spot, we need its "empty group"
-                  Groupe emptyGroup = game.getEmptyGroupContaining(spot);
-                  List<Groupe> surrounders =
+                  Group emptyGroup = game.getEmptyGroupContaining(spot);
+                  List<Group> surrounders =
                           game.getEmptySpotSurroundingGroups(emptyGroup);
 
                   if (surrounders.size() == 1
@@ -389,12 +389,12 @@ public final class EvalFunc {
       int score = 0;
       Stone putStone = game.getCurrentMove().getPutStone().getNewStone();
 
-      for (Groupe groupe : game.getCurrentMove().getGroups()) {
+      for (Group groupe : game.getCurrentMove().getGroups()) {
          if (groupe.getCouleur() == putStone.getCouleur()) {
             if (groupe.nbEyes() > goodNbEyes) {
                score += IMPORTANT;
             } else if (groupe.nbEyes() == 1) {
-               for (Groupe eye : groupe.getEyes()) {
+               for (Group eye : groupe.getEyes()) {
                   if (eye.size() == 1) {
                      if (groupe.getLiberties().size() == 1) {
                         // If it's the last liberty, we lose more than him,
@@ -415,7 +415,7 @@ public final class EvalFunc {
             if (groupe.nbEyes() > goodNbEyes) {
                score -= IMPORTANT;
             } else if (groupe.nbEyes() == 1) {
-               for (Groupe eye : groupe.getEyes()) {
+               for (Group eye : groupe.getEyes()) {
                   if (eye.size() == 1) {
                      if (groupe.getLiberties().size() == 1) {
                         // If it's the last liberty, we almost win...
@@ -453,9 +453,9 @@ public final class EvalFunc {
                  == putStone.getCouleur()) {
 
             if (game.getStone(putStone.getLine() - 1,
-                    putStone.getColumn()).getCouleur() == PionVal.RIEN
+                    putStone.getColumn()).getCouleur() == StoneVal.EMPTY
                     && game.getStone(putStone.getLine(),
-                    putStone.getColumn() - 1).getCouleur() == PionVal.RIEN) {
+                    putStone.getColumn() - 1).getCouleur() == StoneVal.EMPTY) {
                ++keimas;
             }
          }
@@ -466,9 +466,9 @@ public final class EvalFunc {
                  putStone.getColumn() + 1).getCouleur()
                  == putStone.getCouleur()) {
             if (game.getStone(putStone.getLine() - 1,
-                    putStone.getColumn()).getCouleur() == PionVal.RIEN
+                    putStone.getColumn()).getCouleur() == StoneVal.EMPTY
                     && game.getStone(putStone.getLine(),
-                    putStone.getColumn() + 1).getCouleur() == PionVal.RIEN) {
+                    putStone.getColumn() + 1).getCouleur() == StoneVal.EMPTY) {
                ++keimas;
             }
          }
@@ -480,9 +480,9 @@ public final class EvalFunc {
                  == putStone.getCouleur()) {
             //If same color, check the liberties
             if (game.getStone(putStone.getLine() + 1,
-                    putStone.getColumn()).getCouleur() == PionVal.RIEN
+                    putStone.getColumn()).getCouleur() == StoneVal.EMPTY
                     && game.getStone(putStone.getLine(),
-                    putStone.getColumn() - 1).getCouleur() == PionVal.RIEN) {
+                    putStone.getColumn() - 1).getCouleur() == StoneVal.EMPTY) {
                ++keimas;
             }
          }
@@ -493,9 +493,9 @@ public final class EvalFunc {
                  putStone.getColumn() + 1).getCouleur()
                  == putStone.getCouleur()) {
             if (game.getStone(putStone.getLine() + 1,
-                    putStone.getColumn()).getCouleur() == PionVal.RIEN
+                    putStone.getColumn()).getCouleur() == StoneVal.EMPTY
                     && game.getStone(putStone.getLine(),
-                    putStone.getColumn() + 1).getCouleur() == PionVal.RIEN) {
+                    putStone.getColumn() + 1).getCouleur() == StoneVal.EMPTY) {
                ++keimas;
             }
          }
