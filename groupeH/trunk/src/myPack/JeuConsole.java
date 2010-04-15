@@ -145,20 +145,22 @@ public class JeuConsole {
 	/** changes coordinate system */
 	public static void alafbet2IntCoord(char alafX, int alafY) {
 		/**a->0 , b->1*/
-		System.out.println("al=" + alafX);
+		System.out.println("alafX=" + alafX+"="+(int)alafX);
 		System.out.println(alafY);
 
-		X = (int) alafX;  /** X Y static to solve main() static state*/
-		Y = (int) alafY;
+		X = ((int) alafX)-96;  /** X Y static to solve main() static state*/
+		Y = ((int) alafY);
 
 		System.out.println(X);
 		System.out.println("in alafbet2IntCoord Y="+Y);
 	}
 	
-	/** changes coordinate system */
-	public static void gobanIntCoord2Matrix(){
-		
-	
+	/** changes coordinate system from gobanLetters.png 
+	 * to conventional notation a9=19->00 c8=38=21*/
+	public static void gobanIntCoord2Matrix(int gobX,int gobY){
+		X = gobX-1; 
+		Y= 5+(5-gobY)-1;//1..5..9  symetric axis=5 abs((9-5)|(1-5))=4
+		//-1 for starting at 0
 	}
 	
 
@@ -166,10 +168,19 @@ public class JeuConsole {
 
 	public static void main(String[] args) {
 		alafbet2IntCoord('a', 5);
-		System.out.println("X=" + X + "Y=" + Y);
+		System.out.println("alafbet2IntCoord X=" + X + "Y=" + Y);
 
 		alafbet2IntCoord('b', 5);
-		System.out.println("X=" + X + "Y=" + Y);
+		System.out.println("X=" + X + "Y=" + Y+"\n\n\n");
+		
+		
+		System.out.println("gobanIntCoord2Matrix");
+		gobanIntCoord2Matrix(1,9);
+		System.out.println("X="+X+"Y="+Y);
+		
+		
+		
+		
 		Jeu j = new Jeu();
 		Tableau t = new Tableau();
 		j.tableauFixe = new Tableau();
