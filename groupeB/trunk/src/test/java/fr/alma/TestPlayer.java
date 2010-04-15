@@ -13,46 +13,43 @@ package fr.alma;
 
 import static org.junit.Assert.*;
 
-import javax.swing.JLabel;
 
+import java.awt.event.MouseListener;
+
+import javax.swing.JLabel;
 import org.junit.Before;
 import org.junit.Test;
-
 import fr.alma.client.action.Context;
 import fr.alma.client.action.ParamGame;
-import fr.alma.server.core.Computer;
+import fr.alma.client.ihm.Goban;
 import fr.alma.server.core.Factory;
-import fr.alma.server.core.ICoordinator;
 import fr.alma.server.core.IPlayer;
 import fr.alma.server.core.IStateGame;
-import fr.alma.server.core.IStrategy;
+import fr.alma.server.core.Location;
 import fr.alma.server.core.PlayEvent;
 import fr.alma.server.core.PlayListener;
 import fr.alma.server.core.Player;
 import fr.alma.server.core.StateGame;
 import fr.alma.server.ia.IEvaluation;
 import fr.alma.server.rule.Configuration;
-import fr.alma.server.rule.RuleManager;
 
 
-public class TestComputer {
+public class TestPlayer {
 
 	IStateGame stateGame = null;
 	IEvaluation evaluation = null;
-	IPlayer computer;
 	IPlayer player;
-	RuleManager ruleManager;
-	ICoordinator coordinator;
-	IStrategy strategy;
 	Context context;
 	boolean fin;
 	int cpt;
-	
+	Goban goban;
 	
 	@Before
 	public void setUp() throws Exception {
 		
+
 		ParamGame param = new ParamGame();
+		
 		param.setSizeGoban(9);
 		param.setAssistant(false);
 		param.setColorComputer(Configuration.BLACK);
@@ -65,39 +62,29 @@ public class TestComputer {
 		context.setStatusBar(new JLabel());
 				
 		stateGame = new StateGame(context);
-		computer = new Computer("computer", context);
-		player = new Player("adversaire", Configuration.WHITE, null, stateGame);
-		stateGame.play(0, 0, player.getColor());
-		evaluation = Factory.getEvaluation(context);
-		ruleManager = Factory.getRuleManager(context);
-		strategy = Factory.getStrategy(context);
+		goban = Factory.getGoban(context);
 		
-		computer.setStrategy(strategy);
-		computer.setEvaluation(evaluation);
-		computer.addPlayListener(new TestPlayListener());
-		
-		context.setPlayer(player);
-		context.setComputer(computer);
-		context.setStateGame(stateGame);
-		context.setRuleManager(ruleManager);
+		player = new InternalPlayer("nom player", Configuration.WHITE, goban, stateGame); 
+		player.addPlayListener(new TestPlayListener());
+
 	}
 
 	/**
-	 * Test if the computer can interrupt the calculation.
-	 * Even if interrupted, the calculation must return a Location
+	 * Test if the player intercept the click and propagate the correct 
+	 * play event  
 	 */
 	@Test
-	public void testInterrupt() {
+	public void testClick() {
 		
-		computer.play();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			fail("Current Thread was interrupted !");
-		}
-		computer.interrupt();
-
-		while (! fin && cpt++ < 10)
+		/* After that, the player can play at all times */
+		player.play();
+		
+		/* simulating a mouse click */
+		((InternalPlayer)player).getMouseListener().mouseClicked(new java.awt.event.MouseEvent(goban, 1, 1, 1,
+                50, 50, 1, false,1));
+		
+		/* Waiting spread mouse click or maximum periods */
+		while (! fin  && cpt++ < 10)
 		{
 			try {
 				Thread.sleep(1000);
@@ -105,20 +92,39 @@ public class TestComputer {
 				fail("Current Thread was interrupted !");
 			}
 		}
+		
 		assertTrue("The event play was not propagated !", fin);
 	}
 	
 	
+	/* Represents the internal listener on the player */
 	class TestPlayListener implements PlayListener {
 
 		@Override
 		public boolean actionPerformed(PlayEvent e) {
-			System.out.println("Propagated event play");
-			assertTrue(e.getPlayer() == computer);
-			assertTrue(e.getWhen() == PlayEvent.AFTER);
+			assertTrue(e.getPlayer() == player);
+			assertTrue((e.getWhen() == PlayEvent.BEFORE) || (e.getWhen() == PlayEvent.AFTER));
 			assertTrue("The computer must give a position even if interrupted", e.getEmplacement() != null);
+			assertTrue("Intersection corresponding to the click is not good", e.getEmplacement().equals(new Location(1,1)));
 			fin = true;
 			return true;
+		}
+	}
+	
+	
+
+	/**
+	 * We must redefine this type of player to access
+	 * the internal MouseListener for click simulation 
+	 */
+	class InternalPlayer extends Player {
+		
+		public InternalPlayer(String name, boolean color, Goban goban, IStateGame stateGame) {
+			super(name, color, goban, stateGame);
+		}
+		
+		MouseListener getMouseListener() {
+			return super.listener;
 		}
 	}
 	

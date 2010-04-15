@@ -22,7 +22,7 @@ public class Player extends AbstractPlayer {
 
 	private Goban goban = null;
 	private IStateGame stateGame; 
-	private MouseListener listener = null;
+	protected MouseListener listener = null;
 	private boolean enabled = false;
 	private IPlayer player = this;
 	
