@@ -226,14 +226,14 @@ public final class EvalFunc {
                     && stone.getLine() <= maxBonnePlace
                     && stone.getColumn() >= minBonnePlace
                     && stone.getColumn() <= maxBonnePlace) {
-               if (stone.getCouleur() == curColor){
+               if (stone.getCouleur() == curColor) {
                   score += importance;
                } else {
                   score -= importance;
                }
-               
+
             } else {
-               if (stone.getCouleur() == curColor){
+               if (stone.getCouleur() == curColor) {
                   score -= importance;
                } else {
                   score += importance;
