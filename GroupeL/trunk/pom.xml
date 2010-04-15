@@ -7,6 +7,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <description>IA Project</description>
   <url>http://maven.apache.org</url>
+  
   <organization>
     <name>Master ALMA Nantes</name>
     <url>alma.univ-nantes.fr</url>
@@ -67,6 +68,7 @@
 	            <excludes>
 	            	<exclude>**/*Point*.java</exclude>
 	            </excludes>
+	            <locales>en</locales>
             </configuration>
         </plugin>    
              
@@ -80,7 +82,8 @@
 	            </goals>
 	          </execution>
 	        </executions>
-      	</plugin>    
+      	</plugin>
+      	     	
   	</plugins>
   </build>  
   
