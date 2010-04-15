@@ -256,6 +256,10 @@ public class AlphaBeta implements IStrategy {
 		public synchronized void setLocation(ILocation location) {
 			this.location = location;
 		}
+		
+		public String toString() {
+			return " " + value + "; at location : " + location;
+		}
 	}
 	
 	

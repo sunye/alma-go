@@ -48,10 +48,10 @@ public class TestAlphaBeta {
 	@Before
 	public void setUp() throws Exception {
 		
-		context = new Context();
-		// Configuration.BLACK, 0
 		ParamGame param = new ParamGame();
 		param.setSizeGoban(2);
+		
+		context = new Context();
 		context.setParamGame(param);
 				
 		stateGame = new StateGame(context);
