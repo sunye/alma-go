@@ -10,31 +10,30 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class GoPanel extends JPanel implements MouseListener {
-	
-	private int abs;
-	
-	private int ord;
-	
-	private MouseAdapter click;
-	
-	public GoPanel(){
-		super();
-		click = new MouseAdapter() {
+import fr.alma.go.Game;
 
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                mouseClicked(e);
-            }
-        };
+public class GoPanel extends JPanel {
+
+	private static final long serialVersionUID = 1L;
+	private MouseAdapter click;
+	private Game game;
+
+	public GoPanel(Game gm) {
+		super();
+		game = gm;
 	}
-	
-	public int getAbs(){
-		return abs;
+
+	public void enableClick() {
+		click = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				processMouseClicked(e);
+			}
+		};
 	}
-	
-	public int getOrd(){
-		return ord;
+
+	public void disableClick() {
+		removeMouseListener(click);
 	}
 
 	public void paintComponent(Graphics g) {
@@ -51,37 +50,21 @@ public class GoPanel extends JPanel implements MouseListener {
 		} // try
 	} // void paintComponent(Graphics)
 
-	@Override
-	public void mouseClicked(MouseEvent event) {
-		// TODO Auto-generated method stub
-		abs=event.getX();
-		ord=event.getY();
-		StaticDummy.print(abs+";"+ord);
-		
-	}
+	public void processMouseClicked(final MouseEvent event) {
+		boolean ok = false;
+		while (!ok) {
+			int abs = event.getX();
+			int ord = event.getY();
+			if (abs < 500 && ord < 500) {
+				abs = ((abs - 2) * 9) / 500;
+				ord = ((ord - 45) * 9) / 500;
+				ok = game.play(abs, ord);
+			} // if
+		} // while
+	} // void processMouseClicked(MouseEvent)
 
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public MouseListener getClick() {
+		return click;
 	}
 
 }
