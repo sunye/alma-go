@@ -64,23 +64,6 @@ public class Game {
 		} // if
 	}
 
-	// private PlayMove threadizeAB(){
-	// // AlphaBeta alphabeta = new AlphaBeta(3, iaColor);
-	//        
-	// thread = new ABThread(3, iaColor, goban);
-	// thread.start();
-	// try {
-	// thread.join(10000);
-	// } catch (InterruptedException ex) {
-	// Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null,
-	// ex);
-	// }
-	//
-	// PlayMove retour = thread.getCurrentBest();
-	// thread.interrupt();
-	// return retour;
-	// }
-
 	/**
 	 * The computer plays.
 	 */
