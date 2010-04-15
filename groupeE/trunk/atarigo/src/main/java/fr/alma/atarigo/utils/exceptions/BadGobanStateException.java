@@ -16,8 +16,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+// along with this program;
 //
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of this program.
@@ -28,20 +27,39 @@ package fr.alma.atarigo.utils.exceptions;
  * @author judu
  */
 public class BadGobanStateException extends Exception {
-    public BadGobanStateException() {}
 
-    public BadGobanStateException(String message) {
+    /**
+     * Exception = Bad Goban State.
+     */
+    public BadGobanStateException() {
+    }
+
+    /**
+     * Exception = Bad Goban State.
+     * @param message : message to display.
+     */
+    public BadGobanStateException(final String message) {
         super(message);
     }
 
-    public BadGobanStateException(Throwable cause) {
+    /**
+     * Exception = Bad Goban State.
+     * @param cause : cause of this exception.
+     */
+    public BadGobanStateException(final Throwable cause) {
         super(cause);
     }
 
-    public BadGobanStateException(String message, Throwable cause) {
+    /**
+     * Exception = Bad Goban State.
+     * @param message : message to display.
+     * @param cause : cause of this exception.
+     */
+    public BadGobanStateException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }
 
 
 //~ Formatted by Jindent --- http://www.jindent.com
+

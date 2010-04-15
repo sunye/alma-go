@@ -16,34 +16,54 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+// along with this program;
 //
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of this program.
 package fr.alma.atarigo.utils.exceptions;
 
+/**
+ * @author judu
+ */
 public class BadPlaceException extends Exception {
 
     /**
-     *
+     * Constant = serialVersionUID.
      */
     private static final long serialVersionUID = -7651675431627421683L;
 
-    public BadPlaceException() {}
+    /**
+     * Exception = Bad place.
+     */
+    public BadPlaceException() {
+    }
 
-    public BadPlaceException(String message) {
+    /**
+     * Exception = Bad place.
+     * @param message : message to display.
+     */
+    public BadPlaceException(final String message) {
         super(message);
     }
 
-    public BadPlaceException(Throwable cause) {
+    /**
+     * Exception = Bad place.
+     * @param cause : cause of this exception.
+     */
+    public BadPlaceException(final Throwable cause) {
         super(cause);
     }
 
-    public BadPlaceException(String message, Throwable cause) {
+    /**
+     * Exception = Bad place.
+     * @param message : message to display.
+     * @param cause : cause of this exception.
+     */
+    public BadPlaceException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }
 
 
 //~ Formatted by Jindent --- http://www.jindent.com
+
