@@ -53,8 +53,8 @@ public class GroupPawns {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Divide one group into under group. Work if the original group is fragmented 
+	 * @return 
 	 */
 	public LinkedList<GroupPawns> divideGroup() {
 				
@@ -99,7 +99,6 @@ public class GroupPawns {
 	/**
 	 * @param coord : coordinate of the testing position
 	 * @return true if this position is occupied by the group
-	 * 
 	 */	
 	public boolean testPosition(Coordinates coord){
 		for(Coordinates c : pawns){						

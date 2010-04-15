@@ -4,175 +4,164 @@ import game.Coordinates;
 import game.Color;
 import game.GobanStructure;
 import ia.AiThread;
-import ia.AlphaBeta;
 
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 
 public class Goban extends JPanel{
         
+		// size of the different element in the windows
 		private static final int DIFF_BASE = 3;
 		private static final int BORDURE = 25;
 		private static final int CASE_SIZE = 60;
 		private static final int INFO = 150;
 		
 		private static final long serialVersionUID = 1L;
-        private ImageIcon plateau;
-        private ImageIcon pionB;
-        private ImageIcon pionN;
-        private ImageIcon mort;
-        private ImageIcon vainqueur;
-        //tous les points du Goban
+		// link to the different images
+        private ImageIcon gobanImage;
+        private ImageIcon whitePawnImage;
+        private ImageIcon blackPawnImage;
+        private ImageIcon cross;
+        private ImageIcon winnerImage;
+        // game
         private GobanStructure goban_tab;
         
-        // jouer avec ou sans IA
-        
+        // for play with AI
         private boolean withAI;
         
+        // current depth of the decision's tree, it's the AI's difficulty 
         private int currentDepth;
         
-        private boolean partiFini;
+        // true when the game is over
+        private boolean endGame;
         
+        // coordinate of the last move of the game 
         private Coordinates lastMove;
         
+        // time for IA's play 
     	private Integer playTimeIA = 10;
 
         
-        // fenetre dans lequel sera afficher la partie
+        // window of the game
         private Fenetre window;
        
-        //la couleur du joueur qui joue
-        private Color joueur;
+        // current player's color
+        private Color player;
         
+        
+        // constructor
         public Goban(Fenetre f) {
         	super();
         	
         	window = f;
         	
-            partiFini=false;
-            /**
-	         * Creation de l'image du goban grâce à l'URL donné
-	         */
+            endGame=false;
+            
+             /* creation of the different image of the panel */
 	                
              java.net.URL gobanURL = Fenetre.class.getResource("images/Goban2.png");
-             //vérification de l'existence de l'image
+             // verification of the image's existence
              if (gobanURL != null) {
-            	 plateau = new ImageIcon(gobanURL);
+            	 gobanImage = new ImageIcon(gobanURL);
              }
-                                
-             /**
-              * Creation de l'image du pion blanc
-              */
-                
+        
              java.net.URL pionB_URL = Fenetre.class.getResource("images/blanc.png");
-             //vérification de l'existence de l'image
+             // verification of the image's existence
              if (pionB_URL != null) {
-            	 pionB = new ImageIcon(pionB_URL);
+            	 whitePawnImage = new ImageIcon(pionB_URL);
              }
-             
-                
-             /**
-              * Creation de l'image du pion noir
-              */
-                
+
              java.net.URL pionN_URL = Fenetre.class.getResource("images/noir.png");
-             //vérification de l'existence de l'image
+             // verification of the image's existence
              if (pionN_URL != null) {
-            	 pionN = new ImageIcon(pionN_URL);
+            	 blackPawnImage = new ImageIcon(pionN_URL);
              }
-                
-             /**
-              * Creation de l'image de victoire
-              */
              
              java.net.URL vainqueur_URL = Fenetre.class.getResource("images/Vainqueur.png");
-             //vérification de l'existence de l'image
+             // verification of the image's existence
              if (vainqueur_URL != null) {
-            	 vainqueur = new ImageIcon(vainqueur_URL);
+            	 winnerImage = new ImageIcon(vainqueur_URL);
              }
              
              java.net.URL mort_URL = Fenetre.class.getResource("images/mort.png");
-             //vérification de l'existence de l'image
+             // verification of the image's existence
              if (mort_URL != null) {
-            	 mort = new ImageIcon(mort_URL);
+            	 cross = new ImageIcon(mort_URL);
              }  
-             /**
-              * Creation de la matrice de pions
-              */
-                
+             
+
+             // game creation                
              goban_tab = new GobanStructure();                
-                
+             
+             // launch click listener
              addMouseListener(new MouseAdapter() {
             	 public void mouseClicked(MouseEvent e) {
             		 processMouseClicked(e);
             	 }
              });
+             
+            // paint element
             window.repaint();
                 
-            /* on initialise le premier a blanc */
-            joueur=Color.BLACK;
+            /* initial value */
+            player=Color.BLACK;
             withAI=true;
-            
             currentDepth = DIFF_BASE;
         }
         
         /**
-         * fonction lancer lors d'un clic sur le goban 
+         * click function 
          * @param e
          */
         private void processMouseClicked(MouseEvent e) {
         	
         	int x, y;
             
-            if(!partiFini){
+            if(!endGame){
             
 	            x = e.getX();
 	            y = e.getY();
 	            
-	            // le clic est t'il sur la grille de jeux 
-	            if(x>BORDURE && x< plateau.getIconWidth()-BORDURE-INFO && y>BORDURE && y< plateau.getIconWidth()-BORDURE){      
+	            // verification of the click' position 
+	            if(x>BORDURE && x< gobanImage.getIconWidth()-BORDURE-INFO && y>BORDURE && y< gobanImage.getIconWidth()-BORDURE){      
 		            
-		            // creation des coordonnées du coup par rapport a la position du clic
+		            // coordinate creation
 		            Coordinates coup = new Coordinates(((x-BORDURE)/CASE_SIZE)+1, ((y-BORDURE)/CASE_SIZE)+1);
 		            
-		            // verification de validité du coup
-		            if(goban_tab.moveValid(coup, joueur)){
-			            // on ajoute la piece
-		            	goban_tab.addPawn(coup, joueur);
+		            // validity move verification
+		            if(goban_tab.moveValid(coup, player)){
+			            // add pawn
+		            	goban_tab.addPawn(coup, player);
 		            	lastMove = coup;
-			            // on signifie que le coup est joueur
-			            coupFini();
+			            // the move is over
+			            moveComplet();
 			            
-			            
-			            // si l'IA doit jouer
-			            if(withAI && !partiFini){
+			            // AI's turn
+			            if(withAI && !endGame){
 			            	playAI();
-			            	coupFini();
+			            	moveComplet();
 			            }		              
 		            }
 	            }
             }else{
-            	partiFini = false;
+            	endGame = false;
            		resetGame(withAI);
             }
         }
         
+        /**
+         * function call when it's AI's turn 
+         */
         private void playAI(){
         	
         	Coordinates coup = new Coordinates();
         	
-        	if(goban_tab.getGroups(joueur).isEmpty()){
+        	if(goban_tab.getGroups(player).isEmpty()){
         		if(lastMove.getX() <= goban_tab.getSize()/2){
         			if(lastMove.getY() <= goban_tab.getSize()/2){
         				coup = new Coordinates(6, 6);
@@ -188,69 +177,67 @@ public class Goban extends JPanel{
         		}		            		
         	}else{			            		
 
-            		AiThread aiThread= new AiThread(goban_tab, joueur,currentDepth,playTimeIA);
+            		AiThread aiThread= new AiThread(goban_tab, player,currentDepth,playTimeIA);
             		
-            		coup = aiThread.createTree(goban_tab, joueur);
+            		coup = aiThread.createTree(goban_tab, player);
 
         	}     
-         	// on joue le coup
-        	goban_tab.addPawn(coup,joueur);
+         	// add pawn
+        	goban_tab.addPawn(coup,player);
         }
         
-        
-        
         /**
-         * fonction appeler pour completer un coup
+         * function call when the move is complete
          */
-        private void coupFini() {
+        private void moveComplet() {
         	
-        	// verification de la fin de parti
-        	if(goban_tab.isWinner(joueur)){
-        		// si un joueur a gagner on termine la parti
-        		partiFini = true;
+        	// end game verification
+        	if(goban_tab.isWinner(player)){
+        		endGame = true;
             }else{   
-            	// sinon on change de joueur
-            	joueur=joueur.invColor();
+            	// if it's not the end game change player's color
+            	player=player.invColor();
             }
-        	// onredessine le plateau
+        	
+        	// repaint goban
         	window.repaint();        
         	
 		}
 
         /**
-         * fontion d'affichage du goban
+         * function of paint panel
          */
 		public void paintComponent(Graphics g){
 	        super.paintComponent(g);
 	    	        
-	        //Affichage du goban
-	        g.drawImage(plateau.getImage(),0,0,this);
+	        // goban's paint
+	        g.drawImage(gobanImage.getImage(),0,0,this);
 	    
 	        
-	        //Affichage de la couleur du joueur qui doit joueur
-		    if(partiFini){
-		    	g.drawImage(vainqueur.getImage(),plateau.getIconWidth()-vainqueur.getIconWidth(),plateau.getIconHeight()-vainqueur.getIconHeight()-BORDURE*3,this);
+	        // winnner's paint
+		    if(endGame){
+		    	g.drawImage(winnerImage.getImage(),gobanImage.getIconWidth()-winnerImage.getIconWidth(),gobanImage.getIconHeight()-winnerImage.getIconHeight()-BORDURE*3,this);
 		    }
 
-		    // affichage de la couleur du joueur
-	        if(joueur == Color.WHITE){
-	        	g.drawImage(pionB.getImage(),plateau.getIconWidth()-CASE_SIZE-BORDURE,BORDURE*3,this);
-		    }else if(joueur == Color.BLACK){
-		        g.drawImage(pionN.getImage(),plateau.getIconWidth()-CASE_SIZE-BORDURE,BORDURE*3,this);
+		    // player color's paint
+	        if(player == Color.WHITE){
+	        	g.drawImage(whitePawnImage.getImage(),gobanImage.getIconWidth()-CASE_SIZE-BORDURE,BORDURE*3,this);
+		    }else if(player == Color.BLACK){
+		        g.drawImage(blackPawnImage.getImage(),gobanImage.getIconWidth()-CASE_SIZE-BORDURE,BORDURE*3,this);
 		    }
 		    	        
-	        //Affichage de tout les pions en parcourant la matrice
+	        // game's paint
 	        for(int i=1; i<=goban_tab.getSize(); i++){
 	            for(int j=1;j<=goban_tab.getSize(); j++){
 	            	if(goban_tab.getGoban()[i][j] != null){
 	            		if(goban_tab.getGoban()[i][j].getColor() == Color.BLACK){
-	            			g.drawImage(pionN.getImage(),((i-1)*CASE_SIZE)+BORDURE,((j-1)*CASE_SIZE)+BORDURE,this);
+	            			g.drawImage(blackPawnImage.getImage(),((i-1)*CASE_SIZE)+BORDURE,((j-1)*CASE_SIZE)+BORDURE,this);
 	              		}else{
-	            			g.drawImage(pionB.getImage(),((i-1)*CASE_SIZE)+BORDURE,((j-1)*CASE_SIZE)+BORDURE,this);
+	            			g.drawImage(whitePawnImage.getImage(),((i-1)*CASE_SIZE)+BORDURE,((j-1)*CASE_SIZE)+BORDURE,this);
 	                	}
 	            		
-	            		if((goban_tab.getGoban()[i][j].getFreedoms() == 0) && (goban_tab.getGoban()[i][j].getColor()==joueur.invColor())){
-	            			g.drawImage(mort.getImage(),((i-1)*CASE_SIZE)+BORDURE,((j-1)*CASE_SIZE)+BORDURE,this);
+	            		if((goban_tab.getGoban()[i][j].getFreedoms() == 0) && (goban_tab.getGoban()[i][j].getColor()==player.invColor())){
+	            			g.drawImage(cross.getImage(),((i-1)*CASE_SIZE)+BORDURE,((j-1)*CASE_SIZE)+BORDURE,this);
 	            		}
 	                }
 	            }
@@ -258,24 +245,25 @@ public class Goban extends JPanel{
 		}
         
 		/**
-		 * 
 		 */
         public void update(Graphics g) {
              paintComponent(g);
         }
 
         /**
-         * relance une nouvelle avec ou sans IA 
+         * reset game
          * @param type
          */
 		public void resetGame(boolean type) {
 			goban_tab = new GobanStructure();
-			joueur = Color.BLACK;
+			player = Color.BLACK;
 			withAI=type;
-			partiFini = false;
+			endGame = false;
 			window.repaint();
 		}
 
+		/* getter and setter */
+		
 		public GobanStructure getGoban_tab() {
 			return goban_tab;
 		}
