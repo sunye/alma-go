@@ -1,14 +1,4 @@
-package fr.alma.atarigo;
-
-import java.util.ArrayList;
-import java.util.ListIterator;
-
-/**
- * GroupsList.java represent the list of all the list of stones in a Atarigo game.
- * @author VINCENT FERREIRA, ADRIEN GUILLE
- *
- *
- *   This program is free software: you can redistribute it and/or modify
+/*   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
@@ -20,6 +10,19 @@ import java.util.ListIterator;
  *
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
+
+package fr.alma.atarigo;
+
+import java.util.ArrayList;
+import java.util.ListIterator;
+
+/**
+ * GroupsList.java represent the list of all the list of stones in a Atarigo game.
+ * @author VINCENT FERREIRA, ADRIEN GUILLE
+ *
+ * revision $Revision$
  * 
  */
 public class GroupsList implements Cloneable{

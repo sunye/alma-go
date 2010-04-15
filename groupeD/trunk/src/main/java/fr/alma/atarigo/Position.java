@@ -1,12 +1,4 @@
-package fr.alma.atarigo;
-
-
-/**
- * Position.java represent a position in a board.
- * @author VINCENT FERREIRA, ADRIEN GUILLE
- * @version 1.0
- * 
- *   This program is free software: you can redistribute it and/or modify
+/*   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
@@ -18,6 +10,18 @@ package fr.alma.atarigo;
  *
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
+
+package fr.alma.atarigo;
+
+
+/**
+ * Position.java represent a position in a board.
+ * @author VINCENT FERREIRA, ADRIEN GUILLE
+ * @version 1.0
+ * 
+ * revision $Revision$
  * 
  */
 public class Position {
