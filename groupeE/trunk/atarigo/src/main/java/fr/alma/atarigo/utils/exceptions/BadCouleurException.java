@@ -16,34 +16,54 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+// along with this program;
 //
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of this program.
 package fr.alma.atarigo.utils.exceptions;
 
+/**
+ * @author judu
+ */
 public class BadCouleurException extends Exception {
 
     /**
-     *
+     * Constant = serialVersionUID.
      */
     private static final long serialVersionUID = -2416508440769689377L;
 
-    public BadCouleurException() {}
+    /**
+     * Exception = Bad color.
+     */
+    public BadCouleurException() {
+    }
 
-    public BadCouleurException(String message) {
+    /**
+     * Exception = Bad color.
+     * @param message : message to display.
+     */
+    public BadCouleurException(final String message) {
         super(message);
     }
 
-    public BadCouleurException(Throwable cause) {
+    /**
+     * Exception = Bad color.
+     * @param cause : cause of this exception.
+     */
+    public BadCouleurException(final Throwable cause) {
         super(cause);
     }
 
-    public BadCouleurException(String message, Throwable cause) {
+    /**
+     * Exception = Bad color.
+     * @param message : message to display.
+     * @param cause : cause of this exception.
+     */
+    public BadCouleurException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }
 
 
 //~ Formatted by Jindent --- http://www.jindent.com
+

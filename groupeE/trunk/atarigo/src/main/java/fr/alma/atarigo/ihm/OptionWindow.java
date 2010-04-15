@@ -69,7 +69,6 @@ public class OptionWindow extends JDialog {
      */
     private void choixCouleur(final GameManager gaman) {
         String[] pion = {"Noir", "Blanc"};
-        //JOptionPane jop = new JOptionPane();
         int choix = JOptionPane.showOptionDialog(null,
                 "Quelle couleur voulez-vous jouer ?",
                 "Choix pion",

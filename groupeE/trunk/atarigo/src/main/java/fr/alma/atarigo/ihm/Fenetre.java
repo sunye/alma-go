@@ -161,7 +161,6 @@ public class Fenetre extends JFrame {
         this.jeu.add(quitter);
         this.barreMenu.add(jeu);
 
-        //TODO :  changer le "Bla bla bla..." du "A propos" !
         //A propos :
         propos.addActionListener(new ActionListener() {
 
