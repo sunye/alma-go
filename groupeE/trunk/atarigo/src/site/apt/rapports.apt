@@ -13,7 +13,7 @@ Generated reports
 *----+------+
 | {{{./surefire-report.html}Unit tests}} | Report on the project unit tests |
 *----+------+
-| {{{./cobertura/index.html}Code coverage}} | The code coverage via Cobertura
+| {{{./cobertura/index.html}Code coverage}} | The code coverage via Cobertura |
 *----+------+
 | {{{./checkstyle.html}Checkstyle}} | CheckStyle report on coding conventions |
 *----+------+

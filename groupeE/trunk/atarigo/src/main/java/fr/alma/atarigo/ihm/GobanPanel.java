@@ -146,7 +146,7 @@ public final class GobanPanel extends JPanel {
          */
         if (controleur.isEnd()) {
             removeMouseListener(mouseL);
-            controleur.dialogueFinJeu();
+            controleur.endGameDialog();
         }
     }
 

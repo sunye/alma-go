@@ -1,0 +1,29 @@
+    ----------------
+    Site structure
+    ----------------
+
+Structure
+
+   This site provides the following informations.
+
+* Informations about the project
+
+   * {{{./project-summary.html}Summary}} auto-generated
+
+   * The {{{./team-list.html}team}}
+
+   * {{{./dependencies.html}Dependencies}} of this project
+
+   * {{{./plugins.html}Plugins}} used for the project.
+
+* Informations about the code
+
+   * {{{apidocs/index.html}JavaDocs}}
+
+   * {{{testapidocs/index.html}Test JavaDocs}}
+
+   * {{{surefire-report.html}Reports}} about Unit Tests
+
+   * {{{cobertura/index.html}Code coverage}} of the Unit Tests
+
+   * {{{checkstyle.html}CheckStyle}} report.

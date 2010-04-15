@@ -1,0 +1,17 @@
+    ----------------
+    Informations
+    ----------------
+
+Project informations
+
+*----+------+
+|| Document || Description |
+*----+------+
+| {{{./project-summary.html}Abstract}} | Abstract of the project |
+*----+------+
+| {{{./team-list.html}Team}} | Team presentation |
+*----+------+
+| {{{./dependencies.html}Dependencies}} | What this project depends on |
+*----+------+
+| {{{./plugins.html}Plugins}} | The plugins used to build and test this project |
+*----+------+
