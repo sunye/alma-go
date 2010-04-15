@@ -23,12 +23,20 @@ import fr.alma.go.goban.Goban;
 import fr.alma.go.goban.Place;
 import fr.alma.go.interfaces.IHeuristics;
 
-public class Computer{
+public class Computer {
 
 	private boolean color;
 
 	private IHeuristics level;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param col
+	 *            Computer color
+	 * @param lvl
+	 *            Computer level
+	 */
 	public Computer(boolean col, int lvl) {
 		color = col;
 		switch (lvl) {
@@ -47,8 +55,15 @@ public class Computer{
 		} // switch
 	} // Computer()
 
+	/**
+	 * Get place to play
+	 * 
+	 * @param goban
+	 *            Actual state of the goban
+	 * @return The best place to play among the heuristics
+	 */
 	public Place getPlace(Goban goban) {
-		return level.getBestPlace(goban,color);
+		return level.getBestPlace(goban, color);
 	} // Place getPlace()
 
 }

@@ -23,24 +23,49 @@ public class Stone {
 
 	private char color; // u : undefined ; w : white ; b : black
 
+	/**
+	 * Default constructor
+	 */
 	public Stone() {
 		color = 'u'; // undefined by default
 	} // Stone()
 
+	/**
+	 * Constructor
+	 * 
+	 * @param col
+	 *            Stone color
+	 */
 	public Stone(char col) {
 		color = col;
 	} // Stone(char)
 
+	/**
+	 * Change stone color
+	 * 
+	 * @param col
+	 *            New color
+	 */
 	public void setColor(char col) {
 		color = col;
 	} // void setColor(char)
 
+	/**
+	 * Get stone color
+	 * 
+	 * @return Actual stone color
+	 */
 	public char getColor() {
 		return color;
 	} // char getColor()
 
+	/**
+	 * True if stone is undefined
+	 * 
+	 * @return True if color is 'u'
+	 */
 	public boolean isUndefined() {
-		return color=='u';
-	}
+		return color == 'u';
+	} // boolean isUndefined()
 
 } // class Stone

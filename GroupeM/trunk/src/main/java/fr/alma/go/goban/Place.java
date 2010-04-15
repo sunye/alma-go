@@ -25,25 +25,50 @@ public class Place {
 
 	private int ord;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param a
+	 *            Place's absciss
+	 * @param o
+	 *            Place's ordinate
+	 */
 	public Place(int a, int o) {
 		abs = a;
 		ord = o;
-	}
+	} // Place(int,int)
 
+	/**
+	 * Get place's absciss
+	 * 
+	 * @return Actual value of abs
+	 */
 	public int getAbs() {
 		return abs;
-	}
+	} // getAbs()
 
+	/**
+	 * Get place's ordinate
+	 * 
+	 * @return Actual value of ord
+	 */
 	public int getOrd() {
 		return ord;
-	}
+	} // getOrd()
 
+	/**
+	 * True if place equals this
+	 * 
+	 * @param place
+	 *            Place to test
+	 * @return True if places have the same coordinates
+	 */
 	public boolean equals(Place place) {
 		return (this.abs == place.abs && this.ord == place.ord);
-	}
-	
-	public String toString(){
-		return abs+","+ord;
-	}
+	} // boolean equals(Place)
+
+	public String toString() {
+		return abs + "," + ord;
+	} // String toString()
 
 }
