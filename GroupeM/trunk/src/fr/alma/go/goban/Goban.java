@@ -331,5 +331,13 @@ public class Goban implements Cloneable {
 		goban.blackTaken=blackTaken;
 		return goban;
 	}
+	
+	public int getWhiteTaken(){
+		return whiteTaken;
+	}
+	
+	public int getBlackTaken(){
+		return blackTaken;
+	}
 
 } // class Goban

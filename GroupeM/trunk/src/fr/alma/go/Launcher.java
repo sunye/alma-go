@@ -9,7 +9,9 @@ public class Launcher {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		GoFrame frame=new GoFrame();
+		GoFrame frame=new GoFrame("Atari Go");
+		
+		frame.setVisible(true);
 	}
 
 }
