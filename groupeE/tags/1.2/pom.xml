@@ -1,0 +1,169 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>fr.alma</groupId>
+   <artifactId>atarigo</artifactId>
+   <packaging>jar</packaging>
+   <version>1.0</version>
+   <name>atarigo</name>
+   <url>http://code.google.com/p/alma-go</url>
+
+   <developers>
+
+      <developer>
+         <id>060772G</id>
+         <name>Julien DURILLON</name>
+         <email>julien.durillon@etu.univ-nantes.fr</email>
+         <url>http://www.julien-durillon.com</url>
+         <organization>Université de Nantes</organization>
+         <organizationUrl>http://www.sciences-techniques.univ-nantes.fr/</organizationUrl>
+
+         <roles>
+            <role>Designer</role>
+            <role>Developer</role>
+            <role>Report writer</role>
+         </roles>
+
+         <properties><messenger>julien.durillon@etu.univ-nantes.fr</messenger></properties>
+      </developer>
+
+      <developer>
+         <id>056449H</id>
+         <name>Clotilde MASSOT</name>
+         <email>clotilde.massot@etu.univ-nantes.fr</email>
+         <organization>Université de Nantes</organization>
+         <organizationUrl>http://www.sciences-techniques.univ-nantes.fr/</organizationUrl>
+
+         <roles>
+            <role>Designer</role>
+            <role>Developer</role>
+            <role>Report writer</role>
+         </roles>
+
+         <properties><messenger>clotilde.massot@etu.univ-nantes.fr</messenger></properties>
+      </developer>
+   </developers>
+
+   <contributors>
+      <contributor>
+         <name>Eliott LE CALVÉ</name>
+         <email>eliott.lecalve@kan-op.com</email>
+         <url>http://www.doyoubuzz.com/eliott-le-calve</url>
+         <organization>Kan OP</organization>
+         <organizationUrl>http://www.kan-op.com</organizationUrl>
+         <roles>
+            <role>Stone designer</role>
+            <role>Game tester</role>
+         </roles>
+      </contributor>
+   </contributors>
+
+   <scm>
+      <connection>scm:svn:http://alma-go.googlecode.com/svn/groupeE/trunk/atarigo</connection>
+
+   </scm>
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+               <source>1.6</source>
+               <target>1.6</target>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+               <archive>
+                  <manifest>
+                     <mainClass>fr.alma.atarigo.App</mainClass>
+                     <packageName>fr.alma.atarigo</packageName>
+                  </manifest>
+               </archive>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>
+               org.codehaus.mojo
+            </groupId>
+            <artifactId>
+               cobertura-maven-plugin
+            </artifactId>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>
+                        clean
+                     </goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <configuration>
+               <outputEncoding>UTF-8</outputEncoding>
+               <locales>en</locales>
+               <tasks>
+                  <replace dir="${project.reporting.outputDirectory}">
+                     <include name="*.html"/>
+                     <replacetoken><![CDATA[ISO-8859-1]]></replacetoken>
+                     <replacevalue><![CDATA[UTF-8]]></replacevalue>
+                  </replace>
+               </tasks>
+
+            </configuration>
+
+         </plugin>
+
+      </plugins>
+      <resources>
+         <resource>
+            <directory>src/main/resources</directory>
+         </resource>
+      </resources>
+   </build>
+   <reporting>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <!--            <configuration>
+               <aggregate>true</aggregate>
+            </configuration> -->
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <configuration>
+               <outputEncoding>ISO-8859-1</outputEncoding>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jxr-plugin</artifactId>
+         </plugin>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>cobertura-maven-plugin</artifactId>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-report-plugin</artifactId>
+            <version>2.4.3</version>
+         </plugin>
+      </plugins>
+   </reporting>
+   <dependencies>
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <version>3.8.1</version>
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+</project>
+
