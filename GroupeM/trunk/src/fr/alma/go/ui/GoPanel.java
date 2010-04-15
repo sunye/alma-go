@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import fr.alma.go.GameManager;
+import fr.alma.go.Game;
 import fr.alma.go.goban.Goban;
 
 public final class GoPanel extends JPanel {
@@ -30,7 +30,7 @@ public final class GoPanel extends JPanel {
 	private final int coteCase = 67;
 	private final int precision = 4;
 	private MouseAdapter mouseL;
-	private GameManager controleur;
+	private Game controleur;
 
 	/**
 	 * Constructor
@@ -175,7 +175,7 @@ public final class GoPanel extends JPanel {
 		removeMouseListener(mouseL);
 	}
 
-	public void startGame(final GameManager gm, final Goban curGame) {
+	public void startGame(final Game gm, final Goban curGame) {
 		activateMouse();
 		this.controleur = gm;
 		repaint();

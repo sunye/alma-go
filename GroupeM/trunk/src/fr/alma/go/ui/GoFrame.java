@@ -9,7 +9,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import fr.alma.go.GameManager;
+import fr.alma.go.Game;
 
 public class GoFrame extends JFrame {
 
@@ -19,14 +19,15 @@ public class GoFrame extends JFrame {
 	private JMenu a_propos = new JMenu("About");
 	private JMenu nouv = new JMenu("Enter the matrix");
 	private JMenuItem item1 = new JMenuItem("Human versus CPU");
-	private JMenuItem item2 = new JMenuItem("Human versus Human (why the hell don't you play IRL ??)");
+	private JMenuItem item2 = new JMenuItem(
+			"Human versus Human (why the hell don't you play IRL ??)");
 	private JMenuItem propos = new JMenuItem("?");
 	private JMenuItem quitter = new JMenuItem("Take the blue pill");
 	private OptionWindow options;
 	// Panel représentant le goban
 	private GoPanel pan;
 	private boolean sendData;
-	private GameManager controleur;
+	private Game controleur;
 
 	/**
 	 * Open a window with the goban and a menu
@@ -45,7 +46,7 @@ public class GoFrame extends JFrame {
 		 * On ajoute le GobanPanel dans la fenetre principale
 		 */
 		add(pan);
-		controleur = new GameManager(pan, this);
+		controleur = new Game(pan, this);
 
 		/**
 		 * Mise en place de la barre de menu
