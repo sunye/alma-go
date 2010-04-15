@@ -1,14 +1,10 @@
-package fr.alma.go.player;
+package fr.alma.go.heuristics;
 
 import fr.alma.go.goban.Goban;
 import fr.alma.go.goban.Place;
-import fr.alma.go.heuristics.Beginner;
-import fr.alma.go.heuristics.Expert;
-import fr.alma.go.heuristics.Medium;
 import fr.alma.go.interfaces.IHeuristics;
-import fr.alma.go.interfaces.IPlayer;
 
-public class Computer implements IPlayer {
+public class Computer{
 
 	private boolean color;
 
@@ -32,7 +28,6 @@ public class Computer implements IPlayer {
 		} // switch
 	} // Computer()
 
-	@Override
 	public Place getPlace(Goban goban) {
 		return level.getBestPlace(goban,color);
 	} // Place getPlace()

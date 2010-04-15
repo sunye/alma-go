@@ -1,6 +1,8 @@
-package fr.alma.go.ui;
+package fr.alma.go;
 
-public class FrameDummyLauncher {
+import fr.alma.go.ui.GoFrame;
+
+public class Launcher {
 
 	/**
 	 * @param args
