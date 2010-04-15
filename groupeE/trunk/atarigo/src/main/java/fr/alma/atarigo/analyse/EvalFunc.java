@@ -226,14 +226,14 @@ public final class EvalFunc {
                     && stone.getLine() <= maxBonnePlace
                     && stone.getColumn() >= minBonnePlace
                     && stone.getColumn() <= maxBonnePlace) {
-               if(stone.getCouleur() == curColor){
+               if (stone.getCouleur() == curColor){
                   score += importance;
                } else {
                   score -= importance;
                }
                
             } else {
-               if(stone.getCouleur() == curColor){
+               if (stone.getCouleur() == curColor){
                   score -= importance;
                } else {
                   score += importance;
@@ -353,6 +353,8 @@ public final class EvalFunc {
    private static void calculateEyes(final Game game) {
       // TODO : make an accurate an fast algorithm.
 
+      final short minSurSize = 3;
+
       for (int ligne = 0; ligne < Goban.getTaille(); ++ligne) {
          for (int col = 0; col < Goban.getTaille(); ++col) {
             try {
@@ -364,7 +366,7 @@ public final class EvalFunc {
                           game.getEmptySpotSurroundingGroups(emptyGroup);
 
                   if (surrounders.size() == 1
-                          && surrounders.get(0).size() > 3) {
+                          && surrounders.get(0).size() > minSurSize) {
                      // We have only one surrounding Groupe, big enough.
                      surrounders.get(0).addEye(emptyGroup);
                   }
