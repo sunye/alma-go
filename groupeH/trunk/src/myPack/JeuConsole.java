@@ -1,8 +1,9 @@
 package myPack;
 
 import java.util.*;
-
-public class Jeu {
+/**@author Peter MOUEZA 
+ */
+public class JeuConsole {
 	static int fileFixe; // File FileFija;
 	static int colonneFixe;
 	static int valeurFixe;
@@ -12,7 +13,7 @@ public class Jeu {
 	int dimension;
 	Cellule[] parties = new Cellule[82];
 
-	Jeu() {
+	JeuConsole() {
 		initialisation();
 	}
 
@@ -72,20 +73,22 @@ public class Jeu {
 	boolean incrementPosition() {
 		boolean returne = true;
 		while (returne) {
-			if (Jeu.fileFixe < dimension - 1 && Jeu.colonneFixe < dimension - 1) {
-				Jeu.colonneFixe++;
-			} else if (Jeu.fileFixe == dimension - 1
-					&& Jeu.colonneFixe < dimension - 1) {
-				Jeu.colonneFixe++;
-			} else if (Jeu.colonneFixe == dimension - 1
-					&& Jeu.fileFixe < dimension - 1) {
-				Jeu.colonneFixe = 0;
-				Jeu.fileFixe++;
+			if (JeuConsole.fileFixe < dimension - 1
+					&& JeuConsole.colonneFixe < dimension - 1) {
+				JeuConsole.colonneFixe++;
+			} else if (JeuConsole.fileFixe == dimension - 1
+					&& JeuConsole.colonneFixe < dimension - 1) {
+				JeuConsole.colonneFixe++;
+			} else if (JeuConsole.colonneFixe == dimension - 1
+					&& JeuConsole.fileFixe < dimension - 1) {
+				JeuConsole.colonneFixe = 0;
+				JeuConsole.fileFixe++;
 			} else {
 				returne = false;
 				break;
 			}
-			if (tableauFixe.getValeur(Jeu.fileFixe, Jeu.colonneFixe) < 1)
+			if (tableauFixe.getValeur(JeuConsole.fileFixe,
+					JeuConsole.colonneFixe) < 1)
 				break;
 		}
 		return returne;
@@ -93,30 +96,30 @@ public class Jeu {
 
 	boolean resolver() {
 		boolean activated;
-		Jeu.fileFixe = 0;
-		Jeu.colonneFixe = -1;
-		Jeu.valeurFixe = 0;
+		JeuConsole.fileFixe = 0;
+		JeuConsole.colonneFixe = -1;
+		JeuConsole.valeurFixe = 0;
 		activated = true;
 		putTableau(tableauFixe);
 		while (!tableau.isComplet() && !listeVide()) {
 			tableau = getTableau();
-			Jeu.valeurFixe = 0;
-			Jeu.fileFixe = tableau.getUFile();
-			Jeu.colonneFixe = tableau.getUColonne();
+			JeuConsole.valeurFixe = 0;
+			JeuConsole.fileFixe = tableau.getUFile();
+			JeuConsole.colonneFixe = tableau.getUColonne();
 			if (activated) {
-				Jeu.fileFixe = 0;
-				Jeu.colonneFixe = -1;
-				Jeu.valeurFixe = 0;
+				JeuConsole.fileFixe = 0;
+				JeuConsole.colonneFixe = -1;
+				JeuConsole.valeurFixe = 0;
 				activated = false;
 			}
 			delTableau();
 			if (incrementPosition()) {
-				while (Jeu.valeurFixe < dimension) {
-					Jeu.valeurFixe++;
-					if (tableau.caseValide(Jeu.fileFixe, Jeu.colonneFixe,
-							Jeu.valeurFixe)) {
-						tableau.putValeur(Jeu.fileFixe, Jeu.colonneFixe,
-								Jeu.valeurFixe);
+				while (JeuConsole.valeurFixe < dimension) {
+					JeuConsole.valeurFixe++;
+					if (tableau.caseValide(JeuConsole.fileFixe,
+							JeuConsole.colonneFixe, JeuConsole.valeurFixe)) {
+						tableau.putValeur(JeuConsole.fileFixe,
+								JeuConsole.colonneFixe, JeuConsole.valeurFixe);
 						putTableau(tableau);
 					}
 				}
@@ -139,7 +142,34 @@ public class Jeu {
 		}
 	}
 
+	/** changes coordinate system */
+	public static void alafbet2IntCoord(char alafX, int alafY) {
+		/**a->0 , b->1*/
+		System.out.println("al=" + alafX);
+		System.out.println(alafY);
+
+		X = (int) alafX;  /** X Y static to solve main() static state*/
+		Y = (int) alafY;
+
+		System.out.println(X);
+		System.out.println("in alafbet2IntCoord Y="+Y);
+	}
+	
+	/** changes coordinate system */
+	public static void gobanIntCoord2Matrix(){
+		
+	
+	}
+	
+
+	public static int X, Y;// ,alafbet2IntCoordY;
+
 	public static void main(String[] args) {
+		alafbet2IntCoord('a', 5);
+		System.out.println("X=" + X + "Y=" + Y);
+
+		alafbet2IntCoord('b', 5);
+		System.out.println("X=" + X + "Y=" + Y);
 		Jeu j = new Jeu();
 		Tableau t = new Tableau();
 		j.tableauFixe = new Tableau();
