@@ -5,6 +5,7 @@
   <artifactId>GameGo</artifactId>
   <packaging>jar</packaging>
   <version>GameGo-v1.0</version>
+  <description></description>
   <name>Game Go</name>
   <url>http://maven.apache.org</url>
   <developers>
@@ -153,7 +154,7 @@
   <scm>
 	<connection>scm:svn:https://alma-go.googlecode.com/svn/groupeB</connection>
 	<developerConnection>scm:svn:https://alma-go.googlecode.com/svn/groupeB</developerConnection>
-	<url>http://code.google.com/p/alma-go/source/browse/</url>
+	<url>http://alma-go.googlecode.com/svn/groupeB/trunk/</url>
   </scm>
 
   <dependencies>
