@@ -1,4 +1,4 @@
-// File Groupe.java
+// File Group.java
 // Last commited $Date$
 // By $Author$
 // Revision $Rev$
@@ -33,26 +33,26 @@ import java.util.Set;
  * This class describes a group of stones. We have here the stones (all the same color), the eyes, the liberties, and the group's color.
  * @author judu
  */
-public class Groupe {
+public class Group {
 
     /// Stones with the same color
     private Set<Stone> stones;
-    private Set<Groupe> eyes;
+    private Set<Group> eyes;
     /// All the free places surrounding the group
     private Set<Stone> liberties;
     /// The color of the stones.
-    private PionVal couleur;
+    private StoneVal couleur;
 
 
     /**
      * We define a group by its color. A colorless group does not mean anything.
      * @param couleur
      */
-    public Groupe(PionVal couleur) {
+    public Group(StoneVal couleur) {
         super();
         this.couleur = couleur;
         stones = new HashSet<Stone>();
-        eyes = new HashSet<Groupe>();
+        eyes = new HashSet<Group>();
     }
 
     /**
@@ -78,11 +78,11 @@ public class Groupe {
     }
 
     /**
-     * Checks if the <em>autre</em> Groupe share at least one Stone with <em>this</em>.
+     * Checks if the <em>autre</em> Group share at least one Stone with <em>this</em>.
      * @param autre
      * @return
      */
-    public boolean intersectionNonVide(Groupe autre) {
+    public boolean notEmptyIntersection(Group autre) {
         if (!couleur.equals(autre.getCouleur())) {
             return false;
         }
@@ -94,7 +94,7 @@ public class Groupe {
         return false;
     }
 
-    public PionVal getCouleur() {
+    public StoneVal getCouleur() {
         return couleur;
     }
 
@@ -104,11 +104,11 @@ public class Groupe {
      * @param other
      * @return
      */
-    public Groupe fusion(Groupe other) {
-        Groupe sortie = null;
-        if (this.intersectionNonVide(other)) {
+    public Group fusion(Group other) {
+        Group sortie = null;
+        if (this.notEmptyIntersection(other)) {
             //Si on partage un pion, alors on doit fusionner les deux groupes.
-            sortie = new Groupe(couleur);
+            sortie = new Group(couleur);
             sortie.stones.addAll(stones);
             sortie.stones.addAll(other.stones);
         }
@@ -120,7 +120,7 @@ public class Groupe {
      * Adds all the stones of <em>other</em> to this.
      * @param other
      */
-    public void addAll(Groupe other) {
+    public void addAll(Group other) {
         if (this.getCouleur() == other.getCouleur()) {
             this.stones.addAll(other.stones);
         }
@@ -145,7 +145,7 @@ public class Groupe {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Groupe other = (Groupe) obj;
+        final Group other = (Group) obj;
         if (this.stones != other.stones && (this.stones == null || !this.stones.equals(other.stones))) {
             return false;
         }
@@ -174,7 +174,7 @@ public class Groupe {
 
 
 
-    public void addEye(Groupe group) {
+    public void addEye(Group group) {
         eyes.add(group);
     }
 
@@ -182,7 +182,7 @@ public class Groupe {
         return eyes.size();
     }
 
-    public Set<Groupe> getEyes(){
+    public Set<Group> getEyes(){
         return eyes;
     }
 

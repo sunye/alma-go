@@ -1,4 +1,4 @@
-// File PionVal.java
+// File StoneVal.java
 // Last commited $Date$
 // By $Author$
 // Revision $Rev$
@@ -23,12 +23,12 @@
 // included in all copies or substantial portions of this program.
 package fr.alma.atarigo.utils;
 
-public enum PionVal {
-    RIEN((byte) 5), NOIR((byte) -1), BLANC((byte) 1);
+public enum StoneVal {
+    EMPTY((byte) 5), BLACK((byte) -1), WHITE((byte) 1);
 
     private final byte value;
 
-    private PionVal(byte val) {
+    private StoneVal(byte val) {
         this.value = val;
     }
 
@@ -52,6 +52,7 @@ public enum PionVal {
             return "EMPTY";
         }
     }
+
 }
 
 

@@ -48,7 +48,7 @@ public class Game {
     protected Tree<PlayMove> history;
     // Last move played (faster backtracking).
     protected Node<PlayMove> lastMove;
-    protected PionVal currentPlayer;
+    protected StoneVal currentPlayer;
     protected Set<Stone> freePlaces;
 
     public Game() {
@@ -57,11 +57,11 @@ public class Game {
         history = new Tree<PlayMove>();
         lastMove = new Node<PlayMove>(new PlayMove());
         history.setRootElement(lastMove);
-        currentPlayer = PionVal.NOIR;
+        currentPlayer = StoneVal.BLACK;
         freePlaces = new HashSet<Stone>(Goban.getTaille() * Goban.getTaille());
         for (int line = 0; line < Goban.getTaille(); ++line) {
             for (int col = 0; col < Goban.getTaille(); ++col) {
-                freePlaces.add(new Stone(PionVal.RIEN, line, col));
+                freePlaces.add(new Stone(StoneVal.EMPTY, line, col));
             }
         }
     }
@@ -89,9 +89,9 @@ public class Game {
      * @param color The color of the stone.
      * @throws BadPlaceException Threw if the coordinates do not fit in the goban
      */
-    public void posePion(int line, int column, PionVal color) throws BadPlaceException {
+    public void posePion(int line, int column, StoneVal color) throws BadPlaceException {
         if (goban.bonneCoords(line, column)) {
-            if (goban.getCase(line, column) == PionVal.RIEN) {
+            if (goban.getCase(line, column) == StoneVal.EMPTY) {
                 if (!isSuicide(line, column, color)) {
                     Stone current = new Stone(color, line, column);
 
@@ -104,10 +104,10 @@ public class Game {
 
                     //Let's modify the goban !
                     goban.setCase(line, column, color);
-                    freePlaces.remove(new Stone(PionVal.RIEN, line, column));
+                    freePlaces.remove(new Stone(StoneVal.EMPTY, line, column));
 
                     //Calculates the new groups
-                    Set<Groupe> ennemies = calculateGroups(current);
+                    Set<Group> ennemies = calculateGroups(current);
 
                     //Update the liberties of surrounding ennemy groups
                     updateLiberties(ennemies);
@@ -135,14 +135,14 @@ public class Game {
      * @param pionVal
      * @return whether or not it is a suicide
      */
-    protected boolean isSuicide(int line, int column, PionVal pionVal) {
+    protected boolean isSuicide(int line, int column, StoneVal pionVal) {
         //TODO : correct this function
         if (goban.nbLibertes(new Stone(pionVal, line, column)) == 0) {
             // No liberty ? Let's check if we are killing a ennemy group.
-            Set<Groupe> groupes = getSurroundingGroups(new Stone(pionVal, line, column));
+            Set<Group> groupes = getSurroundingGroups(new Stone(pionVal, line, column));
 
             int i = 0;
-            for (Groupe gr : groupes) {
+            for (Group gr : groupes) {
                 ++i;
                 if (gr.getCouleur() != pionVal) {
                     // If ennemy, check if it has one liberty left
@@ -165,23 +165,23 @@ public class Game {
     private void startMove(PlayMove currentMove) {
 
         //prepare the group modifications
-        currentMove.setGroups((ArrayList<Groupe>) getCurrentMove().getGroups().clone());
+        currentMove.setGroups((ArrayList<Group>) getCurrentMove().getGroups().clone());
 
         Node<PlayMove> newMove = new Node<PlayMove>(currentMove);
         lastMove.addChild(newMove);
         lastMove = newMove;
     }
 
-    private HashSet<Groupe> getGroupsFromPions(List<Stone> pions) {
-        HashSet<Groupe> groups = new HashSet<Groupe>(4);
+    private HashSet<Group> getGroupsFromPions(List<Stone> pions) {
+        HashSet<Group> groups = new HashSet<Group>(4);
         for (Stone pi : pions) {
-            Groupe containing = getCurrentMove().getGroupeContaining(pi);
+            Group containing = getCurrentMove().getGroupeContaining(pi);
             groups.add(containing);
         }
         return groups;
     }
 
-    protected HashSet<Groupe> getSurroundingGroups(Stone pion) {
+    protected HashSet<Group> getSurroundingGroups(Stone pion) {
         // Get the (<= 4) neighbours groups of the current stone.
         List<Stone> pions = goban.getVoisins(pion);
 
@@ -194,18 +194,18 @@ public class Game {
      * KISS, but useful, and a little faster than re-calculate the groups.
      * @param last The last stone played
      */
-    protected Set<Groupe> calculateGroups(Stone last) {
-        Groupe lastAdded = new Groupe(last.getCouleur());
+    protected Set<Group> calculateGroups(Stone last) {
+        Group lastAdded = new Group(last.getCouleur());
         try {
             lastAdded.addStone(last);
         } catch (BadCouleurException e) {
         }
 
-        List<Groupe> groupes = getCurrentMove().getGroups();
+        List<Group> groupes = getCurrentMove().getGroups();
 
-        Set<Groupe> groups = getSurroundingGroups(last);
-        Set<Groupe> others = new HashSet<Groupe>(4);
-        for (Groupe groupe : groups) {
+        Set<Group> groups = getSurroundingGroups(last);
+        Set<Group> others = new HashSet<Group>(4);
+        for (Group groupe : groups) {
             if (groupe.getCouleur() == last.getCouleur()) {
                 lastAdded.addAll(groupe);
                 groupes.remove(groupe);
@@ -223,7 +223,7 @@ public class Game {
      * @param groupe
      * @return
      */
-    protected Set<Stone> getGroupLiberties(Groupe groupe) {
+    protected Set<Stone> getGroupLiberties(Group groupe) {
         HashSet<Stone> libertes = new HashSet<Stone>(groupe.size() * 2 + 2);
 
         for (Stone pion : groupe.getStones()) {
@@ -237,8 +237,8 @@ public class Game {
      * Remove each group without any liberty.
      * @param ennemies
      */
-    private void processGroupeTaking(Set<Groupe> ennemies) {
-        for (Groupe groupe : ennemies) {
+    private void processGroupeTaking(Set<Group> ennemies) {
+        for (Group groupe : ennemies) {
             if (groupe.getLiberties().size() == 0) {
                 // Dans ce cas là, on a bouché la dernière libertée,
                 //il faut donc supprimer les pierres du goban, et le groupe du pm.
@@ -254,16 +254,16 @@ public class Game {
      * then update the liberties of the surrounding groups.
      * @param groupe
      */
-    private void removeGroupe(Groupe groupe) {
+    private void removeGroupe(Group groupe) {
 
         for (Stone pion : groupe.getStones()) {
             // Don't forget to register the modification.
-            getCurrentMove().addModif(new Modif(pion.getLine(), pion.getColumn(), pion.getCouleur(), PionVal.RIEN));
-            goban.setCase(pion.getLine(), pion.getColumn(), PionVal.RIEN);
-            freePlaces.add(new Stone(PionVal.RIEN, pion.getLine(), pion.getColumn()));
+            getCurrentMove().addModif(new Modif(pion.getLine(), pion.getColumn(), pion.getCouleur(), StoneVal.EMPTY));
+            goban.setCase(pion.getLine(), pion.getColumn(), StoneVal.EMPTY);
+            freePlaces.add(new Stone(StoneVal.EMPTY, pion.getLine(), pion.getColumn()));
         }
 
-        Set<Groupe> surroundings = new HashSet<Groupe>();
+        Set<Group> surroundings = new HashSet<Group>();
         for (Stone pion : groupe.getStones()) {
             surroundings.addAll(getSurroundingGroups(pion));
         }
@@ -273,12 +273,12 @@ public class Game {
     }
 
     /**
-     * Calculate the liberties of each Groupe surrounding the <em>current</em> Stone
+     * Calculate the liberties of each Group surrounding the <em>current</em> Stone
      * @param current
      */
     private void calculateLiberties(Stone current) {
-        Set<Groupe> surroundings = getSurroundingGroups(current);
-        for (Groupe groupe : surroundings) {
+        Set<Group> surroundings = getSurroundingGroups(current);
+        for (Group groupe : surroundings) {
             if (groupe.getCouleur() != current.getCouleur()) {
                 groupe.setLiberties(getGroupLiberties(groupe));
             }
@@ -289,8 +289,8 @@ public class Game {
      * Calculates and Updates the liberties of each group of the Set.
      * @param ennemies
      */
-    protected void updateLiberties(Set<Groupe> ennemies) {
-        for (Groupe groupe : ennemies) {
+    protected void updateLiberties(Set<Group> ennemies) {
+        for (Group groupe : ennemies) {
             groupe.setLiberties(getGroupLiberties(groupe));
         }
     }
@@ -328,10 +328,10 @@ public class Game {
             lastPm.revert(this.goban);
 
             for (Modif mod : lastPm.getDiff()) {
-                if (mod.getBefore() == PionVal.RIEN) {
-                    this.freePlaces.add(new Stone(PionVal.RIEN, mod.getLine(), mod.getColumn()));
+                if (mod.getBefore() == StoneVal.EMPTY) {
+                    this.freePlaces.add(new Stone(StoneVal.EMPTY, mod.getLine(), mod.getColumn()));
                 } else {
-                    this.freePlaces.remove(new Stone(PionVal.RIEN, mod.getLine(), mod.getColumn()));
+                    this.freePlaces.remove(new Stone(StoneVal.EMPTY, mod.getLine(), mod.getColumn()));
                 }
             }
 
@@ -361,10 +361,10 @@ public class Game {
 
             // Update the freeplaces
             for (Modif mod : newPM.getDiff()) {
-                if (mod.getAfter() == PionVal.RIEN) {
-                    this.freePlaces.add(new Stone(PionVal.RIEN, mod.getLine(), mod.getColumn()));
+                if (mod.getAfter() == StoneVal.EMPTY) {
+                    this.freePlaces.add(new Stone(StoneVal.EMPTY, mod.getLine(), mod.getColumn()));
                 } else {
-                    this.freePlaces.remove(new Stone(PionVal.RIEN, mod.getLine(), mod.getColumn()));
+                    this.freePlaces.remove(new Stone(StoneVal.EMPTY, mod.getLine(), mod.getColumn()));
                 }
             }
 
@@ -382,18 +382,18 @@ public class Game {
     }
 
     /**
-     * Calculates an PionVal.RIEN Stone Groupe.
+     * Calculates an StoneVal.EMPTY Stone Group.
      * @param pion
      * @return
      * @throws Exception
      */
-    public Groupe getEmptyGroupContaining(Stone pion) throws Exception {
-        if (pion.getCouleur() == PionVal.RIEN) {
+    public Group getEmptyGroupContaining(Stone pion) throws Exception {
+        if (pion.getCouleur() == StoneVal.EMPTY) {
             if (goban.bonneCoords(pion.getLine(), pion.getColumn())) {
                 // Here, we have to get all the surroundings empty spots.
                 // Let's use a classic breadth-first search algorithm for the empty spots
 
-                Groupe curGroup = new Groupe(PionVal.RIEN);
+                Group curGroup = new Group(StoneVal.EMPTY);
                 LinkedList<Stone> processingList = new LinkedList<Stone>();
                 processingList.addAll(goban.getLibertes(pion));
                 while (!processingList.isEmpty()) {
@@ -414,16 +414,16 @@ public class Game {
         }
     }
 
-    public List<Groupe> getEmptySpotSurroundingGroups(Groupe emptiesGroup) {
-        HashSet<Groupe> surrounders = new HashSet<Groupe>();
+    public List<Group> getEmptySpotSurroundingGroups(Group emptiesGroup) {
+        HashSet<Group> surrounders = new HashSet<Group>();
         for (Stone spot : emptiesGroup.getStones()) {
             surrounders.addAll(getSurroundingGroups(spot));
         }
-        return new ArrayList<Groupe>(surrounders);
+        return new ArrayList<Group>(surrounders);
     }
 
-    public List<Groupe> getGroupSurroundingGroups(Groupe groupe) {
-        HashSet<Groupe> surrounding = new HashSet<Groupe>();
+    public List<Group> getGroupSurroundingGroups(Group groupe) {
+        HashSet<Group> surrounding = new HashSet<Group>();
         for (Stone stone : groupe.getStones()) {
             List<Stone> neighbours = goban.getVoisins(stone);
             for (Stone neighbour : neighbours) {
@@ -434,7 +434,7 @@ public class Game {
             surrounding.addAll(getGroupsFromPions(neighbours));
         }
 
-        return new ArrayList<Groupe>(surrounding);
+        return new ArrayList<Group>(surrounding);
     }
 
     public boolean bonnesCoords(int line, int column) {
@@ -465,15 +465,15 @@ public class Game {
         return lastMove;
     }
 
-    public PionVal getCurrentPlayer() {
+    public StoneVal getCurrentPlayer() {
         return currentPlayer;
     }
 
     private void changeCurrentPlayer() {
-        if (currentPlayer == PionVal.NOIR) {
-            currentPlayer = PionVal.BLANC;
+        if (currentPlayer == StoneVal.BLACK) {
+            currentPlayer = StoneVal.WHITE;
         } else {
-            currentPlayer = PionVal.NOIR;
+            currentPlayer = StoneVal.BLACK;
         }
     }
 }

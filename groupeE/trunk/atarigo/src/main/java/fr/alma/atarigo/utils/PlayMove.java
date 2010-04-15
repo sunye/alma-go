@@ -37,7 +37,7 @@ public class PlayMove {
 
     private Set<Modif> diff;
     private Modif putStone;
-    private ArrayList<Groupe> groups;
+    private ArrayList<Group> groups;
     private int eval;
     private boolean end;
 
@@ -54,8 +54,8 @@ public class PlayMove {
      * @param pion
      * @return
      */
-    public Groupe getGroupeContaining(Stone pion) {
-        for (Groupe groupe : groups) {
+    public Group getGroupeContaining(Stone pion) {
+        for (Group groupe : groups) {
             if (groupe.contains(pion)) {
                 return groupe;
             }
@@ -63,13 +63,13 @@ public class PlayMove {
         return null;
     }
 
-    public ArrayList<Groupe> getGroups() {
+    public ArrayList<Group> getGroups() {
         return groups;
     }
 
     public PlayMove() {
         diff = new HashSet<Modif>();
-        groups = new ArrayList<Groupe>();
+        groups = new ArrayList<Group>();
         end = false;
         eval = Integer.MIN_VALUE;
     }
@@ -116,7 +116,7 @@ public class PlayMove {
         }
     }
 
-    public void setGroups(ArrayList<Groupe> groupes) {
+    public void setGroups(ArrayList<Group> groupes) {
         groups = groupes;
     }
 

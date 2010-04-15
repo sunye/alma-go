@@ -40,7 +40,7 @@ public class Goban {
     //* Size of the goban. For now, it's static.
     private final static int taille = 9;
     // 0 = rien, noir = 1, blanc = 2
-    PionVal goban[][];
+    StoneVal goban[][];
 
     public static int getTaille() {
         return taille;
@@ -51,11 +51,11 @@ public class Goban {
      */
     public Goban() {
         super();
-        goban = new PionVal[taille][taille];
+        goban = new StoneVal[taille][taille];
 
         for (int i = 0; i < Goban.taille; ++i) {
             for (int j = 0; j < Goban.taille; ++j) {
-                goban[i][j] = PionVal.RIEN;
+                goban[i][j] = StoneVal.EMPTY;
             }
         }
     }
@@ -74,11 +74,11 @@ public class Goban {
      * @param colonne
      * @param pion
      */
-    public void setCase(int ligne, int colonne, PionVal pion) {
+    public void setCase(int ligne, int colonne, StoneVal pion) {
         goban[ligne][colonne] = pion;
     }
 
-    public PionVal getCase(int ligne, int colonne) {
+    public StoneVal getCase(int ligne, int colonne) {
         return goban[ligne][colonne];
     }
 
@@ -88,19 +88,19 @@ public class Goban {
 //        Logger.getAnonymousLogger().log(Level.INFO, "Getting neighbours of "+pion);
 
         if (pion != null) {
-            if (bonneCoords(pion.getLine() + 1, pion.getColumn()) && (goban[pion.getLine() + 1][pion.getColumn()] != PionVal.RIEN)) {
+            if (bonneCoords(pion.getLine() + 1, pion.getColumn()) && (goban[pion.getLine() + 1][pion.getColumn()] != StoneVal.EMPTY)) {
                 pions.add(new Stone(goban[pion.getLine() + 1][pion.getColumn()], pion.getLine() + 1, pion.getColumn()));
             }
 
-            if (bonneCoords(pion.getLine() - 1, pion.getColumn()) && (goban[pion.getLine() - 1][pion.getColumn()] != PionVal.RIEN)) {
+            if (bonneCoords(pion.getLine() - 1, pion.getColumn()) && (goban[pion.getLine() - 1][pion.getColumn()] != StoneVal.EMPTY)) {
                 pions.add(new Stone(goban[pion.getLine() - 1][pion.getColumn()], pion.getLine() - 1, pion.getColumn()));
             }
 
-            if (bonneCoords(pion.getLine(), pion.getColumn() + 1) && (goban[pion.getLine()][pion.getColumn() + 1] != PionVal.RIEN)) {
+            if (bonneCoords(pion.getLine(), pion.getColumn() + 1) && (goban[pion.getLine()][pion.getColumn() + 1] != StoneVal.EMPTY)) {
                 pions.add(new Stone(goban[pion.getLine()][pion.getColumn() + 1], pion.getLine(), pion.getColumn() + 1));
             }
 
-            if (bonneCoords(pion.getLine(), pion.getColumn() - 1) && (goban[pion.getLine()][pion.getColumn() - 1] != PionVal.RIEN)) {
+            if (bonneCoords(pion.getLine(), pion.getColumn() - 1) && (goban[pion.getLine()][pion.getColumn() - 1] != StoneVal.EMPTY)) {
                 pions.add(new Stone(goban[pion.getLine()][pion.getColumn() - 1], pion.getLine(), pion.getColumn() - 1));
             }
         }
@@ -113,20 +113,20 @@ public class Goban {
     public List<Stone> getLibertes(Stone pion) {
         ArrayList<Stone> pions = new ArrayList<Stone>(4);
 
-        if (bonneCoords(pion.getLine() + 1, pion.getColumn()) && (goban[pion.getLine() + 1][pion.getColumn()] == PionVal.RIEN)) {
-            pions.add(new Stone(PionVal.RIEN, pion.getLine() + 1, pion.getColumn()));
+        if (bonneCoords(pion.getLine() + 1, pion.getColumn()) && (goban[pion.getLine() + 1][pion.getColumn()] == StoneVal.EMPTY)) {
+            pions.add(new Stone(StoneVal.EMPTY, pion.getLine() + 1, pion.getColumn()));
         }
 
-        if (bonneCoords(pion.getLine() - 1, pion.getColumn()) && (goban[pion.getLine() - 1][pion.getColumn()] == PionVal.RIEN)) {
-            pions.add(new Stone(PionVal.RIEN, pion.getLine() - 1, pion.getColumn()));
+        if (bonneCoords(pion.getLine() - 1, pion.getColumn()) && (goban[pion.getLine() - 1][pion.getColumn()] == StoneVal.EMPTY)) {
+            pions.add(new Stone(StoneVal.EMPTY, pion.getLine() - 1, pion.getColumn()));
         }
 
-        if (bonneCoords(pion.getLine(), pion.getColumn() + 1) && (goban[pion.getLine()][pion.getColumn() + 1] == PionVal.RIEN)) {
-            pions.add(new Stone(PionVal.RIEN, pion.getLine(), pion.getColumn() + 1));
+        if (bonneCoords(pion.getLine(), pion.getColumn() + 1) && (goban[pion.getLine()][pion.getColumn() + 1] == StoneVal.EMPTY)) {
+            pions.add(new Stone(StoneVal.EMPTY, pion.getLine(), pion.getColumn() + 1));
         }
 
-        if (bonneCoords(pion.getLine(), pion.getColumn() - 1) && (goban[pion.getLine()][pion.getColumn() - 1] == PionVal.RIEN)) {
-            pions.add(new Stone(PionVal.RIEN, pion.getLine(), pion.getColumn() - 1));
+        if (bonneCoords(pion.getLine(), pion.getColumn() - 1) && (goban[pion.getLine()][pion.getColumn() - 1] == StoneVal.EMPTY)) {
+            pions.add(new Stone(StoneVal.EMPTY, pion.getLine(), pion.getColumn() - 1));
         }
 
         return pions;
@@ -139,31 +139,31 @@ public class Goban {
         int libertes = 4;
         if (!bonneCoords(ligne + 1, col)) {
             --libertes;
-        } else if (goban[ligne + 1][col] != PionVal.RIEN) {
+        } else if (goban[ligne + 1][col] != StoneVal.EMPTY) {
             --libertes;
         }
 
         if (!bonneCoords(ligne - 1, col)) {
             --libertes;
-        } else if ((goban[ligne - 1][col] != PionVal.RIEN)) {
+        } else if ((goban[ligne - 1][col] != StoneVal.EMPTY)) {
             --libertes;
         }
 
         if (!bonneCoords(ligne, col + 1)) {
             --libertes;
-        } else if (goban[ligne][col + 1] != PionVal.RIEN) {
+        } else if (goban[ligne][col + 1] != StoneVal.EMPTY) {
             --libertes;
         }
 
         if (!bonneCoords(ligne, col - 1)) {
             --libertes;
-        } else if (goban[ligne][col - 1] != PionVal.RIEN) {
+        } else if (goban[ligne][col - 1] != StoneVal.EMPTY) {
             --libertes;
         }
         return libertes;
     }
 
-    public PionVal[][] getGoban() {
+    public StoneVal[][] getGoban() {
         return goban;
     }
 
@@ -186,13 +186,13 @@ public class Goban {
         for (int lin = 0; lin < taille; ++lin) {
             for (int col = 0; col < taille; ++col) {
                 switch (this.getCase(lin, col)) {
-                    case NOIR:
+                    case BLACK:
                         sortie.append("—B−");
                         break;
-                    case BLANC:
+                    case WHITE:
                         sortie.append("—W−");
                         break;
-                    case RIEN:
+                    case EMPTY:
                         sortie.append("—+−");
                         break;
                     default:
