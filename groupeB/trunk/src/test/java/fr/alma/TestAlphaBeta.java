@@ -100,7 +100,7 @@ public class TestAlphaBeta {
 	}
 
 	@Test
-	public void testElphaBeta() {
+	public void testAlphaBeta() {
 		FreedomDegrees.showGobanOnConsole(stateGame);
 		ILocation emplacement = strategy.getBestLocation(evaluation, true);
 		System.out.println("-> Emplacement trouve : " + emplacement);
