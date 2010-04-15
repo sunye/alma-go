@@ -23,10 +23,8 @@ public class GoFrame extends JFrame {
 			"Human versus Human (why the hell don't you play IRL ??)");
 	private JMenuItem propos = new JMenuItem("?");
 	private JMenuItem quitter = new JMenuItem("Take the blue pill");
-	private OptionWindow options;
 	// Panel représentant le goban
 	private GoPanel pan;
-	private boolean sendData;
 	private Game controleur;
 
 	/**
@@ -55,7 +53,7 @@ public class GoFrame extends JFrame {
 		item1.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				OptionWindow ow = new OptionWindow(null,
+				new OptionWindow(null,
 						"Choisissez votre couleur !", true, controleur);
 			}
 		});
@@ -89,11 +87,10 @@ public class GoFrame extends JFrame {
 		propos.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane jop = new JOptionPane();
-				jop
+				JOptionPane
 						.showMessageDialog(
 								null,
-								"Matrix go interface, all credits to the great architect\n\t© Julien Durillon & ClotHilde Massot",
+								"Matrix go interface\nAll credits to the great architect\n© Bambinôme, Joël, Hippie Scout & ClotHilde",
 								"About", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
@@ -114,15 +111,14 @@ public class GoFrame extends JFrame {
 	 * Open a window endgame to announce the winner of the game.
 	 */
 	public void finJeu() {
-		JOptionPane jop = new JOptionPane();
 		StringBuilder strb = new StringBuilder();
-		strb.append("Le grand gagnant de cette partie est : Joueur ");
+		strb.append("And the winner is...\n");
 		if (controleur.getGame().getWhiteTaken() > controleur.getGame()
 				.getBlackTaken())
-			strb.append("Noir !");
+			strb.append("Kuro !");
 		else
-			strb.append("Blanc !");
-		jop.showMessageDialog(null, strb, "Partie terminée !",
+			strb.append("Shiro !");
+		JOptionPane.showMessageDialog(null, strb, "Game over",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 }

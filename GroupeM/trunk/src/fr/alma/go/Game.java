@@ -12,7 +12,7 @@ public class Game {
 	private GoPanel goPan;
 	private GoFrame frame;
 	private Boolean onePlayerGame;
-	private char iaColor; // A remplacer
+	private char iaColor;
 	private Computer cpu;
 	private char actualColor;
 
@@ -35,7 +35,6 @@ public class Game {
 	 */
 	private void init() {
 		goban = new Goban();
-
 	}
 
 	/**
