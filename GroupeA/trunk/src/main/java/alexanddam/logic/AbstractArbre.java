@@ -1,5 +1,12 @@
 package main.java.alexanddam.logic;
 
+
+/** This abstract class list the functions needed for the management of a tree data structure which is useful for the use of the Min-Max algorithm.
+* @author Alexandru Schiaucu
+* @version 1.0
+* @since  15 april 2010
+* @see main.java.alexanddam.logic.AbstractNoeud
+*/
 public abstract class AbstractArbre {
 
 	

@@ -6,6 +6,12 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.Vector;
 
+
+/** This class does the development of theMin-Max tree, in order to give the next move of the computer, from any state of the game (except ended game, obviously).
+* @author Alexandru Schiaucu
+* @version 1.0
+* @since 15 april 2010
+*/
 public class FonctionEvaluation {
 
 	private static  int[][] goban;				// 0 - rien, 1 - coup ordinateur, 2 - coup adversair humain
@@ -181,6 +187,24 @@ public class FonctionEvaluation {
 		return nbLib;
 	}
 
+
+	/**
+	 * Calculate the number of liberties of a specific point, if the case is not empty
+	 * 
+	 * @param coordX x coordinate of the stone to calculate
+	 * @param coordY y coordinate of the stone to calculate
+	 * @return number of liberties of a specific point, if the case is not empty
+	 */
+	public static int getLibertesValue(int coordX, int coordY) {
+		if(coordX<0 || coordY<0 || coordX>=goban.length || coordY>=goban.length)
+			return -1;
+		if(goban[coordX][coordY] == 0) 
+			return -1;
+		
+		return lib[coordX][coordY];
+	}
+	
+	
 	/**
 	 * Calculates the liberties of the actual game which is in the root of the min-max tree
 	 * we dont need 2 vectors of moves, because they are empty at the root
@@ -215,7 +239,7 @@ public class FonctionEvaluation {
 	/**
 	 * Evaluates the root of the min-max tree; the result is saved in the global variable "points"
 	 */
-	static void evaluation() {
+	public static void evaluation() {
 
 		points = 0; 	// on reinitialise, parce qu'on va evaluer toute le grille, pas incrementale
 		calculerLibertes(); // calculer les libertes de toutes les pierres de facon efficiente
@@ -237,7 +261,7 @@ public class FonctionEvaluation {
 	 * @param vAdver moves vector of the adversary
 	 * @return evaluation of the state in a node, particularly in the tree's development, as integer 
 	 */
-	static int evaluationInc(int[] vOrdi, int[] vAdver) {
+	public static int evaluationInc(int[] vOrdi, int[] vAdver) {
 
 		int pointsV = 0;
 		calculerLibertesInc(vOrdi, vAdver);
@@ -425,7 +449,7 @@ public class FonctionEvaluation {
 	 * Get the calculated points by the evaluation function of the root, non-incremental
 	 * @return Calculated points by the evaluation function
 	 */
-	public  int getPoints() {
+	public static  int getPoints() {
 		return points;
 	}
 	

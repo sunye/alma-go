@@ -3,8 +3,13 @@ package main.java.alexanddam.logic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoeudsFils {
 
+/** This class gives the management and the use of the A* algorithm imbricated in the Min-Max.
+* @author Alexandru Schiaucu
+* @version 1.0
+* @since  15 april 2010
+*/
+public class NoeudsFils {
 
     private List<Noeud_LA> alNoeuds; //le support de notre structure -> un vecteur de type liste chainee
     private int arite;  		

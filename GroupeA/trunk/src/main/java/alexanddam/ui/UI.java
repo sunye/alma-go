@@ -23,6 +23,13 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+/** This class is the main class of the Java program Atari-Go game, it contains the Graphical User Interface and links it to the Arficial Inteligence engine.
+* @author Damien Chaillou
+* @version 1.0
+* @see JFrame
+* @see main.java.alexanddam.logic.FonctionEvaluation
+* @since 15 april 2010
+*/
 public class UI extends JFrame {
 
 	private static final long serialVersionUID = 1L;

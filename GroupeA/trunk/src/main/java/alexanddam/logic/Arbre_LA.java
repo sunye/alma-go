@@ -2,6 +2,12 @@ package main.java.alexanddam.logic;
 
 import java.util.LinkedList;
 
+/** Implementation of the AbstractArbre abstract class, this class creates the tree as Adjacency list.
+* @author Alexandru Schiaucu
+* @version 1.0
+* @since  15 april 2010
+* @see main.java.alexanddam.logic.AbstractArbre
+*/
 public class Arbre_LA extends AbstractArbre {
 
 	public Noeud_LA racine;
