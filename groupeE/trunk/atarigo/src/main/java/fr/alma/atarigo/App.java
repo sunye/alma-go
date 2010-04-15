@@ -1,3 +1,4 @@
+package fr.alma.atarigo;
 // File App.java
 // Last commited $Date$
 // By $Author$
@@ -16,29 +17,31 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+// along with this program;
 //
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of this program.
 
 
-
-package fr.alma.atarigo;
-
 import fr.alma.atarigo.ihm.Fenetre;
 
 /**
- * Hello world!
+ * Main class, unique entry point of the program.
  *
  */
-public class App {
+public final class App {
+
+   /**
+    * Private constructor, because we only have a main.
+    */
+    private App() {
+    }
 
     /**
-     * Main class for exectution
-     * @param args
+     * Main class for exectution.
+     * @param args arguments from the command line
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
         Fenetre fenetre = new Fenetre("Atari go");
 

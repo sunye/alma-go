@@ -16,137 +16,145 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+// along with this program;
 //
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of this program.
 package fr.alma.atarigo;
 
-import fr.alma.atarigo.analyse.ABThread;
 import fr.alma.atarigo.analyse.AlphaBeta;
 import fr.alma.atarigo.ihm.Fenetre;
 import fr.alma.atarigo.utils.Game;
 import fr.alma.atarigo.utils.PionVal;
 import fr.alma.atarigo.ihm.GobanPanel;
 import fr.alma.atarigo.utils.PlayMove;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
+ * The Controler of our MVC design.
  * @author clotildemassot
  */
 public class GameManager {
 
-    private Game game;
-    private GobanPanel gobanPanel;
-    private Fenetre fenetre;
-    private Boolean onePlayerGame;
-    private PionVal iaColor;
-    private ABThread thread;
+   /**
+    * In milliseconds, the time we have to search for a good move.
+    */
+   private static  final int TIMER = 15000;
+   /**
+    * The maximum depth of the alphabeta search tree.
+    */
+   private static  final int DEPTH = 3;
 
-    public GameManager(GobanPanel gobPan, Fenetre fenetre) {
-        this.gobanPanel = gobPan;
-        this.fenetre = fenetre;
-    }
+   /**
+    * The game engine, the center of the model part.
+    */
+   private Game game;
+   /**
+    * The visual part of the board.
+    */
+   private final GobanPanel gobanPanel;
+   /**
+    * The main frame of the application.
+    */
+   private final Fenetre window;
+   /**
+    * Is this a one or two players game ?
+    */
+   private Boolean onePlayerGame;
+   /**
+    * If onePlayerGame, this field contains the AI color.
+    */
+   private PionVal iaColor;
 
-    /**
-     * Start a game
-     */
-    private void init() {
-        game = new Game();
+   /**
+    * Unique constructor.
+    * @param gobPan the GobanPanel instance.
+    * @param fenetre the main frame.
+    */
+   public GameManager(final GobanPanel gobPan, final Fenetre fenetre) {
+      this.gobanPanel = gobPan;
+      this.window = fenetre;
+   }
 
-    }
+   /**
+    * Initialize a game.
+    */
+   private void init() {
+      game = new Game();
+   }
 
-    /**
-     * Begin a two-players game
-     */
-    public void twoPlayers() {
-        init();
-        this.onePlayerGame = Boolean.FALSE;
-        gobanPanel.startGame(this, this.game);
-    }
+   /**
+    * Begins a two-players game.
+    */
+   public final void twoPlayers() {
+      init();
+      this.onePlayerGame = Boolean.FALSE;
+      gobanPanel.startGame(this, this.game);
+   }
 
-    /**
-     * Begin a one-player game
-     * @param couleur : color of the stone player
-     */
-    public void onePlayer(PionVal couleur) {
-        init();
-        iaColor = couleur;
-        this.onePlayerGame = Boolean.TRUE;
-        gobanPanel.startGame(this, this.game);
-        if (couleur == PionVal.NOIR) {
-            coupIA();
-        }
-    }
+   /**
+    * Begins a one-player game.
+    * @param couleur : color of the stone player
+    */
+   public final void onePlayer(final PionVal couleur) {
+      init();
+      iaColor = couleur;
+      this.onePlayerGame = Boolean.TRUE;
+      gobanPanel.startGame(this, this.game);
+      if (couleur == PionVal.NOIR) {
+         coupIA();
+      }
+   }
 
 
-    /*private PlayMove threadizeAB(){
-//        AlphaBeta alphabeta = new AlphaBeta(3, iaColor);
-        
-        thread = new ABThread(3, iaColor, game);
-        thread.start();
-        try {
-            thread.join(10000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        PlayMove retour = thread.getCurrentBest();
-        thread.interrupt();
-        return retour;
-    }*/
-
-    /**
-     * The computer plays.
-     */
-    private void coupIA() {
-        gobanPanel.desactivateMouse();
-        PlayMove coup;
+   /**
+    * The computer plays.
+    */
+   private void coupIA() {
+      gobanPanel.desactivateMouse();
+      PlayMove coup;
 //        coup = threadizeAB();
-        AlphaBeta alphabeta = new AlphaBeta(3, iaColor);
-        coup = alphabeta.init(game, 15000);
-        game.playAt(coup.getPutStone().getLine(), coup.getPutStone().getColumn());
-        gobanPanel.repaint();
-        gobanPanel.activateMouse();
-    }
+      AlphaBeta alphabeta = new AlphaBeta(DEPTH, iaColor);
+      coup = alphabeta.init(game, TIMER);
+      game.playAt(coup.getPutStone().getLine(), coup.getPutStone().getColumn());
+      gobanPanel.repaint();
+      gobanPanel.activateMouse();
+   }
 
-    /**
-     * Do a move (and display it)
-     * @param lin : line of the move
-     * @param col : column of the move
-     */
-    public void appliqueCoup(int lin, int col) {
-        if (game.playAt(lin, col)) {
-            gobanPanel.paintImmediately(0, 0, gobanPanel.getWidth(), gobanPanel.getHeight());
-            if (this.onePlayerGame) {
-                coupIA();
-            }
-        }
-    }
+   /**
+    * Does a move (and asks the gobanPanel to display it).
+    * @param lin : line of the move
+    * @param col : column of the move
+    */
+   public final void appliqueCoup(final int lin, final int col) {
+      if (game.playAt(lin, col)) {
+         gobanPanel.paintImmediately(0, 0,
+                 gobanPanel.getWidth(), gobanPanel.getHeight());
+         if (this.onePlayerGame) {
+            coupIA();
+         }
+      }
+   }
 
-    /**
-     * Test an endgame
-     * @return if it is the end of the game
-     */
-    public boolean isEnd() {
-        return game.isEnd();
-    }
+   /**
+    * Test an endgame.
+    * @return true if the game is over
+    */
+   public final boolean isEnd() {
+      return game.isEnd();
+   }
 
-    /**
-     * Accessor : game
-     * @return the current game
-     */
-    final public Game getGame() {
-        return game;
-    }
+   /**
+    * Getter : game.
+    * @return the current game
+    */
+   public final Game getGame() {
+      return game;
+   }
 
-    /**
-     * Open a window endgame to announce the winner of the game.
-     */
-    public void dialogueFinJeu() {
-        this.fenetre.finJeu();
-    }
+   /**
+    * Opens a window to announce the winner of the game.
+    */
+   public final void endGameDialog() {
+      this.window.finJeu();
+   }
 }

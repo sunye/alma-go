@@ -17,18 +17,17 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * along with this program;
  *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of this program.
  */
-
+package fr.alma.atarigo.ihm;
 
 /*
- * This file has been originaly developed by Anthony Caillaud. Thanks to him for sharing.
+ * This file has been originaly writen by Anthony Caillaud.
+ * Thanks to him for sharing.
  */
-package fr.alma.atarigo.ihm;
 
 import fr.alma.atarigo.GameManager;
 import fr.alma.atarigo.utils.PionVal;
@@ -140,7 +139,7 @@ public class Fenetre extends JFrame {
     }
 
     /**
-     * Open a window endgame to announce the winner of the game.
+     * Opens a window to announce the winner of the game.
      */
     public void finJeu() {
         JOptionPane jop = new JOptionPane();

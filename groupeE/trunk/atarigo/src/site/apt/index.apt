@@ -1,0 +1,16 @@
+    ----------------
+    Project overview
+    ----------------
+
+Introduction
+
+   Welcome on project Go, Alma ! Go !
+
+   This project was made for M. Philippe Martin, from University of Nantes.
+   
+   This site is required by another project, for M. Gerson Sunye and M. Philippe Goualard.
+
+Abstract
+
+   This project aims to provide a playable, one or two players {{{http://en.wikipedia.org/wiki/Atari_Go}Atari Go}} game.
+   The most important part was to develop the artificial intelligence. We used an {{{http://en.wikipedia.org/wiki/Alpha-beta_pruning}AlphaBeta}} algorithm to achieve this part.
