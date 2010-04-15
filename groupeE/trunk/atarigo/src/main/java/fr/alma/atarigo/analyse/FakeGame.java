@@ -27,9 +27,9 @@ package fr.alma.atarigo.analyse;
 
 import fr.alma.atarigo.utils.Game;
 import fr.alma.atarigo.utils.Goban;
-import fr.alma.atarigo.utils.Groupe;
+import fr.alma.atarigo.utils.Group;
 import fr.alma.atarigo.utils.Modif;
-import fr.alma.atarigo.utils.PionVal;
+import fr.alma.atarigo.utils.StoneVal;
 import fr.alma.atarigo.utils.PlayMove;
 import fr.alma.atarigo.utils.Stone;
 import fr.alma.atarigo.utils.exceptions.BadCouleurException;
@@ -70,9 +70,9 @@ public final class FakeGame extends Game {
         this.depth = depth;
     }
 
-    public void fakePosePion(int line, int column, PionVal color) throws BadPlaceException {
+    public void fakePosePion(int line, int column, StoneVal color) throws BadPlaceException {
         if (goban.bonneCoords(line, column)) {
-            if (goban.getCase(line, column) == PionVal.RIEN) {
+            if (goban.getCase(line, column) == StoneVal.EMPTY) {
                 if (!isSuicide(line, column, color)) {
 
                     Stone current = new Stone(color, line, column);
@@ -88,7 +88,7 @@ public final class FakeGame extends Game {
                     goban.setCase(line, column, color);
 
                     //Calculates the new groups
-                    Set<Groupe> ennemies = fakeCalculateGroups(current);
+                    Set<Group> ennemies = fakeCalculateGroups(current);
 
                     //Update the liberties of surrounding ennemy groups
                     updateLiberties(ennemies);
@@ -96,7 +96,7 @@ public final class FakeGame extends Game {
                     //Removes taken stones, and update the currentMove with the Modifs.
                     fakeProcessGroupeTaking(ennemies);
 
-                    goban.setCase(line, column, PionVal.RIEN);
+                    goban.setCase(line, column, StoneVal.EMPTY);
 
                 } else {
                     throw new BadPlaceException("(" + line + ", " + column + ", " + color + ") This move is a suicide, I cannot let you do that !");
@@ -112,15 +112,15 @@ public final class FakeGame extends Game {
     private void fakeStartMove(PlayMove currPM) {
 
         //prepare the group modifications
-        currPM.setGroups((ArrayList<Groupe>) getCurrentMove().getGroups().clone());
+        currPM.setGroups((ArrayList<Group>) getCurrentMove().getGroups().clone());
 
         Node<PlayMove> newMove = new Node<PlayMove>(currPM);
         lastMove.addChild(newMove);
         fakeLastMove = newMove;
     }
 
-    private void fakeProcessGroupeTaking(Set<Groupe> ennemies) {
-        for (Groupe groupe : ennemies) {
+    private void fakeProcessGroupeTaking(Set<Group> ennemies) {
+        for (Group groupe : ennemies) {
             if (groupe.getLiberties().size() == 0) {
                 // Dans ce cas là, on a bouché la dernière libertée,
                 //il faut donc supprimer les pierres du goban, et le groupe du pm.
@@ -131,21 +131,21 @@ public final class FakeGame extends Game {
         }
     }
 
-    private void fakeRemoveGroupe(Groupe groupe) {
+    private void fakeRemoveGroupe(Group groupe) {
 
         PlayMove fakePM = new PlayMove();
 
         // Removing eah Stone
         for (Stone pion : groupe.getStones()) {
             // Don't forget to register the modification.
-            Modif mod = new Modif(pion.getLine(), pion.getColumn(), pion.getCouleur(), PionVal.RIEN);
+            Modif mod = new Modif(pion.getLine(), pion.getColumn(), pion.getCouleur(), StoneVal.EMPTY);
             getFakeCurrentMove().addModif(mod);
             fakePM.addModif(mod);
-            goban.setCase(pion.getLine(), pion.getColumn(), PionVal.RIEN);
+            goban.setCase(pion.getLine(), pion.getColumn(), StoneVal.EMPTY);
         }
 
         // Calculating the liberties of surrounding groups
-        Set<Groupe> surroundings = new HashSet<Groupe>();
+        Set<Group> surroundings = new HashSet<Group>();
         for (Stone pion : groupe.getStones()) {
             surroundings.addAll(getSurroundingGroups(pion));
         }
@@ -162,10 +162,10 @@ public final class FakeGame extends Game {
         }
     }
 
-    public Set<Groupe> fakeGetGroupsFromPions(List<Stone> pions) {
-        HashSet<Groupe> groups = new HashSet<Groupe>(4);
+    public Set<Group> fakeGetGroupsFromPions(List<Stone> pions) {
+        HashSet<Group> groups = new HashSet<Group>(4);
         for (Stone pi : pions) {
-            Groupe containing = getFakeCurrentMove().getGroupeContaining(pi);
+            Group containing = getFakeCurrentMove().getGroupeContaining(pi);
             if (containing == null) {
 //                Logger.getAnonymousLogger().log(Level.SEVERE, "Containing null, pion : " + pi);
 //                Logger.getAnonymousLogger().log(Level.SEVERE,goban.toString());
@@ -176,7 +176,7 @@ public final class FakeGame extends Game {
         return groups;
     }
 
-    public Set<Groupe> fakeGetSurroundingGroups(Stone pion) {
+    public Set<Group> fakeGetSurroundingGroups(Stone pion) {
         // Get the (<= 4) neighbours groups of the current stone.
         List<Stone> neighbourList = goban.getVoisins(pion);
         if (neighbourList.isEmpty()) {
@@ -187,21 +187,21 @@ public final class FakeGame extends Game {
         }
     }
 
-    protected Set<Groupe> fakeCalculateGroups(Stone last) {
+    protected Set<Group> fakeCalculateGroups(Stone last) {
 
-        Groupe lastAdded = new Groupe(last.getCouleur());
+        Group lastAdded = new Group(last.getCouleur());
         try {
             lastAdded.addStone(last);
         } catch (BadCouleurException e) {
         }
 
-        List<Groupe> currentGroups = getFakeCurrentMove().getGroups();
+        List<Group> currentGroups = getFakeCurrentMove().getGroups();
 
-        Set<Groupe> surroundingGroups = fakeGetSurroundingGroups(last);
-        Set<Groupe> ennemyGroups = new HashSet<Groupe>(4);
+        Set<Group> surroundingGroups = fakeGetSurroundingGroups(last);
+        Set<Group> ennemyGroups = new HashSet<Group>(4);
 
         if (surroundingGroups != null) {
-            for (Groupe groupe : surroundingGroups) {
+            for (Group groupe : surroundingGroups) {
                 if (groupe.getCouleur() == last.getCouleur()) {
                     lastAdded.addAll(groupe);
                     currentGroups.remove(groupe);

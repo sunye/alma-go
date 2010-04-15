@@ -25,7 +25,7 @@ package fr.alma.atarigo;
 import fr.alma.atarigo.analyse.AlphaBeta;
 import fr.alma.atarigo.ihm.Fenetre;
 import fr.alma.atarigo.utils.Game;
-import fr.alma.atarigo.utils.PionVal;
+import fr.alma.atarigo.utils.StoneVal;
 import fr.alma.atarigo.ihm.GobanPanel;
 import fr.alma.atarigo.utils.PlayMove;
 
@@ -63,7 +63,7 @@ public class GameManager {
    /**
     * If onePlayerGame, this field contains the AI color.
     */
-   private PionVal iaColor;
+   private StoneVal iaColor;
 
    /**
     * Unique constructor.
@@ -95,12 +95,12 @@ public class GameManager {
     * Begins a one-player game.
     * @param couleur : color of the stone player
     */
-   public final void onePlayer(final PionVal couleur) {
+   public final void onePlayer(final StoneVal couleur) {
       init();
       iaColor = couleur;
       this.onePlayerGame = Boolean.TRUE;
       gobanPanel.startGame(this, this.game);
-      if (couleur == PionVal.NOIR) {
+      if (couleur == StoneVal.BLACK) {
          coupIA();
       }
    }

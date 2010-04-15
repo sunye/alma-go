@@ -17,36 +17,48 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * along with this program;
  *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of this program.
  */
-
 package fr.alma.atarigo.ihm;
 
 //~--- non-JDK imports --------------------------------------------------------
-
-import fr.alma.atarigo.utils.PionVal;
-
 /**
  *
  * @author judu
  */
 public class GameOptions {
+
+    /**
+     * Number of players selected.
+     */
     private int nbPlayer;
 
-    public GameOptions() {}
+    /**
+     * Constructor.
+     */
+    public GameOptions() {
+    }
 
-    public int getNbPlayer() {
+    /**
+     * Getter nbPlayer.
+     * @return nbPlayer
+     */
+    public final int getNbPlayer() {
         return nbPlayer;
     }
 
-    public void setNbPlayer(int nbPlayer) {
-        this.nbPlayer = nbPlayer;
+    /**
+     * Setter nbPlayer.
+     * @param nb : new nbPlayer
+     */
+    public final void setNbPlayer(final int nb) {
+        this.nbPlayer = nb;
     }
 }
 
 
 //~ Formatted by Jindent --- http://www.jindent.com
+
