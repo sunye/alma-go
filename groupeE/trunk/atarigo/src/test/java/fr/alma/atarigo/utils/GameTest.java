@@ -52,7 +52,7 @@ public class GameTest extends TestCase {
 
         int     line     = 0;
         int     column   = 0;
-        PionVal color    = PionVal.NOIR;
+        StoneVal color    = StoneVal.BLACK;
         Game    instance = new Game();
 
         instance.posePion(line, column, color);

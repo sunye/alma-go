@@ -353,7 +353,7 @@ public final class AlphaBeta {
 
       for (Stone stone : listToTry) {
          try {
-            tests.fakePosePion(stone.getLine(), stone.getColumn(),
+            tests.fakePutStone(stone.getLine(), stone.getColumn(),
                     tests.getCurrentPlayer());
          } catch (BadPlaceException ex) {
             Logger.getAnonymousLogger().log(Level.SEVERE, ex.getMessage());

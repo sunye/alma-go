@@ -117,7 +117,27 @@ public class Modif {
                 .append(" }").toString();
     }
 
-
-
-
+   @Override
+   public boolean equals(Object obj) {
+      if (obj == null) {
+         return false;
+      }
+      if (getClass() != obj.getClass()) {
+         return false;
+      }
+      final Modif other = (Modif) obj;
+      if (this.line != other.line) {
+         return false;
+      }
+      if (this.column != other.column) {
+         return false;
+      }
+      if (this.before != other.before) {
+         return false;
+      }
+      if (this.after != other.after) {
+         return false;
+      }
+      return true;
+   }
 }

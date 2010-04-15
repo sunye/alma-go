@@ -33,133 +33,145 @@ import junit.framework.TestCase;
  */
 public class GobanTest extends TestCase {
 
-    public GobanTest(String testName) {
-        super(testName);
-    }
+   public GobanTest(String testName) {
+      super(testName);
+   }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
+   @Override
+   protected void setUp() throws Exception {
+      super.setUp();
+   }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
+   @Override
+   protected void tearDown() throws Exception {
+      super.tearDown();
+   }
 
+   /**
+    * Test of bonneCoords method, of class Goban.
+    */
+   public void testBonneCoords() {
+      System.out.println("bonneCoords");
+      int ligne = 0;
+      int colonne = 0;
+      Goban instance = new Goban();
+      boolean expResult = true;
+      boolean result = instance.bonneCoords(ligne, colonne);
+      assertEquals(expResult, result);
 
-    /**
-     * Test of bonneCoords method, of class Goban.
-     */
-    public void testBonneCoords() {
-        System.out.println("bonneCoords");
-        int ligne = 0;
-        int colonne = 0;
-        Goban instance = new Goban();
-        boolean expResult = true;
-        boolean result = instance.bonneCoords(ligne, colonne);
-        assertEquals(expResult, result);
+      expResult = false;
+      result = instance.bonneCoords(-1, 10);
+      assertEquals(expResult, result);
+   }
 
-        expResult = false;
-        result = instance.bonneCoords(-1, 10);
-        assertEquals(expResult, result);
-    }
+   /**
+    * Test of setCase method, of class Goban.
+    */
+   public void testSetCase() {
+      System.out.println("setCase");
+      int ligne = 0;
+      int colonne = 0;
+      StoneVal pion = StoneVal.WHITE;
+      Goban instance = new Goban();
+      instance.setCase(ligne, colonne, pion);
+      StoneVal sortie = instance.getCase(ligne, colonne);
+      assertEquals(sortie, pion);
+   }
 
-    /**
-     * Test of setCase method, of class Goban.
-     */
-    public void testSetCase() {
-        System.out.println("setCase");
-        int ligne = 0;
-        int colonne = 0;
-        PionVal pion = PionVal.BLANC;
-        Goban instance = new Goban();
-        instance.setCase(ligne, colonne, pion);
-        PionVal sortie = instance.getCase(ligne, colonne);
-        assertEquals(sortie, pion);
-    }
+   /**
+    * Test of getCase method, of class Goban.
+    */
+   public void testGetCase() throws Exception {
+      System.out.println("getCase");
+      int ligne = 0;
+      int colonne = 0;
+      Goban instance = new Goban();
+      StoneVal expResult = StoneVal.EMPTY;
+      StoneVal result = instance.getCase(ligne, colonne);
+      assertEquals(expResult, result);
+   }
 
-    /**
-     * Test of getCase method, of class Goban.
-     */
-    public void testGetCase() throws Exception {
-        System.out.println("getCase");
-        int ligne = 0;
-        int colonne = 0;
-        Goban instance = new Goban();
-        PionVal expResult = PionVal.RIEN;
-        PionVal result = instance.getCase(ligne, colonne);
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of getVoisins method, of class Goban.
-     */
-    public void testGetVoisins() {
-        System.out.println("getVoisins");
-        Stone pion = new Stone(PionVal.NOIR, 0, 0);
-        Goban instance = new Goban();
-        List<Stone> expResult = new ArrayList();
-        List<Stone> result = instance.getVoisins(pion);
-        assertEquals(expResult, result);
-        assertEquals(0, result.size());
-
-
-        instance.setCase(0, 1, PionVal.BLANC);
-        instance.setCase(2, 1, PionVal.BLANC);
-        instance.setCase(1, 0, PionVal.NOIR);
-        instance.setCase(0, 0, PionVal.NOIR);
-        pion = new Stone(PionVal.BLANC, 1,1);
-        expResult.add(new Stone(PionVal.BLANC, 2, 1));
-        expResult.add(new Stone(PionVal.BLANC, 0, 1));
-        expResult.add(new Stone(PionVal.NOIR, 1, 0));
-        result = instance.getVoisins(pion);
-        assertEquals(expResult, result);
-
-    }
-
-    /**
-     * Test of getLibertes method, of class Goban.
-     */
-    public void testGetLibertesCorner() {
-        System.out.println("getLibertes");
-        Stone pion = new Stone(PionVal.BLANC, 0,0);
-        Goban instance = new Goban();
-        List<Stone> expResult = new ArrayList(4);
-        expResult.add(new Stone(PionVal.RIEN,1,0));
-        expResult.add(new Stone(PionVal.RIEN,0,1));
-
-        List<Stone> result = instance.getLibertes(pion);
-        assertEquals(expResult, result);
-    }
+   /**
+    * Test of getVoisins method, of class Goban.
+    */
+   public void testGetVoisins() {
+      System.out.println("getVoisins");
+      Stone pion = new Stone(StoneVal.BLACK, 0, 0);
+      Goban instance = new Goban();
+      List<Stone> expResult = new ArrayList();
+      List<Stone> result = instance.getVoisins(pion);
+      assertEquals(expResult, result);
+      assertEquals(0, result.size());
 
 
-    public void testGetLibertesSurrounded(){
-        System.out.println("getLibertes 2");
-        Stone pion = new Stone(PionVal.BLANC, 3,3);
-        Goban instance = new Goban();
-        instance.setCase(2, 3, PionVal.NOIR);
-        instance.setCase(4, 3, PionVal.NOIR);
-        
-        List<Stone> expResult = new ArrayList(2);
-        expResult.add(new Stone(PionVal.RIEN,3,4));
-        expResult.add(new Stone(PionVal.RIEN,3,2));
-        List<Stone> result = instance.getLibertes(pion);
-        assertEquals(expResult, result);
+      instance.setCase(0, 1, StoneVal.WHITE);
+      instance.setCase(2, 1, StoneVal.WHITE);
+      instance.setCase(1, 0, StoneVal.BLACK);
+      instance.setCase(0, 0, StoneVal.BLACK);
+      pion = new Stone(StoneVal.WHITE, 1, 1);
+      expResult.add(new Stone(StoneVal.WHITE, 2, 1));
+      expResult.add(new Stone(StoneVal.WHITE, 0, 1));
+      expResult.add(new Stone(StoneVal.BLACK, 1, 0));
+      result = instance.getVoisins(pion);
+      assertEquals(expResult, result);
+
+   }
+
+   /**
+    * Test of getLibertes method, of class Goban.
+    */
+   public void testGetLibertesCorner() {
+      System.out.println("getLibertes");
+      Stone pion = new Stone(StoneVal.WHITE, 0, 0);
+      Goban instance = new Goban();
+      List<Stone> expResult = new ArrayList(4);
+      expResult.add(new Stone(StoneVal.EMPTY, 1, 0));
+      expResult.add(new Stone(StoneVal.EMPTY, 0, 1));
+
+      List<Stone> result = instance.getLibertes(pion);
+      assertEquals(expResult, result);
+   }
+
+   public void testGetLibertesSurrounded() {
+      System.out.println("getLibertes 2");
+      Stone pion = new Stone(StoneVal.WHITE, 3, 3);
+      Goban instance = new Goban();
+      instance.setCase(2, 3, StoneVal.BLACK);
+      instance.setCase(4, 3, StoneVal.BLACK);
+
+      List<Stone> expResult = new ArrayList(2);
+      expResult.add(new Stone(StoneVal.EMPTY, 3, 4));
+      expResult.add(new Stone(StoneVal.EMPTY, 3, 2));
+      List<Stone> result = instance.getLibertes(pion);
+      assertEquals(expResult, result);
 
 
-    }
+   }
 
-    /**
-     * Test of nbLibertes method, of class Goban.
-     */
-    public void testLibertesPion() {
-        System.out.println("libertesPion");
-        int ligne = 0;
-        int col = 0;
-        Goban instance = new Goban();
-        int expResult = 2;
-        int result = instance.nbLibertes(new Stone(PionVal.BLANC, ligne, col));
-        assertEquals(expResult, result);
-    }
+   /**
+    * Test of nbLibertes method, of class Goban.
+    */
+   public void testLibertesPion() {
+      System.out.println("libertesPion");
+      int ligne = 0;
+      int col = 0;
+      Goban instance = new Goban();
+      int expResult = 2;
+      int result = instance.nbLibertes(new Stone(StoneVal.WHITE, ligne, col));
+      assertEquals(expResult, result);
+   }
+
+   public void testClone() {
+      System.out.println("clone");
+      Goban instance = new Goban();
+      instance.setCase(5, 3, StoneVal.WHITE);
+      instance.setCase(5, 4, StoneVal.BLACK);
+      Goban copy = instance.clone();
+
+      for (int line = 0; line < Goban.getTaille(); ++line) {
+         for (int col = 0; col < Goban.getTaille(); ++col) {
+            assertTrue(instance.getCase(line, col) == copy.getCase(line, col));
+         }
+      }
+   }
 }
