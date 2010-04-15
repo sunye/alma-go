@@ -27,16 +27,16 @@ package fr.alma.atarigo.utils;
 
 public class Stone {
     private short   column;
-    private PionVal couleur;
+    private StoneVal couleur;
     private short   line;
 
-    public Stone(PionVal couleur2, int realLigne, int realCol) {
+    public Stone(StoneVal couleur2, int realLigne, int realCol) {
         this.couleur = couleur2;
         this.column  = (short) realCol;
         this.line    = (short) realLigne;
     }
 
-    public Stone(PionVal couleur, short ligne, short colonne) {
+    public Stone(StoneVal couleur, short ligne, short colonne) {
         super();
         this.couleur = couleur;
         this.column  = colonne;
@@ -98,7 +98,7 @@ public class Stone {
         return "Stone(line:" + line + ",col:" + column + ",c:" + couleur + ")";
     }
 
-    public PionVal getCouleur() {
+    public StoneVal getCouleur() {
         return couleur;
     }
 }

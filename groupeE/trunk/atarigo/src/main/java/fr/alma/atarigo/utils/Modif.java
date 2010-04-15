@@ -33,21 +33,21 @@ public class Modif {
 
     private int line;
     private int column;
-    private PionVal before;
-    private PionVal after;
+    private StoneVal before;
+    private StoneVal after;
 
-    public Modif(int line, int column, PionVal before, PionVal after) {
+    public Modif(int line, int column, StoneVal before, StoneVal after) {
         this.line = line;
         this.column = column;
         this.before = before;
         this.after = after;
     }
 
-    public PionVal getAfter() {
+    public StoneVal getAfter() {
         return after;
     }
 
-    public PionVal getBefore() {
+    public StoneVal getBefore() {
         return before;
     }
 
