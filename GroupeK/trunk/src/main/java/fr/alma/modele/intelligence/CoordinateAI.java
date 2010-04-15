@@ -87,5 +87,13 @@ public class CoordinateAI extends Coordinate {
 		}
 	
 	}
+
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+	
+	
 	
 }

@@ -1,0 +1,1 @@
+The technical report has to be compile by the main file: 'Report.tex' 
