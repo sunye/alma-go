@@ -24,7 +24,6 @@
  */
 package fr.alma.atarigo.ihm;
 
-//~--- non-JDK imports --------------------------------------------------------
 /**
  *
  * @author judu
@@ -58,7 +57,3 @@ public class GameOptions {
         this.nbPlayer = nb;
     }
 }
-
-
-//~ Formatted by Jindent --- http://www.jindent.com
-

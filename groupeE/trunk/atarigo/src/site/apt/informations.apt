@@ -11,6 +11,8 @@ Project informations
 *----+------+
 | {{{./team-list.html}Team}} | Team presentation |
 *----+------+
+| {{{./source-repository.html}Repository}} | Informations about projects repos |
+*----+------+
 | {{{./dependencies.html}Dependencies}} | What this project depends on |
 *----+------+
 | {{{./plugins.html}Plugins}} | The plugins used to build and test this project |

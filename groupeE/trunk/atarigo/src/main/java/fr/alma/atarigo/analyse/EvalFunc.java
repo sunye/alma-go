@@ -345,7 +345,7 @@ public final class EvalFunc {
    }
 
    /**
-    * Calculate the eyes of each Groupe.
+    * Calculate the eyes of each Group.
     *
     * Note : this method is not used.
     * @param game the game to test
@@ -367,7 +367,7 @@ public final class EvalFunc {
 
                   if (surrounders.size() == 1
                           && surrounders.get(0).size() > minSurSize) {
-                     // We have only one surrounding Groupe, big enough.
+                     // We have only one surrounding Group, big enough.
                      surrounders.get(0).addEye(emptyGroup);
                   }
                }
