@@ -1,29 +1,33 @@
 package go;
 
 /**
- * @author Frédéric Dumonceaux
+ * @author FrÃ©dÃ©ric Dumonceaux
  *
  */
 
 
 @SuppressWarnings("serial")
 public class ExceptionGlobal extends Throwable {
-	
-	private String content;
-	
-	
-	/**
-	 * @param cnt le message de l'exception
-	 */
-	public ExceptionGlobal(String cnt) { 
-		content = cnt;
-	}
-	
-	
-	/**
-	 * l'erreur qui sera affiché
-	 */
-	public void writeMessage() {
-		System.out.println(content);
-	}
+
+     /**
+      * Variable content.
+      */
+     private final String content;
+
+     /**
+      * Constructor.
+      * @param cnt message which is showing when an exception is thrown
+      */
+     public ExceptionGlobal(final String cnt) {
+          super();
+          content = cnt;
+     }
+
+
+     /**
+      * print the error message.
+      */
+     public final void writeMessage() {
+          System.out.println(content);
+     }
 }
