@@ -29,14 +29,22 @@ public class Coordinator implements ICoordinator {
 
 	private PlayListener playListener;
 	private IPlayer currentPlayer = null;
-	private Runnable runnable;
 	private Context context = null;
+	private boolean graphicMode = true;
 
-
+	
 	public Coordinator(Context context) {
 		this.context = context;
 	}
 
+	
+	public Coordinator(Context context, boolean graphicMode) {
+		this.context = context;
+		this.graphicMode = graphicMode;
+	}
+
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * @see fr.alma.server.core.ICoordinator#startGame()
@@ -71,14 +79,17 @@ public class Coordinator implements ICoordinator {
 						return getRuleManager().checkBefore(getStateGame(), e.getEmplacement(), e.getPlayer()).isCanPlay();
 					}
 
-					Runnable runnable = new Runnable() {
-						@Override
-						public void run() {
-							/* AFTER */
-							getGoban().repaint();
-						}
-					};
-					SwingUtilities.invokeLater(runnable);
+					if (graphicMode) {
+						
+						Runnable runnable = new Runnable() {
+							@Override
+							public void run() {
+								/* AFTER */
+								getGoban().repaint();
+							}
+						};
+						SwingUtilities.invokeLater(runnable);
+					}
 
 					/* Control if the game is over */
 					StatusCheck status = getRuleManager().checkAfter(getStateGame(), e.getEmplacement(), getCurrentPlayer());
@@ -87,7 +98,11 @@ public class Coordinator implements ICoordinator {
 						if (! status.isCanPlay()) {
 							status.setWinner(getPlayer());
 						}
-						Tools.message(context.getMainFrame(), "Game over", "Winner is : " + status.getWinner().getName(), JOptionPane.INFORMATION_MESSAGE);
+						
+						if (graphicMode) {
+							Tools.message(context.getMainFrame(), "Game over", "Winner is : " + status.getWinner().getName(), JOptionPane.INFORMATION_MESSAGE);
+						}
+						
 						System.out.println("Game over - winner is : " + status.getWinner().getName());
 						getPlayer().setEnabled(false);
 						getComputer().setEnabled(false);
@@ -173,7 +188,6 @@ public class Coordinator implements ICoordinator {
 		getComputer().removePlayListeners();
 		playListener = null;
 		currentPlayer = null;
-		runnable = null;
 	}
 
 }
