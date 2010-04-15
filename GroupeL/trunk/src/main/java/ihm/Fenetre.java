@@ -8,10 +8,16 @@ import java.awt.event.ItemListener;
 
 import javax.swing.*;
 
+/**
+ * @author DEJEAN Charles, POTTIER Vincent
+ *
+ * this class create the windows where the game take place. 
+ *
+ */
 public class Fenetre extends JFrame implements ActionListener {
        
-
         private static final long serialVersionUID = 1L;
+        // element of the window
         private JMenuBar barreMenu;
         private JMenu jeu;
         private JMenu diff;
@@ -30,10 +36,7 @@ public class Fenetre extends JFrame implements ActionListener {
         	super(s);
             setSize(750,650);
            
-            /**
-	         * Creations des différents outils permettant la mise en place de la barre de menu
-	         */
-           
+            // Creation of the different element of the window
             barreMenu=new JMenuBar();
            
             jeu=new JMenu("Nouvelle partie");
@@ -56,10 +59,6 @@ public class Fenetre extends JFrame implements ActionListener {
             str = new JMenuItem("Fort");
             str.addActionListener(this);
             
-            /**
-            * Mise en place de la barre de menu
-     		*/
-           
             barreMenu.add(jeu);
             barreMenu.add(diff);
            
@@ -70,25 +69,7 @@ public class Fenetre extends JFrame implements ActionListener {
             diff.add(nul);
             diff.add(moy);
             diff.add(str);
-            
-            /*JButton forceToPlay = new JButton("Forcer à jouer");
-            forceToPlay.setBounds(this.getWidth()-140,this.getHeight()-90,120,30);
-            add(forceToPlay);
-            forceToPlay.addActionListener(this); 
-            forceToPlay.addActionListener(
-            		  new ActionListener() {
-            		    public void actionPerformed(ActionEvent e) {
-            		      // création d'un Thread d'exécution
-            		      Thread t = new Thread() {
-            		        public void run() {
-            		        	Pan.forceToPlay();
-            		        }
-            		      };
-            		      t.start();
-            		    }
-            		  }
-            		);*/
-            
+                        
             timeIA = new JComboBox();
             
             timeIA.setBounds(this.getWidth()-140,this.getHeight()-90,120,30);
@@ -101,7 +82,6 @@ public class Fenetre extends JFrame implements ActionListener {
     		
     		timeIA.addItemListener(new ItemListener(){
 				public void itemStateChanged(ItemEvent e) {
-					// TODO Auto-generated method stub
 					if (e.getItem().equals("2 s")) {
 						Pan.setPlayTimeIA(2);
 					} else if (e.getItem().equals("4 s")) {
@@ -121,27 +101,24 @@ public class Fenetre extends JFrame implements ActionListener {
                 
             this.setJMenuBar(barreMenu);
          
-            // lancement d'une parti de base
+            // game start
             start();      
                    
-            /**
-             *  Arrêt de l'appli quand on clique sur la croix
-             */
-           
+            // close if click one cross          
             setDefaultCloseOperation(EXIT_ON_CLOSE);
         }
 
 		private void start() {
-			// Creation du panel contenant le goban
+			// panel creation
 	    	Pan=new Goban(this);
             Pan.setBorder(BorderFactory.createLineBorder(Color.black));
-            // On ajoute le GobanPanel dans la fenetre principale
+            // add the panel to the window
             this.add(Pan);
 		}
 
 		public void actionPerformed(ActionEvent evt) {
 			if (evt.getSource()instanceof JMenuItem) {
-				// gestion des événements liés aux menus
+				// management of the different action in the window
 	            String ChoixOption = evt.getActionCommand();
 	            
 	            if (ChoixOption.equals("2 joueurs")){

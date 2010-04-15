@@ -16,9 +16,7 @@ public class GobanStructure {
 	private List<GroupPawns> blacks;
 	private Integer size;
 	
-	/* representation du plateau de jeux dans chaque case est stocker 
-	 * une reference vers un groupe de pieces 
-	 */
+	// goban's representation where in each case we have a reference to a GroupPawn   
 	private GroupPawns[][] goban; 
 	
 	/* Getters - Setters */		
@@ -179,7 +177,7 @@ public class GobanStructure {
 	}
 	
 	/**
-	 * 
+	 * remove pawn from the goban
 	 * @param coord
 	 * @return
 	 */
