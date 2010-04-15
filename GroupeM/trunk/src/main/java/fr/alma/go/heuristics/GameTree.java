@@ -37,11 +37,11 @@ public class GameTree {
 		return sons;
 	} // ArrayList<GameTree> getSons()
 
-	private GameNode getRoot() {
+	public GameNode getRoot() {
 		return root;
 	} // GameNode getRoot()
 
-	private int alphaBeta(int alpha, int beta, int deepness) {
+	public int alphaBeta(int alpha, int beta, int deepness) {
 		if (this.isLeaf()) {
 			return root.getNote();
 		} else if (deepness % 2 == 0) {
@@ -132,14 +132,5 @@ public class GameTree {
 		// this.print("", true);
 		return this.pickPlace();
 	} // Place alphaBetaGetPlace(Goban)
-
-//	private void print(String prefix, boolean first) {
-//		System.out.println(prefix + root.getNote());
-//		for (GameTree son : sons) {
-//			son.print(prefix + "| ", false);
-//			if (first)
-//				break;
-//		} // for
-//	} // void print(String)
 
 } // class GameTree

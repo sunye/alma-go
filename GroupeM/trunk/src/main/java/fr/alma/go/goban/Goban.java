@@ -37,9 +37,12 @@ public class Goban implements Cloneable {
 	 * Gets the list of the neighbours groups of a stone
 	 * 
 	 * @param abs
+	 *            Stone absciss
 	 * @param ord
+	 *            Stone ordinate
 	 * @param col
-	 * @return
+	 *            Stone color
+	 * @return The list of the neighbours groups of a stone
 	 */
 	private ArrayList<StonesGroup> getNeighbours(int abs, int ord, char col) {
 		ArrayList<StonesGroup> stonesGroups;
@@ -72,7 +75,8 @@ public class Goban implements Cloneable {
 	 * Merges a list of groups into one group
 	 * 
 	 * @param inGroups
-	 * @return
+	 *            Groups to merge
+	 * @return Merged groups
 	 */
 	private StonesGroup merge(ArrayList<StonesGroup> inGroups) {
 		StonesGroup newGroup = new StonesGroup();
@@ -91,8 +95,10 @@ public class Goban implements Cloneable {
 	 * Adds a white or black group to the white or black list of groups
 	 * 
 	 * @param newGroup
+	 *            Group to add
 	 * @param col
-	 * @return
+	 *            Group color
+	 * @return True if no problem occured
 	 */
 	private boolean addGroup(StonesGroup newGroup, char col) {
 		if (col == 'w') {
@@ -103,11 +109,13 @@ public class Goban implements Cloneable {
 	}
 
 	/**
-	 * Removes a group from white or black list
+	 * Removes groups from white or black list
 	 * 
 	 * @param inGroups
+	 *            Groups to remove
 	 * @param col
-	 * @return
+	 *            Groups color
+	 * @return True if no problem occured
 	 */
 	private boolean remove(ArrayList<StonesGroup> inGroups, char col) {
 		boolean ok = true;
@@ -126,10 +134,11 @@ public class Goban implements Cloneable {
 	/**
 	 * Removes groups of stones if they have no liberties
 	 * 
-	 * @param turn
+	 * @param color
+	 *            Groups color
 	 */
-	private void changes(char turn) {
-		if (turn == 'b') {
+	private void changes(char color) {
+		if (color == 'b') {
 			ArrayList<StonesGroup> whiteGroupsToRemove = new ArrayList<StonesGroup>();
 			for (StonesGroup group : whiteGroups) {
 				if (this.getLiberties(group) == 0) {
@@ -160,7 +169,8 @@ public class Goban implements Cloneable {
 	 * Removes each stone of a group from the goban
 	 * 
 	 * @param group
-	 * @return
+	 *            Group to remove
+	 * @return True if no problem occured
 	 */
 	private boolean remove(StonesGroup group) {
 		ArrayList<Stone> list = group.getGroup();
@@ -175,7 +185,8 @@ public class Goban implements Cloneable {
 	 * Removes a stone from the goban
 	 * 
 	 * @param stone
-	 * @return
+	 *            Stone to remove
+	 * @return True if no problem occured
 	 */
 	private boolean remove(Stone stone) {
 		for (int i = 0; i < 9; i++) {
@@ -193,8 +204,10 @@ public class Goban implements Cloneable {
 	 * True if the stone is undefined
 	 * 
 	 * @param abs
+	 *            Stone absciss
 	 * @param ord
-	 * @return
+	 *            Stone ordinate
+	 * @return True if the stone is undefined
 	 */
 	private boolean isFree(int abs, int ord) {
 		return plate[abs][ord].isUndefined();
@@ -204,7 +217,8 @@ public class Goban implements Cloneable {
 	 * Gets the number of liberties of a stone
 	 * 
 	 * @param stone
-	 * @return
+	 *            Considered stone
+	 * @return The number of liberties of a stone
 	 */
 	private int getLiberties(Stone stone) {
 		for (int i = 0; i < 9; i++) {
@@ -234,7 +248,8 @@ public class Goban implements Cloneable {
 	 * Gets the number of liberties of a group
 	 * 
 	 * @param group
-	 * @return
+	 *            Considered Group
+	 * @return The number of liberties of a group
 	 */
 	private int getLiberties(StonesGroup group) {
 		int liberties = 0;
@@ -265,9 +280,12 @@ public class Goban implements Cloneable {
 	 * Play a black or white turn on the place (abs,ord)
 	 * 
 	 * @param abs
+	 *            Stone absciss
 	 * @param ord
+	 *            Stone ordinate
 	 * @param col
-	 * @return
+	 *            Stone color
+	 * @return True if place was free and not suicide
 	 */
 	public boolean play(int abs, int ord, char col) {
 		if (this.isFree(abs, ord)) {
@@ -294,16 +312,26 @@ public class Goban implements Cloneable {
 	/**
 	 * True if the game is over
 	 * 
-	 * @return
+	 * @return True if the game is over
 	 */
 	public boolean gameOver() {
 		return (whiteTaken > 0 | blackTaken > 0);
-	}
+	} // boolean gameOver()
 
+	/**
+	 * Get the goban's plate
+	 * 
+	 * @return The goban's plate
+	 */
 	public Stone[][] getPlate() {
 		return plate;
-	}
+	} // Stone[][] getPlate()
 
+	/**
+	 * True if plate is empty
+	 * 
+	 * @return True if all plate's stones are undefined
+	 */
 	public boolean isEmpty() {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -318,45 +346,55 @@ public class Goban implements Cloneable {
 	// public boolean testGroups(){
 	// return (whiteGroups.size()==1 && blackGroups.size()==2);
 	// }
-	
+
 	@Override
-	public Goban clone(){
-		Goban goban=new Goban();
-		goban.plate=new Stone[9][9];
-		for(int i=0;i<9;i++){
-			for(int j=0;j<9;j++){
-				goban.plate[i][j]=new Stone(plate[i][j].getColor());
+	public Goban clone() {
+		Goban goban = new Goban();
+		goban.plate = new Stone[9][9];
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				goban.plate[i][j] = new Stone(plate[i][j].getColor());
 			} // for
 		} // for
-		goban.whiteGroups=new ArrayList<StonesGroup>();
-		for(StonesGroup group:whiteGroups){
-			StonesGroup newGroup=new StonesGroup();
-			ArrayList<Stone> list=group.getGroup();
-			for(Stone stone:list){
+		goban.whiteGroups = new ArrayList<StonesGroup>();
+		for (StonesGroup group : whiteGroups) {
+			StonesGroup newGroup = new StonesGroup();
+			ArrayList<Stone> list = group.getGroup();
+			for (Stone stone : list) {
 				newGroup.add(new Stone(stone.getColor()));
 			} // for
 			goban.whiteGroups.add(newGroup);
 		} // for
-		goban.blackGroups=new ArrayList<StonesGroup>();
-		for(StonesGroup group:blackGroups){
-			StonesGroup newGroup=new StonesGroup();
-			ArrayList<Stone> list=group.getGroup();
-			for(Stone stone:list){
+		goban.blackGroups = new ArrayList<StonesGroup>();
+		for (StonesGroup group : blackGroups) {
+			StonesGroup newGroup = new StonesGroup();
+			ArrayList<Stone> list = group.getGroup();
+			for (Stone stone : list) {
 				newGroup.add(new Stone(stone.getColor()));
 			} // for
 			goban.blackGroups.add(newGroup);
 		} // for
-		goban.whiteTaken=whiteTaken;
-		goban.blackTaken=blackTaken;
+		goban.whiteTaken = whiteTaken;
+		goban.blackTaken = blackTaken;
 		return goban;
-	}
-	
-	public int getWhiteTaken(){
+	} // Goban clone()
+
+	/**
+	 * Get numbers of taken white stones
+	 * 
+	 * @return Actual value of whiteTaken
+	 */
+	public int getWhiteTaken() {
 		return whiteTaken;
-	}
-	
-	public int getBlackTaken(){
+	} // int getWhiteTaken()
+
+	/**
+	 * Get numbers of taken black stones
+	 * 
+	 * @return Actual value of blackTaken
+	 */
+	public int getBlackTaken() {
 		return blackTaken;
-	}
+	} // int getBlackTaken()
 
 } // class Goban
