@@ -9,7 +9,7 @@ import game.GobanStructure;
 import game.GroupPawns;
 
 
-public class AiThread{
+public class AlphaBeta{
 	
     private GobanStructure game;
     private Color color;
@@ -27,7 +27,7 @@ public class AiThread{
    
 
 	/* Constructor */
-	public AiThread(GobanStructure game, Color color, Integer depthMax, Integer playTimeIA) {
+	public AlphaBeta(GobanStructure game, Color color, Integer depthMax, Integer playTimeIA) {
 		super();
 		this.game = game;
 		this.color = color;
@@ -35,54 +35,26 @@ public class AiThread{
 		this.playTimeIA = playTimeIA * 1000;
 	}
 	
-	public AiThread(Integer depthMax) {
+	public AlphaBeta(Integer depthMax) {
 		super();
 		this.game = new GobanStructure();
 		this.color = Color.NONE;
 		this.depthMax = depthMax;
 	}
 	
-	public AiThread() {
+	public AlphaBeta() {
 		super();
 		this.game = new GobanStructure();
 		this.color = Color.NONE;
 		this.depthMax = 3;
 	}
 	
-	public void majAiThread(GobanStructure game, Color color){
+	public void manageAlphaBeta(GobanStructure game, Color color){
 		this.game = game;
 		this.color = color;
 	}
 	
-	/* Function of decision tree creation (without parameters) 
-	public Coordinates createTree()
-	{
-		Coordinates toPlay = new Coordinates();
-		int bestNote = NOTE_MIN-1;
-		moveForced = false;
 		
-
-		List<Coordinates> emptySquares = plateau.getFreeCoord();
-		int note = NOTE_MIN;
-		
-		for(Coordinates coordTmp : emptySquares){
-			if(plateau.moveValid(coordTmp, color)){
-			
-				note = createNode(coordTmp, 1, NOTE_MIN, NOTE_MAX);
-				
-				if (note>bestNote)
-				{
-
-					bestNote = note;
-					toPlay = coordTmp;
-					bestMove = toPlay;
-				}
-				
-			}
-		}
-		return toPlay; 
-	}*/
-	
 	/* Function of decision tree creation (with parameters) */
 	public Coordinates createTree(GobanStructure game, Color color)
 	{
@@ -120,6 +92,7 @@ public class AiThread{
 		
 		return toPlay; 
 	}	
+	
 	/*
 	 * Algorithme Alpha-Beta
 	 * 
