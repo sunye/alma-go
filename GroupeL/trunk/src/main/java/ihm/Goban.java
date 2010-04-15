@@ -3,7 +3,7 @@ package ihm;
 import game.Coordinates;
 import game.Color;
 import game.GobanStructure;
-import ia.AiThread;
+import ia.AlphaBeta;
 
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -177,8 +177,7 @@ public class Goban extends JPanel{
         		}		            		
         	}else{			            		
 
-            		AiThread aiThread= new AiThread(goban_tab, player,currentDepth,playTimeIA);
-            		
+            		AlphaBeta aiThread= new AlphaBeta(goban_tab, player,currentDepth,playTimeIA);
             		coup = aiThread.createTree(goban_tab, player);
 
         	}     
