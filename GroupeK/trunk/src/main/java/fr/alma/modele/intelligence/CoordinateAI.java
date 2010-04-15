@@ -77,4 +77,15 @@ public class CoordinateAI extends Coordinate {
 		return new Coordinate(getX(), getY());
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if( obj instanceof CoordinateAI){
+			return ((CoordinateAI)obj).getX()==this.getX()&&((CoordinateAI)obj).getY()== this.getY(); 
+		}else{
+			return false;
+		}
+	
+	}
+	
 }

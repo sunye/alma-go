@@ -90,5 +90,18 @@ public class Coordinate {
 	public boolean isCoordinateNotEmpty(){
 		return this.getX()!=null && this.getY()!=null;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		
+		if( obj instanceof Coordinate){
+			return ((Coordinate)obj).getX()==this.getX()&&((Coordinate)obj).getY()== this.getY(); 
+		}else{
+			return false;
+		}
+	
+	}
+	
+	
 	
 }
