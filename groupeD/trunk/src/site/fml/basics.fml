@@ -5,9 +5,9 @@
   title="Frequently Asked Questions"
   toplink="false">
 
-  <part id="install">
+  <part id="bascis">
 
-    <title>Installation</title>
+    <title>Bascis</title>
 
     <faq id="how-run">
       <question>
@@ -16,6 +16,24 @@
       <answer>
         <p>First, build the project by entering the command "mvn package".
 	Then simply enter : java -jar target/ObiGo-1.0.jar</p>
+      </answer>
+    </faq>
+
+	<faq id="code-coverage">
+      <question>
+        How do I consult the code coverage of the tests ?
+      </question>
+      <answer>
+        <p>Tests are automatically run when you build this site. Code coverage is also performed by Cobertura ®. You can check the results in the "Project Reports" section. 86% of the AtariGo and AI packages are covered. We decided it was not necessary to test the UI part.  </p>
+      </answer>
+    </faq>
+
+	<faq id="documentation">
+      <question>
+        Where is the documentation ?
+      </question>
+      <answer>
+        <p>You can find the technical documentation and the user guide as Latex ® sources in src/main/latex. Use PDFLaTeX to produce pdf versions of them. </p>
       </answer>
     </faq>
 
