@@ -391,8 +391,6 @@ public class GoBan {
 				Group newGroup= new Group(v.getColor());
 				group.add(newGroup);
 				reformGroup(newGroup, v);
-			}else{
-				
 			}
 		}
 		
