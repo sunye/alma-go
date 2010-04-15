@@ -13,4 +13,6 @@ public class Algos {
 	
 	// alpha beta
 	
+	Rule rulesToSatisfy[];
+	
 }
