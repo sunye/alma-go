@@ -35,6 +35,16 @@ public class Tableau {
 		return counter;
 	}
 
+	
+	/**x=Point notation -> x=Absc  ;  i=Matrix notation ->row  */
+	public void smartPrint(){
+		  for (int x = 0; x <=8; x++){
+			  for (int y = 0; y <=8; y++){
+				  System.out.println(this[y][x]);
+			  }	  
+		  }
+			  
+	}
 	/**
 	 * @return the uFile
 	 */

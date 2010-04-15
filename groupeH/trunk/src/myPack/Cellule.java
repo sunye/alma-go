@@ -12,7 +12,8 @@ public class Cellule {
 	}
 
 	/**
-	 * @param row the row to set
+	 * @param row
+	 *            the row to set
 	 */
 	public void setRow(int row) {
 		this.row = row;
@@ -26,7 +27,8 @@ public class Cellule {
 	}
 
 	/**
-	 * @param column the column to set
+	 * @param column
+	 *            the column to set
 	 */
 	public void setColumn(int column) {
 		this.column = column;
@@ -40,7 +42,8 @@ public class Cellule {
 	}
 
 	/**
-	 * @param valeur the valeur to set
+	 * @param valeur
+	 *            the valeur to set
 	 */
 	public void setValeur(int valeur) {
 		this.valeur = valeur;
@@ -51,16 +54,20 @@ public class Cellule {
 	int valeur;
 
 	public static Vector neighboursV = new Vector();
-public void 	givNeighbVect(int color){
-	if (row>=0)
-	neighboursV.add(Cellule(row-1));
-	if (row<=8)
-		neighboursV.add(Cellule(row+1));
-		
-}
 
-	
-	
+	public void givNeighbVect(int color) {
+		if (row >= 0)
+			neighboursV.add(new Pos(row - 1, column));
+		if (row <= 8)
+			neighboursV.add(new Pos(row + 1, column));
+
+		if (column >= 0)
+			neighboursV.add(new Pos(row - 1, column));
+		if (column <= 8)
+			neighboursV.add(new Pos(row + 1, column));
+
+	}
+
 	Cellule() {
 		row = 0;
 		column = 0;
@@ -81,6 +88,4 @@ public void 	givNeighbVect(int color){
 		return (x + 1) + 8 * y;
 	}
 
-	
-	
 }
