@@ -40,6 +40,8 @@ import fr.alma.server.rule.StatusCheck;
  */
 public class TestCoordinator {
 
+	public final int EXPECT_NUMBER_ITER = 10;
+	
 	RuleSuicide rule;
 	IStateGame stateGame;
 	ILocation location;
@@ -48,9 +50,9 @@ public class TestCoordinator {
 	Context context;
 	Coordinator coordinator;
 	RuleManager ruleManager;
-	int col = 0;
-	int row = 0;
-	
+	int cptCol = 0;
+	int cptRow = 0;
+	int nbIteration = 0;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -83,22 +85,26 @@ public class TestCoordinator {
 		coordinator = new Coordinator(context, false);
 	}
 
+	/**
+	 * the coordinator should rotate a series of actions between the two players
+	 */
 	@Test
 	public void testCoordinationGame() {
 		
 		coordinator.startGame();
-		assertTrue("the game does not start with the right color", coordinator.getCurrentPlayer().getColor() == Configuration.getColorFirstPlayer());
-		
-		//coordinator.getCurrentPlayer()
+		//assertTrue("the game does not start with the right color", coordinator.getCurrentPlayer().getColor() == Configuration.getColorFirstPlayer());
+		assertTrue("wrong number of iterations expected : " + nbIteration , nbIteration == EXPECT_NUMBER_ITER);
 	}
 	
 	
+	/*
+	 * redefines the players' actions
+	 */
 	class InternalPlayer extends AbstractPlayer {
 		
 		public InternalPlayer(String name, boolean color) {
 			super(name, color);
 		}
-		
 		
 		@Override
 		public void interrupt() {			
@@ -106,23 +112,31 @@ public class TestCoordinator {
 
 		@Override
 		public void play() {
-			ILocation location = new Location(col, row);
-			System.out.println("player " + getName() + " at location : " + location);
+			
+			nbIteration++;
+			
+			ILocation location = new Location(cptCol, cptRow);
+
 			PlayEvent eventBefore = new PlayEvent(this, PlayEvent.BEFORE, location);
 			boolean accept = raiseEvent(eventBefore);
 			assertTrue("the player should be able to play at this location : " + location, accept);
 
-			PlayEvent eventAfter = new PlayEvent(this, PlayEvent.AFTER, location);
-			accept = raiseEvent(eventAfter);
-			assertTrue("the player should be able to play at this location : " + location, accept);
-			if (col < context.getSizeGoban()) {
-				col += 1;
+			try {
+				stateGame.play(cptCol, cptRow, this.getColor());
+			} catch (Exception e) {
+				fail(e.getMessage());
 			}
-			else {
-				if (row  <context.getSizeGoban()) {
-					row += 1;
+			
+			
+			PlayEvent eventAfter = new PlayEvent(this, PlayEvent.AFTER, location);
+			if (cptCol < context.getSizeGoban()-1) {
+				cptCol += 1;
+			} else {
+				if (cptRow  < context.getSizeGoban()-1) {
+					cptRow += 1;
 				}
 			}
+			raiseEvent(eventAfter);
 		}
 
 		@Override
@@ -143,6 +157,10 @@ public class TestCoordinator {
 		
 	}
 	
+	
+	/*
+	 * Determines the ending of arbitrarily
+	 */
 	class InternalRuleManager extends RuleManager {
 		public InternalRuleManager(Context context) {
 			super(context);
@@ -150,17 +168,17 @@ public class TestCoordinator {
 		
 		
 		public StatusCheck checkAfter(IStateGame stateGame, ILocation emplacement, IPlayer currentPlayer) {
-			System.out.println("checkAfter : " + emplacement);
 			
-			StatusCheck status = new StatusCheck();
-			status.setCanPlay(true);
-			status.setGameOver(true);
-			status.setEmplacement(emplacement);
-			status.setWinner(currentPlayer);
-			return status;
+			if ((emplacement.getCol() == 8) && (emplacement.getRow() == 8)) {
+				StatusCheck status = new StatusCheck();
+				status.setCanPlay(true);
+				status.setGameOver(true);
+				status.setEmplacement(emplacement);
+				status.setWinner(currentPlayer);
+				return status;
+			}
 
-			
-			//return super.checkAfter(stateGame, emplacement, currentPlayer);
+			return super.checkAfter(stateGame, emplacement, currentPlayer);
 		}
 	}
 	
