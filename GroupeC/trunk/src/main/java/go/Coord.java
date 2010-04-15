@@ -1,58 +1,104 @@
 package go;
 
+
 /**
- * @author Frédéric Dumonceaux
+ * @author FrÃ©dÃ©ric Dumonceaux
  *
  */
 
 
 public class Coord {
-	
-	public byte x;
-	public byte y;
-	
-	
-	/**
-	 * @param x
-	 * @param y
-	 */
-	public Coord(byte x, byte y) {
-		this.x = x;
-		this.y = y;
-	}
+
+    /**
+     * Variable coordX.
+     */
+     public byte coordX;
+
+    /**
+     * Variable coordY.
+     */
+     public byte coordY;
+
+     /**
+      * @param newcoordX coordX
+      * @param newcoordY coordY
+      */
+     public Coord(final byte newcoordX, final byte newcoordY) {
+          this.coordX = newcoordX;
+          this.coordY = newcoordY;
+     }
 
 
-	/**
-	 *  donne la position max
-	 * @param other le groupe avec lequel cherché
-	 */
-	public Coord getMaxBottomLeft(Coord other)	{
-		
-		Coord a = new Coord(x,y);
-		
-		return a;
-	}
+     /**
+      * returns max bottom-left position.
+      * @param other group with which search
+      * @return Coord a new coord
+      */
+     public final Coord getMaxBottomLeft(final Coord other) {
+
+          final byte byteB = coordX;
+          final byte byteL = coordY;
+          final byte otherX = other.coordX;
+          final byte otherY = other.coordY;
+
+          return new Coord((byteB > otherX ? byteB : otherX),
+                    (byteL < otherY ? byteL : otherY));
+     }
 
 
-	/**
-	 *  donne la position max
-	 * @param other le groupe avec lequel cherché
-	 */
-	public Coord getMaxTopRight(Coord other) {
-		
-		Coord a = new Coord(x,y);
-		
-		return a;
+     /**
+      * returns max top-right position.
+      * @param other group with which search
+      * @return Coord a nex Coord
+      */
+     public final Coord getMaxTopRight(final Coord other) {
 
-	}
+          final byte byteT = coordX;
+          final byte byteR = coordY;
+          final byte otherX = other.coordX;
+          final byte otherY = other.coordY;
 
+          return new Coord((byteT < otherX ? byteT : otherX)
+                    , (byteR > otherY ? byteR : otherY));
+     }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "(" + x + "," + y + ")";
-	}
-	
+     /**
+      * Get Y.
+      * @return coordY
+      */
+     public final byte getCoordY() {
+          return coordY;
+     }
+
+     /**
+      * Initialize Y.
+      * @param newcoordY newcoordY
+      */
+     public final void setCoordY(final byte newcoordY) {
+          this.coordY = newcoordY;
+     }
+
+     /**
+      * Get X.
+      * @return coordX
+      */
+     public final byte getCoordX() {
+          return coordX;
+     }
+
+     /**
+      * Initialize X.
+      * @param newcoordX newcoordX
+      */
+     public final void setCoordX(final byte newcoordX) {
+          this.coordX = newcoordX;
+     }
+
+     /* (non-Javadoc)
+      * @see java.lang.Object#toString()
+      */
+     @Override
+     public final String toString() {
+          return "(" + coordX + "," + coordY + ")";
+     }
 }
