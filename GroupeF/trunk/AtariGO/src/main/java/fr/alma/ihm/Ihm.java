@@ -313,7 +313,7 @@
 											LGrille, Blanc, Noir);
 									JOptionPane
 											.showMessageDialog(jFrame,
-													"Capture éffectué ! Vous avez perdu !");
+													"Capture éffectué ! Désolé... Vous avez perdu !");
 									BInterrompre.setEnabled(false);
 									IInterrompre.setEnabled(false);
 									BNouveau.setEnabled(true);
@@ -334,7 +334,7 @@
 										LGrille, Blanc, Noir);
 								JOptionPane
 										.showMessageDialog(jFrame,
-												"Capture éffectué ! Bravo vous avez gagner");
+												"Capture éffectué ! Bravo... Vous avez gagné !");
 								BInterrompre.setEnabled(false);
 								IInterrompre.setEnabled(false);
 
@@ -563,7 +563,7 @@
 			JOptionPane
 					.showMessageDialog(
 							null,
-							"Université de Nantes\nMaster 1 ALMA\nAtariGo V 1.0\nRéaliser par :\n	- ZERBITA Mohamed El Hadi\n		- Ngassa Hubert",
+							"Université de Nantes\nMaster 1 ALMA\nAtariGo V 1.0\nRéalisé par :\n	- ZERBITA Mohamed El Hadi\n		- Ngassa Hubert",
 							"AtariGo V 1.0", 1);
 		}
 

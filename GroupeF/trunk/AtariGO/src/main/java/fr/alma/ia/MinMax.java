@@ -23,7 +23,7 @@ public class MinMax {
 	 * @return le min ou max
 	 */
 	public static int execute(Arbre a){
-		return valeurMinMax(a.racine, a.getCoupsNonJouer(), a.prof);
+		return valeurMinMax(a.racine, a.remplirCoupsNonJouer(), a.prof);
 	}
 	
 	/**

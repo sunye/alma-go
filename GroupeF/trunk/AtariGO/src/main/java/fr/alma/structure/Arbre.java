@@ -14,14 +14,17 @@ import fr.alma.jeu.Couleur;
  */
 public class Arbre {
 	
+	
+
 	public Noeud racine;
 	public Grille grille;
 	public int prof;
+	public int nbNoeuds = 1;
 	
-	private ArrayList<Pion> coupsJouer;
-	private ArrayList<Pion> coupsNonJouer;
+	public ArrayList<Pion> coupsJouer;
+	public ArrayList<Pion> coupsNonJouer;
 	
-	int compteur = 0;
+	
 		
 	/**
 	 * Le constructeur de la classe
@@ -29,9 +32,9 @@ public class Arbre {
 	public Arbre(Grille grille){
 		this.racine = new Noeud(new Pion(null,new Point(-1,-1)));
 		this.grille = grille;
-		getCoupsJouer();
-		prof = getProfMax(coupsNonJouer);
-		getCoupsNonJouer();
+		this.remplirCoupsJouer();
+		this.remplirCoupsNonJouer();
+		this.prof = getProfMax(coupsNonJouer);
 	}
 	
 	/**
@@ -40,6 +43,7 @@ public class Arbre {
 	 */
 	public void remplirArbre(){
 		racine = ajouterTousLesfils(racine, coupsNonJouer, prof);
+		
 		
 	}
 	
@@ -50,7 +54,7 @@ public class Arbre {
 	 */
 	private int getProfMax(ArrayList<Pion> liste){
 		//Le nombre de coups restants max pour que l'odinateur joue le mieux possible : 7
-		return liste.size()-11;
+		return liste.size()-2;
 		
 	}
 	@SuppressWarnings("unchecked")
@@ -69,7 +73,7 @@ public class Arbre {
 			Noeud n = new Noeud(coups.get(i));
 			
 			coupsJouer.add(coups.get(i));
-			noeud.AjouterFils(n);compteur++;
+			noeud.AjouterFils(n);nbNoeuds++;
 			temp.remove(coups.get(i));
 			
 			if(temp.size()>prof){
@@ -88,7 +92,7 @@ public class Arbre {
 	/**
 	 * Retoune les coups non jouer de la grille
 	 */
-	public ArrayList<Pion> getCoupsNonJouer(){
+	public ArrayList<Pion> remplirCoupsNonJouer(){
 		coupsNonJouer = new ArrayList<Pion>();
 		 for(int i=0;i<9;i++) 
         	 for(int j=0;j<9;j++) 
@@ -100,7 +104,7 @@ public class Arbre {
 	/**
 	 * Retourne les coups jouer
 	 */
-	public ArrayList<Pion> getCoupsJouer(){
+	public ArrayList<Pion> remplirCoupsJouer(){
 		
 		coupsJouer = new ArrayList<Pion>();
 		for(int i=0;i<9;i++) 
@@ -113,4 +117,5 @@ public class Arbre {
 		return coupsJouer;
       		 
 	}
+	
 }

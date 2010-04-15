@@ -227,7 +227,7 @@ public class Jeu {
 		if(cj.size()!=0){
 		
 		
-			if (cj.size()<40){
+			if (cj.size()<81){
 				
 				setVoisins(new ArrayList<Pion>());
 				
