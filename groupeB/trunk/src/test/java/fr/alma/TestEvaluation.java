@@ -16,15 +16,12 @@ import static org.junit.Assert.*;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import fr.alma.client.action.Context;
 import fr.alma.client.action.GameLoader;
-import fr.alma.client.action.IAction;
-import fr.alma.client.action.ParamGame;
 import fr.alma.server.core.Computer;
 import fr.alma.server.core.Factory;
 import fr.alma.server.core.IPlayer;
@@ -34,12 +31,14 @@ import fr.alma.server.ia.Evaluation;
 import fr.alma.server.ia.FreedomDegrees;
 import fr.alma.server.rule.Configuration;
 
+
 public class TestEvaluation {
 
 	IStateGame stateGame = null;
 	IStateGame stateGame2 = null;
 	Evaluation evaluation = null;
 	Evaluation evaluation2 = null;
+	
 	@Before
 	public void setUp() throws Exception {
 		
@@ -47,7 +46,6 @@ public class TestEvaluation {
 		
 		jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		jf.setBounds(100, 100, 300, 360);
-		
 		
 		Context context = new Context();
 		context.setMainFrame(jf);
@@ -79,16 +77,12 @@ public class TestEvaluation {
 	public void testEvaluate() {
 		FreedomDegrees.showGobanOnConsole(stateGame);
 		int result1 = evaluation.evaluate(stateGame, null);
-		//System.out.println("Resultat de l'évalution 1 : " + result1);
-
 		
 		FreedomDegrees.showGobanOnConsole(stateGame2);
 		int result2 = evaluation2.evaluate(stateGame2, null);
-		//System.out.println("Resultat de l'évalution 2 : " + result2);
 		
 		assertEquals(result1, 5450);
 		assertEquals(result2, -4);
-
 	}
 
 }
