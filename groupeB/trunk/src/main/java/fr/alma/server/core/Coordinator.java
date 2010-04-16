@@ -70,7 +70,7 @@ public class Coordinator implements ICoordinator {
 	public void startGame() {
 		getPlayer().addPlayListener(getPlayListener());
 		getComputer().addPlayListener(getPlayListener());
-		setCurrentPlayer(getPlayer(Configuration.getColorFirstPlayer()));
+		setCurrentPlayer(getPlayer(Configuration.isColorFirstPlayer()));
 		playInThread();
 	}
 
@@ -87,13 +87,13 @@ public class Coordinator implements ICoordinator {
 		if (playListener == null) {
 			playListener = new PlayListener() {
 				@Override
-				public boolean actionPerformed(PlayEvent e) {
-					if (e.getWhen() == PlayEvent.BEFORE) {
+				public boolean actionPerformed(PlayEvent event) {
+					if (event.getWhen() == PlayEvent.BEFORE) {
 						/* Must Verify the rules */
-						if (getCurrentPlayer() != e.getPlayer())
+						if (getCurrentPlayer() != event.getPlayer())
 							return false;
 
-						return getRuleManager().checkBefore(getStateGame(), e.getEmplacement(), e.getPlayer()).isCanPlay();
+						return getRuleManager().checkBefore(getStateGame(), event.getEmplacement(), event.getPlayer()).isCanPlay();
 					}
 
 					if (graphicMode) {
@@ -109,7 +109,7 @@ public class Coordinator implements ICoordinator {
 					}
 
 					/* Control if the game is over */
-					StatusCheck status = getRuleManager().checkAfter(getStateGame(), e.getEmplacement(), getCurrentPlayer());
+					StatusCheck status = getRuleManager().checkAfter(getStateGame(), event.getEmplacement(), getCurrentPlayer());
 					if (status.isGameOver()) {
 						FreedomDegrees.showGobanOnConsole(getStateGame());
 						if (! status.isCanPlay()) {

@@ -58,18 +58,18 @@ public class Player extends AbstractPlayer {
 		if (listener == null) {
 			listener = new MouseAdapter() {
 				@Override
-				public void mouseClicked(MouseEvent e) {
-					super.mouseClicked(e);
-					int x = (int)Math.round((e.getX()-25.0)/30.0);
-					int y = (int)Math.round((e.getY()-25.0)/30.0);
+				public void mouseClicked(MouseEvent event) {
+					super.mouseClicked(event);
+					int column = (int)Math.round((event.getX()-25.0)/30.0);
+					int row = (int)Math.round((event.getY()-25.0)/30.0);
 
-					if (raiseEvent(new PlayEvent(player, PlayEvent.BEFORE, new Location(x, y)))) {
+					if (raiseEvent(new PlayEvent(player, PlayEvent.BEFORE, new Location(column, row)))) {
 						try {
-							if (stateGame.play(x, y, getColor())) {
-								raiseEvent(new PlayEvent(player, PlayEvent.AFTER, new Location(x, y)));
+							if (stateGame.play(column, row, getColor())) {
+								raiseEvent(new PlayEvent(player, PlayEvent.AFTER, new Location(column, row)));
 							}							
-						} catch (Exception e2) {
-							System.out.println("Player - Internal error : " + e2.getLocalizedMessage());
+						} catch (Exception exception) {
+							System.out.println("Player - Internal error : " + exception.getLocalizedMessage());
 						}
 
 					}

@@ -75,7 +75,7 @@ public class TestAlreadyBusy {
 		rule = new RuleAlreadyBusy();
 		stateGame = Factory.getStateGame(context);
 		location = new Location(1, 1);
-		player = new Player("name player", Configuration.getColorFirstPlayer(), null, stateGame);
+		player = new Player("name player", Configuration.isColorFirstPlayer(), null, stateGame);
 	}
 
 	@Test

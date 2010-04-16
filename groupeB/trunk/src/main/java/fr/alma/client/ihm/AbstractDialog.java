@@ -74,7 +74,7 @@ public abstract class AbstractDialog extends JDialog {
     		btnCancel.addActionListener(new ActionListener() {
     			
     			@Override
-    			public void actionPerformed(ActionEvent e) {
+    			public void actionPerformed(ActionEvent event) {
     				actionCancel();
     			}
     		});
@@ -90,7 +90,7 @@ public abstract class AbstractDialog extends JDialog {
     		btnOk.addActionListener(new ActionListener() {
     			
     			@Override
-    			public void actionPerformed(ActionEvent e) {
+    			public void actionPerformed(ActionEvent event) {
     				actionOk();
     			}
     		});

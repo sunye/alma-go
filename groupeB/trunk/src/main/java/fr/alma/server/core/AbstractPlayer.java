@@ -38,7 +38,7 @@ public abstract class AbstractPlayer implements IPlayer {
 	
 	private boolean color;
 	private String name;
-	protected List<PlayListener> listPlayerActionListener = null;
+	protected List<PlayListener> playerListeners = null;
 	
 	
 	public AbstractPlayer(String name, boolean color) {
@@ -87,10 +87,10 @@ public abstract class AbstractPlayer implements IPlayer {
 	 */
 	@Override
 	public List<PlayListener> getPlayerListeners() {
-		if (listPlayerActionListener == null) {
-			listPlayerActionListener = new Vector<PlayListener>();
+		if (playerListeners == null) {
+			playerListeners = new Vector<PlayListener>();
 		}
-		return listPlayerActionListener;
+		return playerListeners;
 	}
 
 	/**

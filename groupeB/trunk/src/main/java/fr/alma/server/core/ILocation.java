@@ -52,9 +52,9 @@ public interface ILocation {
 	
 	/**
 	 * compare two locations
-	 * @param e1
+	 * @param location
 	 * @return true if context location is the same as the location e1
 	 */
-	boolean equals(ILocation e1);
+	boolean equals(ILocation location);
 	
 }

@@ -42,7 +42,7 @@ public class TestConfiguration {
 	
 	@Test
 	public void testFirstColor() {
-		assertTrue("not good start color", Configuration.getColorFirstPlayer() == Configuration.BLACK);
+		assertTrue("not good start color", Configuration.isColorFirstPlayer() == Configuration.BLACK);
 		assertTrue("the level of search depth in the tree is incorrect", Configuration.getMaxDeepLevel(6) == 6);
 		assertTrue("the level of search depth in the tree is incorrect", Configuration.getMaxDeepLevel(10) <=  5);
 	}

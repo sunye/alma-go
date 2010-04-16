@@ -87,8 +87,8 @@ public class TestCoordinator {
 		context.setParamGame(param);
 		rule = new RuleSuicide();
 		stateGame = Factory.getStateGame(context);
-		player1 = new InternalPlayer("name player 1", Configuration.getColorFirstPlayer());
-		player2 = new InternalPlayer("name player 2", ! Configuration.getColorFirstPlayer());
+		player1 = new InternalPlayer("name player 1", Configuration.isColorFirstPlayer());
+		player2 = new InternalPlayer("name player 2", ! Configuration.isColorFirstPlayer());
 		context.setComputer(player1);
 		context.setPlayer(player2);
 		context.setStateGame(stateGame);

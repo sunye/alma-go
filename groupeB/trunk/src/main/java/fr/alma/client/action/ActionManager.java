@@ -64,7 +64,7 @@ public class ActionManager {
 		if (actionNew == null) {
 			actionNew = new AbstractAction("New game") {
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent event) {
 					Factory.getIHMParam(context).setVisible(true);
 				}
 			};
@@ -79,7 +79,7 @@ public class ActionManager {
 		if (actionOpen == null) {
 			actionOpen = new AbstractAction("Open game") {
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent event) {
 					System.out.println("open");					
 				}
 			};
@@ -94,7 +94,7 @@ public class ActionManager {
 		if (actionSave == null) {
 			actionSave = new AbstractAction("Save game") {
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent event) {
 					System.out.println("save");
 				}
 			};
@@ -109,7 +109,7 @@ public class ActionManager {
 		if (actionSaveAs == null) {
 			actionSaveAs = new AbstractAction("Save game as") {
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent event) {
 					System.out.println("saveAs");					
 				}
 			};
@@ -124,7 +124,7 @@ public class ActionManager {
 		if (actionExit == null) {
 			actionExit = new AbstractAction("Exit") {
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent event) {
 					System.exit(0);				
 				}
 			};
@@ -138,7 +138,7 @@ public class ActionManager {
 		if (actionAbout == null) {
 			actionAbout = new AbstractAction("About") {
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent event) {
 					System.out.println("about");					
 				}
 			};

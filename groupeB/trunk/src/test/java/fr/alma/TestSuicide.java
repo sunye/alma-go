@@ -74,8 +74,8 @@ public class TestSuicide {
 		context.setParamGame(param);
 		rule = new RuleSuicide();
 		stateGame = Factory.getStateGame(context);
-		player1 = new Player("name player 1", Configuration.getColorFirstPlayer(), null, stateGame);
-		player2 = new Player("name player 2", ! Configuration.getColorFirstPlayer(), null, stateGame);
+		player1 = new Player("name player 1", Configuration.isColorFirstPlayer(), null, stateGame);
+		player2 = new Player("name player 2", ! Configuration.isColorFirstPlayer(), null, stateGame);
 	}
 
 	@Test

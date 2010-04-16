@@ -70,14 +70,14 @@ public class IHMParam extends AbstractDialog {
 	
 	private JTextField tfTimeLimit;
 	
-	private JCheckBox chkbPossibilityInterruption;
+	private JCheckBox chkbInterruption;
 	private JCheckBox chkbAssistant;
 	private JComboBox cbGrid;
 	private JComboBox cbColorComputer;
 	private JComboBox cbOpponent;
 	
-	private JTextField tfTargetCaptureComputer;
-	private JTextField tfTargetCapturePlayer;
+	private JTextField tfmaxCatchComputer;
+	private JTextField tfmaxCatchPlayer;
 	
 	private Context context = null;
 	private Goban goban = null;
@@ -108,11 +108,11 @@ public class IHMParam extends AbstractDialog {
         Tools.addFocusListener(tfTimeLimit);
         panel.add(tfTimeLimit);
 
-        JLabel labelPossibilityInterruption = new JLabel("Possibility to interrupt the calculations : ");
-        panel.add(labelPossibilityInterruption);
+        JLabel lblInterruption = new JLabel("Possibility to interrupt the calculations : ");
+        panel.add(lblInterruption);
         
-        chkbPossibilityInterruption = new JCheckBox();
-        panel.add(chkbPossibilityInterruption);
+        chkbInterruption = new JCheckBox();
+        panel.add(chkbInterruption);
 
         JLabel labelGridSize = new JLabel("Grid size : ");
         panel.add(labelGridSize);
@@ -146,21 +146,21 @@ public class IHMParam extends AbstractDialog {
         JLabel labelTargetCaptureComputer = new JLabel("Target capture opponent : ");
         panel.add(labelTargetCaptureComputer);
         
-        tfTargetCaptureComputer = new JTextField(5);
-        tfTargetCaptureComputer.setText("1");
-        tfTargetCaptureComputer.setEnabled(false);
-        Tools.addFocusListener(tfTargetCaptureComputer);
-        panel.add(tfTargetCaptureComputer);
+        tfmaxCatchComputer = new JTextField(5);
+        tfmaxCatchComputer.setText("1");
+        tfmaxCatchComputer.setEnabled(false);
+        Tools.addFocusListener(tfmaxCatchComputer);
+        panel.add(tfmaxCatchComputer);
 
-        JLabel labelTargetCapturePlayer = new JLabel("Target capture player : ");
-        panel.add(labelTargetCapturePlayer);
+        JLabel lblmaxCatchPlayer = new JLabel("Target capture player : ");
+        panel.add(lblmaxCatchPlayer);
         
-        tfTargetCapturePlayer = new JTextField(5);
-        tfTargetCapturePlayer.setText("1");
-        tfTargetCapturePlayer.setEnabled(false);
+        tfmaxCatchPlayer = new JTextField(5);
+        tfmaxCatchPlayer.setText("1");
+        tfmaxCatchPlayer.setEnabled(false);
         
-        Tools.addFocusListener(tfTargetCapturePlayer);
-        panel.add(tfTargetCapturePlayer);
+        Tools.addFocusListener(tfmaxCatchPlayer);
+        panel.add(tfmaxCatchPlayer);
 
         SpringUtilities.makeCompactGrid(panel,
                 8, 2,		 //rows, cols
@@ -185,8 +185,8 @@ public class IHMParam extends AbstractDialog {
 	}
 
 
-	public boolean getPossibilityInterruption() {
-		return chkbPossibilityInterruption.isSelected();
+	public boolean isPossibilityInterruption() {
+		return chkbInterruption.isSelected();
 	}
 	
 	public int getGridSize() {
@@ -219,12 +219,12 @@ public class IHMParam extends AbstractDialog {
 	}
 
 	public int getTargetCaptureComputer() {
-		return new Integer(tfTargetCaptureComputer.getText()).intValue();
+		return new Integer(tfmaxCatchComputer.getText()).intValue();
 	}
 	
 	
 	public int getTargetCapturePlayer() {
-		return new Integer(tfTargetCapturePlayer.getText()).intValue();
+		return new Integer(tfmaxCatchPlayer.getText()).intValue();
 	}
 	
 	
@@ -267,7 +267,7 @@ public class IHMParam extends AbstractDialog {
 		ParamGame param = new ParamGame();
 		param.setColorComputer(getColorComputer());
 		param.setSizeGoban(getGridSize());
-		param.setPossibilityInterruption(getPossibilityInterruption());
+		param.setPossibilityInterruption(isPossibilityInterruption());
 		param.setAssistant(getAssitant());
 		param.setOpponent(getOpponent());
 		param.setTargetCaptureComputer(getTargetCaptureComputer());
@@ -316,7 +316,7 @@ public class IHMParam extends AbstractDialog {
 		goban.revalidate();
 		
 		IPlayer computer = new Computer("Computer", context);
-		IPlayer player = new Player("Player", ! context.getParamGame().getColorComputer(), goban, stateGame);
+		IPlayer player = new Player("Player", ! context.getParamGame().isColorComputer(), goban, stateGame);
 
 		IEvaluation evaluation = Factory.getEvaluation(context);
 		IStrategy strategy = Factory.getStrategy(context);
