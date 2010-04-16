@@ -76,7 +76,7 @@ public class ParamGame {
 	}
 	
 	/**
-	 * @return
+	 * @return  the size of the goban
 	 */
 	public int getSizeGoban() {
 		return sizeGoban;
@@ -118,7 +118,7 @@ public class ParamGame {
 	}
 
 	/**
-	 * @return
+	 * @return true if the color is the computer
 	 */
 	public boolean isColorComputer() {
 		return colorComputer;

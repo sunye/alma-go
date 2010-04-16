@@ -56,7 +56,9 @@ public class RuleManager {
 	 * Check if the player can played at this emplacement
 	 * This function must be very fast because 
 	 * it is called by alpha beta procedure
+	 * @param stateGame
 	 * @param emplacement
+	 * @param currentPlayer
 	 * @return
 	 */
 	public StatusCheck checkBefore(IStateGame stateGame, ILocation emplacement, IPlayer currentPlayer) {
