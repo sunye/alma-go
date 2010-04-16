@@ -18,7 +18,6 @@ public class TestGrille {
 		assertTrue(grille.Contenu[0][1].position.equals(new Point(0,1)));
 		assertTrue(grille.Contenu[8][8].position.equals(new Point(8,8)));
 	}
-
 		
 	@Test
 	public void testinitHashMap(){

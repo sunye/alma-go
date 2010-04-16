@@ -38,17 +38,18 @@ public class TestArbre {
 		Grille grille = new Grille();
 		Arbre arbre = new Arbre(grille);
 		
-		assertTrue(arbre.remplirCoupsNonJouer().size() == 81);
+		assertTrue(arbre.coupsNonJouer.size() == 81);
 		
 	}
 
 	@Test
-	public void testGetCoupsJouer() {
+	public void testremplirCoupsJouer() {
 		
 		Grille grille = new Grille();
 		Arbre arbre = new Arbre(grille);
+		arbre.remplirCoupsJouer();
 		
-		assertTrue(arbre.remplirCoupsJouer().size() == 0);
+		assertTrue(arbre.coupsJouer.size() == 0);
 	}
 
 }

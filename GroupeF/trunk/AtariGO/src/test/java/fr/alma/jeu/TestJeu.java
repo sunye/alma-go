@@ -8,9 +8,8 @@ import fr.alma.jeu.Pion;
 import java.awt.Point;
 import fr.alma.jeu.Tour;
 import org.junit.Test;
-import static fr.alma.jeu.Jeu.SimulerJeu;
-import static fr.alma.jeu.Jeu.miseAjourGrilleApresCapture;
-import static fr.alma.jeu.Jeu.jouerMachine;
+import static fr.alma.jeu.Jeu.*;
+
 import static fr.alma.jeu.Jeu.VALIDE;
 
 
@@ -26,7 +25,7 @@ public class TestJeu {
 	 */
 	@Test
 	public void testSimulerJeu() {
-		assertTrue(SimulerJeu(new Grille(),new Point(4,6), Tour.BLANC)==VALIDE);
+		assertTrue(SimulerJeu(new Grille(),new Point(4,6), Tour.NOIR)==VALIDE);
 	}
 
 	/**
@@ -35,19 +34,8 @@ public class TestJeu {
 	@Test
 	public void testJouerMachine() {
 		Grille g = new Grille();
-		g.Contenu[3][2]=new Pion(Couleur.NOIR, new Point(3,2));
-		assertTrue(jouerMachine(g, Tour.BLANC).equals(new Point(3,3)));
-	}
-
-	/**
-	 * Test method for {@link fr.alma.jeu.Jeu#miseAjourGrilleApresCapture(fr.alma.jeu.Grille)}.
-	 */
-	@Test
-	public void testMiseAjourGrilleApresCapture() {
-		
-		Grille g = new Grille();
-		
-		assertEquals(miseAjourGrilleApresCapture(g).Contenu[0][1], new Grille());
+		g.Contenu[4][2] = new Pion(Couleur.NOIR, new Point(4,2));
+		assertFalse(jouerMachine(g, Tour.NOIR).equals(new Point(4,3)));
 	}
 
 }
