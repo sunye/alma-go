@@ -46,10 +46,10 @@ public class SpringUtilities {
      * A debugging utility that prints to stdout the component's
      * minimum, preferred, and maximum sizes.
      */
-    public static void printSizes(Component c) {
-        System.out.println("minimumSize = " + c.getMinimumSize());
-        System.out.println("preferredSize = " + c.getPreferredSize());
-        System.out.println("maximumSize = " + c.getMaximumSize());
+    public static void printSizes(Component component) {
+        System.out.println("minimumSize = " + component.getMinimumSize());
+        System.out.println("preferredSize = " + component.getPreferredSize());
+        System.out.println("maximumSize = " + component.getMaximumSize());
     }
 
     /**
@@ -150,8 +150,8 @@ public class SpringUtilities {
                                                 Container parent,
                                                 int cols) {
         SpringLayout layout = (SpringLayout) parent.getLayout();
-        Component c = parent.getComponent(row * cols + col);
-        return layout.getConstraints(c);
+        Component component = parent.getComponent(row * cols + col);
+        return layout.getConstraints(component);
     }
 
     /**
@@ -182,7 +182,7 @@ public class SpringUtilities {
         }
 
         //Align all cells in each column and make them the same width.
-        Spring x = Spring.constant(initialX);
+        Spring springX = Spring.constant(initialX);
         for (int c = 0; c < cols; c++) {
             Spring width = Spring.constant(0);
             for (int r = 0; r < rows; r++) {
@@ -193,14 +193,14 @@ public class SpringUtilities {
             for (int r = 0; r < rows; r++) {
                 SpringLayout.Constraints constraints =
                         getConstraintsForCell(r, c, parent, cols);
-                constraints.setX(x);
+                constraints.setX(springX);
                 constraints.setWidth(width);
             }
-            x = Spring.sum(x, Spring.sum(width, Spring.constant(xPad)));
+            springX = Spring.sum(springX, Spring.sum(width, Spring.constant(xPad)));
         }
 
         //Align all cells in each row and make them the same height.
-        Spring y = Spring.constant(initialY);
+        Spring springY = Spring.constant(initialY);
         for (int r = 0; r < rows; r++) {
             Spring height = Spring.constant(0);
             for (int c = 0; c < cols; c++) {
@@ -211,15 +211,15 @@ public class SpringUtilities {
             for (int c = 0; c < cols; c++) {
                 SpringLayout.Constraints constraints =
                         getConstraintsForCell(r, c, parent, cols);
-                constraints.setY(y);
+                constraints.setY(springY);
                 constraints.setHeight(height);
             }
-            y = Spring.sum(y, Spring.sum(height, Spring.constant(yPad)));
+            springY = Spring.sum(springY, Spring.sum(height, Spring.constant(yPad)));
         }
 
         //Set the parent's size.
         SpringLayout.Constraints pCons = layout.getConstraints(parent);
-        pCons.setConstraint(SpringLayout.SOUTH, y);
-        pCons.setConstraint(SpringLayout.EAST, x);
+        pCons.setConstraint(SpringLayout.SOUTH, springY);
+        pCons.setConstraint(SpringLayout.EAST, springX);
     }
 }

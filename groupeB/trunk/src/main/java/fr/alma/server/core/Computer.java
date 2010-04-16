@@ -51,7 +51,7 @@ public class Computer extends AbstractPlayer {
 	private Context context = null;
 	
 	public Computer(String name, Context context) {
-		super(name, context.getParamGame().getColorComputer());
+		super(name, context.getParamGame().isColorComputer());
 		this.context = context;
 	}
 
@@ -73,8 +73,8 @@ public class Computer extends AbstractPlayer {
 					try {
 						strategy.getStateGame().play(location.getCol(), location.getRow(), getColor());
 						context.getStatusBar().setText("Last position : " + location);
-					} catch (Exception e) {
-						System.out.println("Computer - Internal error : " + e.getLocalizedMessage());
+					} catch (Exception exception) {
+						System.out.println("Computer - Internal error : " + exception.getLocalizedMessage());
 					}
 				} else {
 					context.getStatusBar().setText("");

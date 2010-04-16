@@ -54,10 +54,10 @@ public class Goban extends JPanel {
 	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
 	 */
 	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Grid.paintGrid(g, context);
-		StoneRepresentation.paintStone(g, context);
+	protected void paintComponent(Graphics graph) {
+		super.paintComponent(graph);
+		Grid.paintGrid(graph, context);
+		StoneRepresentation.paintStone(graph, context);
 	}
 
 }

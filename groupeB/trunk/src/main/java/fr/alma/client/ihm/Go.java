@@ -83,8 +83,8 @@ public class Go extends JFrame {
 	private KeyListener getKeyListener() {
 		if (keyListener == null) {
 			keyListener = new KeyAdapter() {
-				public void keyPressed(KeyEvent e) {
-					if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				public void keyPressed(KeyEvent event) {
+					if (event.getKeyCode() == KeyEvent.VK_ESCAPE) {
 						actionEscape.run();
 					}	
 				}

@@ -35,12 +35,12 @@ package fr.alma.client.action;
 public class ParamGame {
 	
 	private int timeLimite;
-	private boolean possibilityInterruption;
+	private boolean possiblyToStop;
 	private int sizeGoban;
 	private boolean colorComputer;
 	private boolean assistant;
-	private int targetCaptureComputer;
-	private int targetCapturePlayer;
+	private int maxCaptureComputer;
+	private int maxCapturePlayer;
 	private boolean opponent;
 	
 	
@@ -64,7 +64,7 @@ public class ParamGame {
 	 * @return true if the user can interrupt the computer calculation
 	 */
 	public boolean isPossibilityInterruption() {
-		return possibilityInterruption;
+		return possiblyToStop;
 	}
 	
 	
@@ -72,7 +72,7 @@ public class ParamGame {
 	 * @param possibilityInterruption
 	 */
 	public void setPossibilityInterruption(boolean possibilityInterruption) {
-		this.possibilityInterruption = possibilityInterruption;
+		this.possiblyToStop = possibilityInterruption;
 	}
 	
 	/**
@@ -93,34 +93,34 @@ public class ParamGame {
 	 * @return limit number of target capture of the computer
 	 */
 	public int getTargetCaptureComputer() {
-		return targetCaptureComputer;
+		return maxCaptureComputer;
 	}
 	
 	/**
 	 * @param targetCaptureComputer
 	 */
 	public void setTargetCaptureComputer(int targetCaptureComputer) {
-		this.targetCaptureComputer = targetCaptureComputer;
+		this.maxCaptureComputer = targetCaptureComputer;
 	}
 	
 	/**
 	 * @return limit number of target capture of the player
 	 */
 	public int getTargetCapturePlayer() {
-		return targetCapturePlayer;
+		return maxCapturePlayer;
 	}
 	
 	/**
 	 * @param targetCapturePlayer
 	 */
 	public void setTargetCapturePlayer(int targetCapturePlayer) {
-		this.targetCapturePlayer = targetCapturePlayer;
+		this.maxCapturePlayer = targetCapturePlayer;
 	}
 
 	/**
 	 * @return
 	 */
-	public boolean getColorComputer() {
+	public boolean isColorComputer() {
 		return colorComputer;
 	}
 
@@ -134,7 +134,7 @@ public class ParamGame {
 	/**
 	 * @return true if assistant mode is enabled
 	 */
-	public boolean getAssistant(){
+	public boolean isAssistant(){
 		return assistant;
 	}
 
@@ -147,9 +147,9 @@ public class ParamGame {
 	}
 	
 	/**
-	 * @return true si the second player opponent is the computer, false if human
+	 * @return true if the second player opponent is the computer, false if human
 	 */
-	public boolean getOpponent(){
+	public boolean isOpponent(){
 		return opponent;
 	}
 	

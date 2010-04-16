@@ -50,51 +50,51 @@ public class FreedomDegrees {
 	 * work with countCaseFreeDegrees
 	 * @param stateGame
 	 * @param player
-	 * @param e
-	 * @param locationsAlreadyVisited
+	 * @param location
+	 * @param alreadyVisit
 	 * @return number degrees of freedom of the player stone location e and its group
 	 */
-	public static int countFreeDegrees(IStateGame stateGame, boolean player, ILocation e, List<ILocation> locationsAlreadyVisited) {
+	public static int countFreeDegrees(IStateGame stateGame, boolean player, ILocation location, List<ILocation> alreadyVisit) {
 		int nbFreeDegrees = 0;	
-		locationsAlreadyVisited.add(e);
+		alreadyVisit.add(location);
 
 		//case Top
-		int rowTop = (e.getRow() - 1);
-		nbFreeDegrees += countCaseFreeDegrees(new Location(e.getCol(), rowTop), stateGame, player, locationsAlreadyVisited);
+		int rowTop = (location.getRow() - 1);
+		nbFreeDegrees += countCaseFreeDegrees(new Location(location.getCol(), rowTop), stateGame, player, alreadyVisit);
 
 		//case Bottom
-		int rowBottom = (e.getRow() + 1);
-		nbFreeDegrees += countCaseFreeDegrees(new Location(e.getCol(), rowBottom), stateGame, player, locationsAlreadyVisited);
+		int rowBottom = (location.getRow() + 1);
+		nbFreeDegrees += countCaseFreeDegrees(new Location(location.getCol(), rowBottom), stateGame, player, alreadyVisit);
 
 		//case Left
-		int colLeft = (e.getCol() -1);
-		nbFreeDegrees += countCaseFreeDegrees(new Location(colLeft, e.getRow()), stateGame, player, locationsAlreadyVisited);
+		int colLeft = (location.getCol() -1);
+		nbFreeDegrees += countCaseFreeDegrees(new Location(colLeft, location.getRow()), stateGame, player, alreadyVisit);
 
 		//case Right
-		int colRight = (e.getCol() +1);
-		nbFreeDegrees += countCaseFreeDegrees(new Location(colRight, e.getRow()), stateGame, player, locationsAlreadyVisited);
+		int colRight = (location.getCol() +1);
+		nbFreeDegrees += countCaseFreeDegrees(new Location(colRight, location.getRow()), stateGame, player, alreadyVisit);
 		
 		return nbFreeDegrees;
 	}
 
 	/**
 	 * work with countFreeDegrees
-	 * @param e
+	 * @param location
 	 * @param stateGame
 	 * @param player
-	 * @param locationsAlreadyVisited
+	 * @param alreadyVisited
 	 * @return the number of freedom degrees for a stone location
 	 */
 
-	private static int countCaseFreeDegrees(ILocation e, IStateGame stateGame, boolean player, List<ILocation> locationsAlreadyVisited){
+	private static int countCaseFreeDegrees(ILocation location, IStateGame stateGame, boolean player, List<ILocation> alreadyVisited){
 		int nbFreeDegrees = 0;
-		if (stateGame.onGoban(e.getCol(), e.getRow())) {
-			if (!((ILocation)e).isIn(locationsAlreadyVisited)) {
-				if (stateGame.isFree(e.getCol(), e.getRow())) {
+		if (stateGame.onGoban(location.getCol(), location.getRow())) {
+			if (!((ILocation)location).isIn(alreadyVisited)) {
+				if (stateGame.isFree(location.getCol(), location.getRow())) {
 					nbFreeDegrees++;
-					locationsAlreadyVisited.add(e);
-				} else if (stateGame.getIntersection(e.getCol(), e.getRow()).equals(player)) {
-					nbFreeDegrees += countFreeDegrees(stateGame, player, e, locationsAlreadyVisited);
+					alreadyVisited.add(location);
+				} else if (stateGame.getIntersection(location.getCol(), location.getRow()).equals(player)) {
+					nbFreeDegrees += countFreeDegrees(stateGame, player, location, alreadyVisited);
 				}
 			}
 		}
@@ -131,37 +131,37 @@ public class FreedomDegrees {
 
 	/**
 	 * @param coordinator
-	 * @param e is the location chosen by the current player
+	 * @param location is the location chosen by the current player
 	 * @return 0 if the player capturing opponent stones
 	 */
-	public static int hasCapturedWithThisEmplacement(IStateGame stateGame, ILocation e, IPlayer currentPlayer) {
+	public static int hasCapturedWithThisEmplacement(IStateGame stateGame, ILocation location, IPlayer currentPlayer) {
 		int hasFreedom = 999;
 		Boolean otherIPlayer = ! currentPlayer.getColor();
 		List<ILocation> emplacements = new ArrayList<ILocation>();
-		emplacements.add(e);
+		emplacements.add(location);
 		//case Top
-		int rowTop = (e.getRow() - 1);
+		int rowTop = (location.getRow() - 1);
 
-		if (stateGame.onGoban(e.getCol(), rowTop)) {
-			hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Location(e.getCol(), rowTop), emplacements);
+		if (stateGame.onGoban(location.getCol(), rowTop)) {
+			hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Location(location.getCol(), rowTop), emplacements);
 		}
 		if (hasFreedom != 0) {
 			//case Bottom
-			int rowBottom = (e.getRow() + 1);
-			if (stateGame.onGoban(e.getCol(), rowBottom)) {
-				hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Location(e.getCol(), rowBottom), emplacements);
+			int rowBottom = (location.getRow() + 1);
+			if (stateGame.onGoban(location.getCol(), rowBottom)) {
+				hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Location(location.getCol(), rowBottom), emplacements);
 			}
 			if (hasFreedom != 0) {
 				//case Left
-				int colLeft = (e.getCol() -1);
-				if(stateGame.onGoban(colLeft, e.getRow())) {
-					hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Location(colLeft, e.getRow()), emplacements);
+				int colLeft = (location.getCol() -1);
+				if(stateGame.onGoban(colLeft, location.getRow())) {
+					hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Location(colLeft, location.getRow()), emplacements);
 				}
 				if (hasFreedom != 0) {
 					//case Right
-					int colRight = (e.getCol() +1);
-					if(stateGame.onGoban(colRight, e.getRow())) {
-						hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Location(colRight, e.getRow()), emplacements);
+					int colRight = (location.getCol() +1);
+					if(stateGame.onGoban(colRight, location.getRow())) {
+						hasFreedom = checkOpponentHasFreedom(stateGame, otherIPlayer, new Location(colRight, location.getRow()), emplacements);
 					}
 				}
 			}
@@ -173,20 +173,20 @@ public class FreedomDegrees {
 	 * Require that the opponentEmplacement tested must exist on the goban
 	 * @param coordinator
 	 * @param otherIPlayer
-	 * @param opponentEmplacement
-	 * @param locationsAlreadyVisited
+	 * @param opLocation opponent location
+	 * @param alreadyVisited
 	 * @return the number of freedom degrees of the opponent
 	 */
-	public static int checkOpponentHasFreedom(IStateGame stateGame, Boolean otherIPlayer, ILocation opponentEmplacement, List<ILocation> locationsAlreadyVisited){
+	public static int checkOpponentHasFreedom(IStateGame stateGame, Boolean otherIPlayer, ILocation opLocation, List<ILocation> alreadyVisited){
 		int hasFreedom = 999;
 		// if the opponentEmplacement have been already tested
-		if (!((opponentEmplacement).isIn(locationsAlreadyVisited))) {
-			locationsAlreadyVisited.add(opponentEmplacement);
+		if (!((opLocation).isIn(alreadyVisited))) {
+			alreadyVisited.add(opLocation);
 			//if opponentEmplacement is not a free Emplacement
-			if (!stateGame.isFree(opponentEmplacement.getCol(), opponentEmplacement.getRow())) {
+			if (!stateGame.isFree(opLocation.getCol(), opLocation.getRow())) {
 				// if opponentEmplacement is the opponent player
-				if (stateGame.getIntersection(opponentEmplacement.getCol(), opponentEmplacement.getRow()).equals(otherIPlayer)) {
-					hasFreedom = countFreeDegrees(stateGame, otherIPlayer, opponentEmplacement, new ArrayList<ILocation>()); 
+				if (stateGame.getIntersection(opLocation.getCol(), opLocation.getRow()).equals(otherIPlayer)) {
+					hasFreedom = countFreeDegrees(stateGame, otherIPlayer, opLocation, new ArrayList<ILocation>()); 
 				}
 			}
 		}

@@ -42,36 +42,36 @@ public class Grid {
 	private static BufferedImage[] arrayImage = new BufferedImage[10];
 
 	
-	public static void paintGrid(Graphics g, Context context) { 
+	public static void paintGrid(Graphics graph, Context context) { 
 		for (int x = 0; x < context.getSizeGoban(); x++)
 			for (int y = 0; y < context.getSizeGoban(); y++) {
 				BufferedImage image = getImage(x, y, context);
-				g.drawImage(image, 10+(image.getWidth()*x), 10+(image.getHeight()*y), null);
+				graph.drawImage(image, 10+(image.getWidth()*x), 10+(image.getHeight()*y), null);
 			}
 	}
 	
 	
-	public static BufferedImage getImage(int x, int y, Context context) {
+	public static BufferedImage getImage(int col, int row, Context context) {
 		int indice = 0;
 
-		if (y == 0) {
-			if (x == 0)
+		if (row == 0) {
+			if (col == 0)
 				indice = 1;
-			else if (x == context.getSizeGoban()-1)
+			else if (col == context.getSizeGoban()-1)
 				indice = 3;
 			else 
 				indice = 2;
-		} else if (y == context.getSizeGoban()-1) {
-			if (x == 0)
+		} else if (row == context.getSizeGoban()-1) {
+			if (col == 0)
 				indice = 7;
-			else if (x == context.getSizeGoban()-1)
+			else if (col == context.getSizeGoban()-1)
 				indice = 9;
 			else 
 				indice = 8;
 		} else {
-			if (x == 0)
+			if (col == 0)
 				indice = 4;
-			else if (x == context.getSizeGoban()-1)
+			else if (col == context.getSizeGoban()-1)
 				indice = 6;
 			else
 				indice = 5;

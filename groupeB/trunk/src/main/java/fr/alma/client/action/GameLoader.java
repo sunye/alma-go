@@ -66,18 +66,18 @@ public class GameLoader {
 	public void load(String fileName, Context context) {
 		ParamGame param = new ParamGame();
 		File file = new File(fileName);
-		Scanner sc = null;
+		Scanner scan = null;
 		try {
-			sc = new Scanner(file);
+			scan = new Scanner(file);
 
 			String line = null;
-			int i = 0;
-			while (sc.hasNextLine() && i < GAME_PARAMETERS+1) {
-				line = sc.nextLine();
+			int lineNumber = 0;
+			while (scan.hasNextLine() && lineNumber < GAME_PARAMETERS+1) {
+				line = scan.nextLine();
 				line = line.substring(line.indexOf('=')+1, line.length());
 
 				if (line != null){
-					switch (i){
+					switch (lineNumber){
 					case 0 : param.setTimeLimite(12); break;
 					case 1 : param.setPossibilityInterruption(Boolean.parseBoolean(line)); break;
 					case 2 : 
@@ -102,23 +102,23 @@ public class GameLoader {
 					default : break;
 					}
 				}
-				i++;
+				lineNumber++;
 
 			}
 
 
 			Boolean[][] intersection = new Boolean[param.getSizeGoban()][param.getSizeGoban()];
-			i = 0;
-			while (sc.hasNextLine() && i < param.getSizeGoban()) {
-				line = sc.nextLine(); // read the current line
+			lineNumber = 0;
+			while (scan.hasNextLine() && lineNumber < param.getSizeGoban()) {
+				line = scan.nextLine(); // read the current line
 				if (line != null)
 					for (int j = 0; j <  param.getSizeGoban(); j++) {
-						if (line.charAt(j) == 'x') intersection[j][i] = false;
-						else if (line.charAt(j)=='o') intersection[j][i] = true;
+						if (line.charAt(j) == 'x') intersection[j][lineNumber] = false;
+						else if (line.charAt(j)=='o') intersection[j][lineNumber] = true;
 					}
-				i++; // to treat the next line
+				lineNumber++; // to treat the next line
 			}
-			sc.close();
+			scan.close();
 			context.setParamGame(param);
 			IStateGame stateGame = Factory.getStateGame(context);
 			context.setStateGame(stateGame);
@@ -136,7 +136,7 @@ public class GameLoader {
 			context.getGoban().revalidate();
 
 			IPlayer computer = new Computer("Computer", context);
-			IPlayer player = new Player("Player", ! context.getParamGame().getColorComputer(), context.getGoban(), stateGame);
+			IPlayer player = new Player("Player", ! context.getParamGame().isColorComputer(), context.getGoban(), stateGame);
 
 			IEvaluation evaluation = Factory.getEvaluation(context);
 			IStrategy strategy = Factory.getStrategy(context);

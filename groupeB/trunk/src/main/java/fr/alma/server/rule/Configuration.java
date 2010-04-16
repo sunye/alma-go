@@ -40,7 +40,7 @@ public class Configuration {
 	/**
 	 * @return the color which begin the game
 	 */
-	public static boolean getColorFirstPlayer() {
+	public static boolean isColorFirstPlayer() {
 		return BLACK;
 	}
 	

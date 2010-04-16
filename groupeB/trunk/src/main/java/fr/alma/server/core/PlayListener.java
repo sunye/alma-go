@@ -35,5 +35,5 @@ public interface PlayListener extends EventListener {
 	/**
 	 * Invoked when an action occurs.
 	 */
-	public boolean actionPerformed(PlayEvent e);
+	public boolean actionPerformed(PlayEvent event);
 }

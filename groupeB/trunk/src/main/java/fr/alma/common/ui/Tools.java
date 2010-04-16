@@ -54,10 +54,10 @@ public class Tools {
 	
 	
 	public static void center(Window win) {
-		int x = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth() - win.getWidth()) / 2;
-		int y = (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight() - win.getHeight()) / 2;
+		int width = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth() - win.getWidth()) / 2;
+		int height = (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight() - win.getHeight()) / 2;
 
-		win.setLocation(x, y);
+		win.setLocation(width, height);
 	}
 	
 	
@@ -70,9 +70,9 @@ public class Tools {
 	
 	/**
 	 * Manage the focus on all text fields
-	 * @param tf
+	 * @param textf
 	 */
-	public static void addFocusListener(JTextField tf) {
+	public static void addFocusListener(JTextField textf) {
 		if (focusListener == null) {
 			
 			focusListener = new FocusListener() {
@@ -87,7 +87,7 @@ public class Tools {
 				}
 			};	
 		}
-		tf.addFocusListener(focusListener);
+		textf.addFocusListener(focusListener);
 	}
 	
 	
