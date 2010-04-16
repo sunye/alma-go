@@ -4,7 +4,7 @@
   <groupId>fr.alma</groupId>
   <artifactId>GameGo</artifactId>
   <packaging>jar</packaging>
-  <version>GameGo-v1.0</version>
+  <version>1.0</version>
   <description>Atari-Go game developed for the project in the AI Module</description>
   <name>Game Go</name>
   <url>http://maven.apache.org</url>
@@ -85,6 +85,36 @@
           <goals>install</goals>
        </configuration>
     </plugin>
+    
+    <plugin>
+	 <groupId>org.apache.maven.plugins</groupId>
+		 <artifactId>maven-jar-plugin</artifactId>
+		 <configuration>
+			<archive>
+				<manifest>
+					<addClasspath>true</addClasspath>
+	 				<mainClass>fr.alma.client.ihm.Go</mainClass>
+					<packageName>fr.alma</packageName>
+ 	               </manifest>
+	 		</archive>
+	 		
+		 </configuration>
+	 </plugin>
+	 
+	 <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <configuration>
+                    <descriptorRefs>
+                            <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                            <manifest>
+                                    <mainClass>fr.alma.client.ihm.Go</mainClass>
+                            </manifest>
+                    </archive>
+            </configuration>
+    </plugin>
 
     </plugins>
   </build>
@@ -101,6 +131,7 @@
 	          <targetJdk>1.6</targetJdk> 
 	          <rulesets>
                   <ruleset>/rulesets/sunsecure.xml</ruleset> 
+                  <ruleset>/rulesets/naming.xml</ruleset>
 	          </rulesets>
 		  </configuration>
 	   	</plugin>
