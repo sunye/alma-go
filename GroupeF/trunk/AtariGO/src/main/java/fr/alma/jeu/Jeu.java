@@ -354,7 +354,9 @@ public class Jeu {
 		
 		Grille other = new Grille();
 		LpionsCapture = new ArrayList<Pion>();
-		
+		if(pionCapture==null)
+			return new Grille();
+		else{
 		DeterminerVoisinsG(g, pionCapture);
 		
 		for(int i=0;i<9;i++){
@@ -367,6 +369,7 @@ public class Jeu {
 		}
 		
 		return other;
+		}
 	}
 
 }
