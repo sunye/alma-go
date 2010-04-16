@@ -129,8 +129,8 @@ public class IHMParam extends AbstractDialog {
         cbOpponent.setEnabled(false);
         panel.add(cbOpponent);
 
-        JLabel labelColorComputer = new JLabel("Color opponent : ");
-        panel.add(labelColorComputer);
+        JLabel lblColorC = new JLabel("Color opponent : ");
+        panel.add(lblColorC);
         
         cbColorComputer = new JComboBox(LIST_COLOR);
         cbColorComputer.setSelectedIndex(0);
