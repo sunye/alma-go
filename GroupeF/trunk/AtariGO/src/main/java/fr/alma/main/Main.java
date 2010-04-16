@@ -1,12 +1,13 @@
 /**
- * Université de Nantes
+ * University of Nantes
  * Master 1 ALMA
  * 
- * Projet de IA
+ * IA Project
  * @author ZERBITA Mohamed El Hadi
  * @author Ngassa Hubert 
+ * @author Nya Ngaha Chimène-Gaby
  * 
- * Copyright © 2010 ZERBITA Mohamed El Hadi & Ngassa Hubert, Tous droits réservés
+ * Copyright 2010 ZERBITA Mohamed El Hadi ,Ngassa Hubert & Nya chimène, All rights reserved.
  */
 
 package fr.alma.main;
@@ -15,12 +16,12 @@ import fr.alma.ihm.Ihm;
 
 
 /**
- * Classe qui contient le main
+ * Class which contains the Method main for launching the application
  */
 	public class Main {
 
 	/**
-	 * Entrés du programme
+	 * Program Entries
 	 * @param args
 	 */
 	public static void main(String[] args) {

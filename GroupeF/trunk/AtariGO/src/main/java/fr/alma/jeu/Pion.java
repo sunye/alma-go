@@ -3,7 +3,7 @@ package fr.alma.jeu;
 import java.awt.Point;
 
 /**
- * Classe qui construit un pion
+ * Class which constructs the pawn
  * @author ZERBITA Mohamed El Hadi
  *
  */
@@ -15,9 +15,9 @@ public class Pion {
 	public Point position;
 	
 	/**
-	 * Constructeur
-	 * @param couleur couleur du pion
-	 * @param position position du pion
+	 * Constructor
+	 * @param couleur color of the pawn
+	 * @param position position of the pawn
 	 */
 	public Pion(Couleur couleur, Point position){
 		
@@ -26,8 +26,8 @@ public class Pion {
 	}
 
 	/**
-	 * Constructeur
-	 * @param point position du pion
+	 * Constructor
+	 * @param point position of the pawn
 	 */
 	public Pion(Point point) {
 		this.couleur = Couleur.NULL;
@@ -35,9 +35,9 @@ public class Pion {
 	}
 
 	/**
-	 * Test l'égalité entre deux pions
-	 * @param pion l'autre pion
-	 * @return le resultat
+	 * Test the equality between two pawns
+	 * @param pion the other pawn
+	 * @return the result
 	 */
 	public boolean equals(Pion pion) {
 		return this.couleur.equals(pion.couleur)&&

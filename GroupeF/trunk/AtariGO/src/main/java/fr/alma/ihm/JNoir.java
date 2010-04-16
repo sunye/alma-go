@@ -3,7 +3,7 @@ package fr.alma.ihm;
 import javax.swing.JLabel;
 
 /**
- * Classe qui permet de cloner un Pion noir.
+ * Class which permits to clone black pawn .
  * @author ZERBITA Mohamed El Hadi
  *
  */
@@ -12,7 +12,7 @@ public class JNoir extends JLabel implements Cloneable {
 		private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Constructeur de la classe
+	 * Constructor of the class
 	 */
 	public JNoir(){
 		
@@ -21,8 +21,8 @@ public class JNoir extends JLabel implements Cloneable {
 	}
 	
 	/**
-	 * Méthode qui permet de cloner un objet Pion blanc.
-	 * @return Le clone de l'objet.
+	 * Class which permits to clone a black pawn..
+	 * @return the object cloned.
 	 */
 	 public Object clone()
      {

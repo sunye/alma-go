@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 /**
- * Méthodes utile dans la classe jeu
+ * Used method for the class jeu
  * @author Ngassa Hubert
  *
  */
@@ -14,11 +14,11 @@ public class OutilsJEU {
 	public static ArrayList<Pion> LpionsCapture = new ArrayList<Pion>();
 	
 	/**
-	 * Détermine si le voisin Nord du  pion(x,y) existe et est de la même couleur que celui-ci
-	 * x abscissse
-	 * y ordonnné
-	 * c couleur à tester
-	 * g la grille courante
+	 * Determine if the North neighbor of pawn (x,y) exists and if they have the same color
+	 * x abscissa
+	 * y ordinates
+	 * c color to test
+	 * g currnet grid
 	 */
 	public static boolean existN(Grille grille,int x,int y,Couleur c){
 		
@@ -29,11 +29,11 @@ public class OutilsJEU {
 	}
 
 	/**
-	 * Détermine si le voisin SUD du  pion(x,y) existe et est de la même couleur que celui-ci
-	 * x abscissse
-	 * y ordonnné
-	 * c couleur à tester
-	 * g coulreur corresponadante 
+	 * Determine if the South neighbor of pawn (x,y) exists and if they have the same color
+	 * x:abscissa
+	 * y:ordinates
+	 * c:color to test
+	 * g:corresponding color
 	 */
 	public static boolean existS(Grille grille,int x,int y,Couleur c){
 		if (x<8){
@@ -43,11 +43,11 @@ public class OutilsJEU {
 	}
 
 	/**
-	 * Détermine si le voisin EST du  pion(x,y) existe et est de la même couleur que celui-ci
-	 * x abscissse
-	 * y ordonnné
-	 * c couleur à teter
-	 * g coulreur corresponadante 
+	 * Determine if the East neighbor of pawn (x,y) exists and if they have the same color
+	 * x abscissa
+	 * y ordinates
+	 * c color to test
+	 * g corresponding color
 	 */
 	public static boolean existE(Grille grille,int x,int y,Couleur c){
 		if (y<8){
@@ -57,11 +57,11 @@ public class OutilsJEU {
 	}
 
 	/**
-	 * Détermine si le voisin OUEST du  pion(x,y) existe et est de la même couleur que celui-ci
-	 * x abscissse
-	 * y ordonnné
-	 * c couleur à tester
-	 * g coulreur corresponadante 
+	 * Determine if the West neighbor of pawn (x,y) exists and if they have the same color
+	 * x abscissa
+	 * y ordinates
+	 * c color to test
+	 * g corresponding color
 	 */
 	public static boolean existO(Grille grille,int x,int y,Couleur c){
 		if (y>0){
@@ -71,9 +71,9 @@ public class OutilsJEU {
 	}
 
 	/**
-	 * methode utilisée pour récuperer un ensemble de pions capturés.
-	 * @param g la grille courante.
-	 * @param p le pion à partir duquel s'éffectue la capture.
+	 * Method used to retrieve a set of pawns caught.
+	 * @param g The current grid.
+	 * @param p The pawn from which capture occurs.
 	 */
 	public static void DeterminerVoisinsG(Grille g,Pion p){
 		if(!(LpionsCapture.contains(p))){
@@ -95,10 +95,10 @@ public class OutilsJEU {
 	}
 	
 	/**
-	 * détermine si deux pions donnés sont voisins directs sur le goban.
-	 * @param coup le 1er pion
-	 * @param pion le deuxiemepions
-	 * @return vrai si les deux pions sont voisins faux sinon
+	 * Determine whether two given pawns are direct neighbors on the goban.
+	 * @param coup the first pawn
+	 * @param pion  the first pawn
+	 * @return true if both pawns are neighbors false otherwise
 	 */
 	public static boolean EstVoisin(Pion coup, Pion pion) {
 		return ((coup.position.x+1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x-1==pion.position.x)&&(coup.position.y==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y+1==pion.position.y))||((coup.position.x==pion.position.x)&&(coup.position.y-1==pion.position.y));

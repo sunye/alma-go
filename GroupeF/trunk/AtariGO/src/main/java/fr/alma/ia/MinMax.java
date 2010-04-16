@@ -8,7 +8,7 @@ import fr.alma.structure.Arbre;
 import fr.alma.structure.Noeud;
 
 /**
- * Classe de l'algorithme de min max
+ * Class of min max algorithm
  * @author ZERBITA Mohamed El Hadi
  *
  */
@@ -18,20 +18,20 @@ public class MinMax {
 	int valeur = 0;
 	
 	/**
-	 * Execute le minMax
-	 * @param a l'arbre a evaluer
-	 * @return le min ou max
+	 * Execute the min max
+	 * @param a
+	 * @return the min or max
 	 */
-	public static int execute(Arbre a){
-		return valeurMinMax(a.racine, a.remplirCoupsNonJouer(), a.prof);
+	public static int execute(Arbre arbre){
+		return valeurMinMax(arbre.racine, arbre.remplirCoupsNonJouer(), arbre.prof);
 	}
 	
 	/**
-	 * Algorithme de MinMax
-	 * @param noeud noeud à traiter
-	 * @param coups etat du jeu
-	 * @param prof la profondeur max
-	 * @return la meilleur note
+	 * Algorithm of MinMax
+	 * @param noeud node to be treated
+	 * @param coups state of the game
+	 * @param prof maximum depth
+	 * @return the best mark
 	 */
 	@SuppressWarnings("unchecked")
 	private static int valeurMinMax(Noeud noeud, ArrayList<Pion> coups, int prof) {
@@ -57,9 +57,10 @@ public class MinMax {
 							
 			}else {
 				temp = (ArrayList<Pion>) coups.clone();
-				
+				//-------------------------------------
 				valeur = Ia.fonctionEvaluation(getGrilleFromList(coupsJouer));
-			}
+				
+				}
 						
 			coupsJouer.remove(coups.get(i));
 		}
@@ -67,11 +68,11 @@ public class MinMax {
 	}
 	
 	/**
-	 * Retourne le min
-	 * @param n noeud concerné
-	 * @param temp l'etat du jeu
-	 * @param prof la profondeur
-	 * @return le min
+	 * return the min
+	 * @param n node concerned
+	 * @param temp state of the game
+	 * @param prof the depth
+	 * @return the min
 	 */
 	private static int valeurMin(Noeud n, ArrayList<Pion> temp, int prof) {
 		int min = 100;
@@ -88,12 +89,13 @@ public class MinMax {
 		
 	}
 
+
 	/**
-	 * Retourne le max
-	 * @param n le noeud concerné
-	 * @param temp l'etat du jeu
-	 * @param prof la profondeur
-	 * @return le max
+	 * return the max
+	 * @param n node concerned
+	 * @param temp state of the game
+	 * @param prof the depth
+	 * @return the max
 	 */
 	private static int valeurMax(Noeud n , ArrayList<Pion> temp, int prof) {
 		int max = -100;
@@ -112,9 +114,9 @@ public class MinMax {
 	}
 	
 	/**
-	 * Retourne la grille a partir de la liste des coups joués
-	 * @param arrpion la liste des coups jouer
-	 * @return la grille
+	 * Return the grid from the list of shots played
+	 * @param arrpion list of shots played
+	 * @return the grid
 	 */
 	private static Grille getGrilleFromList(ArrayList <Pion> arrpion){
 		

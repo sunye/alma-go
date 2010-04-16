@@ -28,8 +28,7 @@
 	import static fr.alma.jeu.Jeu.*;
 
 	/**
-	 * Classe de l'interface graphique et la gestion des évennements.
-	 * 
+	 * User interface and managing events Class. 
 	 * @author ZERBITA Mohamed El Hadi
 	 * 
 	 */
@@ -77,7 +76,7 @@
 		// -------------------------------
 
 		/**
-		 * Constructeur de la classe.
+		 * Constructor of the Class.
 		 */
 		public Ihm() {
 
@@ -86,12 +85,11 @@
 		}
 
 		/****************************************************************
-		 * INITIALISATION DE L'IHM
+		 * INITIALISATION OF THE USER INTERFACE
 		 ****************************************************************/
 
 		/**
-		 * Cette méthode initialise le JFrame.
-		 * 
+		 * This method initializes thevJFrame.
 		 * @return javax.swing.JFrame
 		 */
 		private JFrame getJFrame() {
@@ -111,12 +109,11 @@
 		}
 
 		/****************************************************************
-		 * INITIALISATION DU MENU
+		 * INITIALISATION OF THE MENU
 		 ****************************************************************/
 
 		/**
-		 * Cette méthode initialise le JMenuBar.
-		 * 
+		 * This Method initializes the JMenuBar.
 		 * @return javax.swing.JMenuBar
 		 */
 		private JMenuBar getJJMenuBar() {
@@ -130,8 +127,7 @@
 		}
 
 		/**
-		 * Cette méthode initialise le menu Fichier.
-		 * 
+		 * This Method initializes the File Menu.
 		 * @return javax.swing.JMenu
 		 */
 		private JMenu getMFichier() {
@@ -144,8 +140,7 @@
 		}
 
 		/**
-		 * Cette méthode initialise l'item Quitter.
-		 * 
+		 *This Method initializes the item Quitter.
 		 * @return javax.swing.JMenuItem
 		 */
 		private JMenuItem getIQuitter() {
@@ -162,8 +157,7 @@
 		}
 
 		/**
-		 * Cette méthode initialise le menu MJeu.
-		 * 
+		 *This Method initializes the menu MJeu.
 		 * @return javax.swing.JMenu
 		 */
 		private JMenu getMJeu() {
@@ -177,8 +171,7 @@
 		}
 
 		/**
-		 * Cette méthode initialise le menu Aide.
-		 * 
+		 * This Method initializes the menu Aide.
 		 * @return javax.swing.JMenu
 		 */
 		private JMenu getMAide() {
@@ -191,10 +184,11 @@
 		}
 
 		/**
-		 * Cette méthode initialise l'item Apropos.
-		 * 
+		 * This Method initializes the item Apropos.
 		 * @return javax.swing.JMenuItem
 		 */
+		
+		
 		private JMenuItem getIApropos() {
 			if (IApropos == null) {
 				IApropos = new JMenuItem();
@@ -209,10 +203,11 @@
 		}
 
 		/**
-		 * Cette méthode initialise l'item Nouveau.
-		 * 
+		 *This Method initializes the item Nouveau.
 		 * @return javax.swing.JMenuItem
 		 */
+		
+		
 		private JMenuItem getINouveau() {
 			if (INouveau == null) {
 				INouveau = new JMenuItem();
@@ -227,10 +222,10 @@
 		}
 
 		/**
-		 * Cette méthode initialise l'item Intérrompre.
-		 * 
+		 * This Method initializes the item Interrompre.
 		 * @return javax.swing.JMenuItem
 		 */
+		
 		private JMenuItem getIInterrompre() {
 			if (IInterrompre == null) {
 				IInterrompre = new JMenuItem();
@@ -249,13 +244,11 @@
 		}
 
 		/****************************************************************
-		 * INITIALISATION DES PANEAUX
+		 * INITIALISATION OF PANELS
 		 ****************************************************************/
 
 		/**
-		 * Cette méthode initialise le panneau principale, et gére les
-		 * positionnements des pions.
-		 * 
+		 * This Method initializes the main panel and manage the position of the pawns.
 		 * @return javax.swing.JPanel
 		 */
 		private JPanel getJPanel() {
@@ -313,7 +306,7 @@
 											LGrille, Blanc, Noir);
 									JOptionPane
 											.showMessageDialog(jFrame,
-													"Capture éffectué ! Désolé... Vous avez perdu !");
+													"Capture éffectué... Vous avez perdu !");
 									BInterrompre.setEnabled(false);
 									IInterrompre.setEnabled(false);
 									BNouveau.setEnabled(true);
@@ -334,7 +327,7 @@
 										LGrille, Blanc, Noir);
 								JOptionPane
 										.showMessageDialog(jFrame,
-												"Capture éffectué ! Bravo... Vous avez gagné !");
+												"Capture éffectué... Bravo vous avez gagné !");
 								BInterrompre.setEnabled(false);
 								IInterrompre.setEnabled(false);
 
@@ -349,7 +342,7 @@
 								JOptionPane
 										.showMessageDialog(
 												jFrame,
-												"Le suicide est intérdit, veuillez choisir une autre case  ",
+												"Le suicide est interdit, veuillez choisir une autre case  !",
 												"Suicide interdit",
 												JOptionPane.WARNING_MESSAGE);
 								break;
@@ -385,8 +378,7 @@
 		}
 
 		/**
-		 * Cette méthode initialise la grille.
-		 * 
+		 * This Method initializes the Grid.
 		 * @return javax.swing.JPanel
 		 */
 		private JPanel getPGrille() {
@@ -405,8 +397,7 @@
 		}
 
 		/**
-		 * Cette méthode initialise le panneau du logo.
-		 * 
+		 * This Method initializes the logo panel.
 		 * @return javax.swing.JPanel
 		 */
 		private JPanel getPAtarigo() {
@@ -430,7 +421,7 @@
 		}
 
 		/**
-		 * Cette méthode initialise le panneau Jeu.
+		 * This Method initializes the panel Jeu.
 		 * 
 		 * @return javax.swing.JPanel
 		 */
@@ -457,10 +448,10 @@
 		 ****************************************************************/
 
 		/**
-		 * Cette méthode initialise le bouton Nouveau.
-		 * 
+		 * This Method initializes the button Nouveau.
 		 * @return javax.swing.JButton
 		 */
+		
 		private JButton getBNouveau() {
 			if (BNouveau == null) {
 				BNouveau = new JButton();
@@ -478,8 +469,7 @@
 		}
 
 		/**
-		 * Cette méthode initialise le bouton Apropos.
-		 * 
+		 * This Method initializes the button Apropos.
 		 * @return javax.swing.JButton
 		 */
 		private JButton getBApropos() {
@@ -499,10 +489,10 @@
 		}
 
 		/**
-		 * Cette méthode initialise le bouton Quitter.
-		 * 
+		 * This Method initializes the button Quitter.
 		 * @return javax.swing.JButton
 		 */
+		
 		private JButton getBQuitter() {
 			if (BQuitter == null) {
 				BQuitter = new JButton();
@@ -520,9 +510,9 @@
 
 		/**
 		 * This method initializes BInterrompre
-		 * 
 		 * @return javax.swing.JButton
 		 */
+		
 		private JButton getBInterrompre() {
 			if (BInterrompre == null) {
 				BInterrompre = new JButton();
@@ -544,11 +534,11 @@
 		}
 
 		/****************************************************************
-		 * TRAITEMENT DE LA GRILLE
+		 * TREATMENT OG THE GRID
 		 ****************************************************************/
 
 		/**
-		 * Méthode qui efface la grille et initialise son contenu
+		 * Method which erase the grid and initializes its contents
 		 */
 		private void nouveauJeu() {
 
@@ -557,22 +547,21 @@
 		}
 
 		/**
-		 * Méthode pour montrer la fentre A Propos
+		 * Method used to show the window Apropos
 		 */
 		private void ShowApropos() {
 			JOptionPane
 					.showMessageDialog(
 							null,
-							"Université de Nantes\nMaster 1 ALMA\nAtariGo V 1.0\nRéalisé par :\n	- ZERBITA Mohamed El Hadi\n		- Ngassa Hubert",
+							"Universitï¿½ de Nantes\nMaster 1 ALMA\nAtariGo V 1.0\nRï¿½aliser par :\n	- ZERBITA Mohamed El Hadi\n		- Ngassa Hubert",
 							"AtariGo V 1.0", 1);
 		}
 
 		/****************************************************************
-		 * INITIALISATION DE LA BOITE DE DIALOGUE
+	             INITIALISATION OF THE DIALOG
 		 ****************************************************************/
 		/**
-		 * Méthode qui initialise la boite de dialogue
-		 * 
+		 * Method which initializes The dialog
 		 * @return javax.swing.JDialog
 		 */
 		private JDialog getJDialogNouveau() {
@@ -589,7 +578,6 @@
 
 		/**
 		 * This method initializes jContentPane
-		 * 
 		 * @return javax.swing.JPanel
 		 */
 		private JPanel getJContentPane() {
@@ -608,8 +596,7 @@
 		}
 
 		/**
-		 * Initialisation du combobox
-		 * 
+		 * Initialization of combobox
 		 * @return javax.swing.JComboBox
 		 */
 		private JComboBox getJCouleur() {
@@ -624,7 +611,6 @@
 
 		/**
 		 * This method initializes jBOk
-		 * 
 		 * @return javax.swing.JButton
 		 */
 		private JButton getJBOk() {
@@ -670,7 +656,6 @@
 
 		/**
 		 * This method initializes jBAnnuler
-		 * 
 		 * @return javax.swing.JButton
 		 */
 		private JButton getJBAnnuler() {
@@ -691,7 +676,7 @@
 		}
 
 		/**
-		 * Méthode pour intérrompre le jeu
+		 * Method to interrupt the game
 		 */
 		private void interrompreJeu() {
 			if (JOptionPane.showConfirmDialog(null,

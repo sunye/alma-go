@@ -8,58 +8,58 @@ import fr.alma.jeu.Pion;
 import fr.alma.jeu.Couleur;
 
 /**
- * Classe de l'arbre
+ * Class for the Tree
  * @author ZERBITA Mohamed El Hadi
  *
  */
 public class Arbre {
 	
-	
-
 	public Noeud racine;
 	public Grille grille;
 	public int prof;
-	public int nbNoeuds = 1;
 	
 	public ArrayList<Pion> coupsJouer;
 	public ArrayList<Pion> coupsNonJouer;
 	
+	public int nbNoeuds = 1;
 	
-		
+	//--------------------------
+	
 	/**
-	 * Le constructeur de la classe
+	 * The constructor of the class
 	 */
 	public Arbre(Grille grille){
 		this.racine = new Noeud(new Pion(null,new Point(-1,-1)));
 		this.grille = grille;
-		this.remplirCoupsJouer();
-		this.remplirCoupsNonJouer();
-		this.prof = getProfMax(coupsNonJouer);
+		remplirCoupsNonJouer();
+		remplirCoupsJouer();
+		prof = getProfMax(coupsNonJouer);
+		
 	}
 	
 	/**
-	 * Méthode pour remplir l'arbre
+	 * Method used to fill the tree
 	 * @return
 	 */
 	public void remplirArbre(){
+		
 		racine = ajouterTousLesfils(racine, coupsNonJouer, prof);
-		
-		
+		System.out.println("Nombre de noeuds total : "+nbNoeuds);
 	}
 	
 	/**
-	 * Retourne la profondeur max qu'on veux traiter
+	 * Return the maximum depth that we want to treat
 	 * @param liste
 	 * @return
 	 */
 	private int getProfMax(ArrayList<Pion> liste){
-		//Le nombre de coups restants max pour que l'odinateur joue le mieux possible : 7
+		// The max number of moves remaining for the computer to play as best as possible : 7
 		return liste.size()-2;
 		
 	}
 	@SuppressWarnings("unchecked")
 	/**
-	 * Méthode qui permet de contruire l'arbe.
+	 * Method which permits to construct the tree
 	 */
 	private Noeud ajouterTousLesfils(Noeud noeud, ArrayList<Pion> coups, int prof) {
 		
@@ -88,9 +88,9 @@ public class Arbre {
 		}
 		return noeud;
 	}
-	
+
 	/**
-	 * Retoune les coups non jouer de la grille
+	 * Return the pawns not played of the grid
 	 */
 	public ArrayList<Pion> remplirCoupsNonJouer(){
 		coupsNonJouer = new ArrayList<Pion>();
@@ -102,7 +102,7 @@ public class Arbre {
 	 }
 	
 	/**
-	 * Retourne les coups jouer
+	 * Return the played pawns
 	 */
 	public ArrayList<Pion> remplirCoupsJouer(){
 		
@@ -117,5 +117,4 @@ public class Arbre {
 		return coupsJouer;
       		 
 	}
-	
 }
