@@ -61,10 +61,10 @@ public class Tools {
 	}
 	
 	
-	public static void setFixedSize(JComponent comp, int x, int y) {
-		comp.setPreferredSize(new Dimension(x, y));
-		comp.setMinimumSize(new Dimension(x, y));
-		comp.setMaximumSize(new Dimension(x, y));
+	public static void setFixedSize(JComponent comp, int width, int height) {
+		comp.setPreferredSize(new Dimension(width, height));
+		comp.setMinimumSize(new Dimension(width, height));
+		comp.setMaximumSize(new Dimension(width, height));
 	}
 	
 	
@@ -78,12 +78,12 @@ public class Tools {
 			focusListener = new FocusListener() {
 				
 				@Override
-				public void focusLost(FocusEvent e) {
+				public void focusLost(FocusEvent event) {
 				}
 				
 				@Override
-				public void focusGained(FocusEvent e) {
-					((JTextField)e.getComponent()).selectAll();
+				public void focusGained(FocusEvent event) {
+					((JTextField)event.getComponent()).selectAll();
 				}
 			};	
 		}

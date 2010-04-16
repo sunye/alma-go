@@ -174,7 +174,7 @@ public class Computer extends AbstractPlayer {
 			timerAction = new ActionListener() {
 
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent event) {
 					System.out.println("Time exceeded : interruption of the calculation ....");
 					interrupt();
 				}
