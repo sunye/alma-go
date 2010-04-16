@@ -1,7 +1,6 @@
 package fr.alma.structure;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
 import fr.alma.jeu.Grille;
 import fr.alma.structure.Arbre;
