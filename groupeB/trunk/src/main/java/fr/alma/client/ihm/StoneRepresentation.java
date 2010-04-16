@@ -108,10 +108,10 @@ public class StoneRepresentation {
 	}
 
 	
-	private static String getColorStone(int x, int y, Context context) {
+	private static String getColorStone(int column, int row, Context context) {
 		String color = null;
 		
-		if (context.getStateGame().isComputer(x, y)) {
+		if (context.getStateGame().isComputer(column, row)) {
 			if (context.getComputer().getColor() == Configuration.WHITE) {
 				color = WHITE_STONE;
 			} else {

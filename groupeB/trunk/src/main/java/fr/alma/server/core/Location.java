@@ -66,8 +66,8 @@ public class Location implements ILocation {
 	 * @see fr.alma.server.core.ILocation#equals(fr.alma.server.core.ILocation)
 	 */
 	@Override
-	public boolean equals(ILocation e1){
-		return (this.col == e1.getCol() && this.row == e1.getRow());
+	public boolean equals(ILocation location){
+		return (this.col == location.getCol() && this.row == location.getRow());
 	}
 	
 	/*

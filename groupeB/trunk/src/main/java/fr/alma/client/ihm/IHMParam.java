@@ -76,8 +76,8 @@ public class IHMParam extends AbstractDialog {
 	private JComboBox cbColorComputer;
 	private JComboBox cbOpponent;
 	
-	private JTextField tfmaxCatchComputer;
-	private JTextField tfmaxCatchPlayer;
+	private JTextField tfmaxTargC;
+	private JTextField tfmaxTargP;
 	
 	private Context context = null;
 	private Goban goban = null;
@@ -143,24 +143,24 @@ public class IHMParam extends AbstractDialog {
         chkbAssistant.setEnabled(false);
         panel.add(chkbAssistant);
 
-        JLabel labelTargetCaptureComputer = new JLabel("Target capture opponent : ");
-        panel.add(labelTargetCaptureComputer);
+        JLabel lblTargCatchC = new JLabel("Target capture opponent : ");
+        panel.add(lblTargCatchC);
         
-        tfmaxCatchComputer = new JTextField(5);
-        tfmaxCatchComputer.setText("1");
-        tfmaxCatchComputer.setEnabled(false);
-        Tools.addFocusListener(tfmaxCatchComputer);
-        panel.add(tfmaxCatchComputer);
+        tfmaxTargC = new JTextField(5);
+        tfmaxTargC.setText("1");
+        tfmaxTargC.setEnabled(false);
+        Tools.addFocusListener(tfmaxTargC);
+        panel.add(tfmaxTargC);
 
         JLabel lblmaxCatchPlayer = new JLabel("Target capture player : ");
         panel.add(lblmaxCatchPlayer);
         
-        tfmaxCatchPlayer = new JTextField(5);
-        tfmaxCatchPlayer.setText("1");
-        tfmaxCatchPlayer.setEnabled(false);
+        tfmaxTargP = new JTextField(5);
+        tfmaxTargP.setText("1");
+        tfmaxTargP.setEnabled(false);
         
-        Tools.addFocusListener(tfmaxCatchPlayer);
-        panel.add(tfmaxCatchPlayer);
+        Tools.addFocusListener(tfmaxTargP);
+        panel.add(tfmaxTargP);
 
         SpringUtilities.makeCompactGrid(panel,
                 8, 2,		 //rows, cols
@@ -197,7 +197,7 @@ public class IHMParam extends AbstractDialog {
 		}
 	}
 
-	public boolean getColorComputer() {
+	public boolean isColorComputer() {
 		if (cbColorComputer.getSelectedIndex() == 0) {
 			return Configuration.BLACK;
 		} else {
@@ -206,11 +206,11 @@ public class IHMParam extends AbstractDialog {
 	}
 
 	
-	public boolean getAssitant() {
+	public boolean isAssitant() {
 		return  chkbAssistant.isSelected();
 	}
 	
-	private boolean getOpponent() {
+	private boolean isOpponent() {
 		if (cbOpponent.getSelectedIndex() == 0) {
 			return true;
 		} else {
@@ -219,12 +219,12 @@ public class IHMParam extends AbstractDialog {
 	}
 
 	public int getTargetCaptureComputer() {
-		return new Integer(tfmaxCatchComputer.getText()).intValue();
+		return new Integer(tfmaxTargC.getText()).intValue();
 	}
 	
 	
 	public int getTargetCapturePlayer() {
-		return new Integer(tfmaxCatchPlayer.getText()).intValue();
+		return new Integer(tfmaxTargP.getText()).intValue();
 	}
 	
 	
@@ -265,11 +265,11 @@ public class IHMParam extends AbstractDialog {
 	 */
 	private ParamGame getParamGame() {
 		ParamGame param = new ParamGame();
-		param.setColorComputer(getColorComputer());
+		param.setColorComputer(isColorComputer());
 		param.setSizeGoban(getGridSize());
 		param.setPossibilityInterruption(isPossibilityInterruption());
-		param.setAssistant(getAssitant());
-		param.setOpponent(getOpponent());
+		param.setAssistant(isAssitant());
+		param.setOpponent(isOpponent());
 		param.setTargetCaptureComputer(getTargetCaptureComputer());
 		param.setTargetCapturePlayer(getTargetCapturePlayer());
 		param.setTimeLimite(getTimeLimit());

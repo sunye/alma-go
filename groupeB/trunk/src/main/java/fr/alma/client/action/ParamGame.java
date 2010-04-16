@@ -39,8 +39,8 @@ public class ParamGame {
 	private int sizeGoban;
 	private boolean colorComputer;
 	private boolean assistant;
-	private int maxCaptureComputer;
-	private int maxCapturePlayer;
+	private int maxCatchComput;
+	private int maxCatchPlayer;
 	private boolean opponent;
 	
 	
@@ -69,10 +69,10 @@ public class ParamGame {
 	
 	
 	/**
-	 * @param possibilityInterruption
+	 * @param possiblyToStop
 	 */
-	public void setPossibilityInterruption(boolean possibilityInterruption) {
-		this.possiblyToStop = possibilityInterruption;
+	public void setPossibilityInterruption(boolean possiblyToStop) {
+		this.possiblyToStop = possiblyToStop;
 	}
 	
 	/**
@@ -93,28 +93,28 @@ public class ParamGame {
 	 * @return limit number of target capture of the computer
 	 */
 	public int getTargetCaptureComputer() {
-		return maxCaptureComputer;
+		return maxCatchComput;
 	}
 	
 	/**
-	 * @param targetCaptureComputer
+	 * @param maxCatchComput
 	 */
-	public void setTargetCaptureComputer(int targetCaptureComputer) {
-		this.maxCaptureComputer = targetCaptureComputer;
+	public void setTargetCaptureComputer(int maxCatchComput) {
+		this.maxCatchComput = maxCatchComput;
 	}
 	
 	/**
 	 * @return limit number of target capture of the player
 	 */
 	public int getTargetCapturePlayer() {
-		return maxCapturePlayer;
+		return maxCatchPlayer;
 	}
 	
 	/**
-	 * @param targetCapturePlayer
+	 * @param maxCatchPlayer
 	 */
-	public void setTargetCapturePlayer(int targetCapturePlayer) {
-		this.maxCapturePlayer = targetCapturePlayer;
+	public void setTargetCapturePlayer(int maxCatchPlayer) {
+		this.maxCatchPlayer = maxCatchPlayer;
 	}
 
 	/**
