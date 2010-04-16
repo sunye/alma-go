@@ -1,0 +1,19 @@
+timeLimite=15
+possibilityInterruption(true|false)=false
+sizeOfgrille(6|9)=9
+colorOpponent(x|o)=x
+assistant(true|false)=false
+targetCaptureOpponent=1
+targetCapturePlayer=1
+opponent(Computer|Player)=Computer
+#########
+         
+xxo      
+xoo      
+ox       
+ o       
+   xx    
+         
+         
+         
+#########
