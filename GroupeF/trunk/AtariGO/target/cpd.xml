@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd-cpd>
+<duplication lines="18" tokens="275">
+<file line="219" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="260" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+						if((!voisins.contains(grille.Contenu[x-1][y]))&&grille.Contenu[x-1][y].equals(new Pion(new Point(x-1,y)))){
+							N=1;
+							voisins.add(grille.Contenu[x-1][y]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x-1][y]))&&(c.equals(grille.Contenu[x-1][y].couleur)))
+								 N=getLiberte(grille,new Point(x-1, y),c);
+						}
+						
+						if((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
+							O=1;
+							voisins.add(grille.Contenu[x][y-1]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x][y-1]))&&(c.equals(grille.Contenu[x][y-1].couleur)))
+								O=getLiberte(grille,new Point(x, y-1),c);
+						}
+						return N+O;
+]]>
+</codefragment>
+</duplication>
+<duplication lines="18" tokens="273">
+<file line="259" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="280" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+					else{ // x==8 && 0<8<y
+											
+						if((!voisins.contains(grille.Contenu[x-1][y]))&&grille.Contenu[x-1][y].equals(new Pion(new Point(x-1,y)))){
+							N=1;
+							voisins.add(grille.Contenu[x-1][y]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x-1][y]))&&(c.equals(grille.Contenu[x-1][y].couleur)))
+								N=getLiberte(grille,new Point(x-1, y),c);
+						}
+						if((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
+							O=1;
+							voisins.add(grille.Contenu[x][y-1]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x][y-1]))&&(c.equals(grille.Contenu[x][y-1].couleur)))
+								O=getLiberte(grille,new Point(x, y-1),c);
+						}
+]]>
+</codefragment>
+</duplication>
+<duplication lines="16" tokens="272">
+<file line="219" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="282" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+						if((!voisins.contains(grille.Contenu[x-1][y]))&&grille.Contenu[x-1][y].equals(new Pion(new Point(x-1,y)))){
+							N=1;
+							voisins.add(grille.Contenu[x-1][y]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x-1][y]))&&(c.equals(grille.Contenu[x-1][y].couleur)))
+								N=getLiberte(grille,new Point(x-1, y),c);
+						}
+						if((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
+							O=1;
+							voisins.add(grille.Contenu[x][y-1]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x][y-1]))&&(c.equals(grille.Contenu[x][y-1].couleur)))
+								O=getLiberte(grille,new Point(x, y-1),c);
+						}
+]]>
+</codefragment>
+</duplication>
+<duplication lines="13" tokens="209">
+<file line="251" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\Jeu.java"/>
+<file line="270" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\Jeu.java"/>
+<codefragment>
+<![CDATA[
+							if((g.Contenu[pion.position.x-1][pion.position.y]).couleur.equals(Couleur.NULL))
+								p=new Point(pion.position.x-1,pion.position.y);
+						if(pion.position.x<8)
+							if((g.Contenu[pion.position.x+1][pion.position.y]).couleur.equals(Couleur.NULL))
+								p=new Point(pion.position.x+1,pion.position.y);
+						if(pion.position.y>0)
+							if((g.Contenu[pion.position.x][pion.position.y-1]).couleur.equals(Couleur.NULL))
+								p=new Point(pion.position.x,pion.position.y-1);
+						if(pion.position.y<8)
+							if((g.Contenu[pion.position.x][pion.position.y+1]).couleur.equals(Couleur.NULL))
+								p=new Point(pion.position.x,pion.position.y+1);
+					}
+				}
+]]>
+</codefragment>
+</duplication>
+<duplication lines="14" tokens="160">
+<file line="169" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="256" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+					return N+E;
+				}
+				else 
+					if(y==8){
+						if((!voisins.contains(grille.Contenu[x-1][y]))&&grille.Contenu[x-1][y].equals(new Pion(new Point(x-1,y)))){
+							N=1;
+							voisins.add(grille.Contenu[x-1][y]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x-1][y]))&&(c.equals(grille.Contenu[x-1][y].couleur)))
+								 N=getLiberte(grille,new Point(x-1, y),c);
+						}
+						
+						if((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
+]]>
+</codefragment>
+</duplication>
+<duplication lines="12" tokens="154">
+<file line="180" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="208" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+								E=getLiberte(grille,new Point(x, y+1),c);
+						}
+						if((!voisins.contains(grille.Contenu[x+1][y]))&&grille.Contenu[x+1][y].equals(new Pion(new Point(x+1,y)))){
+							S=1;
+							voisins.add(grille.Contenu[x+1][y]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x+1][y]))&&(c.equals(grille.Contenu[x+1][y].couleur)))
+								 S=getLiberte(grille,new Point(x+1, y),c);
+						}
+						
+						if((!voisins.contains(grille.Contenu[x-1][y]))&&grille.Contenu[x-1][y].equals(new Pion(new Point(x-1,y)))){
+]]>
+</codefragment>
+</duplication>
+<duplication lines="10" tokens="152">
+<file line="114" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="182" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+						if((!voisins.contains(grille.Contenu[x+1][y]))&&grille.Contenu[x+1][y].equals(new Pion(new Point(x+1,y)))){
+							S=1;
+							voisins.add(grille.Contenu[x+1][y]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x+1][y]))&&(c.equals(grille.Contenu[x+1][y].couleur)))
+								S=getLiberte(grille,new Point(x+1, y), c);
+						}					
+						
+						if((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
+]]>
+</codefragment>
+</duplication>
+<duplication lines="9" tokens="152">
+<file line="73" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="95" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+				if(y==8){
+					if ((!voisins.contains(grille.Contenu[x+1][y]))&&grille.Contenu[x+1][y].equals(new Pion(new Point(x+1,y)))){
+						S=1;
+						voisins.add(grille.Contenu[x+1][y]);
+					}
+					else
+						if ((!voisins.contains(grille.Contenu[x+1][y]))&&(c.equals(grille.Contenu[x+1][y].couleur)))
+							S=getLiberte(grille,new Point(x+1,y),c);
+					if((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
+]]>
+</codefragment>
+</duplication>
+<duplication lines="12" tokens="149">
+<file line="188" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="225" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+								N=getLiberte(grille,new Point(x-1, y),c);
+						}
+						
+						if ((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
+							O=1;
+							voisins.add(grille.Contenu[x][y-1]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x][y-1]))&&(c.equals(grille.Contenu[x][y-1].couleur)))
+								O=getLiberte(grille,new Point(x, y-1),c);
+						}
+						return N+S+E+O;
+]]>
+</codefragment>
+</duplication>
+<duplication lines="10" tokens="149">
+<file line="114" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="210" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+						if((!voisins.contains(grille.Contenu[x+1][y]))&&grille.Contenu[x+1][y].equals(new Pion(new Point(x+1,y)))){
+							S=1;
+							voisins.add(grille.Contenu[x+1][y]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x+1][y]))&&(c.equals(grille.Contenu[x+1][y].couleur)))
+								 S=getLiberte(grille,new Point(x+1, y),c);
+						}
+						
+						if((!voisins.contains(grille.Contenu[x-1][y]))&&grille.Contenu[x-1][y].equals(new Pion(new Point(x-1,y)))){
+]]>
+</codefragment>
+</duplication>
+<duplication lines="12" tokens="147">
+<file line="188" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="266" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+								 N=getLiberte(grille,new Point(x-1, y),c);
+						}
+						
+						if((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
+							O=1;
+							voisins.add(grille.Contenu[x][y-1]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x][y-1]))&&(c.equals(grille.Contenu[x][y-1].couleur)))
+								O=getLiberte(grille,new Point(x, y-1),c);
+						}
+						return N+O;
+]]>
+</codefragment>
+</duplication>
+<duplication lines="10" tokens="144">
+<file line="81" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="247" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+							N=getLiberte(grille,new Point(x-1,y),c);
+					if((!voisins.contains(grille.Contenu[x][y+1]))&&grille.Contenu[x][y+1].equals(new Pion(new Point(x,y+1)))){
+						E=1;
+						voisins.add(grille.Contenu[x][y+1]);
+					}
+					else{
+						if((!voisins.contains(grille.Contenu[x][y+1]))&&(c.equals(grille.Contenu[x][y+1].couleur)))
+							E=getLiberte(grille,new Point(x, y+1),c);
+						}
+					return N+E;
+]]>
+</codefragment>
+</duplication>
+<duplication lines="9" tokens="140">
+<file line="248" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="298" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+						if((!voisins.contains(grille.Contenu[x][y+1]))&&grille.Contenu[x][y+1].equals(new Pion(new Point(x,y+1)))){
+							E=1;
+							voisins.add(grille.Contenu[x][y+1]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x][y+1]))&&(c.equals(grille.Contenu[x][y+1].couleur)))
+								E=getLiberte(grille,new Point(x, y+1),c);
+						}
+						return N+E+O;
+]]>
+</codefragment>
+</duplication>
+<duplication lines="9" tokens="137">
+<file line="103" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="130" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+					if((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
+						O=1;
+						voisins.add(grille.Contenu[x][y-1]);
+					}
+					else{
+						if((!voisins.contains(grille.Contenu[x][y-1]))&&(c.equals(grille.Contenu[x][y-1].couleur)))
+							O=getLiberte(grille,new Point(x, y-1), c);
+					}
+					return S+E+O;
+]]>
+</codefragment>
+</duplication>
+<duplication lines="9" tokens="137">
+<file line="82" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="298" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+						if((!voisins.contains(grille.Contenu[x][y+1]))&&grille.Contenu[x][y+1].equals(new Pion(new Point(x,y+1)))){
+							E=1;
+							voisins.add(grille.Contenu[x][y+1]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x][y+1]))&&(c.equals(grille.Contenu[x][y+1].couleur)))
+								E=getLiberte(grille,new Point(x, y+1),c);
+						}
+						return N+E+O;
+]]>
+</codefragment>
+</duplication>
+<duplication lines="8" tokens="136">
+<file line="202" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="298" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+						if((!voisins.contains(grille.Contenu[x][y+1]))&&grille.Contenu[x][y+1].equals(new Pion(new Point(x,y+1)))){
+							E=1;
+							voisins.add(grille.Contenu[x][y+1]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x][y+1]))&&(c.equals(grille.Contenu[x][y+1].couleur)))
+								E=getLiberte(grille,new Point(x, y+1),c);
+						}
+]]>
+</codefragment>
+</duplication>
+<duplication lines="8" tokens="136">
+<file line="161" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="174" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+						if((!voisins.contains(grille.Contenu[x-1][y]))&&grille.Contenu[x-1][y].equals(new Pion(new Point(x-1,y)))){
+							N=1;
+							voisins.add(grille.Contenu[x-1][y]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x-1][y]))&&(c.equals(grille.Contenu[x-1][y].couleur)))
+								N=getLiberte(grille,new Point(x-1, y), c);
+						}
+]]>
+</codefragment>
+</duplication>
+<duplication lines="8" tokens="136">
+<file line="103" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="290" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+						if((!voisins.contains(grille.Contenu[x][y-1]))&&grille.Contenu[x][y-1].equals(new Pion(new Point(x,y-1)))){
+							O=1;
+							voisins.add(grille.Contenu[x][y-1]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x][y-1]))&&(c.equals(grille.Contenu[x][y-1].couleur)))
+								O=getLiberte(grille,new Point(x, y-1),c);
+						}
+]]>
+</codefragment>
+</duplication>
+<duplication lines="8" tokens="136">
+<file line="82" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<file line="202" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\LibertePion.java"/>
+<codefragment>
+<![CDATA[
+					  if((!voisins.contains(grille.Contenu[x][y+1]))&&grille.Contenu[x][y+1].equals(new Pion(new Point(x,y+1)))){
+							E=1;
+							voisins.add(grille.Contenu[x][y+1]);
+						}
+						else{
+							if((!voisins.contains(grille.Contenu[x][y+1]))&&(c.equals(grille.Contenu[x][y+1].couleur)))
+								E=getLiberte(grille,new Point(x, y+1),c);
+						}
+]]>
+</codefragment>
+</duplication>
+<duplication lines="15" tokens="123">
+<file line="73" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\Jeu.java"/>
+<file line="146" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\Jeu.java"/>
+<codefragment>
+<![CDATA[
+						if(!(pion.couleur.equals(grille.Contenu[x+1][y].couleur))){
+							
+					voisins=new ArrayList<Pion>();
+					voisins.add(grille.Contenu[x][y]);
+					int b=getLiberte(grille,new Point(x+1, y), grille.Contenu[x+1][y].couleur);
+					
+					if(b==0){
+						prise=true;
+						
+						pionCapture=grille.Contenu[x+1][y];
+					}
+				}
+				
+				if((existE(grille, x, y,pion.couleur)))
+					if((!(pion.couleur.equals(grille.Contenu[x][y+1].couleur)))){
+]]>
+</codefragment>
+</duplication>
+<duplication lines="15" tokens="120">
+<file line="93" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\Jeu.java"/>
+<file line="166" path="C:\Users\lahuidi\workspace\AtariGoALMA\src\main\java\fr\alma\jeu\Jeu.java"/>
+<codefragment>
+<![CDATA[
+					if((b==0)){
+						prise=true;
+						
+						pionCapture=grille.Contenu[x][y+1];
+					}
+				}
+								
+				if((existO(grille, x, y,pion.couleur)))
+					if(!(pion.couleur.equals(grille.Contenu[x][y-1].couleur))){
+					
+					voisins=new ArrayList<Pion>();
+					voisins.add(grille.Contenu[x][y]);
+					int b=getLiberte(grille, new Point(x, y-1), grille.Contenu[x][y-1].couleur);
+					
+					if((b==0)){
+]]>
+</codefragment>
+</duplication>
+</pmd-cpd>
