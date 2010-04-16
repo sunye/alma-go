@@ -32,6 +32,18 @@
                     </excludes>
                 </configuration>
              </plugin>  
+             <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+               <archive>
+                  <manifest>
+                     <mainClass>fr.alma.go.Launcher</mainClass>
+                     <packageName>fr.alma.go</packageName>
+                  </manifest>
+               </archive>
+            </configuration>
+         </plugin>
          </plugins>
   </build>
   <reporting>
