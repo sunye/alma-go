@@ -337,7 +337,7 @@ public class IHMParam extends AbstractDialog {
 	/**
 	 * Singleton Pattern
 	 * Necessary for good compatibility with Swing components 
-	 * @return
+	 * @return the goban
 	 */
 	public Goban getGoban() {
 		if (goban == null) {

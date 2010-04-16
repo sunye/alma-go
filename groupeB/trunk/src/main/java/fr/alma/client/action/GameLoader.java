@@ -51,7 +51,6 @@ public class GameLoader {
 
 	/**
 	 * Constructor 
-	 * @param context
 	 */
 	public GameLoader(){
 		super();
@@ -61,6 +60,7 @@ public class GameLoader {
 	/**
 	 * To load a party in a particular state
 	 * @param fileName which is loaded
+	 * @param context
 	 * @return a goban corresponding to the file
 	 */
 	public void load(String fileName, Context context) {

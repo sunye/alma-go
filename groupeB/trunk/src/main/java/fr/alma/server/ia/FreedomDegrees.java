@@ -130,8 +130,9 @@ public class FreedomDegrees {
 
 
 	/**
-	 * @param coordinator
+	 * @param stateGame
 	 * @param location is the location chosen by the current player
+	 * @param currentPlayer
 	 * @return 0 if the player capturing opponent stones
 	 */
 	public static int hasCapturedWithThisEmplacement(IStateGame stateGame, ILocation location, IPlayer currentPlayer) {
@@ -171,7 +172,7 @@ public class FreedomDegrees {
 
 	/**
 	 * Require that the opponentEmplacement tested must exist on the goban
-	 * @param coordinator
+	 * @param stateGame
 	 * @param otherIPlayer
 	 * @param opLocation opponent location
 	 * @param alreadyVisited
