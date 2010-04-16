@@ -1,11 +1,7 @@
-/**
- * 
- */
-package jeu;
+package fr.alma.jeu;
 
 import static org.junit.Assert.*;
 import fr.alma.jeu.Couleur;
-import fr.alma.jeu.Jeu;
 import fr.alma.jeu.Grille;
 import fr.alma.jeu.Pion;
 
@@ -38,7 +34,7 @@ public class TestJeu {
 	 */
 	@Test
 	public void testJouerMachine() {
-		Grille g=new Grille();
+		Grille g = new Grille();
 		g.Contenu[3][2]=new Pion(Couleur.NOIR, new Point(3,2));
 		assertTrue(jouerMachine(g, Tour.BLANC).equals(new Point(3,3)));
 	}
@@ -48,7 +44,10 @@ public class TestJeu {
 	 */
 	@Test
 	public void testMiseAjourGrilleApresCapture() {
-		assertFalse(miseAjourGrilleApresCapture(new Grille()).equals(new Grille()));
+		
+		Grille g = new Grille();
+		
+		assertEquals(miseAjourGrilleApresCapture(g).Contenu[0][1], new Grille());
 	}
 
 }
