@@ -41,5 +41,4 @@ public class TestNoeud {
 		assertTrue(noeud.existeFils());
 		
 	}
-
 }

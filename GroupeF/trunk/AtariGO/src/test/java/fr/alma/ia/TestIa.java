@@ -1,4 +1,4 @@
-package TestIa;
+package fr.alma.ia;
 
 import static org.junit.Assert.*;
 import static fr.alma.ia.Ia.fonctionEvaluation;

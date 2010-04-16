@@ -15,6 +15,5 @@ import org.junit.Test;
 							
 			assertTrue(label1.getText() == label2.getText());
 		}
-
 }
 
