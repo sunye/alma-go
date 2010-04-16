@@ -1,4 +1,3 @@
-
 package fr.alma.jeu; 
 
 import java.awt.Component;
@@ -13,7 +12,7 @@ import fr.alma.jeu.Couleur;
 
   
   /** 
-  * Classe qui contien la grille du jeu et le positionnement des pions. 
+  * Class that contains the grid of the game and positioning of the pawns
   * @author ZERBITA Mohamed El Hadi 
   * 
   */ 
@@ -25,18 +24,19 @@ import fr.alma.jeu.Couleur;
          public Grille() { 
                   
                 Contenu = new Pion[9][9]; 
-                
+              
                 for(int i=0;i<9;i++) 
                 	 for(int j=0;j<9;j++){
                 		 Contenu[i][j] = new Pion(new Point(i,j)); 
-                	}
+                		 
+                	 }
                          
               
                 initHashMap();
          } 
                  
         /**
-     	 * Méthode qui permet d'effacer la grille de tout les pions
+     	 * Method to erase the grid from all the pawns
      	 */
      	public void effacerGrille(JLabel Grille){
      		Component[]contenu;
@@ -48,8 +48,8 @@ import fr.alma.jeu.Couleur;
      	}
          
      	/**
-    	 * Cette méthode met à jour la grille avec le pion ajouté.
-    	 * @param position position du pion ajouté. 
+    	 * This method updates the grid with the added pawn.
+    	 * @param position position of the pawn added.
     	 */
     	public Tour mettrePion(Point position,JLabel LGrille, JBlanc Blanc, JNoir Noir, Tour t) {
     				
@@ -68,8 +68,8 @@ import fr.alma.jeu.Couleur;
     	}
     	    	
      	/**
-    	 * Méthode qui met un pion blanc dans une position
-    	 * @param position position du pion
+    	 *Method which is a white pawn in a position
+    	 * @param position position of the pawn
     	 */
     	public void mettrePionBlanc(JLabel LGrille,JBlanc Blanc,Point position) {
     		JLabel blanc = (JLabel) Blanc.clone();
@@ -79,8 +79,8 @@ import fr.alma.jeu.Couleur;
     	}
     	
     	/**
-    	 * Méthode qui met un pion noir dans une position
-    	 * @param position position du pion
+    	 * Method which is a black pawn in a position
+    	 * @param position position of the pawn
     	 */
     	public void mettrePionNoir(JLabel LGrille,JNoir Noir, Point position) {
     		JLabel noir = (JLabel) Noir.clone();
@@ -91,8 +91,8 @@ import fr.alma.jeu.Couleur;
     	}
     	
     	/**
-    	 * Méthode qui met à jour toute la grille lors d'une capture
-    	 * @param other contenu de la nouvelle grille
+    	 * Method that updates the entire grid from the catch
+    	 * @param other: contents of the new grid
     	 */
     	  public void miseAjourGrille(Grille other, JLabel LGrille, JBlanc Blanc, JNoir Noir){
     		effacerGrille(LGrille);
@@ -109,7 +109,7 @@ import fr.alma.jeu.Couleur;
           }
     	
          /** 
-          * Initialise la Map avec les points qui correspondent aux valeurs. 
+          *Initializes the map with the points that correspond to the values.
           */ 
           private void initHashMap(){ 
                   

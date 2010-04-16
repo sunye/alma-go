@@ -1,7 +1,7 @@
 package fr.alma.jeu;
 
 /**
- * Enumération pour les couleurs des pions
+ * Enumeration for the color of pawns
  * @author ZERBITA Mohamed El Hadi
  *
  */

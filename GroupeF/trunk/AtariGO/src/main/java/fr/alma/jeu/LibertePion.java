@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 /**
- * Classe pour gérer les libertés des pions
+ * Class for managing the freedom of pawns
  * @author Ngassa Hubert
  *
  */
@@ -15,7 +15,7 @@ public class LibertePion {
 	
 	/**
 	 * Getter
-	 * @return retourne les voisins
+	 * @return
 	 */
 	public static ArrayList<Pion> getVoisins() {
 		return voisins;
@@ -23,18 +23,19 @@ public class LibertePion {
 
 	/**
 	 *Setter
-	 * @param voisins spécifie les voisisn
+	 * @param voisins
 	 */
 	public static void setVoisins(ArrayList<Pion> voisins) {
 		LibertePion.voisins = voisins;
 	}
 	
 	/**
-	 * Determine la liberté fixe d'un pion( nombre de case non occupée autour d'elle
-	 * @param g grille courante
-	 * @param position la position du pion sur la grille 
-	 * @return le nombre de liberté(entre 0et 4)
+	 * Determine the freedom of a fixed pin (number of unoccupied box around it)
+	 * @param g current grid
+	 * @param position the position of the pawn on the grid 
+	 * @return the number of freedom (between 0 and 4)
 	 */
+	
 	public static int getLiberteFixe(Grille g, Point position) {
 		
 		int lib = 0;
@@ -54,11 +55,11 @@ public class LibertePion {
 	}
 	
 	/**
-	 * Détermine la liberté d'un groupe de pions par simple connaissance d'un représentant du groupe et de la grille courante. 
-	 * @param grille la grille courante
-	 * @param p la position du représentant sur la grille
-	 * @param c la couleur du groupe
-	 * @return le nombre de liberté aux frontières du groupe
+	 * Determine the freedom of a group of pieces by mere knowledge of a representative group and grid current.
+	 * @param grille current grid
+	 * @param p position of representative on the grid
+	 * @param c color of the group
+	 * @return the number of the dividing line between freedom group
 	 */
 	public static int getLiberte(Grille grille, Point p,Couleur c){ 
 		

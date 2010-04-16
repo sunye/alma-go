@@ -5,15 +5,15 @@ import java.awt.Point;
 import javax.swing.JLabel;
 
 /**
- * Classe qui permet de detecter la position du pion ajouter et renvoyé ses coordonnées
+ * This Class permits to identify the position of an added pawn and return its coordinates
  * @author ZERBITA Mohamed El Hadi
  *
  */
 public class JCase {
 	
 	/**
-	 * Cette méthode retourne la case de la grille qui correspond au click de souris.
-	 * @return la case de la grille.
+	 * This method returns a grid cell that corresponds to the click.
+	 * @return a cell of the grid.
 	 */
 	public static Point getValidePosition(JLabel Grille, boolean jeuEnCours){
 				

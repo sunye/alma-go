@@ -1,7 +1,7 @@
 package fr.alma.jeu;
 
 /**
- * Enumération pour le tour des joueurs.
+ * Enumeration for the tour players
  * @author ZERBITA Mohamed El Hadi
  *
  */

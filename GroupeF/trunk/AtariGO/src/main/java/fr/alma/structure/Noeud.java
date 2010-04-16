@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import fr.alma.jeu.Pion;
 
 /**
- * Classe du noeud de l'arbre
+ * Class Node of the tree
  * @author ZERBITA Mohamed El Hadi
  *
  */
@@ -18,8 +18,8 @@ public class Noeud {
 	public ArrayList<Noeud> listeFils;
 	
 	/**
-	 * Constructeur de la classe.
-	 * @param coup valeur initiale du noeud.
+	 * Constructor of the class.
+	 * @param coup initial value of the node.
 	 */
 	public Noeud(Pion coup){
 		this.pere = null;
@@ -29,17 +29,17 @@ public class Noeud {
 	}
 	
 	/**
-	 * Retourne la liste des fils du noeud.
-	 * @return la liste des fils.
+	 * Return the list of the children of a node.
+	 * @return the list of children.
 	 */
 	public ArrayList<Noeud> getListeFils() {
 		return listeFils;
 	}
 
 	 /**
-	  * Ajoute un fils
-	  * @param noeudPere noeud pere du fils
-	  * @param noeud fils
+	  * Add a child
+	  * @param noeudPere parent node of the child node
+	  * @param noeud child
 	  */
 	 public void AjouterFils(Noeud noeud){
 		 this.getListeFils().add(noeud);
@@ -47,63 +47,63 @@ public class Noeud {
 		
 	 }
 	/**
-	 * Retourne la valeur du noeud.
-	 * @return la valeur retourné.
+	 * Return the value of a node.
+	 * @return the value.
 	 */
 	public Pion getCoup() {
 		return coup;
 	}
 
 	/**
-	 * Retourne le nombre de fils du noeud.
-	 * @return le nombre retourné.
+	 * Return the number of children of a node
+	 * @return the number.
 	 */
 	public int getNbFils() {
 		return this.listeFils.size();
 	}
 
 	/**
-	 * Affecte le pion au noeud
-	 * @param coup pion du noeud
+	 * Affect a pawn to a node
+	 * @param coup pawn of the node
 	 */
 	public void setCoup(Pion coup) {
 		this.coup = coup;		
 	}
 
 	/**
-	 * Affecte un pere au noeud
-	 * @param pere pere du noeud
+	 * Affect a parent to a node
+	 * @param pere parent of a node
 	 */
 	public void setPere(Noeud pere) {
 		this.pere = pere;
 	}
 
 	/**
-	 * Retourne le pere d'un noeud
-	 * @return le pere
+	 * Return the parent of the node
+	 * @return the parent
 	 */
 	public Noeud getPere() {
 		return pere;
 	}
 
 	/**
-	 * Affecte une note au noeud
-	 * @param note note du noeud
+	 * Affect a mark to a node
+	 * @param note mark of the node
 	 */
 	public void setNote(int note) {
 		this.note = note;
 	}
 
 	/**
-	 * Retourne la note du noeud
-	 * @return note note du noeud
+	 * Return the mark of the node
+	 * @return note mark of the node
 	 */
 	public int getNote() {
 		return note;
 	}
 
 	/**
-	 * Test si un noeud a des fils
+	 * Test if a node has a child
 	 * @return resultat
 	 */
 	public boolean existeFils(){

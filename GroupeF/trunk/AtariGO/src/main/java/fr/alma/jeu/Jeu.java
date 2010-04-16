@@ -11,8 +11,8 @@ import static fr.alma.jeu.LibertePion.*;
 import static fr.alma.jeu.OutilsJEU.*;
 
 /**
- * Classe qui gere le jeu et la stratégie
- * @author Hubert Ngassa
+ * Class managing the game and the strategy
+ * @author Ngassa Hubert
  *
  */
 public class Jeu {
@@ -26,11 +26,11 @@ public class Jeu {
 	private static Pion pionCapture;
 			
 	/**
-	 * Méthhode principale de gestion des regles de jeu. détermine si un éventuel coup sur la grille est valable ou pas.
-	 * @param grille la grille en cours 
-	 * @param p le point où devrait être posé le pion sur le goban
-	 * @param t celui qui a la main.
-	 * @return une valeur déterminant si le coup devant etre joué est valide, est invalide, génere une capture ou un suicide
+	 * Main method of management rules of play determines whether a possible blow to the grid is valid or not..
+	 * @param grille the current grid 
+	 * @param p the point where the pawn should be raised on the goban
+	 * @param t the one which has the hand. 
+	 * @return a determinant value if the blow is to be valid, invalid, generates a capture or a suicide 
 	 */
 	public static int SimulerJeu(Grille grille,Point p,Tour t){
 		Pion pion;
@@ -54,7 +54,6 @@ public class Jeu {
 				int a=getLiberte(grille,new Point(x, y), pion.couleur);
 				if (a==0){	
 				
-				// test de la situation de prise pour le cas de prise avec suicide
 					if((existN(grille,x, y,pion.couleur)))
 						if((!pion.couleur.equals(grille.Contenu[x-1][y].couleur))){
 							
@@ -90,7 +89,7 @@ public class Jeu {
 						voisins=new ArrayList<Pion>();
 						voisins.add(grille.Contenu[x][y]);
 						int b=(getLiberte(grille,new Point(x, y+1), grille.Contenu[x][y+1].couleur));
-						
+						System.out.println("a l'est b="+b);
 						if(b==0){
 							prise=true;
 							
@@ -107,14 +106,16 @@ public class Jeu {
 						
 						if(b==0){
 							prise=true;
+							
 							pionCapture=grille.Contenu[x][y-1];
 						}
 					}
 					
-				     
+				    					
 					setVoisins(new ArrayList<Pion>());
 					if (prise){
-					
+						
+						
 						return CAPTURE;
 					}
 					else{
@@ -124,15 +125,14 @@ public class Jeu {
 					
 			}
 			else{
-				
-				
+								
 				if((existN(grille,x, y,pion.couleur))){
 					if(!((pion.couleur.equals(grille.Contenu[x-1][y].couleur)))){
-					
+						
 					voisins=new ArrayList<Pion>();
 					voisins.add(grille.Contenu[x][y]);
 					int b=getLiberte(grille,new Point(x-1, y), grille.Contenu[x-1][y].couleur);
-				
+					
 					if(b==0){
 					  prise=true;
 						
@@ -151,7 +151,7 @@ public class Jeu {
 					
 					if(b==0){
 						prise=true;
-					
+						
 						pionCapture=grille.Contenu[x+1][y];
 					}
 				}
@@ -162,7 +162,7 @@ public class Jeu {
 					voisins=new ArrayList<Pion>();
 					voisins.add(grille.Contenu[x][y]);
 					int b=getLiberte(grille, new Point(x, y+1), grille.Contenu[x][y+1].couleur);
-				
+					
 					if((b==0)){
 						prise=true;
 						
@@ -172,11 +172,11 @@ public class Jeu {
 								
 				if((existO(grille, x, y,pion.couleur)))
 					if(!(pion.couleur.equals(grille.Contenu[x][y-1].couleur))){
-						
+					
 					voisins=new ArrayList<Pion>();
 					voisins.add(grille.Contenu[x][y]);
 					int b=getLiberte(grille, new Point(x, y-1), grille.Contenu[x][y-1].couleur);
-				
+					
 					if((b==0)){
 						prise=true;
 						
@@ -191,7 +191,7 @@ public class Jeu {
 					
 				
 				else{
-					
+				
 					return VALIDE;
 					}
 				}
@@ -200,8 +200,9 @@ public class Jeu {
 			
 			
 			else{
-				
+			
 				setVoisins(new ArrayList<Pion>());
+				
 				return INVALIDE;
 				
 				}
@@ -209,9 +210,9 @@ public class Jeu {
 	}
 
 	/**
-	 * Méthode pour le joup joué par la machine
-	 * @param g etat de la grille
-	 * @return
+	 * Method which allows a machine to play
+	 * @param g  the state of the grid
+	 * @return The point that the machine as posed to play the pawn
 	 */
 	public static Point jouerMachine(Grille g,Tour t) {
 		
@@ -227,7 +228,7 @@ public class Jeu {
 		if(cj.size()!=0){
 		
 		
-			if (cj.size()<81){
+			if (cj.size()<30){
 				
 				setVoisins(new ArrayList<Pion>());
 				
@@ -239,6 +240,7 @@ public class Jeu {
 					if((getLiberteFixe(g, pion.position)>0))
 						cjMachine.add(pion);
 				}
+				
 				
 				
 				min=getLiberteFixe(g,cjHumain.get(0).position);
@@ -303,11 +305,12 @@ public class Jeu {
 		return p;
 	}
 		
+	
 	/**
-	 * determine la liste des coups joués par l'adversaire sur la grille courante.
-	 * @param g: grille courante
-	 * @param c:de la couleur des pions de l'adversaire
-	 * @return: retourne l'ensemble de tours les pions posés par l'adversaire sur la grille.
+	 * Determine the move list cheeks by the opponent on the current grid.
+	 * @param g current grid
+	 * @param c the color of the pawns of the opponent
+	 * @return the set of all the pawns poses by the opponent on the grid.
 	 */
 	public static ArrayList<Pion> getCoupsJouerAd(Grille g,Couleur c){
 
@@ -327,10 +330,10 @@ public class Jeu {
     }
 	
 	/**
-	 * determine la liste des coups joués par la machine sur la grille courante.
-	 * @param g: grille courante
-	 * @param c: de la couleur des pions de la machine
-	 * @return: retourne l'ensemble de tous les pions posés par la machine sur la grille.
+	 *  Determine the move list cheeks by the machine on the current grid.
+	 * @param g current grid
+	 * @param c the color of the pawns of the machine
+	 * @return the set of all the pawns poses by the machine on the grid.
 	 */
 	public static ArrayList<Pion> getCoupsJouerM(Grille g,Couleur c){
 		
@@ -345,10 +348,10 @@ public class Jeu {
 		}
 	
 	/**
-	 * Met a jour la grille aprés une capture
-	 * @param g grille a mettre à jour
-	 * @param position la position du pion
-	 * @return la grille mis à jour
+	 * Updates the grid after a catch
+	 * @param g  grid update
+	 * @param position  the position of the pawn
+	 * @return the grid updated
 	 */
 	public static Grille miseAjourGrilleApresCapture(Grille g){
 		

@@ -9,7 +9,7 @@ import fr.alma.jeu.Grille;
 import fr.alma.jeu.Pion;
 
 /**
- * Méthode utile pour la classe IA
+ * Used method for the class ia
  * @author Ngassa Hubert
  *
  */
@@ -18,11 +18,11 @@ public class OutilsIA {
 	public static ArrayList<Point> voisins = new ArrayList<Point>();
 	
 	/**
-	 * Détermine si le voisin Nord du  pion(x,y) existe et est de la même couleur que celui-ci
-	 * x abscissse
-	 * y ordonnné
-	 * c couleur à teter
-	 * g coulreur corresponadante 
+	 * Determine if the north neighbor of pawn (x,y) exists and if they have the same color
+	 * x abscissa
+	 * y ordinates
+	 * c color to test
+	 * g corresponding color
 	 */
 	public static boolean existN(Grille grille,int x,int y,Couleur c){
 		if (x>0){
@@ -38,12 +38,13 @@ public class OutilsIA {
 	}
 
 	/**
-	 * Détermine si le voisin SUD du  pion(x,y) existe et est de la même couleur que celui-ci
-	 * x abscissse
-	 * y ordonnné
-	 * c couleur à teter
-	 * g coulreur corresponadante 
+	 * Determine if the south neighbor of pawn (x,y) exists and if they have the same color
+	 * x abscissa
+	 * y ordinates
+	 * c color to test
+	 * g corresponding color
 	 */
+	
 	public static boolean existS(Grille grille,int x,int y,Couleur c){
 		if (x<8){
 			if(c.equals(Couleur.BLANC)) return ((grille.Contenu[x+1][y]).equals(Couleur.BLANC));
@@ -54,10 +55,10 @@ public class OutilsIA {
 	}
 
 	/**
-	 * Détermine si le voisin Est du  pion(x,y) existe et est de la même couleur que celui-ci
-	 * x abscissse
-	 * y ordonnné
-	 * c couleur à teter
+	 * Determine if the East neighbor of pawn (x,y) exists and if they have the same color
+	 * x abscissa
+	 * y ordinates
+	 * c color to test
 	 * g goban 
 	 */
 	public static boolean existE(Grille grille,int x,int y,Couleur c){
@@ -71,10 +72,10 @@ public class OutilsIA {
 	}
 
 	/**
-	 * Détermine si le voisin OUEST du  pion(x,y) existe et est de la même couleur que celui-ci
-	 * x abscissse
-	 * y ordonnné
-	 * c couleur à teter
+	 * Determine if the West neighbor of pawn (x,y) exists and if they have the same color
+	 * x abscissa
+	 * y ordinates
+	 * c color to test
 	 * g goban 
 	 */
 	public static boolean existO(Grille grille,int x,int y,Couleur c){
@@ -89,9 +90,9 @@ public class OutilsIA {
 	}
 
 	/**
-	 * Détermine un groupe de pions (voisins directs, ou par transition. on a donc besoin: 
-	 * @param g du goban
-	 * @param lu point à partir duquel on veut déterminer les voisins
+	 * This method determine a group of pawns (Direct neighbors or by transition)So we need: 
+	 * @param g of the goban
+	 * @param p Point from which we can determine all the neighbors
 	 */
 	public static void DeterminerVoisins(Grille g,Point p){
 		
@@ -111,11 +112,11 @@ public class OutilsIA {
 	}
 	
 	/**
-	 * Détermine un ensemble de représentant des différents groupe de pions de couleur blanche sur le goban
-	 * il est à noter que le fait de disposer d'un seul representant par groupe est suffisant car avec DeterminerVoisins on peut reconstruire le groupe entier 
-	 * @param g le goban
-	 * @return retourne donc une liste de pions représentants les diférents groupes de pionsblancs sur la grille.
-	 * 
+	 * This method determine a set of pawns representing the different groups of white pawns on the goban
+	 * It will be notice that the fact that we dispose of only one representative per group is enough.Because with DeterminerVoisins we can reconstruct the entire group 
+	 * @param g the goban
+	 * @return listeG a list of pawns representing the different groups of white pawns on the goban
+	 *
 	 */
 	public static ArrayList<Point> determinerGroupesBlanc(Grille g){
 		ArrayList<Point> listeG=new ArrayList<Point>();
@@ -139,9 +140,9 @@ public class OutilsIA {
 	}
 	
 	/**
-	 * Pareil que la précédente mais avec des pions de couleur Noir
-	 * @param g 
-	 * @return
+	 * Same as the preceding method but with black pawns
+	 * @param g the goban
+	 * @return listeG a list of pawns representing the different groups of black pawns on the goban
 	 */
 	public static ArrayList<Point> determinerGroupesNoir(Grille g){
 		ArrayList<Point> listeG = new ArrayList<Point>();
@@ -164,10 +165,10 @@ public class OutilsIA {
 	}
 	
 	/**
-	 * Détermine pour une grille le groupe de pions qui a la liberté minimale 
-	 * @param g la grille courante
-	 * @param listeG la liste des pions representant les différents groupes de pions du goban d'une couleur donnée.
-	 * @return un entier qui représente cette valeur minimale.
+	 * This Method determine the group of pawns with the less freedom for a goban
+	 * @param g The current grid
+	 * @param listeG a list of pawns representing the different groups of pawns with a given color on the goban
+	 * @return min This integer represents the minimal value.
 	 */
 	public static int determineMin(Grille g,ArrayList<Point> listeG){
 		int min = getLiberte(g, listeG.get(0), g.Contenu[listeG.get(0).x][listeG.get(0).y].couleur);
