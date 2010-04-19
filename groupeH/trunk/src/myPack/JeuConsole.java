@@ -1,6 +1,5 @@
 package myPack;
 
-import java.util.Scanner;
 import java.util.*;
 
 /**
@@ -10,6 +9,7 @@ public class JeuConsole {
 	static int fileFixe; // File FileFija;
 	static int colonneFixe;
 	static int valeurFixe;
+	static Tableau  snapshot;
 	Tableau tableauFixe;
 	Tableau tableau;
 	Vector<Tableau> listeTableaux;
@@ -33,6 +33,15 @@ public class JeuConsole {
 		for (int x = 1; x <= dimension; x++)
 			for (int y = 1; y <= dimension; y++)
 				putParties(((x - 1) * 9) + y - 1, x - 1, y - 1, 0);
+		
+		snapshot=getSnap();
+	}
+
+	public  Tableau getSnap() {
+		// TODO Auto-generated method stub
+		Tableau	t=new Tableau();
+		t.
+		return t;
 	}
 
 	void putParties(int p, int f, int c, int v) {
