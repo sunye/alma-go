@@ -1,5 +1,14 @@
 package myPack;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import javax.imageio.stream.FileImageInputStream;
+
 public class Tableau {
 
 	Cellule[][] casee = new Cellule[9][9];
@@ -20,9 +29,24 @@ public class Tableau {
 			for (int c = 0; c < 9; c++) {
 				casee[f][c] = new Cellule();
 				casee[f][c].putFile(f);
-				casee[f][c].putColonne(c);
+				casee[f][c].putColumn(c);
 				casee[f][c].putValeur(0);
 			}
+	}
+
+	public Tableau getSnap() throws IOException {
+		// TODO Auto-generated method stub
+		Tableau t = new Tableau();
+
+		// FileInputStream snapFile = new FileInputStream("snapfile.txt");
+		File snapFile = new File("snapfile.txt");
+		FileReader fr = new FileReader(snapFile); // p339
+		BufferedReader in = new BufferedReader(fr);
+		String line;
+		while ((line = in.readLine()) != null)
+			System.out.println("Line=" + line);
+
+		return t;
 	}
 
 	// nb casee vides du tableau
@@ -35,16 +59,6 @@ public class Tableau {
 		return counter;
 	}
 
-	
-	/**x=Point notation -> x=Absc  ;  i=Matrix notation ->row  */
-	public void smartPrint(){
-		  for (int x = 0; x <=8; x++){
-			  for (int y = 0; y <=8; y++){
-				  System.out.println(this[y][x]);
-			  }	  
-		  }
-			  
-	}
 	/**
 	 * @return the uFile
 	 */
@@ -181,6 +195,18 @@ public class Tableau {
 
 	void printTableau() {
 		for (int f = 0; f < dimension; f++) {
+			for (int c = 0; c < dimension; c++) {
+				System.out.print(" " + getValeur(f, c));
+			}
+			System.out.println(" ");
+		}
+	}
+
+	/** x=Point notation -> x=Absc ; i=Matrix notation ->row */
+	public void PrintSmartTable() {
+		System.out.println("A B C D E F G H I");// label before data
+		for (int f = 0; f < dimension; f++) {
+			System.out.println((char) ((f + 1) - 5) + 5);
 			for (int c = 0; c < dimension; c++) {
 				System.out.print(" " + getValeur(f, c));
 			}
