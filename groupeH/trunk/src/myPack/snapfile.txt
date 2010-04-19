@@ -4,7 +4,6 @@ c5
 c4
 g5
 h2
-
 //black
 e8
 f8
