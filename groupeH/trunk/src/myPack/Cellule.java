@@ -5,18 +5,18 @@ import java.util.Vector;
 public class Cellule {
 
 	/**
-	 * @return the row
+	 * @return the File
 	 */
-	public int getRow() {
-		return row;
+	public int getFile() {
+		return File;
 	}
 
 	/**
-	 * @param row
-	 *            the row to set
+	 * @param File
+	 *            the File to put
 	 */
-	public void setRow(int row) {
-		this.row = row;
+	public void putFile(int File) {
+		this.File = File;
 	}
 
 	/**
@@ -28,9 +28,9 @@ public class Cellule {
 
 	/**
 	 * @param column
-	 *            the column to set
+	 *            the column to put
 	 */
-	public void setColumn(int column) {
+	public void putColumn(int column) {
 		this.column = column;
 	}
 
@@ -43,39 +43,39 @@ public class Cellule {
 
 	/**
 	 * @param valeur
-	 *            the valeur to set
+	 *            the valeur to put
 	 */
-	public void setValeur(int valeur) {
+	public void putValeur(int valeur) {
 		this.valeur = valeur;
 	}
 
-	int row;
+	int File;
 	int column;
 	int valeur;
 
 	public static Vector neighboursV = new Vector();
 
 	public void givNeighbVect(int color) {
-		if (row >= 0)
-			neighboursV.add(new Pos(row - 1, column));
-		if (row <= 8)
-			neighboursV.add(new Pos(row + 1, column));
+		if (File >= 0)
+			neighboursV.add(new Pos(File - 1, column));
+		if (File <= 8)
+			neighboursV.add(new Pos(File + 1, column));
 
 		if (column >= 0)
-			neighboursV.add(new Pos(row - 1, column));
+			neighboursV.add(new Pos(File - 1, column));
 		if (column <= 8)
-			neighboursV.add(new Pos(row + 1, column));
+			neighboursV.add(new Pos(File + 1, column));
 
 	}
 
 	Cellule() {
-		row = 0;
+		File = 0;
 		column = 0;
 		valeur = 0;
 	}
 
 	Cellule(int f, int c, int v) {
-		row = f;
+		File = f;
 		column = c;
 		valeur = v;
 	}

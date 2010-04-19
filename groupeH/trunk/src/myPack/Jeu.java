@@ -33,7 +33,7 @@ public class Jeu {
 
 	void putParties(int p, int f, int c, int v) {
 		parties[p].putFile(f);
-		parties[p].putColonne(c);
+		parties[p].putColumn(c);
 		parties[p].putValeur(v);
 	}
 

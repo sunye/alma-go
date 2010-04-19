@@ -1,5 +1,6 @@
 package myPack;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -9,18 +10,18 @@ public class JeuConsole {
 	static int fileFixe; // File FileFija;
 	static int colonneFixe;
 	static int valeurFixe;
-	static Tableau  snapshot;
+	static Tableau snapshot;
 	Tableau tableauFixe;
 	Tableau tableau;
 	Vector<Tableau> listeTableaux;
 	int dimension;
 	Cellule[] parties = new Cellule[82];
 
-	JeuConsole() {
+	JeuConsole() throws IOException {
 		initialisation();
 	}
 
-	void initialisation() {
+	void initialisation() throws IOException {
 		listeTableaux = new Vector<Tableau>();
 		fileFixe = 0;
 		colonneFixe = 0;
@@ -33,20 +34,13 @@ public class JeuConsole {
 		for (int x = 1; x <= dimension; x++)
 			for (int y = 1; y <= dimension; y++)
 				putParties(((x - 1) * 9) + y - 1, x - 1, y - 1, 0);
-		
-		snapshot=getSnap();
-	}
-
-	public  Tableau getSnap() {
-		// TODO Auto-generated method stub
-		Tableau	t=new Tableau();
-		t.
-		return t;
+		Tableau t = new Tableau();
+		snapshot = t.getSnap();
 	}
 
 	void putParties(int p, int f, int c, int v) {
 		parties[p].putFile(f);
-		parties[p].putColonne(c);
+		parties[p].putColumn(c);
 		parties[p].putValeur(v);
 	}
 
@@ -180,7 +174,7 @@ public class JeuConsole {
 
 	public static int X, Y;// ,alafbet2IntCoordY;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		alafbet2IntCoord('a', 5);
 		System.out.println("alafbet2IntCoord X=" + X + "Y=" + Y);
 
@@ -206,20 +200,18 @@ public class JeuConsole {
 			case 2:
 				break;
 			default:
-				System.out.println("Unknown choice");				
+				System.out.println("Unknown choice");
 			}
-			
-			
-			
-			Jeu j = new Jeu();
+
+			JeuConsole j = new JeuConsole();
 			Tableau t = new Tableau();
 			j.tableauFixe = new Tableau();
 			j.tableauFixe.putValeur(0, 0, 2);
 			j.tableauFixe.putValeur(1, 3, 1);
 			j.tableauFixe.putValeur(2, 1, 4);
-			Jeu.fileFixe = 0;
-			Jeu.colonneFixe = -1;
-			Jeu.valeurFixe = 0;
+			JeuConsole.fileFixe = 0;
+			JeuConsole.colonneFixe = -1;
+			JeuConsole.valeurFixe = 0;
 			boolean activated = true;
 			j.putTableau(j.tableauFixe);
 			while (!t.isComplet() && !j.listeVide()) {
@@ -227,23 +219,24 @@ public class JeuConsole {
 				// System.out.print("SACO");
 				// System.out.println("->"+t.uFile+" "+t.uColonne+" "+t.uValor+" ");
 				// j.printListaTableros();
-				Jeu.valeurFixe = 0;
-				Jeu.fileFixe = t.uFile;
-				Jeu.colonneFixe = t.uColonne;
+				JeuConsole.valeurFixe = 0;
+				JeuConsole.fileFixe = t.uFile;
+				JeuConsole.colonneFixe = t.uColonne;
 				if (activated == true) {
-					Jeu.fileFixe = 0;
-					Jeu.colonneFixe = -1;
-					Jeu.valeurFixe = 0;
+					JeuConsole.fileFixe = 0;
+					JeuConsole.colonneFixe = -1;
+					JeuConsole.valeurFixe = 0;
 					activated = false;
 				}
 				j.delTableau();
 				if (j.incrementPosition() == true) {
-					while (Jeu.valeurFixe < j.dimension) {
-						Jeu.valeurFixe++;
-						if (t.caseValide(Jeu.fileFixe, Jeu.colonneFixe,
-								Jeu.valeurFixe)) {
-							t.putValeur(Jeu.fileFixe, Jeu.colonneFixe,
-									Jeu.valeurFixe);
+					while (JeuConsole.valeurFixe < j.dimension) {
+						JeuConsole.valeurFixe++;
+						if (t.caseValide(JeuConsole.fileFixe,
+								JeuConsole.colonneFixe, JeuConsole.valeurFixe)) {
+							t.putValeur(JeuConsole.fileFixe,
+									JeuConsole.colonneFixe,
+									JeuConsole.valeurFixe);
 							j.putTableau(t);
 							// System.out.print("METO");
 							// System.out.println("->"+Juego.FileFija+" "+Juego.ColonneFija+" "+Juego.valorFijo);
@@ -256,7 +249,5 @@ public class JeuConsole {
 
 		} while (choice != -1);
 
-		
-	
 	}
 }
