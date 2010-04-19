@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.imageio.stream.FileImageInputStream;
 
@@ -34,19 +37,62 @@ public class Tableau {
 			}
 	}
 
+	/**
+	 * @return
+	 * @throws IOException
+	 */
 	public Tableau getSnap() throws IOException {
 		// TODO Auto-generated method stub
 		Tableau t = new Tableau();
 
+		// String snapFile = new String("snapfile.txt");
 		// FileInputStream snapFile = new FileInputStream("snapfile.txt");
-		File snapFile = new File("snapfile.txt");
+
+		File filtaic = File.createTempFile("tac", "tic");
+		// FileOutputStream
+
+		// String s = new BufferedReader(System.in)).readLine();//p340
+		File out = new File("src/myPack/foo.txt");
+		FileWriter fw = new FileWriter(out);// marche
+		// PrintWriter pw = new PrintWriter(fw);
+		// pw.println(s);
+		// fw.close();
+
+		File snapFile = new File("src/myPack/snapfile.txt");
+		/*
+		 * File dirr = new File("dirrr");//fichier file dirr.mkdir();//marche
+		 */
+
 		FileReader fr = new FileReader(snapFile); // p339
 		BufferedReader in = new BufferedReader(fr);
 		String line;
-		while ((line = in.readLine()) != null)
+		line = in.readLine();// neglect 1st line of comments
+		while (((line = in.readLine()) != null) && (!line.equals("//black"))) {
 			System.out.println("Line=" + line);
+			int u = line.substring(0, 1).charAt(0) - 97;
+			System.out.println("u=" + u);
 
-		return t;
+			String v0 = line.substring(1, 2);
+			System.out.println("substr=" + v0);
+			int v = new Integer(v0);// .intValue
+			// casee[u][(v)] = (new Cellule(u, v, -1));
+			putValeur(-(v - 5) + 5 - 1, u, -1);
+		}
+		System.out.println("printTabl");
+		while (((line = in.readLine()) != null) && (!line.equals("//black"))) {
+			System.out.println("Line=" + line);
+			int u = line.substring(0, 1).charAt(0) - 97;
+			System.out.println("u=" + u);
+
+			String v0 = line.substring(1, 2);
+			System.out.println("substr=" + v0);
+			int v = new Integer(v0);// .intValue
+			// casee[u][(v)] = (new Cellule(u, v, -1));
+			putValeur(-(v - 5) + 5 - 1, u, 1);
+		}
+		// this.printTableau();
+		this.printSmartTable();
+		return this;
 	}
 
 	// nb casee vides du tableau
@@ -203,12 +249,19 @@ public class Tableau {
 	}
 
 	/** x=Point notation -> x=Absc ; i=Matrix notation ->row */
-	public void PrintSmartTable() {
-		System.out.println("A B C D E F G H I");// label before data
+	public void printSmartTable() {
+		System.out.println("   A  B  C  D  E  F  G  H  I");// label before data
+		String s;
 		for (int f = 0; f < dimension; f++) {
-			System.out.println((char) ((f + 1) - 5) + 5);
+			System.out.print(-((f + 1) - 5) + 5);
 			for (int c = 0; c < dimension; c++) {
-				System.out.print(" " + getValeur(f, c));
+				int gv = getValeur(f, c);
+				if (gv != -1)
+					s=" "+gv;
+				else
+					 s=""+gv;
+					
+				System.out.print(" " + s);
 			}
 			System.out.println(" ");
 		}

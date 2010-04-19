@@ -17,6 +17,8 @@ public class JeuConsole {
 	int dimension;
 	Cellule[] parties = new Cellule[82];
 
+	public static int X, Y;// ,alafbet2IntCoordY;
+
 	JeuConsole() throws IOException {
 		initialisation();
 	}
@@ -34,8 +36,10 @@ public class JeuConsole {
 		for (int x = 1; x <= dimension; x++)
 			for (int y = 1; y <= dimension; y++)
 				putParties(((x - 1) * 9) + y - 1, x - 1, y - 1, 0);
-		Tableau t = new Tableau();
-		snapshot = t.getSnap();
+
+		Tableau snapshot = tableau.getSnap();
+		System.out.println("fin");
+		
 	}
 
 	void putParties(int p, int f, int c, int v) {
@@ -170,9 +174,13 @@ public class JeuConsole {
 		X = gobX - 1;
 		Y = 5 + (5 - gobY) - 1;// 1..5..9 symetric axis=5 abs((9-5)|(1-5))=4
 		// -1 for starting at 0
-	}
 
-	public static int X, Y;// ,alafbet2IntCoordY;
+		/*
+		 * String s ="a"; int i = s.charAt(0) ;
+		 * 
+		 * System.out.println("charAt="+i);
+		 */
+	}
 
 	public static void main(String[] args) throws IOException {
 		alafbet2IntCoord('a', 5);
@@ -185,6 +193,7 @@ public class JeuConsole {
 		gobanIntCoord2Matrix(1, 9);
 		System.out.println("X=" + X + "Y=" + Y);
 
+		gobanIntCoord2Matrix(0, 0);
 		/** Menu */
 		int choice;
 		do {
@@ -202,7 +211,15 @@ public class JeuConsole {
 			default:
 				System.out.println("Unknown choice");
 			}
-
+			choice = 2;// !!
+			
+			
+			
+			Tableau snapshot= new Tableau();
+			//snapshot = snapshot.getSnap();
+			System.out.println("\n        MyEnd\n");
+			
+			
 			JeuConsole j = new JeuConsole();
 			Tableau t = new Tableau();
 			j.tableauFixe = new Tableau();
@@ -247,7 +264,8 @@ public class JeuConsole {
 			}
 			t.printTableau();
 
-		} while (choice != -1);
+			System.out.println("my choice="+choice);		
+		} while ((choice != -1)&&(choice != 2));
 
 	}
 }
