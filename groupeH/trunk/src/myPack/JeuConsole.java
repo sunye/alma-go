@@ -37,9 +37,11 @@ public class JeuConsole {
 			for (int y = 1; y <= dimension; y++)
 				putParties(((x - 1) * 9) + y - 1, x - 1, y - 1, 0);
 
-		Tableau snapshot = tableau.getSnap();
+		// Tableau snapshot = tableau.getSnap();
+		tableauFixe = tableau.getSnap();
+
 		System.out.println("fin");
-		
+
 	}
 
 	void putParties(int p, int f, int c, int v) {
@@ -212,14 +214,11 @@ public class JeuConsole {
 				System.out.println("Unknown choice");
 			}
 			choice = 2;// !!
-			
-			
-			
-			Tableau snapshot= new Tableau();
-			//snapshot = snapshot.getSnap();
+
+			Tableau snapshot = new Tableau();
+			// snapshot = snapshot.getSnap();
 			System.out.println("\n        MyEnd\n");
-			
-			
+
 			JeuConsole j = new JeuConsole();
 			Tableau t = new Tableau();
 			j.tableauFixe = new Tableau();
@@ -264,8 +263,8 @@ public class JeuConsole {
 			}
 			t.printTableau();
 
-			System.out.println("my choice="+choice);		
-		} while ((choice != -1)&&(choice != 2));
+			System.out.println("my choice=" + choice);
+		} while ((choice != -1) && (choice != 2));
 
 	}
 }
