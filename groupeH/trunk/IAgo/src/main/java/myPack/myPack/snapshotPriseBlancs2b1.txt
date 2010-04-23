@@ -1,0 +1,14 @@
+//white
+c6
+c5
+d3
+f7
+f3
+
+//black
+d7
+e8
+e6
+f8
+f6
+g7
