@@ -206,9 +206,9 @@ public class JeuConsole {
 			System.out.println("1)Live\n2)Placer pions ");
 			System.out.println("Which choice?");
 
-			// Scanner in = new Scanner(System.in);
-			// choice = in.nextInt();!!
-			choice = 2;// !!
+			Scanner in = new Scanner(System.in);
+			choice = in.nextInt();// !!
+			// choice = 2;// !!
 			System.out.println("Your choice is:" + choice);
 
 			switch (choice) {
@@ -217,7 +217,7 @@ public class JeuConsole {
 			default:
 				System.out.println("Unknown choice");
 			}
-			choice = 2;// !!
+			// choice = 2;// !!
 
 			System.out.println("lbl Main40");
 			Tableau snapshot = new Tableau();
@@ -227,7 +227,7 @@ public class JeuConsole {
 			System.out.println("\n        MyEnd\n");
 
 			JeuConsole j = new JeuConsole(); // !!affiche le tableau av des 0,-1
-												// et 1
+			// et 1
 
 			// System.out.println("lbl Main44");
 			// Tableau t = new Tableau();
@@ -279,6 +279,7 @@ public class JeuConsole {
 			//
 			// System.out.println("my choice=" + choice);
 			//		
+
 		} while ((choice != -1) && (choice != 2));// !à modifier
 
 	}
