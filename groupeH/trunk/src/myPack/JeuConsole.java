@@ -11,7 +11,7 @@ public class JeuConsole {
 	static int colonneFixe;
 	static int valeurFixe;
 	static Tableau snapshot;
-static	Tableau tableauFixe;
+	static Tableau tableauFixe;
 	Tableau tableau;
 	Vector<Tableau> listeTableaux;
 	int dimension;
@@ -25,9 +25,9 @@ static	Tableau tableauFixe;
 
 	void initialisation() throws IOException {
 		System.out.println("in JeuConsole.initialisation");// ! comments on
-															// relative
-															// potential renamed
-															// method name
+		// relative
+		// potential renamed
+		// method name
 		listeTableaux = new Vector<Tableau>();
 		fileFixe = 0;
 		colonneFixe = 0;
@@ -223,59 +223,62 @@ static	Tableau tableauFixe;
 			Tableau snapshot = new Tableau();
 			// snapshot = snapshot.getSnap();
 			System.out.println("lbl Main41");
-			
-			
+
 			System.out.println("\n        MyEnd\n");
 
-			JeuConsole j = new JeuConsole();  //!!affiche  le tableau av des 0,-1 et 1
+			JeuConsole j = new JeuConsole(); // !!affiche le tableau av des 0,-1
+												// et 1
 
-			System.out.println("lbl Main44");
-			Tableau t = new Tableau();
-			System.out.println("lbl Main45");
-
-			j.tableauFixe = new Tableau();
-			j.tableauFixe.putValeur(0, 0, 2);
-			j.tableauFixe.putValeur(1, 3, 1);
-			j.tableauFixe.putValeur(2, 1, 4);
-			JeuConsole.fileFixe = 0;
-			JeuConsole.colonneFixe = -1;
-			JeuConsole.valeurFixe = 0;
-			boolean activated = true;
-			j.putTableau(j.tableauFixe);
-			while (!t.isComplet() && !j.listeVide()) {
-				t = j.getTableau();
-				// System.out.print("SACO");
-				// System.out.println("->"+t.uFile+" "+t.uColonne+" "+t.uValor+" ");
-				// j.printListaTableros();
-				JeuConsole.valeurFixe = 0;
-				JeuConsole.fileFixe = t.uFile;
-				JeuConsole.colonneFixe = t.uColonne;
-				if (activated == true) {
-					JeuConsole.fileFixe = 0;
-					JeuConsole.colonneFixe = -1;
-					JeuConsole.valeurFixe = 0;
-					activated = false;
-				}
-				j.delTableau();
-				if (j.incrementPosition() == true) {
-					while (JeuConsole.valeurFixe < j.dimension) {
-						JeuConsole.valeurFixe++;
-						if (t.caseValide(JeuConsole.fileFixe,
-								JeuConsole.colonneFixe, JeuConsole.valeurFixe)) {
-							t.putValeur(JeuConsole.fileFixe,
-									JeuConsole.colonneFixe,
-									JeuConsole.valeurFixe);
-							j.putTableau(t);
-							// System.out.print("METO");
-							// System.out.println("->"+Juego.FileFija+" "+Juego.ColonneFija+" "+Juego.valorFijo);
-							// j.printListaTableros();
-						}
-					}
-				}
-			}
-			t.printTableau();
-
-			System.out.println("my choice=" + choice);
+			// System.out.println("lbl Main44");
+			// Tableau t = new Tableau();
+			// System.out.println("lbl Main45");
+			//
+			// j.tableauFixe = new Tableau();
+			// j.tableauFixe.putValeur(0, 0, 2);
+			// j.tableauFixe.putValeur(1, 3, 1);
+			// j.tableauFixe.putValeur(2, 1, 4);
+			// JeuConsole.fileFixe = 0;
+			// JeuConsole.colonneFixe = -1;
+			// JeuConsole.valeurFixe = 0;
+			// boolean activated = true;
+			// j.putTableau(j.tableauFixe);
+			// while (!t.isComplet() && !j.listeVide()) {
+			// t = j.getTableau();
+			// // System.out.print("SACO");
+			// //
+			// System.out.println("->"+t.uFile+" "+t.uColonne+" "+t.uValor+" ");
+			// // j.printListaTableros();
+			// JeuConsole.valeurFixe = 0;
+			// JeuConsole.fileFixe = t.uFile;
+			// JeuConsole.colonneFixe = t.uColonne;
+			// if (activated == true) {
+			// JeuConsole.fileFixe = 0;
+			// JeuConsole.colonneFixe = -1;
+			// JeuConsole.valeurFixe = 0;
+			// activated = false;
+			// }
+			// j.delTableau();
+			// if (j.incrementPosition() == true) {
+			// while (JeuConsole.valeurFixe < j.dimension) {
+			// JeuConsole.valeurFixe++;
+			// if (t.caseValide(JeuConsole.fileFixe,
+			// JeuConsole.colonneFixe, JeuConsole.valeurFixe)) {
+			// t.putValeur(JeuConsole.fileFixe,
+			// JeuConsole.colonneFixe,
+			// JeuConsole.valeurFixe);
+			// j.putTableau(t);
+			// // System.out.print("METO");
+			// //
+			// System.out.println("->"+Juego.FileFija+" "+Juego.ColonneFija+" "+Juego.valorFijo);
+			// // j.printListaTableros();
+			// }
+			// }
+			// }
+			// }
+			// t.printTableau();
+			//
+			// System.out.println("my choice=" + choice);
+			//		
 		} while ((choice != -1) && (choice != 2));// !à modifier
 
 	}
