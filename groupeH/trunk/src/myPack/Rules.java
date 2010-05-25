@@ -83,16 +83,16 @@ public class Rules {
 	 * @param color
 	 *            : -1=Whites 1=Blacks
 	 */
-	public boolean	isCapturing(int color){
-		/**isCapturing(1) means "is Black capturing ,at least ,so White,poner"**/
-		isFree
-		for each black
-			if 
-		return 
-	}
-
-	/** Only after isCapturing */
-	public boolean isCapturedBlack() {
-
-	}
+	// public boolean isCapturing(int color){
+	// /**isCapturing(1) means "is Black capturing ,at least ,so White,poner"**/
+	// isFree
+	// for each black
+	// if
+	// return
+	// }
+	//
+	// /** Only after isCapturing */
+	// public boolean isCapturedBlack() {
+	//
+	// }
 }
