@@ -5,7 +5,7 @@
 %\usepackage[latin1]{keyboard}
 
 \usepackage[english]{babel}
-\usepackage{floatflt} 
+%\usepackage{floatflt} 
 \usepackage{color}
 \usepackage{hyperref}%pr \textquotesingle
 %\usepackage[colorlinks=true]{hyperref}
@@ -24,10 +24,10 @@
 
 
 In order to be used with main algorithms, a project of Atari-Go has been given.
-Specifically: we have to implement Min-Max  and Alpha-Beta algos.\\
+Specifically : we have to implement Min-Max  and Alpha-Beta algos.\\
 We speak in English because of time sparing because \begin{quotation}
 Technics and Developpment
-\end{quotation} lecture has imposed it;and all informaticians are supposed to speek English.
+\end{quotation} lecture has imposed it; and all informaticians are supposed to speak English.
 
 
 \chapter{User Manual}
@@ -35,6 +35,7 @@ Technics and Developpment
 %\tmtextbf{ \large{ Professionnal work experience  } }
 
 %\textit{by Peter MOU\"EZA}\\
+We suppose you use Eclipse to load the project  
 \chapter{Assumptions}
 Because of the 2b th rule of 
 TP\_
@@ -52,7 +53,7 @@ $
 $
 sweep away the gotten poners , then compute back are Whites captured, from this new situation.
 \end{itemize}
-\\
+
 Precision of the remarks about the 37 captured White stones: there are captured by Blacks because if Black move on bottom-left corner, the private Whites from any move.
 \chapter{Rules}
 \chapter{Algorithms}
@@ -70,4 +71,13 @@ Only in case where the time per move is imposed.
 It has allowed us to see the mervelous world of A.I. and to have to write a real program has pointed out that it's not that easy to program algorithms which seem easy on the paper.
 And the real wrinklest think is to find an accurate eval function.
 
+A possibility to enhance the behaviour would perhaps be to
+ implement genetic algorithms which enable to
+select the best evaluation function, without 
+to have the problem of local and global 
+minimums problems. But, if still nowadays no efficient program has succeeded in Go game, it's probably that even this way is not a successful solution.
+
+This topic has really interested me, so perhaps I will fill this topic a
+day(  http://code.google.com/p/alma-go/source/checkout or 
+http://membres.multimania.fr/mouezapetero/atarigo.php  )
 \end{document}
