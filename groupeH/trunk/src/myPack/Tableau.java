@@ -19,7 +19,8 @@ public class Tableau {
 	int uColonne;
 	int uValeur;
 	static int dimension = 9;
-
+	
+	
 	Tableau() {
 		initialisation();
 	}
@@ -265,6 +266,8 @@ public class Tableau {
 			}
 			System.out.println(" ");
 		}
+		System.out.println("   A  B  C  D  E  F  G  H  I");
+		
 	}
 
 }

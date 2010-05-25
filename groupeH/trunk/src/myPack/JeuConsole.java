@@ -11,7 +11,7 @@ public class JeuConsole {
 	static int colonneFixe;
 	static int valeurFixe;
 	static Tableau snapshot;
-	Tableau tableauFixe;
+static	Tableau tableauFixe;
 	Tableau tableau;
 	Vector<Tableau> listeTableaux;
 	int dimension;
@@ -24,6 +24,10 @@ public class JeuConsole {
 	}
 
 	void initialisation() throws IOException {
+		System.out.println("in JeuConsole.initialisation");// ! comments on
+															// relative
+															// potential renamed
+															// method name
 		listeTableaux = new Vector<Tableau>();
 		fileFixe = 0;
 		colonneFixe = 0;
@@ -40,7 +44,7 @@ public class JeuConsole {
 		// Tableau snapshot = tableau.getSnap();
 		tableauFixe = tableau.getSnap();
 
-		System.out.println("fin");
+		System.out.println("fin of JeuConsole.initialisation");
 
 	}
 
@@ -215,12 +219,20 @@ public class JeuConsole {
 			}
 			choice = 2;// !!
 
+			System.out.println("lbl Main40");
 			Tableau snapshot = new Tableau();
 			// snapshot = snapshot.getSnap();
+			System.out.println("lbl Main41");
+			
+			
 			System.out.println("\n        MyEnd\n");
 
-			JeuConsole j = new JeuConsole();
+			JeuConsole j = new JeuConsole();  //!!affiche  le tableau av des 0,-1 et 1
+
+			System.out.println("lbl Main44");
 			Tableau t = new Tableau();
+			System.out.println("lbl Main45");
+
 			j.tableauFixe = new Tableau();
 			j.tableauFixe.putValeur(0, 0, 2);
 			j.tableauFixe.putValeur(1, 3, 1);
@@ -264,7 +276,7 @@ public class JeuConsole {
 			t.printTableau();
 
 			System.out.println("my choice=" + choice);
-		} while ((choice != -1) && (choice != 2));
+		} while ((choice != -1) && (choice != 2));// !à modifier
 
 	}
 }
