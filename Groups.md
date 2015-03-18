@@ -1,0 +1,61 @@
+### Groupe A ###
+  * D. Chaillou
+
+  * A. Schiaucu
+
+### Groupe B ###
+  * R. Gournay
+
+  * B. Belin
+
+### Groupe C ###
+  * F. Dumonceaux
+
+  * F. Dumont
+
+### Groupe D ###
+  * V. Ferreira
+
+  * A. Guille
+
+### Groupe E ###
+  * J. Durillon
+
+  * C. Massot
+
+### Groupe F ###
+  * M. Elhadi
+
+  * G. Chimen
+
+  * H. Ngassa
+
+### Groupe G ###
+  * H. Esteguet
+
+  * O. Huyghe
+
+### Groupe H ###
+  * P. Mueza
+
+  * T. Fnoun
+
+### Groupe I ###
+  * M. Altuntas
+
+### Groupe J ###
+  * C. Poisson
+
+### Groupe K ###
+  * M. Fortun
+
+  * A. Caillaud
+
+### Groupe L ###
+  * C. Dejean
+
+
+### Groupe M ###
+  * A. Garnier
+
+  * Y. Treguer
